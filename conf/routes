@@ -1,0 +1,31 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+# Modules
+*		/										module:secure
+
+# RESTful API for all request
+GET		/api/*									API.index
+
+#Login Pages
+GET     /login                                  Login.index
+GET		/verify/{verifyCode}					Application.verifyEmail
+
+# POST /distress									Application.distress
+# distress
+
+#Dashboard Pages
+GET     /index                                  Application.index
+GET     /create/?                               Application.create
+POST    /register/?	                            Application.register
+# Home page
+GET     /                                       Application.index
+
+# Ignore favicon requests
+GET     /favicon.ico                            404
+
+# Map static resources from the /app/public folder to the /public path
+GET     /public/                                staticDir:public
+
+# Catch all
+*       /{controller}/{action}                  {controller}.{action}

@@ -1,0 +1,33 @@
+#{set pageType = 'patient1' /}
+#{extends 'caremain.html' /}
+	<!--Start Content-->
+<div id="content" class="col-xs-12 col-sm-10">
+
+	<div class="col-xs-12 col-sm-12">
+		<div id="tabs">
+			<ul>
+				<li><a href="#tabs-1">SUMMARY</a></li>
+				<li><a href="#tabs-2">APPOINTMENT</a></li>
+				<li><a href="#tabs-3">CARE TEAM</a></li>
+				<li><a href="#tabs-4">MEDICATION</a></li>
+				<li><a href="#tabs-5">TREATMENT PLAN</a></li>
+				<li><a href="#tabs-6">FOLLOW-UP CARE PLAN</a></li>
+				<li><a href="#tabs-7">DIAGNOSIS</a></li>
+			</ul>
+			<div id="tabs-1"><p>SUMMARY</p></div>
+			<div id="tabs-2"><p>APPOINTMENT</p></div>
+			<div id="tabs-3"><p>CARE TEAM</p></div>
+			<div id="tabs-4"><p>MEDICATION</p></div>
+			<div id="tabs-5"><p>TREATMENT PLAN</p></div>
+			<div id="tabs-6"><p>FOLLOW-UP CARE PLAN</p></div>
+			<div id="tabs-7"><p>DIAGNOSIS</p></div>
+		</div>
+	</div>
+	<div id="ajax-content"></div>
+</div>
+<script><!--
+$(document).ready(function() {
+	$("#tabs").tabs({ heightStyle: "fill"});
+});
+
+--></script>

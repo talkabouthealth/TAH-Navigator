@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" 
+		xmlns:og="http://ogp.me/ns#"
+		xmlns:fb="http://www.facebook.com/2008/fbml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+	<meta name="author" content="TalkAboutHealth" /> 
+	<meta name="robots" content="all" /> 
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="@{'/public/img/favicon.ico'}" />
+	<title>TAH Navigator</title>
+
+		<link href="/public/plugins/bootstrap/bootstrap.css" rel="stylesheet">
+		<link href="/public/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+		<link href="/public/css/font-awesome.css" rel="stylesheet">
+		<link href='/public/css/righteous.css' rel='stylesheet' type='text/css'>
+		<link href="/public/plugins/fancybox/jquery.fancybox.css" rel="stylesheet">
+		<link href="/public/plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
+		<link href="/public/plugins/xcharts/xcharts.min.css" rel="stylesheet">
+		<link href="/public/plugins/select2/select2.css" rel="stylesheet">
+		<link href="/public/css/style.css" rel="stylesheet">
+		<link href="/public/css/public.css" rel="stylesheet">
+		
+		<!--End Container-->
+		<script src="/public/plugins/jquery/jquery-2.1.0.min.js"></script>
+		<script src="/public/plugins/jquery-ui/jquery-ui.min.js"></script>
+		<script src="/public/plugins/bootstrap/bootstrap.min.js"></script>
+		<script src="/public/plugins/justified-gallery/jquery.justifiedgallery.min.js"></script>
+		<script src="/public/plugins/tinymce/tinymce.min.js"></script>
+		<script src="/public/plugins/tinymce/jquery.tinymce.min.js"></script>
+		<script src="/public/js/validator.min.js"></script>
+		<script src="/public/js/devoops.js"></script>
+		
+</head>
+<body>
+	<div id="screensaver">
+		<canvas id="canvas"></canvas>
+		<i class="fa fa-lock" id="screen_unlock"></i>
+	</div>
+	<div id="modalbox">
+		<div class="devoops-modal">
+			<div class="devoops-modal-header">
+				<div class="modal-header-name">
+					<span>Basic table</span>
+				</div>
+				<div class="box-icons">
+					<a class="close-link">
+						<i class="fa fa-times"></i>
+					</a>
+				</div>
+			</div>
+			<div class="devoops-modal-inner">
+			</div>
+			<div class="devoops-modal-bottom">
+			</div>
+		</div>
+	</div>
+	
+	<header>
+  <div class="log_header">
+    <div class="">
+      <div class="col-md-6"><img src="/public/images/log_logo.png"><span class="logo_span">NAVIGATOR</span></div>
+      <div class="col-md-6">
+        
+        <div class="my_nav">
+        	<div class="navbar navbar-default" role="navigation">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Menu</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <!-- <ul class="nav navbar-nav">
+          <li><a href="#">Home</a></li>
+          <li><a href="#">REGISTRATION</a></li>
+          <li><a href="#">DASHBOARRD</a></li>
+          <li><a href="#">LOGOUT</a></li>
+          </ul> -->
+          
+          <ul class="nav navbar-nav">
+          
+          
+          
+          
+		#{if pageType == 'index'} <li class="active"><a href="javaScript:void(0);">Home</a></li> #{/if}
+		#{else} <li><a href="@{Application.home()}">Home</a></li> #{/else}
+		
+		#{if pageType == 'about'} <li class="active"><a href="javaScript:void(0);">About</a></li> #{/if}
+		#{else} <li><a href="@{Static.about()}">About</a></li> #{/else}
+		
+		#{if pageType == 'contact'} <li class="active"><a href="javaScript:void(0);">Contact</a></li> #{/if}
+		#{else} <li><a href="@{Static.contact()}">Contact</a></li> #{/else}
+  
+  		#{if pageType == 'login'} <li class="active"><a href="javaScript:void(0);">Login</a></li> #{/if}
+		#{else} <li><a href="@{Secure.login()}">Login</a></li> #{/else}        
+         
+        </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+	
+<!--End Header-->
+<!--Start Container-->
+<div class="log_bg">
+  <div class="col-xs-12 col-sm-12">
+			#{doLayout /}
+	</div>
+</div>	
+</body>
+</html>

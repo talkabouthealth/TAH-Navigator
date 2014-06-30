@@ -1,0 +1,132 @@
+#{set pageType = 'careMember' /}
+#{extends 'patientmain.html' /}
+<!--Start Content-->
+<div id="content" class="col-xs-12 col-sm-10">
+*{<!-- 
+	  <div class="grey-box">
+            	<div class="row">
+            		<div class="col-sm-12">
+            			<span style="background-color: #FFFFFF;border: 5px solid #FFFFFF;border-radius: 5px;color: #01AF58;font-size: 10px;font-weight: bold;margin-left: -15px;">PATIENT</span>
+            			<span class="text-muted" style="margin-left: 5px;font-size:10px;">LAST UPDATED ${userDto.editdate.format("M/d/yyyy")}</span>
+            		</div>
+                	<div class="col-sm-6">
+                    	<div class="row">
+                        	<div class="col-sm-6">
+                    			<h3>${userDto.firstName} ${userDto.lastName}</h3>
+                                <p><strong>DOB:</strong> #{if userDto.dob != null}${userDto.dob.format("M/d/yyyy")}#{/if}</p>
+                                <p><strong>Phone: </strong> ${userDto.homePhone}</p>
+                    		</div>
+                    		<div class="col-sm-6 border_01">
+                    			<h3>&nbsp;</h3>
+                                <p><strong>Phone(2):</strong> ${userDto.mobile}</p>
+                                <p><strong>Email: </strong> ${userDto.email}</p>
+                   			 </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                    	<div class="row">
+                        	<div class="col-sm-6">
+		                    	<p><strong>Support Contact:</strong>support@email.com</p>
+		                        <p><strong>Contact Phone:</strong>: 352.751.8000</p>
+		                        <p><strong>Contact Email:</strong> test@gmail.com</p>
+                    		</div>
+                    		<div class="col-sm-6 border_02">
+                    	   		<p><strong>Diagnosis:</strong> ${patientOtherDetails.disease.name}</p>
+                        		<p><strong>Date of Diagnosis:</strong> ${patientOtherDetails.dateofdiagnosis.format('dd.MM.yyyy')}</p>
+								<p><strong>Stage:</strong> ${patientOtherDetails.stage}</p>
+                   			</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+           -->  }*
+            
+            <div class="row">&nbsp;</div>
+	 <div class="row">
+            	<div class="col-sm-8">
+                	<p><a href="#" class="back-arrow"><i class="fa fa-arrow-circle-o-left"></i> ${careteam.name} CARE TEAM</a></p>
+                    <div class="media">
+      <a class="pull-left" href="#"> 
+        <img src="@{Image.show(expertDetails.id)}" width="74" height="70" class="img-responsive"> </a>
+      <div class="media-body main-l-p">
+      <p>${expdetails.designation.designation}</p>
+      <h1>${expdetails.designation.abbr}. ${expertDetails.firstName} ${expertDetails.lastName}</h1>
+    </div>
+                </div>
+                	<div class="secont-l-p-f">
+                		<p class="large-f"><span>${expdetails.practiceAddr.line1} </span>, ${expdetails.practiceAddr.line2}, ${expdetails.practiceAddr.city}, ${expdetails.practiceAddr.state}
+                		${expdetails.practiceAddr.country} ${expdetails.practiceAddr.zip}</p>
+                    	<p class="large-f">${expertDetails.mobile} &nbsp; |&nbsp;  ${expertDetails.email}</p>
+<!--                         <p><strong>Office hours </strong>Mon-Thurs 8am-5pm, Sunday 8am-1pm </p> -->
+                    </div>
+                    <div class="line-h"></div>
+                    <p class="green-title"><i class="fa fa-bookmark"></i>  EDUCATION / BACKGROUND </p>
+                    <div class="row">
+                    		#{list education, as:'seq'}
+                    		<div class="col-sm-6">
+                        	<div class="media margin-education">
+                              <a class="pull-left" href="#">
+                              <img src="${seq.logopath}" width="57" height="51"> </a>
+                              <div class="media-body new-education">
+                              	<p class="green-text">${seq.school}</p>
+                                <h4 class="media-heading">${seq.dgree}</h4>
+                               <p>${seq.year}</p>
+                              </div>
+                        </div>
+                      </div>
+				    	#{/list}
+                    </div>
+                     <div class="line-h"></div>
+                    <p class="green-title"><i class="fa fa-folder"></i> PROFESSIONAL STATEMENT </p>
+                    <div class="row">
+                    	<div class="col-sm-12">
+                        	<p>${expdetails.statement}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 line-right">
+                	 <p class="green-title"> <i class="fa fa-map-marker"></i> ${careteam.name} CARE TEAM / OFFICE LOCATION </p>
+                     <div class="row">
+                     	<div class="col-sm-6">
+                   	    <img width="100%" src="http://maps.googleapis.com/maps/api/staticmap?center=${careteam.address.lat},${careteam.address.lang}&zoom=13&size=200x200&sensor=false&&markers=color:blue%7Clabel:S%7C${careteam.address.lat},${careteam.address.lang}" width="100%" > </div>
+                        <div class="col-sm-6 map-div">
+                        	<h3>${careteam.address.line1} </h3>
+                            <p>${careteam.address.line2} </p>
+                            <p>${careteam.address.city}, ${careteam.address.state} </p>
+                            <p>${careteam.address.country}, ${careteam.address.zip} </p>
+                        </div>
+                     </div>
+                     <p>&nbsp;</p>
+                     <p class="text-center"><a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${careteam.address.line1}+${careteam.address.line2},${careteam.address.city},${careteam.address.state},${careteam.address.country} - ${careteam.address.zip}" class="btn btn-default">GET DIRECTION</a></p>
+                     
+                     <div class="line-h"></div>
+                     <div class="row">
+                     	<div class="col-sm-12">
+                        	<p class="green-title"><i class="fa fa-certificate"></i> </span> CERTIFICATIONS </p>
+                            <ul class="list-right">
+                            #{list certificats, as:'seq'}
+                            	<li>
+                                	<p><strong>${seq.name}</strong></p>
+                                    <p>${seq.description}</p>
+                                </li>
+                            #{/list}
+                           </ul>
+                        </div>
+                     </div>
+                     
+                     <div class="row">
+                     	<div class="col-sm-12">
+                        	<p class="green-title"><i class="fa fa-search"></i>&nbsp; EXPERTIES & INTERESTS </p>
+                             <ul class="list-right">
+                            #{list experties, as:'seq'}
+                            	<li>
+                                	<p><strong>${seq.name}</strong></p>
+                                    <p>${seq.description}</p>
+                                </li>
+                            #{/list}
+                           </ul>
+                        </div>
+                     </div>
+                </div>
+            </div>
+        </div>

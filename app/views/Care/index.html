@@ -1,0 +1,88 @@
+#{set pageType = 'dashboard' /}
+#{extends 'caremain.html' /}
+	<!--Start Content-->
+<div id="content" class="col-xs-12 col-sm-10">
+<!-- 
+	<div class="row">
+		<div id="breadcrumb" class="col-xs-12">
+		<ol class="breadcrumb">
+			<li><a href="JavaScript:void(0);">Home</a></li>
+			<li><a href="JavaScript:void(0);">Dashboard</a></li>
+		</ol>
+		</div>
+	</div>
+	 -->
+	<div class="col-xs-12 col-sm-12">
+	*{
+			<div class="col-xs-12 col-sm-12">
+			 #{form @Admin.filterUsers() , id:'signup' }
+          		  	<div class="col-xs-6 col-sm-6 table-responsive">
+    				<table class="table">
+    				<tr>
+    				<td>
+	          		Search
+	          		</td><td> 
+	          		<input type="text" name="uname" #{if flash['uname'] != 'null'} value="${flash['uname']}" #{/if}/>
+	          		</td><td>
+	          		<select id="userType" class="form-control" name="userType">
+	          				<option #{if flash['userType'].equals("0") }  selected #{/if} value="0">All</option>
+					    	#{if userTypelist != null}#{list userTypelist, as:'seq'}<option #{if flash['userType'].equals(seq.id.toString()) }  selected #{/if} value="${seq.id}">${seq.name}</option>#{/list}#{/if}
+					</select>
+					</td><td>
+	          		<button value="Go" class="btn btn-primary">Go</button>
+	          		</td>
+	          		</tr>
+	          		</table>
+	          		</div>
+	          		#{/form}
+			</div>
+			}*
+			<div class="table-responsive">
+				<table class="table table-striped table-bordered table-hover table-heading no-border-bottom">
+					<thead>
+		  			<tr>
+		  				<th>NAME</th>
+						<th>DIAGNOSIS</th>
+						<th>LAST VISIT</th>
+						<th>LAST VISIT INFO</th>
+						<th>LAST MD</th>
+						<th>LAST DISTRESS LEVEL</th>
+						<th>LAST DISTRESS CHECK-IN</th>
+						<th>PROBLEM LIST</th>
+						<th>SYMPTOMS</th>
+						<th>LAST SYMPTOM CHECK-IN</th>
+						<th>LAST NOTE</th>
+		  			</tr>
+		  			</thead>
+		  			<tbody>
+		  			#{if patients != null}
+						#{list patients, as:'seq'}
+				  			<tr>
+				  				<td><a href="@{Care.patient(seq.userDetails.id)}">${seq.userDetails.firstName} ${seq.userDetails.lastName} - (${seq.userDetails.user.name})</a></td>
+								<td>
+									#{if seq.patientOtherDetails != null}
+									${seq.patientOtherDetails.disease.name}
+									<br/>Stage ${seq.patientOtherDetails.stage}
+									#{/if}
+									#{else}-#{/else}
+									</td>
+								<td>LAST VISIT</td>
+								<td>LAST VISIT INFO</td>
+								<td>LAST MD</td>
+								<td>LAST DISTRESS LEVEL</td>
+								<td>LAST DISTRESS CHECK-IN</td>
+								<td>PROBLEM LIST</td>
+								<td>SYMPTOMS</td>
+								<td>LAST SYMPTOM CHECK-IN</td>
+								<td>LAST NOTE</td>
+				  			</tr>
+		  				#{/list}
+		  			#{/if}
+		  			</tbody>
+		  			<tbody>
+		  			</tbody>
+		  			</table>
+		  			</div>
+	</div>
+	<div id="ajax-content"></div>
+</div>

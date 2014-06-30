@@ -1,0 +1,24 @@
+# You can specialize this file for each language.
+# For example, for French create a messages.fr file
+# Member fields
+validation.required=%s is required
+validation.match = %s contains illegal characters. Only letters, numbers, underscores, dashes, and periods are allowed.
+
+member.userName = Username
+member.password = Password
+member.email = Email
+member.dob = Date of Birth
+member.repassword = Re enter password
+member.verifyemail = Verify email
+username.empty = Please enter correct username.
+username.exists = Username is already taken. Please enter a different username.
+username.reserved = Username is reserved. Please enter a different username.
+
+email.exists = Email is already registered. Please enter a different email.
+email.nosuchemail = Sorry, there are no user with this email in our database.
+emails.incorrect = Please input correct emails
+emails.noinvites = Sorry, you don't have enough invites
+email.suspended = Sorry, This email is suspended
+
+password.currentbad = Current password is wrong.
+password.different = New and Confirm passwords are different.

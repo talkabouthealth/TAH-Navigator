@@ -1,0 +1,251 @@
+#{extends 'outermain.html' /}
+<link rel="stylesheet" media="screen" href="@{'/public/plugins/datepicker/css/datepicker.css'}">
+<!-- <link rel="stylesheet" media="screen" href="@{'/public/css/static.css'}"> -->
+
+
+<script src="@{'/public/plugins/datepicker/js/bootstrap-datepicker.js'}"></script>
+<style>
+li, blockquote{color:#333;}
+
+.container {
+    max-width: 900px;
+}
+.form-control {
+    height: 40px !important;
+    padding: 2px 12px !important;
+     font-size: 14px !important;
+}
+table.table-condensed {
+    color: #333333;
+}
+.list-unstyled li,.help-block{color:#FFF;}
+.jumbotron {
+    background-color: #428BCA;
+    color: inherit;
+    margin-bottom: 30px;
+    padding: 30px;
+}
+.footer {
+    border-top: 1px solid #E5E5E5;
+    color: #777777;
+    padding-top: 19px;
+}
+</style>
+    <div class="container">
+   <!--    <div class="header">
+        <h3 class="text-muted">MOFFITT - Navigator</h3>
+      </div> -->
+      
+      <div class="row marketing">
+    <!--    <div class="col-xs-12"><p class="lead">Register for the Moffitt cancer Center - TVRH Navigator</p></div> -->
+        
+        <div class="col-md-8">
+         <!-- <form role="form"> -->
+       	  #{form @Application.register() , id:'signup' }
+       	   <div class="col-md-12">
+       	    <ul class="list-group">
+						#{ifErrors}
+							   <li class="list-group-item list-group-item-warning">Validation failed! Please correct the following errors,</li>
+						   #{errors}
+						      <li class="list-group-item list-group-item-danger">${error}</li>
+						   #{/errors}
+						#{/ifErrors}
+						#{if flash.contains("error") }
+							<li class="list-group-item list-group-item-danger">${flash.error}</li>
+						#{/if}
+						  </ul>
+					</div>
+			<div class="col-md-12">
+		        <div class="form-group">
+				    <label for="exampleInputEmail1">Patient caregiver, family, doctor etc.</label>
+				    <select id="userType" class="form-control" name="member.userType">
+				    	#{if userTypelist != null}#{list userTypelist, as:'seq'}<option #{if flash['member.userType'].equals(seq.id.toString()) }  selected #{/if} value="${seq.id}">${seq.name}</option>#{/list}#{/if}</select>
+				</div>
+		        <div class="form-group">
+				    <label for="exampleInputEmail1">Username</label>
+				    <div class="input-group">
+				    <input type="text" class="form-control" name="member.userName" value="${flash['member.userName']}" placeholder="Enter user name" required>
+				    <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+				    </div>
+				    <div class="help-block with-errors"></div>
+				</div>			  
+		        <div class="form-group">
+				    <label for="exampleInputEmail1">Password</label>
+				    <div class="input-group">
+				    <input id="inputPassword" type="password" class="form-control" name="member.password" placeholder="Password" data-toggle="validator" data-minlength="8" required>
+				     <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+				    </div>
+				    <p class="help-block">Password must be 8 letters or longer and contain at least one number</p>
+				</div>			  
+		        <div class="form-group">
+				    <label for="exampleInputEmail1">Verify Password</label>
+				    <div class="input-group">
+					<input type="password" class="form-control" name="member.repassword" placeholder="Verify Password" data-match="#inputPassword" data-match-error="Whoops, these don't match" required>
+					 <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+				    </div>
+					<div class="help-block with-errors"></div>
+				</div>
+			</div>
+			<div id="notForOther">
+			<div class="col-md-12">
+				<div class="form-group"><h4>Identification</h4></div>
+			  	<div class="form-group">
+				    <label for="exampleInputEmail1">First Name</label>
+				    <input type="text" class="form-control" name="member.firstName" value="${flash['member.firstName']}" placeholder="Enter first name">
+				</div>			  
+		 		<div class="form-group">
+				    <label for="exampleInputEmail1">Last Name</label>
+				    <input type="text" class="form-control" name="member.lastName" value="${flash['member.lastName']}" placeholder="Enter last name">
+				</div>
+		    	<div class="form-group">
+				    <label for="exampleInputEmail1">Date of birth (mm/dd/yyyy)</label>
+				    <div class="input-group">
+					    <input type="text" class="form-control datepicker" name="member.dob" value="${flash['member.dob']}" placeholder="Enter date of birth" data-date-format="mm/dd/yyyy">
+						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+			  		</div>
+				</div>
+  				<div class="form-group">
+				    <label for="exampleInputEmail1">Social Security Number</label>
+				    <div class="col-xs-12">
+				    <div class="col-xs-3">
+				    <input type="text" class="form-control" name="member.ssn1" value="${flash['member.ssn1']}" placeholder="000">
+				    </div>
+				    <div class="col-xs-2">
+				     <input type="text" class="form-control" name="member.ssn2" value="${flash['member.ssn2']}" placeholder="00">
+				    </div>
+				    <div class="col-xs-4">
+				    	<input type="text" class="form-control" name="member.ssn3" value="${flash['member.ssn3']}" placeholder="0000">
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-12">
+			<div class="form-group"><h4>Contact Information</h4></div>
+		  	<div class="form-group">
+			    <label for="exampleInputEmail1">Select your preferred method of receiving reminders and notifications</label>
+			    
+			    <select class="form-control" name="member.contactMethod">
+				    	#{if contactTypes != null}
+				    		#{list contactTypes, as:'seq'}
+				    			<option #{if flash['member.contactMethod'].equals(seq.id.toString()) }  selected #{/if}  value="${seq.id}">${seq.name}</option>
+				    		#{/list}
+				    	#{/if}
+				</select>
+			</div>			  
+	 		<div class="form-group">
+			    <label for="exampleInputEmail1">Email</label>
+			    <div class="input-group">
+			    <input id="inputEmail" type="email" class="form-control" value="${flash['member.email']}" name="member.email" placeholder="Enter email" required>
+			     <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+				    </div>
+			     <div class="help-block with-errors"></div>
+			</div>
+	    	<div class="form-group">
+			    <label for="exampleInputEmail1">Verify Email</label>
+			    <div class="input-group">
+			    <input type="email" class="form-control" name="member.verifyemail" value="${flash['member.verifyemail']}" placeholder="Verify email" data-match="#inputEmail" data-match-error="Whoops, email don't match"  required>
+			       <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+				    </div>
+			    <div class="help-block with-errors"></div>
+			</div>
+	    	<div class="form-group">
+			    <label for="exampleInputEmail1">Mobile Phone</label>
+			    <input type="text" class="form-control" name="member.mobile" value="${flash['member.mobile']}" placeholder="Enter mobile number">
+			</div>
+	    	<div class="form-group">
+			    <label for="exampleInputEmail1">Home Phone</label>
+			    <input type="text" class="form-control" name="member.homePhone" value="${flash['member.homePhone']}" placeholder="Enter home phone">
+			</div>
+		</div>
+		<div class="col-md-12">
+				<div class="form-group"><p class="help-block">Choose all questions below and enter one answer for each question.</p></div>
+			  	<div class="form-group">
+			  		
+				    <label for="exampleInputEmail1">Security question 1 </label>
+				    <select class="form-control" name="member.seq1">
+				    	#{if securityQuestionList != null}
+				    		#{list securityQuestionList, as:'seq'}
+				    			<option #{if flash['member.seq1'].equals(seq.id.toString()) } selected #{/if} value="${seq.id}">${seq.question}</option>
+				    		#{/list}
+				    	#{/if}
+				    	</select>
+				    *{ <input type="text" class="form-control" name="member.seq1" placeholder="Security question 1">}*
+				</div>			  
+		 		<div class="form-group">
+				    <label for="exampleInputEmail1">Security answer 1</label>
+				    <input type="text" class="form-control" name="member.sea1"  value="${flash['member.sea1']}" placeholder="Enter Security answer 1">
+				</div>
+		    	<div class="form-group">
+				    <label for="exampleInputEmail1">Security question 2</label>
+				    *{ <input type="text" class="form-control" name="member.seq2" placeholder="Enter Security question 2"> }*
+				    <select class="form-control" name="member.seq2">
+				    	#{if securityQuestionList != null}
+				    		#{list securityQuestionList, as:'seq'}
+				    			<option #{if flash['member.seq2'].equals(seq.id.toString()) } selected #{/if} value="${seq.id}">${seq.question}</option>
+				    		#{/list}
+				    	#{/if}
+				    	</select>
+				</div>
+		    	<div class="form-group">
+				    <label for="exampleInputEmail1">Security answer 2</label>
+				    <input type="text" class="form-control" name="member.sea2"  value="${flash['member.sea2']}" placeholder="Enter security answer 2">
+				</div>
+		</div>
+		</div>
+		  <div class="col-md-12">
+		  	<div class="checkbox">
+			    <label>
+			      <input name="member.tosFlag" type="checkbox" required> I agree to the Moffitt Cancer Center - TVRH Terms of Service and Privacy Policy.
+			      <i class="fa fa-square-o"></i>
+			    </label>
+			     <div class="help-block with-errors"></div>
+			</div>
+			<div class="checkbox">
+			    <label>
+			      <input name="member.smtFlag" type="checkbox" required> I accept the Security Messaging Terms and Conditions.
+			      <i class="fa fa-square-o"></i>
+			    </label>
+			     <div class="help-block with-errors"></div>
+			</div>
+			<div class="form-group">
+			<button type="submit" class="btn-primary btn-lg btn-block" >Next Step</button>
+			</div>
+			</div>
+         #{/form}
+		</div>
+		<div class="col-md-4">
+			<div class="panel panel-primary">
+			<div class="panel-heading">Moffitt Cance Center - TVRH Navigator</div>
+				<blockquote>Why you will love the Moffitt Cance Center - TVRH Navigator</blockquote>
+			<ul>
+				<li>We'll guide you through treatments step-by-step.</li>
+				<li>Connect with you care team.</li>
+				<li>What to expect. How to prepare. Next steps.</li>
+				<li>Reminders of appointments and to take medications.</li>
+				<li>Visualize your treatment plan.</li>
+				<li>Track your progress and symptoms.</li>
+			</ul>
+			</div>
+		</div>
+      </div>
+      <div class="footer">
+        <p>&copy; Copyright 2014 - Talk About Health</p>
+      </div>
+    </div> <!-- /container -->
+    <script>
+<!--
+    $(document).ready(function() {
+    	$('.datepicker').datepicker();
+    	$('#signup').validator();
+    	$("#userType").change(function(){
+    		/* var userType = $(this).val();
+    		if(userType != 'p') {
+    			$("#notForOther").hide();
+    		} else {
+    			$("#notForOther").show();
+    		} */
+    	});
+	});
+-->
+</script>

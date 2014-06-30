@@ -1,0 +1,176 @@
+#{set pageType = 'allmemberlist' /}
+#{extends 'adminmain.html' /}
+<div id="content" class="col-xs-12 col-sm-10">
+	<div class="row">
+		<div id="breadcrumb" class="col-xs-12">
+		<ol class="breadcrumb">
+			<li><a href="@{Admin.index()}">Home</a></li>
+			<li><a href="#">All Members</a></li>
+		</ol>
+		</div>
+	</div>
+       <div class="row">
+        <div class="col-xs-12 col-sm-12">
+        <div class="box">
+        	<div class="box-header">
+        		<div class="box-name">All members</div>
+        	</div>
+          <div class="box">
+          		  #{form @Admin.filterUsers() , id:'signup' }
+          		  	<div class="col-xs-6 col-sm-6 table-responsive">
+    				<table class="table">
+    				<tr>
+    				<td>
+	          		Search
+	          		</td><td> 
+	          		<input type="text" name="uname" #{if flash['uname'] != 'null'} value="${flash['uname']}" #{/if}/>
+	          		</td><td>
+	          		<select id="userType" class="form-control" name="userType">
+	          				<option #{if flash['userType'].equals("0") }  selected #{/if} value="0">All</option>
+					    	#{if userTypelist != null}#{list userTypelist, as:'seq'}<option #{if flash['userType'].equals(seq.id.toString()) }  selected #{/if} value="${seq.id}">${seq.name}</option>#{/list}#{/if}
+					</select>
+					</td><td>
+	          		<button value="Go" class="btn btn-primary">Go</button>
+	          		</td>
+	          		</tr>
+	          		</table>
+	          		</div>
+	          		#{/form}
+          </div>
+				<div class="table-responsive">
+				<table class="table table-striped table-bordered table-hover table-heading no-border-bottom">
+					<thead>
+		  			<tr>
+		  				<th>Username
+						<th>Email</th>
+						<th>Type</th>
+						<th>Verified</th>
+						<th>Activated</th>
+		  			</tr>
+		  			</thead>
+		  			<tbody>
+		  			#{set cssClass = '' /}
+		  			#{if list != null}
+						#{list list, as:'seq'}
+							#{if seq.isverified && seq.isActive}
+								#{set cssClass = '' /}
+							#{/if}	
+							#{elseif seq.isverified && !seq.isActive}
+								#{set cssClass = 'class=warning' /}
+							#{/elseif}
+							#{elseif !seq.isverified && !seq.isActive}
+								#{set cssClass = 'class=danger' /}
+							#{/elseif}
+							#{set cssClass = '' /}
+							<tr ${cssClass}>
+					  			<td>${seq.name}</td>
+					  			<td>${seq.email}</td>
+					  			<td>${seq.usertypeid.name}</td>
+					  			<td>
+					  				#{if seq.isverified}
+					  				<input class="userVerifiedCheckbox" type="checkbox" data-for="${seq.id}" checked="checked"> 
+					  				#{/if}
+					  				#{else}
+					  				<input class="userVerifiedCheckbox" type="checkbox" data-for="${seq.id}">   
+					  				#{/else}
+					  			</td>
+					  			<td>
+					  				#{if seq.isActive}
+					  				<input class="userActivateCheckbox" type="checkbox" data-for="${seq.id}" checked="checked"> 
+					  				#{/if}
+					  				#{else}
+					  				<input class="userActivateCheckbox" type="checkbox" data-for="${seq.id}">  
+					  				#{/else}
+					  			*{
+					  				#{if seq.isActive}
+					  				<span class="text-success"><i class="fa fa-check"></i></span>
+					  				#{/if}
+					  				#{else}
+					  				<span class="text-danger"><i class="fa fa-times"></i></span>
+					  				#{/else}
+					  			}*
+					  			</td>
+					  		</tr>
+						#{/list}
+					#{/if}
+		  			#{else}
+						<tr class="active">
+							<td colspan="5">No Row</td>		
+		  				</tr>
+		  			#{/else}
+		  			</tbody>
+				</table>
+				</div>
+          </div>
+        </div><!-- /.row -->
+</div>
+	<div id="ajax-content"></div>
+</div>
+	
+
+<script type="text/javascript">
+<!--
+$(document).ready(function() {
+	
+	$(".userVerifiedCheckbox").click(function(){
+		var userId = $(this).data('for');
+		var isVerified = 'false';
+		if ($(this).prop('checked')==true) {
+			isVerified = 'true';
+		}
+		$.ajax({
+			  type: 'POST',
+			  url: '/admin/adminAjaxOperation',
+			  data: { 'userId': userId,'op':'v' , 'flag': isVerified },
+			  beforeSend:function(){
+			    $('#ajax-panel').show();
+			    $('#ajax-panel').html('Loading... <i class="fa fa-spinner fa-spin"></i>');
+			  },
+			  success:function(data){
+			    $('#ajax-panel').empty();
+			      $('#ajax-panel').append('<strong>' + data.status + '</strong>:' + data.messages + '');
+			  },
+			  error:function(){
+			    $('#ajax-panel').html('<strong>Oops!</strong> Try that again in a few moments.');
+			   
+			  }
+		}).always(function() {
+			setTimeout(function(){removeAjaxPanel();}, 2000);
+		});
+	});
+	
+	$(".userActivateCheckbox").click(function(){
+
+		var userId = $(this).data('for');
+		var isVerified = 'false';
+		if ($(this).prop('checked')==true) {
+			isVerified = 'true';
+		}
+		$.ajax({
+			  type: 'POST',
+			  url: '/admin/adminAjaxOperation',
+			  data: { 'userId': userId,'op':'a' , 'flag': isVerified },
+			  beforeSend:function(){
+			    $('#ajax-panel').show();
+			    $('#ajax-panel').html('Loading... <i class="fa fa-spinner fa-spin"></i>');
+			  },
+			  success:function(data){
+			    $('#ajax-panel').empty();
+			      $('#ajax-panel').append('<strong>' + data.status + '</strong>:' + data.messages + '');
+			  },
+			  error:function(){
+			    $('#ajax-panel').html('<strong>Oops!</strong> Try that again in a few moments.');
+			   
+			  }
+		}).always(function() {
+			setTimeout(function(){removeAjaxPanel();}, 2000);
+		});
+	});
+});
+removeAjaxPanel = function() {
+	$('#ajax-panel').fadeOut("fast", function() {
+		$('#ajax-panel').empty();
+	});
+}
+-->
+</script>

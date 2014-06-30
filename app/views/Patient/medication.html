@@ -1,0 +1,62 @@
+#{set pageType = 'medication' /}
+#{extends 'patientmain.html' /}
+	<!--Start Content-->
+<div id="content" class="col-xs-12 col-sm-10">
+ <div class="row">&nbsp;</div>
+ <div class="row">
+ 	
+ 	
+ 		#{if medicationList != null && medicationList.size()>0}
+ 				#{list medicationList, as:'seq'}
+ 					<div class="col-xs-12 col-sm-12 nav-tabs">
+						<div class="col-sm-6" style="padding-top: 10px;">
+							<h3>${seq.medicine.genericname}</h3>
+							<p><strong>BRAND NAME: </strong>${seq.medicine.brandname}</p>
+							<p><strong>FREQUENCY: </strong>${seq.frequency}</p>
+							<p><strong>SPECIAL INSTRUCTIONS: </strong>${seq.specialinstruction}</p>
+							<p><strong>PRESCRIBING PYSICIAN: </strong>#{userName userName: seq.caremember.name, userId:seq.caremember.id /}</p>
+						</div>
+						<div class="col-sm-6" style="padding-top: 10px;">
+						<img src="/public/images/${seq.method}.png"/>
+						#{if seq.medicine.image}
+							<img src="${seq.medicine.image}"/>
+						#{/if}
+						</div>
+					</div>
+ 				#{/list}
+ 		#{/if}
+ 		#{else}
+	 		<div class="col-xs-12 col-sm-12 nav-tabs">No medication added.</div>
+ 		#{/else}
+ 		<!-- 
+	<div class="col-xs-12 col-sm-12 nav-tabs">
+		<div class="col-sm-4" style="padding-top: 10px;">
+			<h3>TAMOXIFEN</h3>
+			<p><strong>BRAND NAME </strong>Nolvadex</p>
+			<p><strong>FREQUENCY </strong>Daily, 1 pill per day</p>
+			<p><strong>SPECIAL INSTRUCTIONS </strong>Take pill whole</p>
+			<p><strong>PRESCRIBING PYSICIAN </strong>Don Dizon, MD</p>
+		</div>
+	</div>
+	<div class="col-xs-12 col-sm-12 nav-tabs">
+		<div class="col-sm-4" style="padding-top: 10px;">
+			<h3>TAMOXIFEN</h3>
+			<p><strong>BRAND NAME </strong>Nolvadex</p>
+			<p><strong>FREQUENCY </strong>Daily, 1 pill per day</p>
+			<p><strong>SPECIAL INSTRUCTIONS </strong>Take pill whole</p>
+			<p><strong>PRESCRIBING PYSICIAN </strong>Don Dizon, MD</p>
+		</div>
+	</div>
+	<div class="col-xs-12 col-sm-12 nav-tabs">
+		<div class="col-sm-4" style="padding-top: 10px;">
+			<h3>TAMOXIFEN</h3>
+			<p><strong>BRAND NAME </strong>Nolvadex</p>
+			<p><strong>FREQUENCY </strong>Daily, 1 pill per day</p>
+			<p><strong>SPECIAL INSTRUCTIONS </strong>Take pill whole</p>
+			<p><strong>PRESCRIBING PYSICIAN </strong>Don Dizon, MD</p>
+		</div>
+	</div>   
+	  -->        
+</div>
+<div id="ajax-content"></div>
+</div>

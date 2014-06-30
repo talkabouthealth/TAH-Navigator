@@ -1,0 +1,13 @@
+#{if user.firstName != null}
+Dear ${user.firstName},
+#{/if}
+#{else}
+Dear user,
+#{/else}
+<br/><br/>
+Thank you for signing up for the Moffitt – TVRH Navigator!
+<br/>
+<a target="_new" href="${url}/verify/${user.verificationcode}">Click here</a> to verify your email and answer 1 question.
+<br/><br/>
+Thanks!
+The Moffitt – TVRH Care Team

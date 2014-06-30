@@ -1,0 +1,131 @@
+
+/*******************************login page***********************************/
+body {
+   background:none no-repeat center #004261;
+    color: #FFF;
+}
+
+.log_header{ background:#006ea1; width:100%; padding:15px 0px; float:left; width:100%; border-bottom:2px solid #002739; box-shadow:0 0 10px rgba(0,0,0,.5)}
+.logo_span{ color:#FFF; font-size:22px; margin-left:10px;}
+
+#log_contaner{ max-width:700px; width:98%; margin:0 auto;}
+.log_heading{ color:#FFF; text-align:center; font-size:50px; padding:15px 0}
+.log_bg{ background:url(../images/login_bg.png) no-repeat center #004261; width:100%; float:left; padding:20px 0px 20px 0px; } 
+.log_bg_01{ background:#006ea1; no-repeat center; width:100%; float:left; padding:20px 0px 20px 0px;} 
+.log_padding{ margin:20px 300px;}
+.log_center{width:100%;}
+
+.save_id{ font-size:22px; color:#FFF;}
+.forget{ font-size:22px; color:#FFF; float:right;}
+.forget a{ font-size:28px; color:#FFF; float:right;}
+.log_p{ color:#FFF; font-size:24px; padding:40px 0; text-align:center}
+.form-control{font-size:40px; height:65px;}
+.myform .input-group-lg > .form-control, .input-group-lg > .input-group-addon, .input-group-lg > .input-group-btn > .btn{font-size: 23px; height: 60px;
+padding: 10px 16px; }
+.myform .input-group{margin-bottom:10px;}
+.my-btn{font-size:18px; height:40px; padding:0 20px;}
+.breadcrumb{position:relative; top:19px;}
+.my_nav {float:right}
+.my_nav .navbar{position:static; }
+.my_nav .navbar-brand{padding:0; display:none}
+.my_nav .navbar-default{border:none; box-shadow:none; background:none}
+.my_nav .navbar{margin:15px 0 0 0; min-height:inherit}
+.my_nav .nav > li > a{padding:5px 10px; background:none; font-family:Arial, Helvetica, sans-serif; font-size:13px; text-transform:uppercase; font-family:'OswaldBook',Arial, Helvetica, sans-serif; outline:none; color:#fff}
+.my_nav .navbar-default .navbar-nav > .active > a,.my_nav .nav > li > a:hover{color:#ff5700; box-shadow:none; background:none}
+.my-btn-log{background:#77c7ea; height:65px; font-size:40px; box-shadow:0 3px 5px rgba(0,0,0,.5); text-transform:uppercase;}
+.my-btn-register{background:#246297; height:65px; font-size:40px; box-shadow:0 3px 5px rgba(0,0,0,.5); text-transform:uppercase;}
+.my-btn-cont{background:none; border:1px solid #fff}
+
+.myform .input-group-addon{background:#fff}
+.line-or{background:url(../images/line-or.png) repeat-x center; padding:25px 0 }
+.line-or span{padding:0 10px; display:table; margin:0 auto; background:url(../images/or-i-bg.png) repeat; font-size:25px; color:#8baab8;}
+
+
+/***************************************login first page**************************************/
+
+#log_contaner_02{ width:98%; margin:0 auto; background:#f2f0f3; padding:12px;}
+#log_contaner_02
+.input-text{ width:100%;}
+
+#log_contaner_03{ width:98%; margin:0 auto; background:#f2f0f3; padding:12px 12px 1px 12px;}
+#log_contaner_03
+.input-text{ width:100%;}
+
+/***************************************login second page****************************************/
+
+.page_second{}
+.form-control_02{font-size:20px; height:30px; width:100%; line-height:30px; background-color:#d8d8d8; color:#006ea1; text-align:justify;}
+.input-text_01{ width:100%; height:35px; padding:0px 5px;}
+.myform .input-group-lg > .form-control, .input-group-lg > .input-group-addon, .input-group-lg > .input-group-btn > .btn{font-size: 23px; height: 60px;
+padding: 10px 16px; }
+
+.text_p_01{ font-size:19px;}
+.text_p_01 b{ color:#006ea1;}
+
+/***************************************login third page****************************************/
+
+.chek_b_02{ color:#006ea1; font-size:20px; font-weight:bold; text-align:center;}
+.text_p_02{ font-size:19px; text-align:center;}
+.text_p_02 b{ color:#006ea1;}
+.btn_03{ text-align:center;}
+.text_p_03{ font-size:18px; text-align:justify;}
+
+
+/***************************************completed page****************************************/
+
+.complete{}
+.complete_head{ font-size:50px; color:#006ea1; text-align:center; font-weight:bold;}
+.thank_01{ text-align:center; color:#666; font-size:20px;}
+.thank_02{ text-align:center; color:#666;}
+.thank_02 b{ text-align:center; color:#006ea1; font-size:20px;}
+.thank_03{ text-align:center; color:#666; font-size:20px;}
+.thank_03 b{ text-align:center; color:#006ea1;}
+
+.acord_02{}
+.acord_02 span{ color:#00509b; font-weight:bold; border-left:3px solid #00509b; padding-left:10px; }
+.acord_02 i{ color:#00509b;}
+.acord_02 h3{ color:#00509b; }
+
+.box-name_02{
+  padding-left: 15px;
+  line-height: 45px;
+}
+.box-header{ height:45px;}
+.drop_r_hd{float:left; color:#60aa33; line-height:45px; font-weight:bold;}
+.drop_r{ line-height:45px !important; height:45px; font-size:28px; margin:0px 10px 0px 10px; color:#60aa33;}
+.drop_r i{ color:#60aa33;}
+
+/**************************************************************/
+
+
+
+@media (max-width: 767px) {
+	.my_nav .navbar{margin:0}
+.my_nav .navbar-header{position: absolute;
+top: -70px;
+right: 20px;}
+.log_p{text-align:center}
+	.save_id{text-align:center}
+	.forget,.forget a{ float:none !important; text-align:center;}
+	.breadcrumb{position:static; }
+	.log_header{height:auto !important; float:left; width:100%;  }
+	
+.my_nav{float:none !important}
+
+
+}
+
+@media (max-width: 620px) {
+#log_contaner{width:90% !important;}	
+}
+@media (max-width:450px) {
+.log_header img{width:78%}
+.my_nav .navbar-header{
+top: -55px; right:5px;}
+}
+
+@media (max-width: 340px) {
+
+}
+
+

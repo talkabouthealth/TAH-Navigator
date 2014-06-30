@@ -1,0 +1,194 @@
+#{set pageType = 'setting' /}
+#{extends 'patientmain.html' /}
+	<!--Start Content-->
+<div id="content" class="col-xs-12 col-sm-10">
+	<div class="row">&nbsp;</div>
+	<div class="row">
+ 		<div class="col-xs-12 col-sm-12">
+ 			<h4 class="page-header">Update Profile</h4>
+ 		</div>
+ 		<div class="col-xs-12 col-sm-12">
+			#{form @Profile.updateProfile() , id:'passForm' }
+ 			<table class="col-xs-10 col-sm-5 table-condensed">	
+ 				<tr><td><ul class="list-group" id="errorGroup"></ul></td></tr>
+ 				<tr>
+ 					<td> 
+	 					<div class="form-group">
+					    <label for="exampleInputEmail1">Primary Communication Method</label>
+					    <div >
+						    <select class="form-control" name="contactMethod">
+					    	#{if contactTypes != null}
+					    		#{list contactTypes, as:'seq'}
+					    			<option #{if flash['member.contactMethod'].equals(seq.id.toString()) }  selected #{/if}  value="${seq.id}">${seq.name}</option>
+					    		#{/list}
+					    	#{/if}
+							</select>
+					    </div>
+					    <p class="help-block"></p>
+						</div>			  
+					</td>
+ 				</tr>
+ 				<tr>
+ 					<td>
+ 					<hr/>
+ 						<div>
+					    	<label for="exampleInputEmail1">Email</label>
+						</div>
+	 					<div class="form-group">
+						    <div class="input-group">
+						    <input type="email" class="form-control" name="email" placeholder="Email" data-toggle="validator"  required>
+						     <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+						    </div>
+						    <p class="help-block"></p>
+						</div>			  
+		        	</td>
+ 				</tr>
+ 				<tr>
+ 					<td>
+ 						<hr/>
+ 						<div>
+					    	<label for="exampleInputEmail1">Phones</label>
+						</div>
+ 						<table class="table-responsive" style="width:100%;">
+ 							<tr>
+ 								<td style="width: 90px;">Mobile phone</td>
+ 								<td>
+ 								<div class="input-group">
+								<input type="tel" class="form-control" name="repassword" placeholder="Verify Password" data-match="#inputPassword" data-match-error="Whoops, these don't match" required>
+								<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+					    	</div>
+							<div class="help-block with-errors"></div>
+ 								</td>
+ 							</tr>
+ 							<tr>
+ 								<td style="width: 90px;">Home phone</td>
+ 								<td>
+ 								<div class="input-group">
+								<input type="tel" class="form-control" name="repassword" placeholder="Verify Password" data-match="#inputPassword" data-match-error="Whoops, these don't match" required>
+								<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+					    	</div>
+							<div class="help-block with-errors"></div>
+ 								</td>
+ 							</tr>
+ 						</table>
+					</td>
+ 				</tr>
+ 				<tr>
+ 					<td>
+ 					<hr/>
+ 					<div>
+					    	<label for="exampleInputEmail1">Address</label>
+					    	
+						</div>
+ 						<table class="table-responsive" style="width:100%;">
+ 							<tr>
+ 								<td style="width: 90px;">Street</td>
+ 								<td>
+ 								<div class="input-group">
+								<input type="text" class="form-control" name="repassword" placeholder="Verify Password" data-match="#inputPassword" data-match-error="Whoops, these don't match" required>
+								<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+					    	</div>
+							<div class="help-block with-errors"></div>
+ 								</td>
+ 							</tr>
+ 							<tr>
+ 								<td style="width: 90px;">&nbsp;</td>
+ 								<td>
+ 								<div class="input-group">
+								<input type="text" class="form-control" name="repassword" placeholder="Verify Password" data-match="#inputPassword" data-match-error="Whoops, these don't match" required>
+								<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+					    	</div>
+							<div class="help-block with-errors"></div>
+ 								</td>
+ 							</tr>
+ 							<tr>
+ 								<td style="width: 90px;">City</td>
+ 								<td>
+ 								<div class="input-group">
+								<input type="text" class="form-control" name="repassword" placeholder="Verify Password" data-match="#inputPassword" data-match-error="Whoops, these don't match" required>
+								<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+					    	</div>
+							<div class="help-block with-errors"></div>
+ 								</td>
+ 							</tr>
+ 							<tr>
+ 								<td style="width: 90px;">State</td>
+ 								<td>
+ 								<div class="input-group">
+								<input type="text" class="form-control" name="repassword" placeholder="Verify Password" data-match="#inputPassword" data-match-error="Whoops, these don't match" required>
+								<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+					    	</div>
+							<div class="help-block with-errors"></div>
+ 								</td>
+ 							</tr>
+ 							<tr>
+ 								<td>Country</td>
+ 								<td>
+ 								<div class="input-group">
+								<input type="text" class="form-control" name="repassword" placeholder="Verify Password" data-match="#inputPassword" data-match-error="Whoops, these don't match" required>
+								<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+					    	</div>
+							<div class="help-block with-errors"></div>
+ 								</td>
+ 							</tr>
+ 							<tr>
+ 								<td>Zip</td>
+ 								<td>
+ 								<div class="input-group">
+								<input type="text" class="form-control" name="repassword" placeholder="Verify Password" data-match="#inputPassword" data-match-error="Whoops, these don't match" required>
+								<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+					    	</div>
+							<div class="help-block with-errors"></div>
+ 								</td>
+ 							</tr>
+ 						</table>
+					</td>
+ 				</tr>
+ 				<tr>
+ 					<td><hr/>
+ 					<button type="submit" class="btn-primary btn-lg btn-block" >Save</button></td>
+ 				</tr>		
+ 			</table>
+ 			#{/form}
+ 			</div>
+ 		</div>
+	</div>
+<!-- <div id="ajax-content"></div> -->
+   <script>
+<!--
+    $(document).ready(function() {
+    	$('#passForm').validator();
+    	var Options = { success: setMessageOnForm };
+    	$('#passForm').submit(function() {
+    		alert('sdf');
+                 $.ajax({
+                     type: "POST",
+              url: "/profile/updatepassword",
+              data: $('#passForm').serialize(),
+                  success: function(msg){
+                           if (msg.indexOf("Error") === 0) {
+                   			var errorText = msg.replace("Error:", "");
+                   			$("#errorGroup").html("<li class='list-group-item list-group-item-danger'>" + errorText  +"</li>"); 
+                   		} else {
+                   			$("#errorGroup").html("<li class='list-group-item list-group-item-success'>" + msg  +"</li>"); 
+                   		}
+                   },
+              error: function(){
+            	  $("#errorGroup").html("<li class='list-group-item list-group-item-danger'>Internal server error. Please try again.</li>"); 
+                  }
+                    });
+    		
+    		return false;
+    	});
+	});
+
+	function setMessageOnForm(responseText, statusText, xhr, $form) {
+		if (responseText.indexOf("Error") === 0) {
+			var errorText = responseText.replace("Error:", "");
+			$("#errorGroup").html("<li class='list-group-item list-group-item-danger'>" + errorText  +"</li>"); 
+		} else {
+			$("#errorGroup").html("<li class='list-group-item list-group-item-success'>" + errorText  +"</li>"); 
+		}
+	}
+-->
+</script>
