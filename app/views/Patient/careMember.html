@@ -49,15 +49,18 @@
       <a class="pull-left" href="#"> 
         <img src="@{Image.show(expertDetails.id)}" width="74" height="70" class="img-responsive"> </a>
       <div class="media-body main-l-p">
-      <p>${expdetails.designation.designation}</p>
+<!--       <p>${expdetails.designation.designation}</p> -->
       <h1>${expdetails.designation.abbr}. ${expertDetails.firstName} ${expertDetails.lastName}</h1>
     </div>
-                </div>
+                
                 	<div class="secont-l-p-f">
                 		<p class="large-f"><span>${expdetails.practiceAddr.line1} </span>, ${expdetails.practiceAddr.line2}, ${expdetails.practiceAddr.city}, ${expdetails.practiceAddr.state}
                 		${expdetails.practiceAddr.country} ${expdetails.practiceAddr.zip}</p>
-                    	<p class="large-f">${expertDetails.mobile} &nbsp; |&nbsp;  ${expertDetails.email}</p>
+                    	<p class="large-f">${expertDetails.mobile}
+                    	*{  &nbsp; |&nbsp;  ${expertDetails.email} }*
+                       </p>
 <!--                         <p><strong>Office hours </strong>Mon-Thurs 8am-5pm, Sunday 8am-1pm </p> -->
+                    </div>
                     </div>
                     <div class="line-h"></div>
                     <p class="green-title"><i class="fa fa-bookmark"></i>  EDUCATION / BACKGROUND </p>
@@ -88,7 +91,11 @@
                 	 <p class="green-title"> <i class="fa fa-map-marker"></i> ${careteam.name} CARE TEAM / OFFICE LOCATION </p>
                      <div class="row">
                      	<div class="col-sm-6">
-                   	    <img width="100%" src="http://maps.googleapis.com/maps/api/staticmap?center=${careteam.address.lat},${careteam.address.lang}&zoom=13&size=200x200&sensor=false&&markers=color:blue%7Clabel:S%7C${careteam.address.lat},${careteam.address.lang}" width="100%" > </div>
+                     	<a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${careteam.address.line1}+${careteam.address.line2},${careteam.address.city},${careteam.address.state},${careteam.address.country} - ${careteam.address.zip}">
+                   	    	<img width="100%" src="http://maps.googleapis.com/maps/api/staticmap?center=${careteam.address.lat},${careteam.address.lang}&zoom=13&size=200x200&sensor=false&&markers=color:blue%7Clabel:S%7C${careteam.address.lat},${careteam.address.lang}" width="100%" >
+                   	    	</a>
+                   	    	 </div>
+                   	    
                         <div class="col-sm-6 map-div">
                         	<h3>${careteam.address.line1} </h3>
                             <p>${careteam.address.line2} </p>
@@ -97,7 +104,7 @@
                         </div>
                      </div>
                      <p>&nbsp;</p>
-                     <p class="text-center"><a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${careteam.address.line1}+${careteam.address.line2},${careteam.address.city},${careteam.address.state},${careteam.address.country} - ${careteam.address.zip}" class="btn btn-default">GET DIRECTION</a></p>
+                     <p class="text-center"><a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${careteam.address.line1}+${careteam.address.line2},${careteam.address.city},${careteam.address.state},${careteam.address.country} - ${careteam.address.zip}" class="btn btn-default">GET DIRECTIONS</a></p>
                      
                      <div class="line-h"></div>
                      <div class="row">

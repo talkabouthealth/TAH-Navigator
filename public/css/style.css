@@ -1,6 +1,6 @@
 body {
-  color: #006ea1;
-  background: #6AA6D6 url(/public/img/devoops_pattern_b10.png) 0 0 repeat;
+  color: #00509b;
+  background: #00509b /*url(/public/img/devoops_pattern_b10.png) 0 0 repeat*/;
 }
 .body-expanded, .modal-open {
   overflow-y:hidden;
@@ -59,7 +59,7 @@ a.show-sidebar {
   -moz-transition: 0.2s;
   -o-transition: 0.2s;
   transition: 0.2s;
-  margin-top:37px;
+  margin-top:50px;
 }
 a.show-sidebar:hover {
   color:#000;
@@ -69,7 +69,7 @@ a.show-sidebar:hover {
   z-index: inherit;
   padding-bottom: 3000px !important;
   margin-bottom: -3000px !important;
-  background: #6AA6D6 url(/public/img/devoops_pattern_b10.png) 0 0 repeat;
+/*   background: #6AA6D6 url(/public/img/devoops_pattern_b10.png) 0 0 repeat; */
   -webkit-transition: 0.2s;
   -moz-transition: 0.2s;
   -o-transition: 0.2s;
@@ -99,7 +99,8 @@ a.show-sidebar:hover {
 .nav.main-menu > li > a, .nav.msg-menu > li > a {
   text-align: center;
   color:#f0f0f0;
-  min-height: 40px;
+/*   min-height: 40px; */
+line-height:30px;
   -webkit-transition: 0.2s;
   -moz-transition: 0.2s;
   -o-transition: 0.2s;
@@ -110,11 +111,11 @@ a.show-sidebar:hover {
 }
 .nav.main-menu > li > a:hover, .nav.main-menu > li > a:focus, .nav.main-menu > li.active > a, .nav.main-menu .open > a, .nav.main-menu .open > a:hover, .nav.main-menu .open > a:focus, .dropdown-menu > li > a:focus, .dropdown-menu > li > a:hover, .dropdown-menu > li.active > a,
 .nav.msg-menu > li > a:hover, .nav.msg-menu > li > a:focus, .nav.msg-menu > li.active > a, .nav.msg-menu .open > a, .nav.msg-menu .open > a:hover, .nav.msg-menu .open > a:focus {
-  background:rgba(0, 0, 0, 0.1);
-  color:#f0f0f0;
+  background:#858b91;
+  color:#FFF;
 }
 .nav.main-menu a.active, .nav.msg-menu a.active {
-  background:rgba(0, 0, 0, 0.2);
+  background:#858b91;
 }
 .nav.main-menu a.active:hover, .nav.msg-menu a.active:hover {
   background:rgba(0, 0, 0, 0.2);
@@ -176,7 +177,7 @@ a.show-sidebar:hover {
   box-shadow:1px 1px #666;
 }
 #main {
-  margin-top:/*50*/ 87px;
+  margin-top:/*87*/ 124px;
   min-height: 800px;
   overflow: hidden;
 }
@@ -2281,7 +2282,7 @@ td.beauty-hover {
     opacity: 1;
     width: 16.666666666666664%;
     padding: 0 15px;
-	/*background-color:#333;*/
+	background-color:#575757;
   }
   .sidebar-show #sidebar-left.col-sm-2 {
     opacity: 0;

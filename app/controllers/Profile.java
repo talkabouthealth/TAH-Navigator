@@ -1,11 +1,22 @@
 package controllers;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.UUID;
 
+import models.AddressDTO;
+import models.PatientDetailDTO;
 import models.UserDTO;
+import models.UserDetailsDTO;
+import models.UserOtherEmailDTO;
+import nav.dao.AddressDAO;
 import nav.dao.AdminDAO;
+import nav.dao.ContactTypeDAO;
+import nav.dao.PatientDetailDAO;
+import nav.dao.ProfileDAO;
 import nav.dao.UserDAO;
 import nav.dao.UserImageDAO;
+import nav.dao.UserOtherEmailDAO;
 import nav.dto.UserBean;
 import play.data.FileUpload;
 import play.data.parsing.DataParser;
@@ -43,7 +54,6 @@ public class Profile extends Controller {
 		        //  XHR upload
 		        qqfile = new FileUpload(new XHRFileItem("qqfile"));
 		    }
-
 		    if (qqfile == null) {
 		        badRequest();
 		        return;
@@ -52,7 +62,6 @@ public class Profile extends Controller {
 		    	UserDTO user1 =  UserDAO.getAccountByUserEmail(user.getEmail());
 		    	UserImageDAO.updateUserImage(user1,qqfile.asBytes(),qqfile.getFileName(),qqfile.getContentType());
 		    	System.out.println("File is : "+  qqfile.getFileName());
-		    	
 		    }
 		    // and now do something with your Fileupload object here (e.g. write it to db or something else) 
 
@@ -82,7 +91,133 @@ public class Profile extends Controller {
         }
 	}
 	
-	public static void updateProfile() {
+	public static void updateProfile(String contactMethod,String mobile,String homephone,String street1,String street2,String city,String state,String country,String zip) {
+
+		params.flash();
+    	UserBean user = CommonUtil.loadCachedUser(session);
+    	UserDTO userDto = UserDAO.getUserBasicByField("id", user.getId());
+    	if(userDto != null) {
+        	UserDetailsDTO detailsDTO = UserDAO.getDetailsByField("id", user.getId());
+        	detailsDTO.setContactMethod(ContactTypeDAO.getEntityById(contactMethod));
+        	detailsDTO.setEditdate(new Date());
+        	detailsDTO.setEditedBy(userDto);
+        	detailsDTO.setHomePhone(homephone);
+        	detailsDTO.setMobile(mobile);
+        	UserDAO.updateUserDetails(detailsDTO);
+
+        	PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", user.getId());
+        	if(patientOtherDetails != null) {
+	        	AddressDTO addressDto = patientOtherDetails.getAddress();
+	        	boolean newAddress = false;
+	        	if(addressDto ==null) {
+	        		newAddress = true;
+	        		addressDto = new AddressDTO();
+	        	}
+	        	addressDto.setLine1(street1);
+	    		addressDto.setLine2(street2);
+	    		addressDto.setCity(city);
+	    		addressDto.setState(state);
+	    		addressDto.setCountry(country);
+	    		addressDto.setZip(zip);
+	        	if(newAddress) {
+	        		System.out.print("This is new address");
+	        		addressDto = AddressDAO.save(addressDto);
+	        		patientOtherDetails.setAddress(addressDto);
+	        		PatientDetailDAO.update(patientOtherDetails);
+	        	} else {
+	        		System.out.print("This Old");
+	        		addressDto = AddressDAO.update(addressDto);
+	        	}
+	        	patientOtherDetails.setUser(userDto);
+	        	patientOtherDetails.setId(userDto.getId());
+	        	patientOtherDetails.setAddress(addressDto);
+        		PatientDetailDAO.update(patientOtherDetails);
+        	} else {
+        		AddressDTO addressDto =  new AddressDTO();
+        		addressDto.setLine1(street1);
+	    		addressDto.setLine2(street2);
+	    		addressDto.setCity(city);
+	    		addressDto.setState(state);
+	    		addressDto.setCountry(country);
+	    		addressDto.setZip(zip);
+	    		addressDto = AddressDAO.save(addressDto);
+
+        		patientOtherDetails = new PatientDetailDTO();
+        		patientOtherDetails.setUser(userDto);
+        		patientOtherDetails.setId(userDto.getId());
+        		patientOtherDetails.setAddress(addressDto);
+        		PatientDetailDAO.save(patientOtherDetails);
+        	}
+    	}
 		renderText("Profile updated");
+	}
+	
+	public static void updateAditionalEmail(String email,String op) {
+		UserBean user = CommonUtil.loadCachedUser(session);
+    	UserDTO userDto = UserDAO.getUserBasicByField("id", user.getId());
+    	System.out.println("New Rec : " + email);
+    	String message ="";
+    	if(userDto != null) {
+    		UserOtherEmailDTO emailDto = UserOtherEmailDAO.getDetailsByField("email", email);
+    		if("a".equals(op)) {
+	    		if(emailDto != null) {
+	    			emailDto.setActive(true);
+	    			emailDto.setAddDate(new Date());
+	    			UserOtherEmailDAO.update(emailDto);
+	    			message ="d";
+	    		} else {
+	    			emailDto = new UserOtherEmailDTO();
+	    			emailDto.setUser(userDto);
+	    			emailDto.setActive(true);
+	    			emailDto.setPrimary(false);
+	    			emailDto.setAddDate(new Date());
+	    			emailDto.setEmail(email);
+	    			emailDto.setVerificationcode(UUID.randomUUID());
+	    			UserOtherEmailDAO.save(emailDto);
+	    			message =email;
+	    		}
+    		} else if("r".equals(op)) {
+    			if(emailDto != null) {
+    				emailDto.setUser(userDto);
+    				UserOtherEmailDAO.remove(emailDto);
+    			}
+    			message =email;
+    		} else if("mp".equals(op)) {
+    			message = "This email is not verified. Please verify the email first";
+    		}
+    	}
+		renderText(message);
+	}
+	
+	public static void updateContact(String ec1name,String ec1number,String ec2name,String ec2number,
+			String kinname,String kinnumber,String proxyname,String proxynumber) {
+		String message ="Contact information updated";
+		UserBean user = CommonUtil.loadCachedUser(session);
+		PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", user.getId());
+		boolean isNew = false;
+		if(patientOtherDetails == null) {
+			isNew = true;
+			patientOtherDetails = new PatientDetailDTO();
+		}
+		patientOtherDetails.setEc1name(ec1name);
+		patientOtherDetails.setEc1number(ec1number);
+		
+		patientOtherDetails.setEc2name(ec2name);
+		patientOtherDetails.setEc2number(ec2number);
+		
+		patientOtherDetails.setKinname(kinname);
+		patientOtherDetails.setKinnumber(kinnumber);
+		
+		patientOtherDetails.setProxyname(proxyname);
+		patientOtherDetails.setProxynumber(proxynumber);
+		if(isNew) {
+			UserDTO userDto = UserDAO.getUserBasicByField("id", user.getId());
+			patientOtherDetails.setUser(userDto);
+			patientOtherDetails.setId(userDto.getId());
+			PatientDetailDAO.save(patientOtherDetails);
+		} else {
+			PatientDetailDAO.update(patientOtherDetails);
+		}
+		renderText(message);
 	}
 }

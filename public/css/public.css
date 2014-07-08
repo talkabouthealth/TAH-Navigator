@@ -1,5 +1,20 @@
 
 /*******************************login page***********************************/
+
+*{font-family: 'gotham_bookregular';}
+
+@font-face {
+    font-family: 'gotham_bookregular';
+    src: url('/public/fonts/f1/ufonts.com_gotham_book-webfont.eot');
+    src: url('/public/fonts/f1/ufonts.com_gotham_book-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/public/fonts/f1/ufonts.com_gotham_book-webfont.woff') format('woff'),
+         url('/public/fonts/f1/ufonts.com_gotham_book-webfont.ttf') format('truetype'),
+         url('/public/fonts/f1/ufonts.com_gotham_book-webfont.svg#gotham_bookregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
 body {
    background:none no-repeat center #004261;
     color: #FFF;
@@ -9,7 +24,7 @@ body {
 .logo_span{ color:#FFF; font-size:22px; margin-left:10px;}
 
 #log_contaner{ max-width:700px; width:98%; margin:0 auto;}
-.log_heading{ color:#FFF; text-align:center; font-size:50px; padding:15px 0}
+.log_heading{ color:#FFF; text-align:center; font-size:50px; /*padding:15px 0*/}
 .log_bg{ background:url(../images/login_bg.png) no-repeat center #004261; width:100%; float:left; padding:20px 0px 20px 0px; } 
 .log_bg_01{ background:#006ea1; no-repeat center; width:100%; float:left; padding:20px 0px 20px 0px;} 
 .log_padding{ margin:20px 300px;}
@@ -18,7 +33,7 @@ body {
 .save_id{ font-size:22px; color:#FFF;}
 .forget{ font-size:22px; color:#FFF; float:right;}
 .forget a{ font-size:28px; color:#FFF; float:right;}
-.log_p{ color:#FFF; font-size:24px; padding:40px 0; text-align:center}
+.log_p{ color:#FFF; font-size:24px; padding:20px 0; text-align:center}
 .form-control{font-size:40px; height:65px;}
 .myform .input-group-lg > .form-control, .input-group-lg > .input-group-addon, .input-group-lg > .input-group-btn > .btn{font-size: 23px; height: 60px;
 padding: 10px 16px; }

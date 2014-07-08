@@ -39,8 +39,12 @@
                     		</div>
                     		<div class="col-sm-6 border_02">
                     		#{if patientOtherDetails != null}
-                    	   		<p><strong>Diagnosis:</strong> ${patientOtherDetails.disease.name}</p>
+                    			#{if patientOtherDetails.disease != null}
+                    	   			<p><strong>Diagnosis:</strong> ${patientOtherDetails.disease.name}</p>
+                    	   		#{/if}
+                    	   		#{if patientOtherDetails.dateofdiagnosis != null}
                         		<p><strong>Date of Diagnosis:</strong> ${patientOtherDetails.dateofdiagnosis.format('dd.MM.yyyy')}</p>
+                        		#{/if}
 								<p><strong>Stage:</strong> ${patientOtherDetails.stage}</p>
 							#{/if}
 							#{else}

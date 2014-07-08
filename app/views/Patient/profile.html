@@ -15,7 +15,7 @@
  					<td> 
 	 					<div class="form-group">
 					    <label for="exampleInputEmail1">Primary Communication Method</label>
-					    <div >
+					    <div>
 						    <select class="form-control" name="contactMethod">
 					    	#{if contactTypes != null}
 					    		#{list contactTypes, as:'seq'}
@@ -35,14 +35,53 @@
 					    	<label for="exampleInputEmail1">Email</label>
 						</div>
 	 					<div class="form-group">
+						    <div> ${user.email} <span style="float:right;">Primary</span></div>
+						    <!-- for loop -->
+						   		<div id="emailList">
+							    	#{if emaiList != null}
+							    	#{list emaiList, as:'eml'}
+							    		<div data-for='${eml.email}'>
+							    			${eml.email}
+							    			<span style="float:right;"><a href="javaScript:removeEmail('${eml.email}');">Remove</a></span>&nbsp;&nbsp;
+											<span style="float:right;"><a href="javaScript:makePrimary('${eml.email}');">Make primary</a>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+										</div>
+							    	#{/list}
+							    	#{/if}
+						    	</div>
+							<div id="addEmailBox" class="form-group" style="margin:20px 0px;display:none;">
+								<div>
+							    	<div class="input-group">
+										<input type="email"  class="form-control" id="email" placeholder="Email" value="">
+										<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+									</div>
+									<div>
+										<button style="float:right;" class="btn large" id="savenewEmail" >Save</button>
+										<a style="float:right;margin:10px;" href="javaScript:hideEmailBox();">Cancel</a>
+									</div>
+								</div>
+								<p class="help-block"></p>
+							</div>
+							<div style="margin-top:10px;"><a href="javaScript:showEmailBox();">Add email</a></div>
+						</div>
+		        	</td>
+ 				</tr>
+ 				*{
+ 				<tr>
+					<td>
+ 						<hr/>
+ 						<div>
+					    	<label for="exampleInputEmail1">Email</label>
+						</div>
+	 					<div class="form-group">
 						    <div class="input-group">
-						    <input type="email" class="form-control" name="email" placeholder="Email" data-toggle="validator"  required>
+						    <input type="email"  value="${user.email}" class="form-control" name="email" placeholder="Email" data-toggle="validator"  required>
 						     <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
 						    </div>
 						    <p class="help-block"></p>
-						</div>			  
+						</div>
 		        	</td>
  				</tr>
+ 				}*
  				<tr>
  					<td>
  						<hr/>
@@ -51,20 +90,20 @@
 						</div>
  						<table class="table-responsive" style="width:100%;">
  							<tr>
- 								<td style="width: 90px;">Mobile phone</td>
+ 								<td style="width: 115px;">Mobile phone</td>
  								<td>
  								<div class="input-group">
-								<input type="tel" class="form-control" name="repassword" placeholder="Verify Password" data-match="#inputPassword" data-match-error="Whoops, these don't match" required>
+								<input type="tel" value="${userDto.mobile}" class="form-control" name="mobile" placeholder="Mobile phone" required>
 								<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
 					    	</div>
 							<div class="help-block with-errors"></div>
  								</td>
  							</tr>
  							<tr>
- 								<td style="width: 90px;">Home phone</td>
+ 								<td style="width: 115px;">Home phone</td>
  								<td>
  								<div class="input-group">
-								<input type="tel" class="form-control" name="repassword" placeholder="Verify Password" data-match="#inputPassword" data-match-error="Whoops, these don't match" required>
+								<input type="tel" class="form-control" value="${userDto.homePhone}" name="homephone" placeholder="Home phone" required>
 								<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
 					    	</div>
 							<div class="help-block with-errors"></div>
@@ -78,15 +117,19 @@
  					<hr/>
  					<div>
 					    	<label for="exampleInputEmail1">Address</label>
-					    	
 						</div>
  						<table class="table-responsive" style="width:100%;">
  							<tr>
- 								<td style="width: 90px;">Street</td>
+ 								<td style="width: 115px;">Street</td>
  								<td>
  								<div class="input-group">
-								<input type="text" class="form-control" name="repassword" placeholder="Verify Password" data-match="#inputPassword" data-match-error="Whoops, these don't match" required>
-								<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+								<input type="text" class="form-control" name="street1" placeholder="Street line 1"
+								#{if patientOtherDetails != null}
+ 								#{if patientOtherDetails.address != null} 
+								value="${patientOtherDetails.address.line1}"
+								#{/if}
+								#{/if}
+								>
 					    	</div>
 							<div class="help-block with-errors"></div>
  								</td>
@@ -95,8 +138,13 @@
  								<td style="width: 90px;">&nbsp;</td>
  								<td>
  								<div class="input-group">
-								<input type="text" class="form-control" name="repassword" placeholder="Verify Password" data-match="#inputPassword" data-match-error="Whoops, these don't match" required>
-								<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+								<input type="text" class="form-control" name="street2" placeholder="Line 2"
+								#{if patientOtherDetails != null}
+ 								#{if patientOtherDetails.address != null} 
+								value="${patientOtherDetails.address.line2}"
+								#{/if}
+								#{/if}
+								>
 					    	</div>
 							<div class="help-block with-errors"></div>
  								</td>
@@ -105,8 +153,13 @@
  								<td style="width: 90px;">City</td>
  								<td>
  								<div class="input-group">
-								<input type="text" class="form-control" name="repassword" placeholder="Verify Password" data-match="#inputPassword" data-match-error="Whoops, these don't match" required>
-								<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+								<input type="text" class="form-control" name="city" placeholder="City"
+								#{if patientOtherDetails != null}
+ 								#{if patientOtherDetails.address != null} 
+								value="${patientOtherDetails.address.city}"
+								#{/if}
+								#{/if}
+								>
 					    	</div>
 							<div class="help-block with-errors"></div>
  								</td>
@@ -115,8 +168,13 @@
  								<td style="width: 90px;">State</td>
  								<td>
  								<div class="input-group">
-								<input type="text" class="form-control" name="repassword" placeholder="Verify Password" data-match="#inputPassword" data-match-error="Whoops, these don't match" required>
-								<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+								<input type="text" class="form-control" name="state" placeholder="State"
+								#{if patientOtherDetails != null}
+ 								#{if patientOtherDetails.address != null} 
+								value="${patientOtherDetails.address.state}"
+								#{/if}
+								#{/if}
+								>
 					    	</div>
 							<div class="help-block with-errors"></div>
  								</td>
@@ -125,8 +183,13 @@
  								<td>Country</td>
  								<td>
  								<div class="input-group">
-								<input type="text" class="form-control" name="repassword" placeholder="Verify Password" data-match="#inputPassword" data-match-error="Whoops, these don't match" required>
-								<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+								<input type="text" class="form-control" name="country" placeholder="Country"
+								#{if patientOtherDetails != null}
+ 								#{if patientOtherDetails.address != null} 
+								value="${patientOtherDetails.address.country}"
+								#{/if}
+								#{/if}
+								>
 					    	</div>
 							<div class="help-block with-errors"></div>
  								</td>
@@ -135,8 +198,13 @@
  								<td>Zip</td>
  								<td>
  								<div class="input-group">
-								<input type="text" class="form-control" name="repassword" placeholder="Verify Password" data-match="#inputPassword" data-match-error="Whoops, these don't match" required>
-								<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+								<input type="text" class="form-control" name="zip" placeholder="Zip"
+								#{if patientOtherDetails != null}
+ 								#{if patientOtherDetails.address != null} 
+								value="${patientOtherDetails.address.zip}"
+								#{/if}
+								#{/if}
+								>
 					    	</div>
 							<div class="help-block with-errors"></div>
  								</td>
@@ -146,7 +214,7 @@
  				</tr>
  				<tr>
  					<td><hr/>
- 					<button type="submit" class="btn-primary btn-lg btn-block" >Save</button></td>
+ 					<button type="submit" class="btn btn-default btn-lg btn-block" >Save</button></td>
  				</tr>		
  			</table>
  			#{/form}
@@ -160,10 +228,8 @@
     	$('#passForm').validator();
     	var Options = { success: setMessageOnForm };
     	$('#passForm').submit(function() {
-    		alert('sdf');
-                 $.ajax({
-                     type: "POST",
-              url: "/profile/updatepassword",
+            $.ajax({ type: "POST",
+              url: "/profile/updateProfile",
               data: $('#passForm').serialize(),
                   success: function(msg){
                            if (msg.indexOf("Error") === 0) {
@@ -173,22 +239,83 @@
                    			$("#errorGroup").html("<li class='list-group-item list-group-item-success'>" + msg  +"</li>"); 
                    		}
                    },
-              error: function(){
+             error: function(){
             	  $("#errorGroup").html("<li class='list-group-item list-group-item-danger'>Internal server error. Please try again.</li>"); 
                   }
-                    });
+             });
     		
+    		return false;
+    	});
+    	
+    	$("#savenewEmail").click(function() {
+    		var email = $("#email").val();
+    		var pattern= /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    		if(pattern.test(email)) {
+    			$("#addEmailBox p.help-block").html('');
+    			$.ajax({ type: "POST",
+					url: "/profile/updateAditionalEmail",
+					data: { "email":email,"op":"a" },
+					success: function(msg) {
+						if(msg == 'd') {
+							$("#errorGroup").html("<li class='list-group-item list-group-item-success'>Duplicate email</li>");
+						} else {
+							$("#addEmailBox").hide();
+							$("#emailList").append("<div  data-for='" + msg + "'>" + msg 
+								+ '<span style="float:right;"><a href="javaScript:removeEmail(\'' + msg +'\');">Remove</a></span>&nbsp;&nbsp;'
+								+ '<span style="float:right;"><a href="javaScript:makePrimary(\'' + msg +'\');">Make primary</a>&nbsp;&nbsp;&nbsp;&nbsp;</span>'
+								+ '</div>');
+						}
+					},
+					error: function() {
+    	            	  $("#errorGroup").html("<li class='list-group-item list-group-item-danger'>Internal server error. Please try again.</li>"); 
+					}
+				});
+			} else {
+				$("#addEmailBox p.help-block").html('Please correct email'); 
+			}
     		return false;
     	});
 	});
 
-	function setMessageOnForm(responseText, statusText, xhr, $form) {
+	setMessageOnForm = function(responseText, statusText, xhr, $form) {
 		if (responseText.indexOf("Error") === 0) {
 			var errorText = responseText.replace("Error:", "");
 			$("#errorGroup").html("<li class='list-group-item list-group-item-danger'>" + errorText  +"</li>"); 
 		} else {
 			$("#errorGroup").html("<li class='list-group-item list-group-item-success'>" + errorText  +"</li>"); 
 		}
+	}
+	makePrimary = function(email) {
+		$.ajax({
+			type: "POST",
+			url: "/profile/updateAditionalEmail",
+			data: {"email":email,"op":"mp"},
+			success: function(msg){
+				$("#errorGroup").html("<li class='list-group-item list-group-item-danger'>"+msg+"</li>");
+			},
+			error: function() {
+				$("#errorGroup").html("<li class='list-group-item list-group-item-danger'>Internal server error. Please try again.</li>"); 
+			}
+		});
+	} 
+	removeEmail = function(email) {
+		$.ajax({
+			type: "POST",
+			url: "/profile/updateAditionalEmail",
+			data: {"email":email,"op":"r"},
+			success: function(msg){
+				$("#emailList").find("[data-for='" + msg + "']").remove();
+			},
+			error: function() {
+				$("#errorGroup").html("<li class='list-group-item list-group-item-danger'>Internal server error. Please try again.</li>"); 
+			}
+		});
+	}
+	showEmailBox = function() {
+		$("#addEmailBox").show();
+	}
+	hideEmailBox = function() {
+		$("#addEmailBox").hide();
 	}
 -->
 </script>

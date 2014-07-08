@@ -14,11 +14,13 @@ import models.UserCertificateDTO;
 import models.UserDetailsDTO;
 import models.UserEducationDTO;
 import models.UserExpertiesDTO;
+import models.UserOtherEmailDTO;
 import nav.dao.CareTeamDAO;
 import nav.dao.ContactTypeDAO;
 import nav.dao.MedicationDAO;
 import nav.dao.ProfileDAO;
 import nav.dao.UserDAO;
+import nav.dao.UserOtherEmailDAO;
 import nav.dto.ExpertBean;
 import nav.dto.UserBean;
 import play.mvc.Controller;
@@ -113,10 +115,7 @@ public class Patient extends Controller {
 		PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", user.getId());
 		System.out.println(session.getId());
 		List<PatientMedicationDTO> medicationList = MedicationDAO.getMedicine("patientid", userDto.getId());
-		
-		
-		
-        render(user,userDto,patientOtherDetails,medicationList);
+		render(user,userDto,patientOtherDetails,medicationList);
     }
 
 	public static void thrivercareplan() {
@@ -126,7 +125,7 @@ public class Patient extends Controller {
 		System.out.println(session.getId());
         render(user,userDto,patientOtherDetails);
     }
-	
+
 	public static void treatmentplan() {
 		UserBean user = CommonUtil.loadCachedUser(session);
 		UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());
@@ -142,22 +141,31 @@ public class Patient extends Controller {
 		System.out.println(session.getId());
 		render(user,userDto,patientOtherDetails);
 	}
-	
+
 	public static void password() {
+		params.flash();
 		UserBean user = CommonUtil.loadCachedUser(session);
 		UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());
 		PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", user.getId());
 		System.out.println(session.getId());
 		render(user,userDto,patientOtherDetails);
 	}
-	
-	
+
 	public static void profile() {
 		UserBean user = CommonUtil.loadCachedUser(session);
 		UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());
 		PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", user.getId());
 		System.out.println(session.getId());
 		List<ContactTypeDTO> contactTypes =  ContactTypeDAO.getContactTypeList();
-		render(user,userDto,patientOtherDetails,contactTypes);
+		List<UserOtherEmailDTO> emaiList =  UserOtherEmailDAO.getAllByField("user.id", user.getId());
+		render(user,userDto,patientOtherDetails,contactTypes,emaiList);
+	}
+	
+	public static void editContact() {
+		UserBean user = CommonUtil.loadCachedUser(session);
+		UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());
+		PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", user.getId());
+		System.out.println(session.getId());
+		render(user,userDto,patientOtherDetails);
 	}
 }

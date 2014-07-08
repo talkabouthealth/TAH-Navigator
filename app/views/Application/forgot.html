@@ -1,26 +1,16 @@
 #{extends 'outermain.html' /}
-<link rel="stylesheet" media="screen" href="@{'/public/css/static.css'}">
-<div id="login" class="container">
-      <div class="header">
-        <ul class="nav nav-pills pull-right">
-          <li><a href="@{Application.index()}">Home</a></li>
-          <li><a href="@{Static.about()}">About</a></li>
-          <li><a href="@{Static.contact()}">Contact</a></li>
-          <li><a href="@{Secure.login()}">Login</a></li>
-        </ul>
-        <h3 class="text-muted">TAH - Navigator</h3>
-      </div>
-	<div class="row">
-		<div class="col-xs-12 col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3"><h1 class="text-center" style="padding: 25px 0;"></h1></div> 
-
-		<div class="col-xs-12 col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3"> <!-- col-md-offset-4 -->
+<!-- <link rel="stylesheet" media="screen" href="@{'/public/css/static.css'}"> -->
+ <div id="log_contaner" class="myform">
+	<div class="log_center"> <br/>
+        <div class="log_heading">Re-generate a password.</div>
+		 <br/>
 			<form action="@{Application.forgotForm()}" method="post" id="loginForm">
 				<fieldset>
-				#{ifErrors}
-						   #{errors}
-						     <p class="alert alert-danger">${error}</p>
-						   #{/errors}
-						#{/ifErrors}
+					#{ifErrors}
+					   #{errors}
+					     <p class="alert alert-danger">${error}</p>
+					   #{/errors}
+					#{/ifErrors}
 					#{if flash.error}
 					<p class="alert alert-danger">&{flash.error}</p>
 					#{/if} #{if flash.success}
@@ -29,37 +19,30 @@
 					    	Please sign in <a href='@{Secure.login()}'>here</a>.</span>
 					    	</p>
 					#{/if}
-					<div class="form-group">
-						<input class="form-control" placeholder="Email"
+					<div class="input-group input-group-lg">
+					<span class="input-group-addon"><img alt="" src="/public/images/em-img.png"></span>
+						<input class="form-control" placeholder="Enter Email Address"
 							name="email" type="email" id="email"
 							value="${flash.email}" autofocus required
 							data-match-error="Wrong email address" data-error="Please provide value for email">
 							<div class="help-block with-errors"></div>
 					</div>
-					<input type="submit" class="btn-lg btn-info btn-block" id="signin" value="Send me a new one" />
+<!-- 					<input type="submit" class="btn btn-lg btn-primary btn-block my-btn-log" id="signin" value="Send me a new one" /> -->
+					<p class="text-center"><button type="submit" type="button" id="signin" class="btn-primary btn-lg btn-block">Send me a new one</button></p>
 				</fieldset>
 			</form>
-		</div>
-		<div class="col-xs-12 col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3"> <!-- col-md-offset-4 -->
-		<p class="text-center" style="padding: 25px 0;font-weight: bold;">___________________ <span style="text-align: justify; vertical-align: middle; padding-top: 12px;">OR</span> ___________________</p>
-		</div>
-		<div class="col-xs-12 col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
-			<p class="text-center"><a class="btn-lg btn-primary btn-block" href="@{Application.create()}">REGISTER NOW</a></p>
-			
-		</div>
-		<div class="col-xs-12 col-md-8 col-md-offset-2 col-sm-8 col-sm-offset-2">
-			<p class="lead text-center" style="padding-top: 50px;">
-			We'll guide you through your treatment journey step by step. What to expect, how to prepare, next steps, reminders and notifications to stay on track with treatments.
-			</p>
-		</div>
-		<div class="col-xs-12 col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 text-center">&nbsp; 
-		</div>	
-		<div class="col-xs-12 col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 text-center"> 
-			<h4>
-			<a href="@{Static.contact()}" >Contact Us</a>
-			</h4>
-		</div>
-	 <div class="footer" style="clear:both;"><p>&copy; Copyright 2014 - Talk About Health</p></div>
+		<br/>
+        <br/>
+        <div class="line-or">
+        	<span>OR</span>
+        </div>
+       <p class="text-center"> <a href="@{Application.create()}" class="btn btn-primary btn-lg btn-block my-btn-register">register now</a></p>
+        <p class="log_p">We'll guide you through your treatment journey step by step. What to expect, how to prepare, next steps, reminders, and notifications to stay on track with treatments.</p>
+        <div align="center">
+          <a href="@{Static.contact()}" class="btn btn-default btn-lg my-btn-cont">Contact us</a>
+        </div>
+<!-- 	 <div class="footer" style="clear:both;"><p>&copy; Copyright 2014 - Talk About Health</p></div> -->
+</div>
 </div>
 <script>
 <!--

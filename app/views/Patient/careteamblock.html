@@ -3,14 +3,16 @@
 		<div class="user-panel_02">
 			<div><img src="@{Image.show(expertBeanHead.expertDetail.id)}" class="user_img img-responsive"></div>
 			<div class="user_name">
-				<b>${expertBeanHead.expertDetail.designation.designation}</b>
+<!-- 				<b>${expertBeanHead.expertDetail.designation.designation}</b> -->
 				<p><a href="@{Patient.careMember(expertBeanHead.expertDetail.id,careteam.id)}">${expertBeanHead.expertDetail.designation.abbr}. ${expertBeanHead.userDetails.firstName} ${expertBeanHead.userDetails.lastName}</a></p>
 			</div>
 			<div class="user_bottm">
 				<p class="large-f"><span>${expertBeanHead.expertDetail.practiceAddr.line1} </span>, ${expertBeanHead.expertDetail.practiceAddr.line2}, ${expertBeanHead.expertDetail.practiceAddr.city}, 
 				${expertBeanHead.expertDetail.practiceAddr.state}
                 		${expertBeanHead.expertDetail.practiceAddr.country} ${expertBeanHead.expertDetail.practiceAddr.zip}</p>
-				<p class="large-f">${expertBeanHead.userDetails.mobile}&nbsp;|&nbsp;${expertBeanHead.userDetails.email}</p>
+				<p class="large-f">${expertBeanHead.userDetails.mobile}
+				*{ &nbsp;|&nbsp;${expertBeanHead.userDetails.email} }*
+				</p>
 				<!-- <b>office Hours :</b> Mon-Thurs 8am-5pm, Sunday 8am-1pm -->
 			</div>
 		</div>
@@ -19,7 +21,9 @@
 		<div class="user_first"><i class="fa fa-map-marker"></i> ${careteam.name} CARE TEAM / OFFICE LOCATION </div>
 		<div class="row margin_top">
 			<div class="col-sm-6">
-				<img width="100%" src="http://maps.googleapis.com/maps/api/staticmap?center=${careteam.address.lat},${careteam.address.lang}&zoom=13&size=200x200&sensor=false&&markers=color:blue%7Clabel:S%7C${careteam.address.lat},${careteam.address.lang}">
+			<a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${careteam.address.line1}+${careteam.address.line2},${careteam.address.city},${careteam.address.state},${careteam.address.country} - ${careteam.address.zip}">
+				<img width="100%" src="http://maps.googleapis.com/maps/api/staticmap?center=${careteam.address.lat},${careteam.address.lang}&maptype=roadmap&zoom=12&size=200x100&scale=false&&markers=color:red%7Csize:small%7C${careteam.address.lat},${careteam.address.lang}">
+				</a>
 			</div>
 			<div class="col-sm-6 map-div">
 				<h3>${careteam.address.line1}</h3>
@@ -29,7 +33,7 @@
 			</div>
 		</div>
 		<p>&nbsp;</p>
-		<p class="text-center"><a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${careteam.address.line1}+${careteam.address.line2},${careteam.address.city},${careteam.address.state},${careteam.address.country} - ${careteam.address.zip}" class="btn btn-default">GET DIRECTION</a></p>
+		<p class="text-center"><a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${careteam.address.line1}+${careteam.address.line2},${careteam.address.city},${careteam.address.state},${careteam.address.country} - ${careteam.address.zip}" class="btn btn-default">GET DIRECTIONS</a></p>
 	</div>
 </div>
 #{if otherExpert.size() > 0}
@@ -47,7 +51,9 @@
 							<a href="@{Patient.careMember(expertBean.expertDetail.id,careteam.id)}">
 							${expertBean.expertDetail.designation.abbr}. ${expertBean.userDetails.firstName} ${expertBean.userDetails.lastName}
 							</a>
-						<br/><b><span class="large-f">${expertBean.userDetails.mobile}&nbsp;|&nbsp;${expertBean.userDetails.email}</span></b></p>
+						<br/><b><span class="large-f">${expertBean.userDetails.mobile}
+						*{ &nbsp;|&nbsp;${expertBean.userDetails.email} }*
+						</span></b></p>
        				</div>
 				</div>
 			</div>
