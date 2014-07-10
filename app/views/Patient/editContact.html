@@ -15,7 +15,7 @@
 					    <label>Emergency Contact 1 Name</label>
 					    <div class="form-group">
 						    <div class="input-group">
-						    <input type="text"
+						    <input type="text" maxlength="249"
 						    #{if patientOtherDetails != null}  
 						    value="${patientOtherDetails.ec1name}"
 						    #{/if} class="form-control" name="ec1name" placeholder="Emergency Contact 1 Name" data-toggle="validator"  required>
@@ -33,7 +33,7 @@
 					    <label>Emergency Contact 1 Number</label>
 					    <div class="form-group">
 						    <div class="input-group">
-						    <input type="text"  #{if patientOtherDetails != null}  
+						    <input type="text" maxlength="99" #{if patientOtherDetails != null}  
 						    value="${patientOtherDetails.ec1number}"
 						    #{/if}
 						    class="form-control" name="ec1number" placeholder="Emergency Contact 1 Number" data-toggle="validator"  required>
@@ -51,7 +51,7 @@
 					    <label>Emergency Contact 2 Name</label>
 					    <div class="form-group">
 						    <div class="input-group">
-						    <input type="text" #{if patientOtherDetails != null}  
+						    <input type="text" maxlength="249" #{if patientOtherDetails != null}  
 						    value="${patientOtherDetails.ec2name}"
 						    #{/if} class="form-control" name="ec2name" placeholder="Emergency Contact 2 Name" data-toggle="validator"  required>
 						     <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
@@ -68,7 +68,7 @@
 					    <label>Emergency Contact 2 Number</label>
 					    <div class="form-group">
 						    <div class="input-group">
-						    <input type="text" #{if patientOtherDetails != null}  
+						    <input type="text" maxlength="99" #{if patientOtherDetails != null}  
 						    value="${patientOtherDetails.ec2number}"
 						    #{/if} class="form-control" name="ec2number" placeholder="Emergency Contact 1 Number" data-toggle="validator"  required>
 						     <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
@@ -85,7 +85,7 @@
 					    <label>Next of Kin Name</label>
 					    <div class="form-group">
 						    <div class="input-group">
-						    <input type="text" #{if patientOtherDetails != null}  
+						    <input type="text" maxlength="249" #{if patientOtherDetails != null}  
 						    value="${patientOtherDetails.kinname}"
 						    #{/if} class="form-control" name="kinname" placeholder="Next of Kin Name" data-toggle="validator"  required>
 						     <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
@@ -102,7 +102,7 @@
 					    <label>Next of Kin Number</label>
 					    <div class="form-group">
 						    <div class="input-group">
-						    <input type="text" #{if patientOtherDetails != null}  
+						    <input type="text" maxlength="99" #{if patientOtherDetails != null}  
 						    value="${patientOtherDetails.kinnumber}"
 						    #{/if} class="form-control" name="kinnumber" placeholder="Next of Kin Number" data-toggle="validator"  required>
 						     <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
@@ -119,7 +119,7 @@
 					    <label>Healthcare Proxy Name</label>
 					    <div class="form-group">
 						    <div class="input-group">
-						    <input type="text" #{if patientOtherDetails != null}  
+						    <input type="text" maxlength="249" #{if patientOtherDetails != null}  
 						    value="${patientOtherDetails.proxyname}"
 						    #{/if} class="form-control" name="proxyname" placeholder="Healthcare Proxy Name" data-toggle="validator"  required>
 						     <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
@@ -131,12 +131,12 @@
 					</td>
  				</tr>
  				<tr>
- 					<td> 
+ 					<td>
 	 					<div class="form-group">
 					    <label>Healthcare Proxy Number</label>
 					    <div class="form-group">
 						    <div class="input-group">
-						    <input type="text" #{if patientOtherDetails != null}  
+						    <input type="text" maxlength="99" #{if patientOtherDetails != null}  
 						    value="${patientOtherDetails.proxynumber}"
 						    #{/if} class="form-control" name="proxynumber" placeholder="Healthcare Proxy Number" data-toggle="validator"  required>
 						     <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>

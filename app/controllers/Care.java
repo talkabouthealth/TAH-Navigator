@@ -35,24 +35,28 @@ public class Care extends Controller {
 		UserBean user = CommonUtil.loadCachedUser(session);
 		ExpertDetailDTO expertDetail = ProfileDAO.getExpertByField("id", user.getId());
 		CareTeamMemberDTO careTeam =  CareTeamDAO.getCareTeamMembersByMemberId(user.getId()); // memberid
-		System.out.println(careTeam.getCareteamid());
-		
-		List<PatienCareTeamDTO> patientList = CareTeamDAO.getPatienCareTeamByField("careteamid",careTeam.getCareteamid());
-		ArrayList<PatientBean> patients = new ArrayList<PatientBean>(); 
-		PatientBean patient =null;
-		UserDetailsDTO userDetails = null;
-		PatientDetailDTO patientDetail = null;
-		
-		for (PatienCareTeamDTO patienCareTeamDTO : patientList) {
-			patient = new PatientBean();
-			userDetails = UserDAO.getDetailsById(patienCareTeamDTO.getPatienid());
-			patient.setUserDetails(userDetails);
-
-			patientDetail  = ProfileDAO.getPatientByField("id", patienCareTeamDTO.getPatienid());
-			patient.setPatientOtherDetails(patientDetail);
-			patients.add(patient);
+//		System.out.println(careTeam.getCareteamid());
+		List<PatienCareTeamDTO> patientList = null;
+		if(careTeam != null) {
+			patientList = CareTeamDAO.getPatienCareTeamByField("careteamid",careTeam.getCareteamid());
 		}
-		
+		ArrayList<PatientBean> patients = null;
+		if(patientList != null) {
+			patients = new ArrayList<PatientBean>(); 
+			PatientBean patient =null;
+			UserDetailsDTO userDetails = null;
+			PatientDetailDTO patientDetail = null;
+			
+			for (PatienCareTeamDTO patienCareTeamDTO : patientList) {
+				patient = new PatientBean();
+				userDetails = UserDAO.getDetailsById(patienCareTeamDTO.getPatienid());
+				patient.setUserDetails(userDetails);
+	
+				patientDetail  = ProfileDAO.getPatientByField("id", patienCareTeamDTO.getPatienid());
+				patient.setPatientOtherDetails(patientDetail);
+				patients.add(patient);
+			}
+		}
         render(user,expertDetail,patients);
     }
 	

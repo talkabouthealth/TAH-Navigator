@@ -44,7 +44,9 @@ public class TemplateExtensions extends JavaExtensions {
 		}
 		if(details.getUser().getUserType() == 'c') {
 			ExpertDetailDTO exp = ProfileDAO.getExpertByField("id", id);
-			name = exp.getDesignation().getAbbr() + ". " + name;//details.getFirstName() + " " + details.getLastName();
+			if(exp != null) {
+				name = exp.getDesignation().getAbbr() + ". " + name;//details.getFirstName() + " " + details.getLastName();
+			}
 		}
 		return name;
 	}
