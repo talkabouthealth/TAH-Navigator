@@ -61,7 +61,9 @@
 				  				<td><a href="@{Care.patient(seq.userDetails.id)}">${seq.userDetails.firstName} ${seq.userDetails.lastName} - (${seq.userDetails.user.name})</a></td>
 								<td>
 									#{if seq.patientOtherDetails != null}
+										#{if seq.patientOtherDetails.disease != null}
 									${seq.patientOtherDetails.disease.name}
+									#{/if}
 									<br/>Stage ${seq.patientOtherDetails.stage}
 									#{/if}
 									#{else}-#{/else}

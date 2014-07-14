@@ -17,7 +17,6 @@ public class Mail extends Mailer {
 		MailTemplateDTO mailTemplateDto =  MailTemplateDAO.getByTemplateName("welcome");
 		setSubject(mailTemplateDto.getSubject());
 		addRecipient(user.getEmail());
-//		addRecipient("aawte.umesh@s5infotech.com");
 		setFrom(mailTemplateDto.getForm());
 		send(user);
 	}
@@ -26,7 +25,6 @@ public class Mail extends Mailer {
 		MailTemplateDTO mailTemplateDto =  MailTemplateDAO.getByTemplateName("activation");
 		setSubject(mailTemplateDto.getSubject());
 		addRecipient(user.getEmail());
-//		addRecipient("aawte.umesh@s5infotech.com");
 		setFrom(mailTemplateDto.getForm());
 		send(user,url);
 	}
@@ -35,7 +33,6 @@ public class Mail extends Mailer {
 		MailTemplateDTO mailTemplateDto =  MailTemplateDAO.getByTemplateName("forgot");
 		setSubject(mailTemplateDto.getSubject());
 		addRecipient(user.getEmail());
-//		addRecipient("aawte.umesh@s5infotech.com");
 		setFrom(mailTemplateDto.getForm());
 		send(user,newpassword);
 	}
@@ -44,7 +41,7 @@ public class Mail extends Mailer {
 		MailTemplateDTO mailTemplateDto =  MailTemplateDAO.getByTemplateName("notification1");
 		setSubject(mailTemplateDto.getSubject());
 //		addRecipient(user.getEmail());
-		addRecipient("aawte.umesh@s5infotech.com");
+		addRecipient("admin@talkabouthealth.com");
 		setFrom(mailTemplateDto.getForm());
 		send();
 	}

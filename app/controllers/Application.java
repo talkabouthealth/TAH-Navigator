@@ -208,15 +208,15 @@ public class Application extends Controller {
 				Secure.login();
 			} else {
 				System.out.println(" Not Found user: ");
-				notFound();
+				Static.pageNotFound();
 			}
 		} else {
 			System.out.println(" Not Found user he is null: ");
-			notFoundIfNull(user);
+			Static.pageNotFound();
 		}
 	}
     
     public static void userName(String userId) {
-    	render("Umesh Aawte");
+    	render("Navigator demo User");
     }
 }

@@ -20,4 +20,8 @@ public class Static extends Controller {
 		render();
 	}
 	
+	public static void pageNotFound() {
+		render();
+	}
+	
 }

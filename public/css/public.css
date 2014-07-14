@@ -21,19 +21,20 @@ body {
 }
 
 .log_header{ background:#006ea1; width:100%; padding:15px 0px; float:left; width:100%; border-bottom:2px solid #002739; box-shadow:0 0 10px rgba(0,0,0,.5)}
-.logo_span{ color:#FFF; font-size:22px; margin-left:10px;}
-.col-md-6 img {height:55px;}
-#log_contaner{ max-width:700px; width:98%; margin:0 auto;}
-.log_heading{ color:#FFF; text-align:center; font-size:50px; /*padding:15px 0*/}
-.log_bg{ background:url(../images/login_bg.png) no-repeat center #004261; width:100%; float:left; padding:5px 0px 5px 0px; } 
+.logo_span{ color:#FFF; font-size:13px; margin-left:10px;}
+.col-md-6 img {height:40px;}
+#log_contaner{ max-width:400px; width:98%; margin:0 auto;}
+.log_heading{ color:#FFF; text-align:center; font-size:40px; padding:15px 0}
+.log_bg{ background:url(../images/login_bg.png) no-repeat center #004261; width:100%; float:left; /*padding:5px 0px 5px 0px;*/ } 
 .log_bg_01{ background:#006ea1; no-repeat center; width:100%; float:left; padding:20px 0px 20px 0px;} 
 .log_padding{ margin:20px 300px;}
 .log_center{width:100%;}
 
-.save_id{ font-size:20px; color:#FFF;}
-.forget{ font-size:20px; color:#FFF; float:right;}
-.forget a{ font-size:20px; color:#FFF; float:right;}
-.log_p{ color:#FFF; font-size:20px; padding:5px 0; text-align:center}
+.save_id{ font-size:13px; color:#8baab8;padding-left: 0;}
+.forget{ font-size:15px; color:#8baab8; float:right;  padding-right: 0;}
+.forget a{ font-size:15px; color:#caf4f4; float:right;}
+.log_p{ color:#caf4f4;   font-size: 15px;
+    font-weight: bold; padding:10px 0 20px; text-align:center; margin: 0 -60px;  }
 .form-control{font-size:40px; height:65px;}
 
 .myform .input-group{margin-bottom:10px;}
@@ -46,10 +47,14 @@ body {
 .my_nav .navbar{margin:15px 0 0 0; min-height:inherit}
 .my_nav .nav > li > a{padding:5px 10px; background:none; font-family:Arial, Helvetica, sans-serif; font-size:13px; text-transform:uppercase; font-family:'OswaldBook',Arial, Helvetica, sans-serif; outline:none; color:#fff}
 .my_nav .navbar-default .navbar-nav > .active > a,.my_nav .nav > li > a:hover{color:#ff5700; box-shadow:none; background:none}
-.my-btn-log{background:#77c7ea; height:65px; font-size:40px; box-shadow:0 3px 5px rgba(0,0,0,.5); text-transform:uppercase;}
-.my-btn-register{background:#246297; height:65px; font-size:40px; box-shadow:0 3px 5px rgba(0,0,0,.5); text-transform:uppercase;}
-.my-btn-cont{background:none; border:1px solid #fff}
-
+.my-btn-log{background:#77c7ea; height:50px; font-size:25px; box-shadow:0 3px 5px rgba(0,0,0,.5); text-transform:uppercase;  font-weight: bold;}
+.my-btn-register{background:#246297;  font-size: 25px;
+    font-weight: bold;
+    height: 50px;
+    
+    box-shadow:0 3px 5px rgba(0,0,0,.5); text-transform:uppercase;}
+.my-btn-cont{background:none; border:2px solid #8baab8;font-size: 13px;padding: 2px 15px !important;}
+.btn-lg{padding:5px 15px;text-shadow: 2px 2px 2px #333;}
 .myform .input-group-addon{background:#fff}
 .line-or{background:url(../images/line-or.png) repeat-x center; padding:25px 0 }
 .line-or span{padding:0 10px; display:table; margin:0 auto; background:url(../images/or-i-bg.png) repeat; font-size:25px; color:#8baab8;}
@@ -70,8 +75,12 @@ body {
 .page_second{}
 .form-control_02{font-size:20px; height:30px; width:100%; line-height:30px; background-color:#d8d8d8; color:#006ea1; text-align:justify;}
 .input-text_01{ width:100%; height:35px; padding:0px 5px;}
-.myform .input-group-lg > .form-control, .input-group-lg > .input-group-addon, .input-group-lg > .input-group-btn > .btn{font-size: 23px; height: 60px;
-padding: 0px 16px; }
+.myform .input-group-lg > .form-control, .input-group-lg > .input-group-addon, .input-group-lg > .input-group-btn > .btn{
+	font-size: 20px; 
+	height: 50px;
+	padding: 0px 16px;
+	  
+}
 
 .text_p_01{ font-size:19px;}
 .text_p_01 b{ color:#006ea1;}
@@ -141,5 +150,7 @@ top: -55px; right:5px;}
 @media (max-width: 340px) {
 
 }
-
+.row {
+    margin-top: 25px;
+}
 
