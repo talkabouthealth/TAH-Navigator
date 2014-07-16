@@ -57,7 +57,7 @@ table.table-condensed {
 					</div>
 			<div class="col-md-12">
 		        <div class="form-group">
-				    <label for="exampleInputEmail1">Patient caregiver, family, doctor etc.</label>
+				    <label for="exampleInputEmail1">Patient, caregiver, family, doctor etc.</label>
 				    <select id="userType" class="form-control" name="member.userType">
 				    	#{if userTypelist != null}#{list userTypelist, as:'seq'}<option #{if flash['member.userType'].equals(seq.id.toString()) }  selected #{/if} value="${seq.id}">${seq.name}</option>#{/list}#{/if}</select>
 				</div>
