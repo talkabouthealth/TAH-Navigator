@@ -2023,7 +2023,7 @@ COPY userimage (id, image, imagetype, imagename) FROM stdin;
 COPY usertypemaster (id, name, abbravation) FROM stdin;
 0	Admin                                                                                               	a 
 1	Patient                                                                                             	p 
-2	Care giver                                                                                          	p 
+2	Caregiver                                                                                          	p 
 3	Family member                                                                                       	p 
 4	Nurse                                                                                               	c 
 5	Doctor                                                                                              	c 
