@@ -3,14 +3,17 @@ package models;
 import java.io.Serializable;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Table(name = "nav.usereducation")
 @javax.persistence.Entity
-public class UserEducationDTO implements Serializable{
+public class UserEducationDTO implements Serializable {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "id")
 	private int id;
 	

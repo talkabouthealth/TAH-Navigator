@@ -2,6 +2,8 @@ package models;
 
 import java.io.Serializable;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -24,14 +26,14 @@ public class CareTeamMemberDTO implements Serializable{
 	private int memberid;
 	
 	@OneToOne
-	@JoinColumn(name = "memberid")
+	@JoinColumn(name = "memberid", insertable=false, updatable=false)
 	private UserDTO member;
 	
 	@OneToOne
-	@JoinColumn(name = "careteamid")
+	@JoinColumn(name = "careteamid", insertable=false, updatable=false)
 	private CareTeamMasterDTO careteam;
 	
-	@Column(name = "primary")
+	@Column(name = "isprimary")
 	private boolean primary;
 
 	public int getCareteamid() {

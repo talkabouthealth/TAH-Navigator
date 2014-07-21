@@ -1,23 +1,23 @@
 #{set pageType = 'allmemberlist' /}
 #{extends 'adminmain.html' /}
 <div id="content" class="col-xs-12 col-sm-10">
-	<div class="row">
+<!-- 	<div class="row"> -->
 		<div id="breadcrumb" class="col-xs-12">
 		<ol class="breadcrumb">
 			<li><a href="@{Admin.index()}">Home</a></li>
 			<li><a href="#">All Members</a></li>
 		</ol>
 		</div>
-	</div>
-       <div class="row">
+<!-- 	</div> -->
+<!--        <div class="row"> -->
         <div class="col-xs-12 col-sm-12">
-        <div class="box">
-        	<div class="box-header">
-        		<div class="box-name">All members</div>
-        	</div>
-          <div class="box">
+<!--         <div class="box"> -->
+<!--         	<div class="box-header"> -->
+<!--         		<div class="box-name">All members</div> -->
+<!--         	</div> -->
+<!--           <div class="box"> -->
           		  #{form @Admin.filterUsers() , id:'signup' }
-          		  	<div class="col-xs-6 col-sm-6 table-responsive">
+          		  	<div class="col-xs-6 col-sm-6">
     				<table class="table">
     				<tr>
     				<td>
@@ -36,8 +36,8 @@
 	          		</table>
 	          		</div>
 	          		#{/form}
-          </div>
-				<div class="table-responsive">
+<!--           </div> -->
+				<div class="col-xs-12 col-sm-12 table-responsive">
 				<table class="table table-striped table-bordered table-hover table-heading no-border-bottom">
 					<thead>
 		  			<tr>
@@ -63,7 +63,7 @@
 							#{/elseif}
 							#{set cssClass = '' /}
 							<tr ${cssClass}>
-					  			<td>${seq.name}</td>
+					  			<td><a href="@{Admin.editUser(seq.id)}" >${seq.name}</a></td>
 					  			<td>${seq.email}</td>
 					  			<td>${seq.usertypeid.name}</td>
 					  			<td>
@@ -102,10 +102,10 @@
 				</table>
 				</div>
           </div>
-        </div><!-- /.row -->
+<!--         </div>/.row -->
 </div>
 	<div id="ajax-content"></div>
-</div>
+<!-- </div> -->
 	
 
 <script type="text/javascript">

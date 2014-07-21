@@ -25,7 +25,7 @@ import play.mvc.With;
 import util.CommonUtil;
 import util.XHRFileItem;
 
-@Check({"user","user"})
+//@Check({"user","user"})
 @With( { Secure.class } )
 public class Profile extends Controller {
 
@@ -76,7 +76,7 @@ public class Profile extends Controller {
 			validation.keep();
 			renderText("Error");
         } else {
-        	params.flash();
+//        	params.flash();
         	UserBean user = CommonUtil.loadCachedUser(session);
         	oldpassword = CommonUtil.hashPassword(oldpassword);
         	System.out.println("Old : " + oldpassword);
@@ -93,7 +93,7 @@ public class Profile extends Controller {
 	
 	public static void updateProfile(String contactMethod,String mobile,String homephone,String street1,String street2,String city,String state,String country,String zip) {
 
-		params.flash();
+//		params.flash();
     	UserBean user = CommonUtil.loadCachedUser(session);
     	UserDTO userDto = UserDAO.getUserBasicByField("id", user.getId());
     	if(userDto != null) {

@@ -143,7 +143,7 @@ public class Patient extends Controller {
 	}
 
 	public static void password() {
-		params.flash();
+//		params.flash();
 		UserBean user = CommonUtil.loadCachedUser(session);
 		UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());
 		PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", user.getId());
