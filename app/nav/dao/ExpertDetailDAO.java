@@ -2,18 +2,19 @@ package nav.dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
-
 import models.AddressDTO;
+import models.ExpertDetailDTO;
+import models.PatientDetailDTO;
 import models.UserDetailsDTO;
 import util.JPAUtil;
 
-public class AddressDAO {
+public class ExpertDetailDAO {
 
-	public static AddressDTO getDetailsByField(String fieldName, Object value) {
-		AddressDTO dto = null;
+	public static ExpertDetailDTO getDetailsByField(String fieldName, Object value) {
+		ExpertDetailDTO dto = null;
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
-			TypedQuery<AddressDTO> query = em.createQuery("SELECT c FROM AddressDTO c WHERE c."+fieldName+" = :field", AddressDTO.class); 
+			TypedQuery<ExpertDetailDTO> query = em.createQuery("SELECT c FROM ExpertDetailDTO c WHERE c."+fieldName+" = :field", ExpertDetailDTO.class); 
 			query.setParameter("field", value);
 			dto = query.getSingleResult();
 		} catch(Exception e) {
@@ -24,7 +25,7 @@ public class AddressDAO {
 		return dto;
 	}
 
-	public static AddressDTO update(AddressDTO dto) {
+	public static ExpertDetailDTO update(ExpertDetailDTO dto) {
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
 			em.getTransaction().begin();
@@ -38,12 +39,12 @@ public class AddressDAO {
 		return dto;
 	}
 
-	public static AddressDTO save(AddressDTO dto) {
+	public static ExpertDetailDTO save(ExpertDetailDTO dto) {
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
-		em.getTransaction().begin();
-		em.persist(dto);
-		em.getTransaction().commit();
+			em.getTransaction().begin();
+			em.persist(dto);
+			em.getTransaction().commit();
 		}catch(Exception e) {
 			e.printStackTrace();
 		} finally {

@@ -44,6 +44,7 @@
     	<div class="col-lg-4">
 			<div class="row">
 				<div class="common_02">
+					#{if expertBean.expertDetail != null}
 					<div class="common_02_img"><img height="70" src="@{Image.show(expertBean.expertDetail.id)}" class="img-responsive"></div>
 					<div class="common_02-name">
 						<b>${expertBean.expertDetail.designation.designation}</b>
@@ -55,6 +56,7 @@
 						*{ &nbsp;|&nbsp;${expertBean.userDetails.email} }*
 						</span></b></p>
        				</div>
+       				#{/if}
 				</div>
 			</div>
 		</div>

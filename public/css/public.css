@@ -154,3 +154,15 @@ top: -55px; right:5px;}
     margin-top: 25px;
 }
 
+.nopadding {
+   padding: 0 !important;
+   margin: 0 !important;
+}
+.headding{float: left; width: 100%; border-bottom: 1px solid #FFF; padding-bottom: 2px; margin: 10px 0 5px 0;}
+.headding h4 {
+    margin: 0;
+    padding: 0;
+    font-size: 15px;
+    font-weight: bold;
+}
+label{font-weight:normal;}

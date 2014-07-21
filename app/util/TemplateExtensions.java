@@ -1,17 +1,11 @@
 package util;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-import org.apache.commons.lang.StringUtils;
-
-import nav.dao.CareTeamDAO;
-import nav.dao.ProfileDAO;
-import nav.dao.UserDAO;
-
 import models.ExpertDetailDTO;
 import models.UserDetailsDTO;
+import nav.dao.ExpertDetailDAO;
+import nav.dao.UserDAO;
+
+import org.apache.commons.lang.StringUtils;
 
 import play.templates.JavaExtensions;
 
@@ -43,11 +37,23 @@ public class TemplateExtensions extends JavaExtensions {
 			}
 		}
 		if(details.getUser().getUserType() == 'c') {
-			ExpertDetailDTO exp = ProfileDAO.getExpertByField("id", id);
+			ExpertDetailDTO exp = ExpertDetailDAO.getDetailsByField("id", id);// ExpertByField("id", id);
 			if(exp != null) {
+				if(exp.getDesignation() != null)
 				name = exp.getDesignation().getAbbr() + ". " + name;//details.getFirstName() + " " + details.getLastName();
 			}
 		}
 		return name;
+	}
+	
+	public static Object printMessage(String msg) {
+		String htmlText = msg;
+		if (htmlText == null) {
+			return "";
+		}
+		htmlText = htmlText.replace("\n", "<br/>");
+		htmlText = htmlText.replace("&lt;br/&gt;", "<br/>");
+		System.out.println(htmlText);
+		return JavaExtensions.raw(htmlText);
 	}
 }

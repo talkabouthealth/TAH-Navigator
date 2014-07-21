@@ -102,7 +102,18 @@
 					<div class="col-sm-4 ">  
                 	<ul class="nav navbar-nav pull-right panel-menu right-lint-i">
                     	<li><a href="#" class="active"><i class="fa fa-bell"></i><span class="coun-n">2</span></a></li>
-                        <li><a href="@{Care.setting()}"><i class="fa fa-cog"></i></a></li>
+                    	<li>
+                        <a href="#"  data-toggle="dropdown"><i class="fa fa-cog"></i></a>
+								<ul class="dropdown-menu">
+									<li><a href="@{Care.setting()}"><i class="fa fa-spinner"></i><span class="hidden-sm text">Profile Image [Test]</span></a></li>
+									<li><a href="@{Care.profile()}"><i class="fa fa-inbox"></i><span class="hidden-sm text">Edit Profile</span></a></li>
+									<li><a href="@{Care.education()}"><i class="fa fa-user"></i><span class="hidden-sm text">Edit Education's</span></a></li>
+									<li><a href="@{Care.experties()}"><i class="fa fa-user"></i><span class="hidden-sm text">Edit Experties's</span></a></li>
+									<li><a href="@{Care.certifications()}"><i class="fa fa-user"></i><span class="hidden-sm text">Edit Certification's</span></a></li>
+									
+<!-- 									<li><a href="@{Patient.password()}"><i class="fa fa-lock"></i><span class="hidden-sm text">Edit password</span></a></li> -->
+								</ul>
+							</li>
                          <li><a href="/logout"><i class="fa fa-power-off"></i></a></li>
                     </ul>
                     <nav class="navbar2 navbar-default" role="navigation">

@@ -28,7 +28,7 @@
 		    top: 0;
 		     z-index: 2001;
 		}
-		#content{ padding:20px 0 0 0 }
+		#content{ padding:0px 0 0 0 }
 		.table{FONT-SIZE:11px;}
 		.navbar{ background-color: #00509b; /*border-bottom: 3px solid #000000;*/ }
 		-->
@@ -49,6 +49,7 @@
 		<script src="/public/plugins/justified-gallery/jquery.justifiedgallery.min.js"></script>
 		<script src="/public/plugins/tinymce/tinymce.min.js"></script>
 		<script src="/public/plugins/tinymce/jquery.tinymce.min.js"></script>
+		<script src="/public/js/validator.min.js"></script>
 		<script src="/public/js/devoops.js"></script>
 		
 </head>
@@ -90,8 +91,8 @@
 						</a>
 					</div>
 					<div class="col-xs-4 col-sm-8 top-panel-right">
-						<ul class="nav navbar-nav pull-right panel-menu">
-							<li class="hidden-xs">
+						<ul class="nav navbar-nav pull-right panel-menu" style="padding-top: 40px;padding-right: 10px;">
+							<!-- <li class="hidden-xs">
 								<a href="#" class="modal-link">
 									<i class="fa fa-bell"></i>
 									<span class="badge">7</span>
@@ -108,7 +109,9 @@
 									<i class="fa fa-envelope"></i>
 									<span class="badge">7</span>
 								</a>
-							</li>
+							</li> -->
+							<li class=""><a href="/logout" style="font-size: 25px;"><i class="fa fa-power-off"></i></a></li>
+							<!-- 
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle account" data-toggle="dropdown">
 									<div class="avatar">
@@ -153,6 +156,7 @@
 									</li>
 								</ul>
 							</li>
+							 -->
 						</ul>
 					</div>
 				</div>
@@ -178,6 +182,13 @@
 					#{else}<a href="@{Admin.allMemberList()}">#{/else}
 						<i class="fa fa-bar-chart-o"></i>
 						<span class="hidden-xs">All Members</span>
+					</a>
+				</li>
+				<li class="dropdown">
+					#{if pageType == 'careteam'}<a href="#" class="active">#{/if} 
+					#{else}<a href="@{Admin.careTeam()}">#{/else}
+						<i class="fa fa-bar-chart-o"></i>
+						<span class="hidden-xs">Care Teams</span>
 					</a>
 				</li>
 			</ul>

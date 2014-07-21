@@ -4,23 +4,24 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.swing.plaf.metal.MetalBorders.Flush3DBorder;
 
-import nav.dao.UserDAO;
-import nav.dao.UserTypeDAO;
-import nav.dto.UserBean;
-import notifiers.Mail;
-
+import models.CareTeamMasterDTO;
+import models.CareTeamMemberDTO;
 import models.InvitedDTO;
 import models.UserDTO;
 import models.UserTypeDTO;
-
-import com.ning.http.client.Response;
-
+import nav.dao.CareTeamDAO;
+import nav.dao.UserDAO;
+import nav.dao.UserTypeDAO;
+import nav.dto.UserBean;
 import play.mvc.Controller;
 import play.mvc.With;
 import util.CommonUtil;
 import util.JPAUtil;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 @Check({"user","admin"})
 @With( { Secure.class } )
@@ -85,5 +86,55 @@ public class Admin extends Controller {
 
 		UserDAO.updateUserActivationFlag(userId,Boolean.parseBoolean(flag),op);
 		renderJSON("{\"status\":\"Done\",\"messages\": \"Updated user.\"}");
+	}
+	
+	public static void editUser(int userId) {
+		UserBean user = CommonUtil.loadCachedUser(session);
+		render(user);
+	}
+	
+	public static void careTeam() {
+		UserBean user = CommonUtil.loadCachedUser(session);
+		List<CareTeamMasterDTO> list = CareTeamDAO.getAllCareTeam();
+		render(user,list);
+	}
+	
+	public static void editCareTeam(int careTeamId) {
+		UserBean user = CommonUtil.loadCachedUser(session);
+		CareTeamMasterDTO careTeam = CareTeamDAO.getCareTeamByField("id", careTeamId);
+		List<CareTeamMemberDTO>  memberList = CareTeamDAO.getCareTeamMembersByField("careteamid", careTeamId);
+		render(user,careTeam,memberList);
+	}
+	
+	public static void editCareTeamOperation(String operation,int careTeamId,int memberid,String memberName) {
+		operation = operation==null?"":operation;
+		if("makeprimary".equals(operation)) {
+			CareTeamDAO.makePrimary(careTeamId,memberid);
+		} else if("addMember".equals(operation)) {
+			UserDTO usr = UserDAO.getUserBasicByField("name", memberName);
+			if(usr != null) {
+				CareTeamMasterDTO careTeam = CareTeamDAO.getCareTeamByField("id", careTeamId);
+				CareTeamDAO.addMember(careTeam,usr);
+			}
+		} else if ("removeMember".equals(operation)) {
+			CareTeamDAO.removeMember(careTeamId,memberid);
+		}
+		editCareTeam(careTeamId);
+	}
+	
+	public static void getExpertList() {
+//		List<UserTypeDTO> userTypelist = UserTypeDAO.getUserTypeList();
+//		UserBean user = CommonUtil.loadCachedUser(session);
+		List<UserDTO> list = UserDAO.getAll("5","");
+		list.addAll(UserDAO.getAll("4",""));
+		JsonArray data = new JsonArray();
+		JsonObject object;
+		for (UserDTO userDTO : list) {
+			object = new JsonObject();
+			object.add("id", new JsonPrimitive(userDTO.getId()));
+			object.add("name", new JsonPrimitive(userDTO.getName()));
+			data.add(object);
+		}		
+		renderText(data.toString());
 	}
 }

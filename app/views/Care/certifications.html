@@ -1,0 +1,85 @@
+#{set pageType = 'dashboard' /}
+#{extends 'caremain.html' /}
+	<!--Start Content-->
+<div id="content" class="col-xs-12 col-sm-10">
+<!-- 
+	<div class="row">
+		<div id="breadcrumb" class="col-xs-12">
+		<ol class="breadcrumb">
+			<li><a href="JavaScript:void(0);">Home</a></li>
+			<li><a href="JavaScript:void(0);">Dashboard</a></li>
+		</ol>
+		</div>
+	</div>
+	 -->
+	<div class="col-xs-12 col-sm-12">
+			<div class="table-responsive">
+				<table class="table table-striped table-bordered table-hover table-heading no-border-bottom">
+					<thead>
+		  			<tr>
+		  				<th>Name</th>
+						<th>Description</th>
+		  			</tr>
+		  			</thead>
+		  			<tbody>
+		  			#{if experties != null}
+						#{list experties, as:'seq'}
+				  			<tr>
+								<td>${seq.name}</td>
+								<td>${seq.description}</td>
+				  			</tr>
+		  				#{/list}
+		  			#{/if}
+		  			#{else}
+		  				<tr>
+		  					<td colspan="4" align="center">No record found
+							</td>
+		  				</tr>
+		  			#{/else}
+		  			<tr>
+		  					<td colspan="4" align="center">
+		  						<span style="float:right;">
+		  						<a class="btn btn-default-small" href="javaScript:addNew()">Add</a>
+		  						</span>
+							</td>
+		  				</tr>
+		  			</tbody>
+		  			<tbody>
+		  			</tbody>
+		  			</table>
+		  			</div>
+	</div>
+</div>
+<div class="modal fade" id="dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-lg">
+   #{form @Care.saveCertifications() , id:'distressForm' }
+    <div class="modal-content col-xs-12 col-sm-12">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Add Certifications</h4>
+      </div>
+        <div class="modal-body" style="float:left;display:block;  padding-top: 50px;">
+        	<table>
+        		<tr>
+        			<td>Title</td>
+        			<td><input type="text" name="name"/></td>
+        		</tr>
+        		<tr>
+        			<td>Description</td>
+        			<td><textarea rows="5" cols="50" name="description"></textarea> </td>
+        		</tr>
+        	</table>
+    </div>
+     <div class="modal-footer col-xs-12 col-sm-12" >
+       <button type="submit" class="btn btn-default" data-next="3">&nbsp;&nbsp;&nbsp;&nbsp; SUBMIT &nbsp;&nbsp;&nbsp;&nbsp;</button>
+      </div>
+      #{/form}
+</div>
+</div></div>
+<script>
+<!--
+addNew = function() {
+	$("#dialog").modal({ keyboard: false });
+}
+-->
+</script>
