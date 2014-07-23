@@ -16,7 +16,7 @@ public class UserTypeDAO {
 
 	public static List<UserTypeDTO> getUserTypeList() {
 		EntityManager em = JPAUtil.getEntityManager();
-		List<UserTypeDTO> result = em.createQuery( "from UserTypeDTO where id>0", UserTypeDTO.class ).getResultList();
+		List<UserTypeDTO> result = em.createQuery( "from UserTypeDTO where id>0 order by id ASC", UserTypeDTO.class ).getResultList();
 		return result;
 	}
 	
