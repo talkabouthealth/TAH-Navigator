@@ -30,6 +30,7 @@ import org.hibernate.criterion.Restrictions;
 
 import com.google.gson.Gson;
 
+import models.ExpertDetailDTO;
 import models.PatienCareTeamDTO;
 import models.SecurityQuestionDTO;
 import models.UserDTO;
@@ -298,6 +299,19 @@ public class UserDAO {
 			if(dto.getUsertypeid().getAbbravation() == 'p') {
 				System.out.println("Adding care team");
 				CareTeamDAO.createPatienCareTeamAll(dto);
+			} else if(dto.getUsertypeid().getAbbravation() == 'c') {
+				ExpertDetailDTO expdetails = new ExpertDetailDTO();
+				if("5".equalsIgnoreCase(memberBean.getUserType())) { //DR
+					expdetails.setDesignation(DesignationMasterDAO.getEntityById("1"));	
+				} else { //RN
+					expdetails.setDesignation(DesignationMasterDAO.getEntityById("2"));
+				}
+	    		expdetails.setId(dto.getId());
+	    		expdetails.setHomeAddr(null);
+	    		expdetails.setPracticeAddr(null);
+	    		expdetails.setStatement("");
+	    		expdetails.setUser(dto);
+        		ExpertDetailDAO.save(expdetails);
 			}
 			System.out.println("care team Added");
 		} catch(ParseException e) {

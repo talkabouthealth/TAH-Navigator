@@ -19,8 +19,12 @@ public class DesignationMasterDAO {
 	}
 	
 	public static DesignationMasterDTO getEntityById(String contactId) {
-		EntityManager em = JPAUtil.getEntityManager();
-		DesignationMasterDTO dto = em.createQuery(createQueryByProperty("id", contactId)).getSingleResult();
+		DesignationMasterDTO dto = null;
+		try {
+			EntityManager em = JPAUtil.getEntityManager();
+			dto = em.createQuery(createQueryByProperty("id", contactId)).getSingleResult();
+		}catch(Exception e) {
+		}
 		return dto;
 	}
 	

@@ -4,7 +4,8 @@
 			<div><img src="@{Image.show(expertBeanHead.expertDetail.id)}" class="user_img img-responsive"></div>
 			<div class="user_name">
 <!-- 				<b>${expertBeanHead.expertDetail.designation.designation}</b> -->
-				<p><a href="@{Patient.careMember(expertBeanHead.expertDetail.id,careteam.id)}">${expertBeanHead.expertDetail.designation.abbr}. ${expertBeanHead.userDetails.firstName} ${expertBeanHead.userDetails.lastName}</a></p>
+				<p><a href="@{Patient.careMember(expertBeanHead.expertDetail.id,careteam.id)}">${expertBeanHead.userDetails.firstName} ${expertBeanHead.userDetails.lastName}</a></p>
+				<!-- ${expertBeanHead.expertDetail.designation.abbr}.  -->
 			</div>
 			<div class="user_bottm">
 				<p class="large-f"><span>${expertBeanHead.expertDetail.practiceAddr.line1} </span>, ${expertBeanHead.expertDetail.practiceAddr.line2}, ${expertBeanHead.expertDetail.practiceAddr.city}, 
@@ -45,12 +46,14 @@
 			<div class="row">
 				<div class="common_02">
 					#{if expertBean.expertDetail != null}
-					<div class="common_02_img"><img height="70" src="@{Image.show(expertBean.expertDetail.id)}" class="img-responsive"></div>
+					<div class="common_02_img"><img height="70" src="@{Image.show(expertBean.expertDetail.id)}"></div><!--  class="img-responsive" -->
 					<div class="common_02-name">
+					#{if expertBean.expertDetail.designation != null}
 						<b>${expertBean.expertDetail.designation.designation}</b>
+						#{/if}
 						<p>
 							<a href="@{Patient.careMember(expertBean.expertDetail.id,careteam.id)}">
-							${expertBean.expertDetail.designation.abbr}. ${expertBean.userDetails.firstName} ${expertBean.userDetails.lastName}
+							${expertBean.userDetails.firstName} ${expertBean.userDetails.lastName} 
 							</a>
 						<br/><b><span class="large-f">${expertBean.userDetails.mobile}
 						*{ &nbsp;|&nbsp;${expertBean.userDetails.email} }*

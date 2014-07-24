@@ -7,6 +7,9 @@
 # RESTful API for all request
 GET		/api/*									API.index
 
+# Refresh Image URL
+GET		/image/show/{userId}								Image.show
+
 #Login Pages
 GET     /login                                  Login.index
 GET		/verify/{verifyCode}					Application.verifyEmail

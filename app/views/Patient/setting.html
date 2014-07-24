@@ -1,17 +1,27 @@
 #{set pageType = 'setting' /}
 #{extends 'patientmain.html' /}
+<link href="/public/plugins/fineuploader/fineuploader-4.3.1.min.css" rel="stylesheet">
+	<style>
+	<!--
+	.qq-uploader{width:100px;}
+	-->
+	</style>
 	<!--Start Content-->
 <div id="content" class="col-xs-12 col-sm-10">
 	<div class="row">
-		<div id="breadcrumb" class="col-xs-12">
-			<ol class="breadcrumb">
-				<li><a href="#">Home</a></li>
-				<li><a href="#">Settings</a></li>
-			</ol>
-		</div>
+<!-- 		<div id="breadcrumb" class="col-xs-12"> -->
+<!-- 			<ol class="breadcrumb"> -->
+<!-- 				<li><a href="#">Home</a></li> -->
+<!-- 				<li><a href="#">Settings</a></li> -->
+<!-- 			</ol> -->
+<!-- 		</div> -->
 	</div>
+	 
+	<div class="col-xs-12 col-sm-12" style="padding-top:100px;">
 <div class="row full-uploader">
 	<div id="bootstrapped-fine-uploader"></div>
+</div></div>
+ 
 </div>
 <script>
 $(document).ready(function () {
@@ -27,10 +37,13 @@ $(document).ready(function () {
 ====================================================================== -->
 <script type="text/template" id="qq-template-bootstrap">
 	<div class="qq-uploader-selector qq-uploader span12">
-		<div class="qq-upload-drop-area-selector qq-upload-drop-area span12">
+		<div class="qq-upload-drop-area-selector qq-upload-drop-area span12" style="background:#EEE;border:1px solid #CCC;">
+<img class="profilePic" src="@{Image.show(user.id)}"  height="50">
+<br/>Drop here
 		</div>
-		<div class="qq-upload-button-selector qq-upload-button btn btn-success" style="width: auto;">
-			<div><i class="fa fa-upload icon-white"></i> Test me now and upload a file</div>
+<div style="position: relative;left:150px;padding-bottom: 20px;"> &nbsp;OR&nbsp; 		</div>
+		<div class="qq-upload-button-selector btn btn-default btn-lg btn-block" style="width: 100px;margin-left: 120px;">
+			<div>Upload</div>
 		</div>
 		<div class="qq-dropped-zone"><i class="fa fa-cloud"></i> Drop file and upload</div>
 	<span class="qq-drop-processing-selector qq-drop-processing">
@@ -38,6 +51,8 @@ $(document).ready(function () {
 		<span class="qq-drop-processing-spinner-selector qq-drop-processing-spinner"></span>
 	</span>
 		<ul class="qq-upload-list-selector qq-upload-list">
+<li></li>
+/*
 			<li>
 				<div class="qq-progress-bar-container-selector progress-bar progress-bar-success">
 					<div class="qq-progress-bar-selector qq-progress-bar"></div>
@@ -55,6 +70,7 @@ $(document).ready(function () {
 					<a class="qq-upload-delete-selector qq-upload-delete" href="#">Delete</a>
 				</div>
 			</li>
+*/
 		</ul>
 	</div>
 </script>

@@ -1,5 +1,11 @@
 #{set pageType = 'dashboard' /}
 #{extends 'caremain.html' /}
+<style>
+<!--
+.modal-body table td {padding:5px;}
+.nopadding{padding:0px;}
+-->
+</style>
 	<!--Start Content-->
 <div id="content" class="col-xs-12 col-sm-10">
 <!-- 
@@ -21,16 +27,25 @@
 						<th>Institute</th>
 						<th>Year</th>
 						<th>Logo Image</th>
+						<th>-</th>
+						<th>-</th>
 		  			</tr>
 		  			</thead>
 		  			<tbody>
+		  			<!-- Medical School
+Residency
+Internship
+Fellowship
+Other -->
 		  			#{if education != null}
 						#{list education, as:'seq'}
 				  			<tr>
-								<td>${seq.dgree}</td>
 								<td>${seq.school}</td>
+								<td>${seq.dgree}</td>
 								<td>${seq.year}</td>
 								<td><img height="100px" src='${seq.logopath}'/></td>
+								<td><a href="javaScript:editThis('${seq.id}','${seq.dgree}','${seq.school}','${seq.year}','${seq.logopath}')">Edit</a></td>
+								<td><a href="javaScript:removeThis('${seq.id}')">Remove</a></td>
 				  			</tr>
 		  				#{/list}
 		  			#{/if}
@@ -41,7 +56,7 @@
 		  				</tr>
 		  			#{/else}
 		  			<tr>
-		  					<td colspan="4" align="center">
+		  					<td colspan="6" align="center">
 		  						<span style="float:right;">
 		  						<a class="btn btn-default-small" href="javaScript:addNew()">Add</a>
 		  						</span>
@@ -55,45 +70,90 @@
 	</div>
 </div>
 <div class="modal fade" id="dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-   <div class="modal-dialog modal-lg">
-   #{form @Care.saveEducation() , id:'distressForm' }
+   <div class="modal-dialog" style="width: 620px;">
+   <form action="/care/saveEducation"  id='distressForm'  enctype="multipart/form-data" method="post">
+		<input type="hidden" name="operation" />
+		<input type="hidden" name="id" />
     <div class="modal-content col-xs-12 col-sm-12">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title" id="myModalLabel">Add Education</h4>
       </div>
-        <div class="modal-body" style="float:left;display:block;  padding-top: 50px;">
-        	
-        	<table>
+        <div class="modal-body">
+        	<table ><!-- class="table-responsive" -->
         		<tr>
-        			<td>Degree</td>
-        			<td><input type="text" name="degree"/></td>
+        			<td>Type</td>
+        			<td colspan="2">
+<!--         				<input type="text" name="institute" style="width: 400px;"/> -->
+        				<select name="institute" class="form-control" >
+        					<option>Medical School</option>
+							<option>Residency</option>
+							<option>Internship</option>
+							<option>Fellowship</option>
+							<option>Other</option>
+        				</select>
+        			</td>
         		</tr>
         		<tr>
-        			<td>Institute</td>
-        			<td><input type="text" name="institute"/></td>
+        			<td>School/Institute</td>
+        			<td  colspan="2">
+        				<div class="input-group">
+									<input type="text" name="degree" class="form-control" style="width: 400px;" required/>
+									<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+					    		</div>
+								<div class="help-block with-errors"></div>
+        				
+        			</td>
         		</tr>
         		<tr>
-        			<td>Year</td>
-        			<td><input type="text" name="year"/></td>
+        			<td>Year</td><!--  of passing -->
+        			<td><input type="text" name="year" class="form-control" style="width: 75px;"/></td>
+        			<td rowspan="2"><img id="logoPath" src="/public/images/blankseal.jpg" style="height:100px;"/></td>
         		</tr>
         		<tr>
         			<td>Logo Image</td>
-        			<td><input type="file" name="logo"/></td>
+        			<td><input type="file" name="photo"/></td>
         		</tr>
         	</table>
-    		
     </div>
      <div class="modal-footer col-xs-12 col-sm-12" >
        <button type="submit" class="btn btn-default" data-next="3">&nbsp;&nbsp;&nbsp;&nbsp; SUBMIT &nbsp;&nbsp;&nbsp;&nbsp;</button>
       </div>
-      #{/form}
+      </div>
+     </form>
 </div>
-</div></div>
+</div>
 <script>
 <!--
+$(document).ready(function() {
+$('#distressForm').validator();
+});
 addNew = function() {
+	$("#myModalLabel").html("Add education");
+	$("#distressForm input[name='operation']").val("add");
+	$("#distressForm input[name='id']").val("0");
+	$("#distressForm input[name='degree']").val("");
+	$("#distressForm input[name='institute']").val("");
+	$("#distressForm input[name='year']").val("");
+	$("#distressForm textarea[name='description']").val("");
+	$("#logoPath").attr('src',"/public/images/blankseal.jpg");
 	$("#dialog").modal({ keyboard: false });
+}
+editThis = function(id,degree,school,year,logoPath) {
+	$("#distressForm input[name='operation']").val("edit");
+	$("#distressForm input[name='id']").val(id);
+	$("#distressForm input[name='degree']").val(degree);
+// 	$("distressForm input[name='institute'] option:contains('"+school+"')").prop('selected', true);
+	$("#distressForm select[name='institute']").val(school);
+	$("#myModalLabel").html("Edit education");
+	$("#distressForm input[name='year']").val(year);
+	$("#logoPath").attr('src',logoPath);
+	$("#dialog").modal({ keyboard: false });
+}
+removeThis = function(id) {
+	$("#distressForm input[name='operation']").val("remove");
+	$("#distressForm input[name='id']").val(id);
+	$("#distressForm").submit();
 }
 -->
 </script>

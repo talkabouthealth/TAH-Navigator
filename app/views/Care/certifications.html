@@ -1,5 +1,11 @@
 #{set pageType = 'dashboard' /}
 #{extends 'caremain.html' /}
+<style>
+<!--
+.modal-body table td:first-child{width: 100px !important;line-height: 40px;
+    vertical-align: top;}
+-->
+</style>
 	<!--Start Content-->
 <div id="content" class="col-xs-12 col-sm-10">
 <!-- 
@@ -19,14 +25,18 @@
 		  			<tr>
 		  				<th>Name</th>
 						<th>Description</th>
+						<th></th>
+						<th></th>
 		  			</tr>
 		  			</thead>
 		  			<tbody>
 		  			#{if experties != null}
 						#{list experties, as:'seq'}
-				  			<tr>
+				  			<tr data-for="${seq.id}">
 								<td>${seq.name}</td>
-								<td>${seq.description}</td>
+								<td>${seq.description.printMessage()}</td>
+								<td><a href="javaScript:editThis('${seq.id}','${seq.name}','${seq.description}')">Edit</a></td>
+								<td><a href="javaScript:removeThis('${seq.id}')">Remove</a></td>
 				  			</tr>
 		  				#{/list}
 		  			#{/if}
@@ -51,22 +61,32 @@
 	</div>
 </div>
 <div class="modal fade" id="dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-   <div class="modal-dialog modal-lg">
+   <div class="modal-dialog modal-m">
    #{form @Care.saveCertifications() , id:'distressForm' }
+   <input type="hidden" name="operation" />
+   	<input type="hidden" name="id" />
     <div class="modal-content col-xs-12 col-sm-12">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Add Certifications</h4>
+        <h4 class="modal-title" id="myModalLabel">Add Certification</h4>
       </div>
-        <div class="modal-body" style="float:left;display:block;  padding-top: 50px;">
+        <div class="modal-body" >
         	<table>
         		<tr>
-        			<td>Title</td>
-        			<td><input type="text" name="name"/></td>
+        			<td>Name</td>
+        			<td><div class="input-group">
+									<input type="text" name="name" class="form-control" style="width: 400px;" required/>
+									<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+					    		</div>
+								<div class="help-block with-errors"></div></td>
         		</tr>
         		<tr>
         			<td>Description</td>
-        			<td><textarea rows="5" cols="50" name="description"></textarea> </td>
+        			<td>
+        			<div class="input-group">
+        				<textarea class="form-control" style="height: 120px;width:425px;max-width: 425px;" name="description"></textarea> 
+        				</div>
+        				</td>
         		</tr>
         	</table>
     </div>
@@ -78,8 +98,31 @@
 </div></div>
 <script>
 <!--
+$(document).ready(function() {
+	$('#distressForm').validator();
+	});
 addNew = function() {
+	$("#myModalLabel").html("Add Certification");
+	$("#distressForm input[name='operation']").val("add");
+	$("#distressForm input[name='id']").val("0");
+	$("#distressForm input[name='name']").val("");
+	$("#distressForm textarea[name='description']").val("");
 	$("#dialog").modal({ keyboard: false });
 }
+editThis = function(id,name,desc) {
+	$("#myModalLabel").html("Edit Certification");
+	$("#distressForm input[name='operation']").val("edit");
+	$("#distressForm input[name='id']").val(id);
+	$("#distressForm input[name='name']").val(name);
+	$("#distressForm textarea[name='description']").val(desc);
+	$("#dialog").modal({ keyboard: false });
+}
+removeThis = function(id) {
+// 	alert('Remove: ' + id);
+	$("#distressForm input[name='operation']").val("remove");
+	$("#distressForm input[name='id']").val(id);
+	$("#distressForm").submit();
+}
 -->
+
 </script>

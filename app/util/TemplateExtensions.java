@@ -1,5 +1,6 @@
 package util;
 
+import models.AddressDTO;
 import models.ExpertDetailDTO;
 import models.UserDetailsDTO;
 import nav.dao.ExpertDetailDAO;
@@ -37,11 +38,12 @@ public class TemplateExtensions extends JavaExtensions {
 			}
 		}
 		if(details.getUser().getUserType() == 'c') {
-			ExpertDetailDTO exp = ExpertDetailDAO.getDetailsByField("id", id);// ExpertByField("id", id);
-			if(exp != null) {
-				if(exp.getDesignation() != null)
-				name = exp.getDesignation().getAbbr() + ". " + name;//details.getFirstName() + " " + details.getLastName();
-			}
+//			ExpertDetailDTO exp = ExpertDetailDAO.getDetailsByField("id", id);// ExpertByField("id", id);
+//			if(exp != null) {
+//				if(exp.getDesignation() != null)
+//				name = exp.getDesignation().getAbbr() + ". " + name;//details.getFirstName() + " " + details.getLastName();
+//			}
+			name = details.getFirstName() ;
 		}
 		return name;
 	}
@@ -54,6 +56,48 @@ public class TemplateExtensions extends JavaExtensions {
 		htmlText = htmlText.replace("\n", "<br/>");
 		htmlText = htmlText.replace("&lt;br/&gt;", "<br/>");
 		System.out.println(htmlText);
+		return JavaExtensions.raw(htmlText);
+	}
+	
+	public static Object printAddress(AddressDTO address) {
+		String htmlText = "";
+		boolean isBefore = false;
+		
+		if(StringUtils.isNotEmpty(address.getLine1())) {
+			htmlText = "<span>"+ address.getLine1() +"</span>";
+			isBefore = true;
+		}
+		if(StringUtils.isNotEmpty(address.getLine1())) {
+			if(isBefore)
+				htmlText += ", ";
+			htmlText += address.getLine2();
+			isBefore =true;
+		}else
+			isBefore=false;
+		
+		if(StringUtils.isNotEmpty(address.getCity())) {
+			if(isBefore)
+				htmlText += ", ";
+			htmlText += address.getCity();
+			isBefore =true;
+		}else
+			isBefore=false;
+		
+		if(StringUtils.isNotEmpty(address.getState())) {
+			if(isBefore)
+				htmlText += ", ";
+			htmlText += address.getState();
+//			isBefore =true;
+		}
+//		else
+//			isBefore=false;
+		if(StringUtils.isNotEmpty(address.getCountry())) {
+			htmlText += " " + address.getCountry();
+		}
+		if(StringUtils.isNotEmpty(address.getZip())) {
+			htmlText += " " + address.getZip();
+		}
+		
 		return JavaExtensions.raw(htmlText);
 	}
 }

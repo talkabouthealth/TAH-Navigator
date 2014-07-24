@@ -1,0 +1,136 @@
+#{set pageType = 'setting' /}
+#{extends 'caremain.html' /}
+	<!--Start Content-->
+<div id="content" class="col-xs-12 col-sm-10">
+	<div class="row col-xs-12">
+ 		<div class="col-xs-12 col-sm-12">
+ 			<h4 class="page-header">Update Contact information</h4>
+ 		</div>
+ 		<div class="col-xs-12 col-sm-12">
+ 		#{form @Profile.updateProfile() , id:'passForm' }
+ 			<table class="col-xs-10 col-sm-5 table-condensed">	
+ 				<tr><td><ul class="list-group" id="errorGroup"></ul></td></tr>
+ 				<tr>
+ 					<td>
+ 						<div>
+					    	<label for="exampleInputEmail1">Email</label>
+						</div>
+	 					<div class="form-group">
+						    <div> ${user.email} <span style="float:right;">Primary</span></div>
+						    <!-- for loop -->
+						   		<div id="emailList">
+							    	#{if emaiList != null}
+							    	#{list emaiList, as:'eml'}
+							    		<div data-for='${eml.email}'>
+							    			${eml.email}
+							    			<span style="float:right;"><a href="javaScript:removeEmail('${eml.email}');">Remove</a></span>&nbsp;&nbsp;
+											<span style="float:right;"><a href="javaScript:makePrimary('${eml.email}');">Make primary</a>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+										</div>
+							    	#{/list}
+							    	#{/if}
+						    	</div>
+							<div id="addEmailBox" class="form-group" style="margin:20px 0px;display:none;">
+								<div>
+							    	<div class="input-group">
+										<input type="email"  class="form-control" id="email" placeholder="Email" value="">
+										<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+									</div>
+									<div>
+										<button style="float:right;" class="btn large" id="savenewEmail" >Save</button>
+										<a style="float:right;margin:10px;" href="javaScript:hideEmailBox();">Cancel</a>
+									</div>
+								</div>
+								<p class="help-block"></p>
+							</div>
+							<div style="margin-top:10px;"><a href="javaScript:showEmailBox();">Add email</a></div>
+						</div>
+		        	</td>
+ 				</tr>
+<!--  				<tr> -->
+<!--  					<td><hr/> -->
+<!--  					<button type="submit" class="btn btn-default btn-lg btn-block" >Save</button></td> -->
+<!--  				</tr>		 -->
+ 			</table>
+ 			#{/form}
+ 		</div>
+	</div>
+	<div id="ajax-content"></div>
+</div>
+<script>
+<!--
+    $(document).ready(function() {
+    	$('#passForm').validator();
+    	var Options = { success: setMessageOnForm };
+    	$("#savenewEmail").click(function() {
+    		var email = $("#email").val();
+    		var pattern= /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    		if(pattern.test(email)) {
+    			$("#addEmailBox p.help-block").html('');
+    			$.ajax({ type: "POST",
+					url: "/profile/updateAditionalEmail",
+					data: { "email":email,"op":"a" },
+					success: function(msg) {
+						if(msg == 'd') {
+							$("#errorGroup").html("<li class='list-group-item list-group-item-success'>Duplicate email</li>");
+						} else {
+							$("#addEmailBox").hide();
+							$("#emailList").append("<div  data-for='" + msg + "'>" + msg 
+								+ '<span style="float:right;"><a href="javaScript:removeEmail(\'' + msg +'\');">Remove</a></span>&nbsp;&nbsp;'
+								+ '<span style="float:right;"><a href="javaScript:makePrimary(\'' + msg +'\');">Make primary</a>&nbsp;&nbsp;&nbsp;&nbsp;</span>'
+								+ '</div>');
+						}
+					},
+					error: function() {
+    	            	  $("#errorGroup").html("<li class='list-group-item list-group-item-danger'>Internal server error. Please try again.</li>"); 
+					}
+				});
+			} else {
+				$("#addEmailBox p.help-block").html('Please correct email'); 
+			}
+    		return false;
+    	});
+	});
+
+	function setMessageOnForm(responseText, statusText, xhr, $form) {
+		if (responseText.indexOf("Error") === 0) {
+			var errorText = responseText.replace("Error:", "");
+			$("#errorGroup").html("<li class='list-group-item list-group-item-danger'>" + errorText  +"</li>"); 
+		} else {
+			$("#errorGroup").html("<li class='list-group-item list-group-item-success'>" + errorText  +"</li>"); 
+		}
+	}
+	
+	makePrimary = function(email) {
+		$.ajax({
+			type: "POST",
+			url: "/profile/updateAditionalEmail",
+			data: {"email":email,"op":"mp"},
+			success: function(msg){
+				$("#errorGroup").html("<li class='list-group-item list-group-item-danger'>"+msg+"</li>");
+			},
+			error: function() {
+				$("#errorGroup").html("<li class='list-group-item list-group-item-danger'>Internal server error. Please try again.</li>"); 
+			}
+		});
+	} 
+	removeEmail = function(email) {
+		$.ajax({
+			type: "POST",
+			url: "/profile/updateAditionalEmail",
+			data: {"email":email,"op":"r"},
+			success: function(msg){
+				$("#emailList").find("[data-for='" + msg + "']").remove();
+			},
+			error: function() {
+				$("#errorGroup").html("<li class='list-group-item list-group-item-danger'>Internal server error. Please try again.</li>"); 
+			}
+		});
+	}
+	showEmailBox = function() {
+		$("#addEmailBox").show();
+	}
+	hideEmailBox = function() {
+		$("#addEmailBox").hide();
+	}
+-->
+</script>

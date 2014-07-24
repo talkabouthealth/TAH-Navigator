@@ -15,7 +15,7 @@ li, blockquote{color:#333;}
 table.table-condensed {
     color: #333333;
 }
-.list-unstyled li,.help-block{color:#FFF;}
+.list-unstyled li,.help-block{color:#F77;}
 .jumbotron {
     background-color: #428BCA;
     color: inherit;
@@ -90,7 +90,11 @@ table.table-condensed {
 			  	<div class="form-group">
 				    <label class="for-patient">First Name</label>
 				    <label class="for-doctor">Name</label>
-				    <input type="text" class="form-control" name="member.firstName" value="${flash['member.firstName']}" placeholder="Enter first name">
+				     <div class="input-group">
+				    <input type="text" class="form-control" name="member.firstName" value="${flash['member.firstName']}" placeholder="Enter first name" required>
+				     <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+				      </div>
+				      <div class="help-block with-errors"></div>
 				    <label class="for-doctor">(As you would like it to appear for patients. For example: Jhon Smith, MD or Nancy Smith, RN)</label>
 				</div>			  
 		 		<div class="form-group for-patient">
@@ -101,7 +105,7 @@ table.table-condensed {
 		    	<div class="form-group for-patient">
 				    <label for="exampleInputEmail1">Date of birth (mm/dd/yyyy)</label>
 				    <div class="input-group">
-					    <input type="text" class="form-control datepicker" name="member.dob" value="${flash['member.dob']}" placeholder="Enter date of birth" data-date-format="mm/dd/yyyy">
+					    <input type="text" class="form-control datepicker" name="member.dob" value="${flash['member.dob']}" placeholder="Enter date of birth" data-date-format="mm/dd/yyyy" data-date-viewmode="day" data-date-minviewmode="day">
 						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 			  		</div>
 				</div>
@@ -115,7 +119,8 @@ table.table-condensed {
 				     <input type="text" class="form-control" name="member.ssn2" value="${flash['member.ssn2']}" placeholder="00">
 				    </div>-->
 				    <div class="col-xs-3 nopadding">
-				    	<input type="text" class="form-control" name="member.ssn3" value="${flash['member.ssn3']}" placeholder="0000">
+				    	<input type="text" class="form-control" name="member.ssn3" value="${flash['member.ssn3']}" placeholder="0000" data-minlength="4" maxlength="4">
+				    	  <div class="help-block with-errors"></div>
 					</div>
 				</div>
 			</div>
@@ -160,7 +165,7 @@ table.table-condensed {
 		</div>
 		<div class="col-md-12">
 			<div class="headding"><h4>Security Information</h4></div>
-				<div class="form-group"><p class="help-block nopadding">Choose all questions below and enter one answer for each question.</p></div>
+				<div class="form-group"><p class="nopadding">Choose all questions below and enter one answer for each question.</p></div>
 			  	<div class="form-group">
 			  		
 				    <label for="exampleInputEmail1">Security question 1 </label>
@@ -175,7 +180,11 @@ table.table-condensed {
 				</div>			  
 		 		<div class="form-group">
 				    <label for="exampleInputEmail1">Security answer 1</label>
-				    <input type="text" class="form-control" name="member.sea1"  value="${flash['member.sea1']}" placeholder="Enter Security answer 1">
+				     <div class="input-group">
+				    <input type="text" class="form-control" name="member.sea1"  value="${flash['member.sea1']}" placeholder="Enter Security answer 1" required>
+				     <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+				    </div>
+				    <div class="help-block with-errors"></div>
 				</div>
 		    	<div class="form-group">
 				    <label for="exampleInputEmail1">Security question 2</label>
@@ -190,7 +199,11 @@ table.table-condensed {
 				</div>
 		    	<div class="form-group">
 				    <label for="exampleInputEmail1">Security answer 2</label>
-				    <input type="text" class="form-control" name="member.sea2"  value="${flash['member.sea2']}" placeholder="Enter security answer 2">
+				      <div class="input-group">
+				    <input type="text" class="form-control" name="member.sea2"  value="${flash['member.sea2']}" placeholder="Enter security answer 2" required>
+				    <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+				    </div>
+				    <div class="help-block with-errors"></div>
 				</div>
 		</div>
 		</div>
@@ -237,7 +250,9 @@ table.table-condensed {
     <script>
 <!--
 $(document).ready(function() {
-	$('.datepicker').datepicker();
+	$('.datepicker').datepicker({onRender: function(date) {
+	    return date.valueOf() >= new Date().valueOf() ? 'disabled' : '';
+	  }});
 	$('#signup').validator();
 	var userType = $("#userType").val();
 	if(userType == '5' || userType == '4') {
@@ -257,5 +272,6 @@ $(document).ready(function() {
 			$(".for-doctor").hide();
 		} 
 	});
+});
 -->
 </script>

@@ -11,6 +11,19 @@ import util.JPAUtil;
 
 public class BaseDAO {
 	
+	public static Object remove(Object dto) {
+		try {
+			EntityManager em = JPAUtil.getEntityManager();
+			em.getTransaction().begin();
+			em.remove(em.merge(dto));
+			em.getTransaction().commit();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return dto;
+	}
+
+	
 	public static Object update(Object dto) {
 		try {
 			EntityManager em = JPAUtil.getEntityManager();

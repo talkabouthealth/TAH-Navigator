@@ -1787,7 +1787,7 @@ function FileUpload(){
 	$('#bootstrapped-fine-uploader').fineUploader({
 		template: 'qq-template-bootstrap',
 		classes: {
-			success: 'alert alert-success',
+			success: '',
 			fail: 'alert alert-error'
 		},
 		thumbnails: {
@@ -1800,8 +1800,18 @@ function FileUpload(){
 			endpoint: '/profile/uploadImage'
 		},
 		validation: {
+			//itemLimit: 1,
 			allowedExtensions: ['jpeg', 'jpg', 'gif', 'png']
 		}
+
+	}) .on('complete', function(event, id, name, response) {
+        var $fileEl = $(this).fineUploader("getItemByFileId", id),
+        $viewBtn = $fileEl.find(".qq-upload-button-selector");
+	    if (response.success) {
+	        $viewBtn.show();
+	        $viewBtn.attr("href", response.tempLink);
+	        $(".profilePic").attr("src", $(".profilePic").attr("src")+"?t=" + new Date().getTime());
+	    }
 	});
 }
 /*-------------------------------------------

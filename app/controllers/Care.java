@@ -1,8 +1,20 @@
 package controllers;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.imageio.ImageIO;
+
+import org.apache.commons.io.IOUtils;
 
 import models.AddressDTO;
 import models.CareTeamMemberDTO;
@@ -15,6 +27,7 @@ import models.UserDTO;
 import models.UserDetailsDTO;
 import models.UserEducationDTO;
 import models.UserExpertiesDTO;
+import models.UserTypeDTO;
 import nav.dao.AddressDAO;
 import nav.dao.BaseDAO;
 import nav.dao.CareTeamDAO;
@@ -22,6 +35,7 @@ import nav.dao.DesignationMasterDAO;
 import nav.dao.ExpertDetailDAO;
 import nav.dao.ProfileDAO;
 import nav.dao.UserDAO;
+import nav.dao.UserTypeDAO;
 import nav.dto.PatientBean;
 import nav.dto.UserBean;
 import play.data.Upload;
@@ -49,7 +63,6 @@ public class Care extends Controller {
 			PatientBean patient =null;
 			UserDetailsDTO userDetails = null;
 			PatientDetailDTO patientDetail = null;
-			
 			for (PatienCareTeamDTO patienCareTeamDTO : patientList) {
 				patient = new PatientBean();
 				userDetails = UserDAO.getDetailsById(patienCareTeamDTO.getPatienid());
@@ -116,16 +129,39 @@ public class Care extends Controller {
 		render(user,userDto,expertDetail,experties);
 	}
 	
-	public static void updateCareProfile(String designation,String mobile,String homephone,String street1,String street2,String city,String state,String country,String zip,String statement) {
+	public static void password() {
+		UserBean user = CommonUtil.loadCachedUser(session);
+		UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());
+		ExpertDetailDTO expertDetail = ExpertDetailDAO.getDetailsByField("id", user.getId());
+		render(user,userDto,expertDetail);
+	}
+	
+	public static void contact() {
+		UserBean user = CommonUtil.loadCachedUser(session);
+		UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());
+		ExpertDetailDTO expertDetail = ExpertDetailDAO.getDetailsByField("id", user.getId());
+		render(user,userDto,expertDetail);
+	}
+
+	public static void updateCareProfile(String userName,String firstName,String userType,String designation,String mobile,String street1,String street2,String city,String state,String country,String zip,String statement) { //String designation,String homephone,
 //		params.flash();
     	UserBean user = CommonUtil.loadCachedUser(session);
     	UserDTO userDto = UserDAO.getUserBasicByField("id", user.getId());
+    	userDto.setName(userName);
+    	UserTypeDTO userTypedto = UserTypeDAO.getEntityById(userType);
+    	userDto.setUserType(userTypedto.getAbbravation());
+    	userDto.setUsertypeid(userTypedto);
+    	
+
+    	UserDAO.updateUserBasic(userDto);
     	if(userDto != null) {
     		UserDetailsDTO detailsDTO = UserDAO.getDetailsByField("id", user.getId());
         	detailsDTO.setEditdate(new Date());
         	detailsDTO.setEditedBy(userDto);
-        	detailsDTO.setHomePhone(homephone);
+//        	detailsDTO.setHomePhone(homephone);
         	detailsDTO.setMobile(mobile);
+        	detailsDTO.setFirstName(firstName);
+        	
         	UserDAO.updateUserDetails(detailsDTO);
 
         	ExpertDetailDTO expdetails = ExpertDetailDAO.getDetailsByField("id", user.getId());
@@ -147,12 +183,21 @@ public class Care extends Controller {
 	        	} else {
 	        		addressDto = AddressDAO.update(addressDto);
 	        	}
-	        	expdetails.setDesignation(DesignationMasterDAO.getEntityById(designation));
+//	        	expdetails.setDesignation(DesignationMasterDAO.getEntityById(designation));
 	    		expdetails.setId(user.getId());
 	    		expdetails.setHomeAddr(addressDto);
 	    		expdetails.setPracticeAddr(addressDto);
-	    		expdetails.setStatement(statement);
+	    		expdetails.setStatement(statement.trim());
 	    		expdetails.setUser(userDto);
+//	    		if("5".equalsIgnoreCase(userType)) { //DR
+//					expdetails.setDesignation(DesignationMasterDAO.getEntityById("1"));	
+//				} else { //RN
+//					expdetails.setDesignation(DesignationMasterDAO.getEntityById("2"));
+//				}
+	    		DesignationMasterDTO dto = DesignationMasterDAO.getEntityById(designation);
+	    		if(dto!=null)
+	    			expdetails.setDesignation(dto);
+	    		
 	    		ExpertDetailDAO.update(expdetails);
     		} else {
     			System.out.println("S1");
@@ -166,12 +211,20 @@ public class Care extends Controller {
 	    		addressDto.setZip(zip);
 	    		addressDto = AddressDAO.save(addressDto);
 	    		System.out.println("S2");
-	    		expdetails.setDesignation(DesignationMasterDAO.getEntityById(designation));
+//	    		expdetails.setDesignation(DesignationMasterDAO.getEntityById(designation));
 	    		expdetails.setId(user.getId());
 	    		expdetails.setHomeAddr(addressDto);
 	    		expdetails.setPracticeAddr(addressDto);
 	    		expdetails.setStatement(statement);
 	    		expdetails.setUser(userDto);
+//	    		if("5".equalsIgnoreCase(userType)) { //DR
+//					expdetails.setDesignation(DesignationMasterDAO.getEntityById("1"));	
+//				} else { //RN
+//					expdetails.setDesignation(DesignationMasterDAO.getEntityById("2"));
+//				}
+	    		DesignationMasterDTO dto = DesignationMasterDAO.getEntityById(designation);
+	    		if(dto!=null)
+	    			expdetails.setDesignation(dto);
         		ExpertDetailDAO.save(expdetails);
         		System.out.println("S3");
     		}
@@ -179,44 +232,121 @@ public class Care extends Controller {
 		renderText("Profile updated");
 	}
 	
-	public static void saveEducation(String degree,String institute,String year, Upload photo) {
+	public static void saveEducation(String operation,String id,String degree,String institute,String year, File photo)  throws	FileNotFoundException, IOException{
 		UserBean user = CommonUtil.loadCachedUser(session);
+		operation = operation==null?"add":operation;
 		try {
-			UserEducationDTO educationDTO = new UserEducationDTO();
-			educationDTO.setDgree(degree);
-			educationDTO.setLogopath("/public/images/blankseal.jpg");
-			educationDTO.setSchool(institute);
-			educationDTO.setUserid(user.getId());
-			educationDTO.setYear(year);
-			BaseDAO.save(educationDTO);
+			if("add".equalsIgnoreCase(operation)) {
+				UserEducationDTO educationDTO = new UserEducationDTO();
+				if(photo!= null) {
+					System.out.println("Form file is not null");
+					educationDTO.setLogopath("/public/upload/"+photo.getName());
+					InputStream in = new FileInputStream(photo);
+					OutputStream out = new FileOutputStream(new File("/opt/sayli/navigator/public/upload/"+photo.getName()));
+					IOUtils.copy(in,out);
+					out.close();
+					in.close();
+				} else {
+					System.out.println("Form file is null");
+					educationDTO.setLogopath("/public/images/blankseal.jpg");	
+				}
+
+				educationDTO.setDgree(degree);
+				educationDTO.setSchool(institute);
+				educationDTO.setUserid(user.getId());
+				educationDTO.setYear(year);
+				BaseDAO.save(educationDTO);
+			} else if("edit".equalsIgnoreCase(operation)) {
+				List<UserEducationDTO> education = ProfileDAO.getEducationByField("id", new Integer(id));
+				if(education != null) {
+					UserEducationDTO educationDTO = education.get(0);
+					educationDTO.setDgree(degree);
+					if(photo!= null) {
+						System.out.println("Form file is not null");
+						educationDTO.setLogopath("/public/upload/"+photo.getName());
+						InputStream in = new FileInputStream(photo);
+						OutputStream out = new FileOutputStream(new File("/opt/sayli/navigator/public/upload/"+photo.getName()));
+						IOUtils.copy(in,out);
+						out.close();
+						in.close();
+//					} else {
+//						System.out.println("Form file is null");
+//						educationDTO.setLogopath("/public/images/blankseal.jpg");	
+					}
+					educationDTO.setSchool(institute);
+					educationDTO.setUserid(user.getId());
+					educationDTO.setYear(year);
+					BaseDAO.update(educationDTO);
+				}
+			} else if("remove".equalsIgnoreCase(operation)) {
+				List<UserEducationDTO> education = ProfileDAO.getEducationByField("id", new Integer(id));
+				if(education != null) {
+					UserEducationDTO cert = education.get(0);
+					BaseDAO.remove(cert);
+				}
+			}
 		} catch(Exception e) { 
 			e.printStackTrace();
 		}
 		education();
 	}
 	
-	public static void saveExperties(String name,String description) {
+	public static void saveExperties(String operation,String id,String name,String description) {
 		UserBean user = CommonUtil.loadCachedUser(session);
+		operation = operation==null?"add":operation;
 		try {
-			UserExpertiesDTO educationDTO = new UserExpertiesDTO();
-			educationDTO.setName(name);
-			educationDTO.setDescription(description);
-			educationDTO.setUserid(user.getId());
-			BaseDAO.save(educationDTO);
+			if("add".equalsIgnoreCase(operation)) {
+				UserExpertiesDTO educationDTO = new UserExpertiesDTO();
+				educationDTO.setName(name);
+				educationDTO.setDescription(description);
+				educationDTO.setUserid(user.getId());
+				BaseDAO.save(educationDTO);
+			} else if("edit".equalsIgnoreCase(operation)) {
+				List<UserExpertiesDTO> experties = ProfileDAO.getExpertiesByField("id",  new Integer(id));
+				if(experties != null) {
+					UserExpertiesDTO cert = experties.get(0);
+					cert.setDescription(description);
+					cert.setName(name);
+					BaseDAO.update(cert);
+				}
+			} else if("remove".equalsIgnoreCase(operation)) {
+				List<UserExpertiesDTO> experties = ProfileDAO.getExpertiesByField("id",  new Integer(id));
+				if(experties != null) {
+					UserExpertiesDTO cert = experties.get(0);
+					BaseDAO.remove(cert);
+				}
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
 		experties();
 	}
 	
-	public static void saveCertifications(String name,String description) {
+	public static void saveCertifications(String operation,String id,String name,String description) {
 		UserBean user = CommonUtil.loadCachedUser(session);
+		operation = operation==null?"add":operation;
 		try {
-			UserCertificateDTO educationDTO = new UserCertificateDTO();
-			educationDTO.setName(name);
-			educationDTO.setDescription(description);
-			educationDTO.setUserid(user.getId());
-			BaseDAO.save(educationDTO);
+			if("add".equalsIgnoreCase(operation)) {
+				UserCertificateDTO educationDTO = new UserCertificateDTO();
+				educationDTO.setName(name);
+				educationDTO.setDescription(description);
+				educationDTO.setUserid(user.getId());
+				BaseDAO.save(educationDTO);
+			} else if("edit".equalsIgnoreCase(operation)) {
+				List<UserCertificateDTO> experties = ProfileDAO.getCertificateByField("id", new Integer(id));
+				if(experties != null) {
+					UserCertificateDTO cert = experties.get(0);
+					cert.setDescription(description);
+					cert.setName(name);
+					BaseDAO.update(cert);
+				}
+			} else if("remove".equalsIgnoreCase(operation)) {
+				List<UserCertificateDTO> experties = ProfileDAO.getCertificateByField("id", new Integer(id));
+				if(experties != null) {
+					UserCertificateDTO cert = experties.get(0);
+					BaseDAO.remove(cert);
+				}
+			}
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

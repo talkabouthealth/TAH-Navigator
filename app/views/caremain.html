@@ -30,6 +30,7 @@
 			#content{ padding:20px 0 0 0 }
 			.table{FONT-SIZE:11px;}
 			.navbar{ background-color: #00509b; /*border-bottom: 3px solid #000000;*/ }
+			select.form-control {    padding-top: 10px; }
 		-->
 		</style>
 		<!--End Container-->
@@ -44,28 +45,28 @@
 		<script src="/public/js/devoops.js"></script>
 </head>
 <body>
-	<div id="screensaver">
-		<canvas id="canvas"></canvas>
-		<i class="fa fa-lock" id="screen_unlock"></i>
-	</div>
-	<div id="modalbox">
-		<div class="devoops-modal">
-			<div class="devoops-modal-header">
-				<div class="modal-header-name">
-					<span>Basic table</span>
-				</div>
-				<div class="box-icons">
-					<a class="close-link">
-						<i class="fa fa-times"></i>
-					</a>
-				</div>
-			</div>
-			<div class="devoops-modal-inner">
-			</div>
-			<div class="devoops-modal-bottom">
-			</div>
-		</div>
-	</div>
+<!-- 	<div id="screensaver"> -->
+<!-- 		<canvas id="canvas"></canvas> -->
+<!-- 		<i class="fa fa-lock" id="screen_unlock"></i> -->
+<!-- 	</div> -->
+<!-- 	<div id="modalbox"> -->
+<!-- 		<div class="devoops-modal"> -->
+<!-- 			<div class="devoops-modal-header"> -->
+<!-- 				<div class="modal-header-name"> -->
+<!-- 					<span>Basic table</span> -->
+<!-- 				</div> -->
+<!-- 				<div class="box-icons"> -->
+<!-- 					<a class="close-link"> -->
+<!-- 						<i class="fa fa-times"></i> -->
+<!-- 					</a> -->
+<!-- 				</div> -->
+<!-- 			</div> -->
+<!-- 			<div class="devoops-modal-inner"> -->
+<!-- 			</div> -->
+<!-- 			<div class="devoops-modal-bottom"> -->
+<!-- 			</div> -->
+<!-- 		</div> -->
+<!-- 	</div> -->
 	<header class="navbar">
 	<div class="container-fluid expanded-panel">
 		<div class="row">
@@ -80,14 +81,16 @@
 						</a>
                        <div class="media2">
                       <a href="javaScript:void(0);">
-                    <img src="@{Image.show(user.id)}"  height="50" style="margin-top: 0;">
+                    <img class="profilePic" src="@{Image.show(user.id)}"  height="50" style="margin-top: 0;"/>
                     </a> 
                        <div class="media-body top-user-p">
 <!--                         <em id="todayDate">Thusday 4/24/2014</em> -->
                         <h3>#{userName userName: user.name, userId:user.id /}</h3>
                         <p class="initialism">
                         	#{if expertDetail != null}
+                        	#{if expertDetail.designation != null}
                         		${expertDetail.designation.designation} 
+                        	#{/if}
                         	#{/if}
                         </p>
                         <p class="last">Last Login <span id="timeAgo">${session.get("lastLoginTime")}</span></p>
@@ -105,13 +108,13 @@
                     	<li>
                         <a href="#"  data-toggle="dropdown"><i class="fa fa-cog"></i></a>
 								<ul class="dropdown-menu">
-									<li><a href="@{Care.setting()}"><i class="fa fa-spinner"></i><span class="hidden-sm text">Profile Image [Test]</span></a></li>
+<!-- 									<li><a href="@{Care.setting()}"><i class="fa fa-spinner"></i><span class="hidden-sm text">Profile Image [Test]</span></a></li> -->
 									<li><a href="@{Care.profile()}"><i class="fa fa-inbox"></i><span class="hidden-sm text">Edit Profile</span></a></li>
 									<li><a href="@{Care.education()}"><i class="fa fa-user"></i><span class="hidden-sm text">Edit Education's</span></a></li>
 									<li><a href="@{Care.experties()}"><i class="fa fa-user"></i><span class="hidden-sm text">Edit Experties's</span></a></li>
 									<li><a href="@{Care.certifications()}"><i class="fa fa-user"></i><span class="hidden-sm text">Edit Certification's</span></a></li>
-									
-<!-- 									<li><a href="@{Patient.password()}"><i class="fa fa-lock"></i><span class="hidden-sm text">Edit password</span></a></li> -->
+ 									<li><a href="@{Care.password()}"><i class="fa fa-lock"></i><span class="hidden-sm text">Edit password</span></a></li>
+ 									<li><a href="@{Care.contact()}"><i class="fa fa-lock"></i><span class="hidden-sm text">Edit Contact info</span></a></li> 
 								</ul>
 							</li>
                          <li><a href="/logout"><i class="fa fa-power-off"></i></a></li>

@@ -45,13 +45,13 @@ $(document).ready(function() {
            currHeader.children('.ui-icon').toggleClass('ui-icon-triangle-1-e',isPanelSelected).toggleClass('ui-icon-triangle-1-s',!isPanelSelected);
            currContent.toggleClass('accordion-content-active',!isPanelSelected)
 
-			if (isPanelSelected) { 
+			if (isPanelSelected) {
         	   	currContent.slideUp(); 
 			} else {
                var teamId = $(currHeader).data('teamid');
         	   currContent.slideDown();
         	   $(currContent ).html('loading');
-        	   $.post( "/patient/careteamSpecific", {careTeamId:teamId}, function( data ) {
+        	   $.post( "/patient/careteamSpecific", {d:new Date(),careTeamId:teamId}, function( data ) {
             	   $(currContent ).html( data );
             	 });
 			}
@@ -63,7 +63,7 @@ $(document).ready(function() {
 			var currContent = ui.content[0];
 			var teamId = $(currHeader).data('teamid');
 			$(currContent ).html('loading');
-			$.post( "/patient/careteamSpecific", {careTeamId:teamId}, function( data ) {
+			$.post( "/patient/careteamSpecific", {d:new Date(),careTeamId:teamId}, function( data ) {
            	   $(currContent ).html( data );
 			});
 		}
@@ -78,7 +78,7 @@ function expandAll() {
 	for(j = 0;j<h3List.length;j++) {
 		i = j;
 		var teamId = $(h3List[j]).data('teamid');
-		$.post( "/patient/careteamSpecific", {careTeamId:teamId}, function( data ) {
+		$.post( "/patient/careteamSpecific", {d:new Date(),careTeamId:teamId}, function( data ) {
 		 	$(h3List[i]).next('div').html( data );
 		});
 	}
