@@ -25,7 +25,7 @@ public class ProfileDAO {
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {
-			em.close();
+//			em.close();
 		}
 		return dto;
 	}

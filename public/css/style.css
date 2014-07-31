@@ -1550,19 +1550,26 @@ td.beauty-hover {
   padding: 0;
 }
 .ui-tabs .ui-tabs-nav .ui-tabs-anchor {
-  padding: 5px 15px;
+  padding: 10px 15px;
   outline: none !important;
+     font-size: 12px;
+    font-weight: bold;
 }
 .ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor {
   background:#fcfcfc;
   border:1px solid #d8d8d8;
   border-bottom: 0;
+   border-radius: 10px 10px 0 0;
+    color: #00509b;
+    font-size: 12px;
+    font-weight: bold;
 }
 .ui-tabs .ui-tabs-nav {
   padding: 0;
 }
 .ui-tabs .ui-tabs-panel {
-  padding: 1em 0;
+  padding: 1em;
+  /*padding: 1em 0;*/
 }
 .ui-widget {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;

@@ -8,29 +8,29 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 	<meta name="author" content="TalkAboutHealth" /> 
 	<meta name="robots" content="all" /> 
-	<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="@{'/public/img/favicon.ico'}" />
 	<title>Care : TAH Navigator</title>
-		<link href="/public/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
-		<link href="/public/plugins/bootstrap/bootstrap.css" rel="stylesheet">
-		<link href="/public/css/font-awesome.css" rel="stylesheet">
-		<link href='/public/css/righteous.css' rel='stylesheet' type='text/css'>
-		<link href="/public/plugins/fancybox/jquery.fancybox.css" rel="stylesheet">
-		<link href="/public/plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
-		<link href="/public/plugins/xcharts/xcharts.min.css" rel="stylesheet">
-		<link href="/public/plugins/select2/select2.css" rel="stylesheet">
-		<link href="/public/css/style.css" rel="stylesheet">
-		<link href="/public/css/screen.css" rel="stylesheet">
+		<link href="/public/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet"/>
+		<link href="/public/plugins/bootstrap/bootstrap.css" rel="stylesheet"/>
+		<link href="/public/css/font-awesome.css" rel="stylesheet"/>
+		<link href='/public/css/righteous.css' rel='stylesheet' type='text/css'/>
+		<link href="/public/plugins/fancybox/jquery.fancybox.css" rel="stylesheet"/>
+		<link href="/public/plugins/fullcalendar/fullcalendar.css" rel="stylesheet"/>
+		<link href="/public/plugins/xcharts/xcharts.min.css" rel="stylesheet"/>
+		<link href="/public/plugins/select2/select2.css" rel="stylesheet"/>
+		<link href="/public/css/style.css" rel="stylesheet"/>
+		<link href="/public/css/screen.css" rel="stylesheet"/>
 		<style type="text/css">
 		<!--
 			body,#sidebar-left ,#breadcrumb{
 				background: #0F7970 url('/public/img/devoops_pattern_b10.png') 0 0 repeat !important;
 			}
 			#content{ padding:20px 0 0 0 }
-			.table{FONT-SIZE:11px;}
+/* 			.table{FONT-SIZE:11px;} */
 			.navbar{ background-color: #00509b; /*border-bottom: 3px solid #000000;*/ }
 			select.form-control {    padding-top: 10px; }
+			.nopadding{padding:0px;margin: 0px;}
 		-->
 		</style>
 		<!--End Container-->
@@ -45,37 +45,15 @@
 		<script src="/public/js/devoops.js"></script>
 </head>
 <body>
-<!-- 	<div id="screensaver"> -->
-<!-- 		<canvas id="canvas"></canvas> -->
-<!-- 		<i class="fa fa-lock" id="screen_unlock"></i> -->
-<!-- 	</div> -->
-<!-- 	<div id="modalbox"> -->
-<!-- 		<div class="devoops-modal"> -->
-<!-- 			<div class="devoops-modal-header"> -->
-<!-- 				<div class="modal-header-name"> -->
-<!-- 					<span>Basic table</span> -->
-<!-- 				</div> -->
-<!-- 				<div class="box-icons"> -->
-<!-- 					<a class="close-link"> -->
-<!-- 						<i class="fa fa-times"></i> -->
-<!-- 					</a> -->
-<!-- 				</div> -->
-<!-- 			</div> -->
-<!-- 			<div class="devoops-modal-inner"> -->
-<!-- 			</div> -->
-<!-- 			<div class="devoops-modal-bottom"> -->
-<!-- 			</div> -->
-<!-- 		</div> -->
-<!-- 	</div> -->
 	<header class="navbar">
 	<div class="container-fluid expanded-panel">
 		<div class="row">
 			<div  class="col-xs-12 col-sm-2 logo-div">
-				<div class="logo-div"><img src="/public/images/moffitt-logo.png" height="90"></div>
+				<div class="logo-div"><img src="/public/images/moffitt-logo.png" height="90"/></div>
 			</div>
 			<div id="top-panel" class="col-xs-12 col-sm-10" style="box-shadow: 0 -3px 6px 0 #000; height: 124px;">
 				<div class="row">
-					<div class="col-sm-4">
+					<div class="col-sm-6" style="padding-top:10px">
 						<a href="#" class="show-sidebar">
 						  <i class="fa fa-bars"></i>
 						</a>
@@ -93,16 +71,11 @@
                         	#{/if}
                         	#{/if}
                         </p>
-                        <p class="last">Last Login <span id="timeAgo">${session.get("lastLoginTime")}</span></p>
+                        <p class="last">Last Login <span class="timeAgo" title="${session.get("lastLoginTime")}">${session.get("lastLoginTime")}</span></p>
                       </div>    
                         </div>
 					</div>
-                    <div class="col-sm-4 text-center">
-                    <div class="center_top">
-<!--                     <p class="top-cent-t"> IF YOU HAVE AN EMERGENCY <span> DIAL 911 </span></p> -->
-                    </div>
-                    </div>
-					<div class="col-sm-4 ">  
+					<div class="col-sm-6" style="padding-top:20px;">  
                 	<ul class="nav navbar-nav pull-right panel-menu right-lint-i">
                     	<li><a href="#" class="active"><i class="fa fa-bell"></i><span class="coun-n">2</span></a></li>
                     	<li>
@@ -171,9 +144,9 @@
 <script>
 <!--
 $(document).ready(function() {
-	$("#todayDate").html($.datepicker.formatDate('DD dd/mm/yy', new Date()));//Thusday 4/24/2014
-	console.log('${session.get("lastLoginTime")}');
-	$("#timeAgo").html($.timeago('${session.get("lastLoginTime")}'));
+	$("#todayDate").html($.datepicker.formatDate('DD dd/mm/yy', new Date()));
+	$(".timeAgo").timeago();
+	
 	$('body').on('click', 'li.disabled', function() {
 		$('#myModal').modal();
 	});
@@ -206,7 +179,6 @@ $(document).ready(function() {
 	#{ if session.get("newsletterDisplayed") == "0"}
 		$("#distress").modal();
 	#{/if}
-	
 });
 -->
 </script>

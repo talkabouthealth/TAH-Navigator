@@ -109,3 +109,29 @@ INSERT INTO nav.designationmaster(abbr, designation) VALUES ('Dr', 'Chief Radiat
 INSERT INTO nav.designationmaster(abbr, designation) VALUES ('Dr', 'Support Specialist');
 INSERT INTO nav.designationmaster(abbr, designation) VALUES ('', 'Research Coordinator');
 INSERT INTO nav.designationmaster(abbr, designation) VALUES ('', 'Cancer Center Administrator');
+
+-- Date 29 July
+
+CREATE TABLE nav.notes
+(
+  id serial NOT NULL,
+  noteby integer,
+  notefor integer,
+  notedesc text,
+  notedate timestamp without time zone,
+  editdate timestamp without time zone,
+  notetitle character varying(500),
+  CONSTRAINT "notes_PK" PRIMARY KEY (id),
+  CONSTRAINT fkc89a3e36836a0e07 FOREIGN KEY (notefor)
+      REFERENCES nav."user" (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT fkc89a3e36c6881639 FOREIGN KEY (noteby)
+      REFERENCES nav."user" (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT "noteBy_FK" FOREIGN KEY (noteby)
+      REFERENCES nav."user" (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT "noteFor_FK" FOREIGN KEY (notefor)
+      REFERENCES nav."user" (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)

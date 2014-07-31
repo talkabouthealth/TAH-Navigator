@@ -1,12 +1,14 @@
 package nav.dto;
 
 import models.PatientDetailDTO;
+import models.PatientDistressDTO;
 import models.UserDetailsDTO;
 
 public class PatientBean {
 	
 	private UserDetailsDTO userDetails;
 	private PatientDetailDTO patientOtherDetails;
+	private DistressBean distress;
 
 	public UserDetailsDTO getUserDetails() {
 		return userDetails;
@@ -19,5 +21,11 @@ public class PatientBean {
 	}
 	public void setPatientOtherDetails(PatientDetailDTO patientOtherDetails) {
 		this.patientOtherDetails = patientOtherDetails;
+	}
+	public DistressBean getDistress() {
+		return distress;
+	}
+	public void setDistress(DistressBean distress) {
+		this.distress = distress;
 	}
 }

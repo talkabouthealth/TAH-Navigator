@@ -1,33 +1,564 @@
 #{set pageType = 'patient1' /}
 #{extends 'caremain.html' /}
 	<!--Start Content-->
-<div id="content" class="col-xs-12 col-sm-10">
+	<style>
+<!--
+.modal-body table td, table td {padding:5px;}
+.nopadding{padding:0px;}
+.modal-body td:first-child {
+    line-height: 40px;
+    vertical-align: top;
+    width: 170px !important;
+}
+p {
+    margin: 0;
+}
+.td-symp,.td-graph{   
+background: linear-gradient(180deg, #ff4488 50%, #ff0000 50%);
+    float: left;
+    height: 45px;
+    margin-left: 20px;
+    padding: 5px;}
+    .title {
+    color: #00509b;
+    font-size: 20px;
+}
 
+-->
+</style>
+<div id="content" class="col-xs-12 col-sm-10">
 	<div class="col-xs-12 col-sm-12">
 		<div id="tabs">
 			<ul>
 				<li><a href="#tabs-1">SUMMARY</a></li>
-				<li><a href="#tabs-2">APPOINTMENT</a></li>
-				<li><a href="#tabs-3">CARE TEAM</a></li>
-				<li><a href="#tabs-4">MEDICATION</a></li>
-				<li><a href="#tabs-5">TREATMENT PLAN</a></li>
-				<li><a href="#tabs-6">FOLLOW-UP CARE PLAN</a></li>
-				<li><a href="#tabs-7">DIAGNOSIS</a></li>
+				<li><a href="@{CarePatien.appointment(patientId)}">APPOINTMENT</a></li>
+				<li><a href="@{CarePatien.careteam(patientId)}">CARE TEAM</a></li>
+				<li><a href="@{CarePatien.medication(patientId)}">MEDICATIONS</a></li>
+				<li><a href="@{CarePatien.treatmentPlan(patientId)}">TREATMENT PLAN</a></li>
+				<li><a href="@{CarePatien.followupPlan(patientId)}">FOLLOW-UP CARE PLAN</a></li>
+				<li><a href="@{CarePatien.diagnosis(patientId)}">DIAGNOSIS</a></li>
 			</ul>
-			<div id="tabs-1"><p>SUMMARY</p></div>
-			<div id="tabs-2"><p>APPOINTMENT</p></div>
-			<div id="tabs-3"><p>CARE TEAM</p></div>
-			<div id="tabs-4"><p>MEDICATION</p></div>
-			<div id="tabs-5"><p>TREATMENT PLAN</p></div>
-			<div id="tabs-6"><p>FOLLOW-UP CARE PLAN</p></div>
-			<div id="tabs-7"><p>DIAGNOSIS</p></div>
+			<div id="tabs-1">
+				<div class="col-xs-12 col-sm-12 nopadding">
+					<div class="col-xs-4 col-sm-4 nopadding" style="border-right: 1px solid #CCC">
+					<!-- patient area -->
+					<table>
+						<tr>
+						<td>
+							<img class="profilePic" src="@{Image.show(patientDto.id)}"  height="50">
+						</td>
+						<td>
+							<h3>#{userName userName: patientDto.user.name, userId:patientDto.id /}</h3>
+							<p class="initialism">
+                        	#{if patientOtherDetails != null && patientOtherDetails.disease != null}
+                        		${patientOtherDetails.disease.name}, STAGE ${patientOtherDetails.stage}
+                        	#{/if}
+                        	#{else}Not Added
+                        	#{/else}
+                        	</p>
+						</td>
+<!-- 						</tr><tr><td colspan="2">&nbsp;</td></tr> -->
+						<tr><td colspan="2">
+							<p><strong>DOB:</strong> #{if patientDto.dob != null}${patientDto.dob.format("M/d/yyyy")}#{/if}</p>
+							<p><strong>Phone: </strong> ${patientDto.homePhone}</p>
+						</td>
+						</tr>
+<!-- 						<tr><td colspan="2">&nbsp;</td></tr> -->
+						<tr><td colspan="2">
+							#{if patientOtherDetails != null}
+                    	   		#{if patientOtherDetails.dateofdiagnosis != null}
+                        		<p><strong>Date of Diagnosis:</strong> ${patientOtherDetails.dateofdiagnosis.format('dd.MM.yyyy')}</p>
+                        		#{/if}
+                        		<p><strong>Support Contact:</strong>support@email.com</p>
+							#{/if}
+							#{else}
+                        		<p><strong>Date of Diagnosis:</strong> -</p>
+                        		<p><strong>Support Contact:</strong>support@email.com</p>
+							#{/else}
+						</td>
+						</tr>
+<!-- 						<tr><td colspan="2">&nbsp;</td></tr> -->
+						<tr><td colspan="2">
+							<p><strong>Next Appointment:</strong> -</p>
+							<p><strong>Last Appointment: </strong> -</p>
+						</td>
+						</tr>
+<!-- 						<tr><td colspan="2">&nbsp;</td></tr> -->
+						<tr><td colspan="2">
+							<p><strong>DOCTOR:</strong> -</p>
+							<p><strong>LEAD NURSE: </strong> -</p>
+						</td>
+						</tr>
+					</table>
+					</div>
+					<div class="col-xs-4 col-sm-4" style="border-right: 1px solid #CCC">
+						<p class="title">DISTRESS</p>
+						#{if distress != null }
+						<table>
+							<tr><td colspan="2"> <p class="last">Last Updated <span id="timeAgo">${distress.distressDate.format('dd.MM.yyyy')}</span></p></td></tr>
+							<tr>
+								<td>
+									<div style=" background-color: #efefef;float: left;padding: 5px 10px;">
+										<span style="  background-color: #fff;float:left;color:darkred;border: 5px solid darkred;border-radius: 40px;font-size: 25px;font-weight: 700;padding: 0px 10px;">${distress.curDist}</span>
+										<span style="float:left;color:darkred;font-weight: bold;padding-left: 10px;">
+										#{if distress.curDist < 5}
+											MILD<br/> DISTRESS
+										#{/if}
+										#{if distress.curDist == 5}
+											MEDIUM<br/> DISTRESS
+										#{/if}
+										#{if distress.curDist > 5}
+											SEVERE<br/> DISTRESS
+										#{/if}
+										</span>
+										<span class="td-graph"></span>
+									</div>
+								</td>
+							</tr>
+<!-- 							<tr><td colspan="2">&nbsp;</td></tr> -->
+							<tr>
+								<td><p><strong>CURRENT PROBLEM LIST</strong>
+								<br/>
+									${distress.otherdetail.printMessage()}
+								</p>
+								</td>
+							</tr>
+<!-- 							<tr><td colspan="2">&nbsp;</td></tr> -->
+							<tr>
+								<td><p><strong>PAST PROBLEM LIST</strong>
+								<br/>
+									${distress.otherdetail.printMessage()}
+								</p>
+								</td>
+							</tr>
+						</table>	
+						#{/if}
+						#{else}
+							No Data available
+						#{/else}
+					</div>
+					<div class="col-xs-4 col-sm-4"><p class="title">SYMPTOMS</p>
+						<table>
+							<tr><td colspan="2"> <p class="last">Last Updated <span id="timeAgo">29.07.2014</span></p></td></tr>
+							<tr>
+								<td><p><strong>PAIN</strong></p>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+								<td>
+								<div style=" background-color: #efefef;float: left;padding: 5px 10px;">
+										<span style="  background-color: #fff;float:left;color:darkred;border: 5px solid darkred;border-radius: 40px;font-size: 25px;font-weight: 700;padding: 0px 10px;">8</span>
+										<span class="td-symp"><canvas style="display: inline-block; vertical-align: top; width: 117px; height: 35px;" width="117" height="35"></canvas></span>
+									</div>
+								</td>
+							</tr>
+<!-- 							<tr><td colspan="2">&nbsp;</td></tr> -->
+							<tr>
+								<td><p><strong>FATIGUE</strong></p>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+								<td>
+								<div style=" background-color: #efefef;float: left;padding: 5px 10px;">
+										<span style="  background-color: #fff;float:left;color:darkred;border: 5px solid darkred;border-radius: 40px;font-size: 25px;font-weight: 700;padding: 0px 10px;">2</span>
+										<span class="td-symp"><canvas style="display: inline-block; vertical-align: top; width: 117px; height: 35px;" width="117" height="35"></canvas></span>
+									</div>
+								</td>
+							</tr>
+<!-- 							<tr><td colspan="2">&nbsp;</td></tr> -->
+							<tr>
+								<td><p><strong>NAUSEA</strong></p>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+								<td>
+								<div style=" background-color: #efefef;float: left;padding: 5px 10px;">
+										<span style="  background-color: #fff;float:left;color:darkred;border: 5px solid darkred;border-radius: 40px;font-size: 25px;font-weight: 700;padding: 0px 10px;">7</span>
+										<span class="td-symp"><canvas style="display: inline-block; vertical-align: top; width: 117px; height: 35px;" width="117" height="35"></canvas></span>
+									</div>
+								</td>
+							</tr>
+<!-- 							<tr><td colspan="2">&nbsp;</td></tr> -->
+							<tr>
+								<td><p><strong>SLEEP<br/>ISSUES</strong></p>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+								<td>
+								<div style=" background-color: #efefef;float: left;padding: 5px 10px;">
+										<span style=" background-color: #fff;float:left;color:darkred;border: 5px solid darkred;border-radius: 40px;font-size: 25px;font-weight: 700;padding: 0px 10px;">4</span>
+										<span class="td-symp"><canvas style="display: inline-block; vertical-align: top; width: 117px; height: 35px;" width="117" height="35"></canvas></span>
+									</div>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				<div class="col-xs-12 col-sm-12 nopadding" style="border-top: 1px solid #CCC;margin-top: 20px;padding-top: 20px;">
+				<div style="padding-bottom:20px;">
+				<span class="title" style="vertical-align: middle;">NOTES</span>&nbsp;&nbsp;<button class="btn btn-default btn-sm noteBtn" style="font-weight:bold;">+ NEW NOTE</button>
+				</div>
+				#{if noteList != null}
+				<table class="col-xs-12 col-sm-12">
+					#{list noteList, as:'seq'}
+					<tr><td style="color: #686d73;">
+						<p class="last">#{userName userName: seq.noteBy.name, userId:seq.noteBy.id /}, ${seq.noteDate.format('MM/dd/yyyy - hh:mm a')}</p>
+						<p style="font-weight:bold;font-size: 15px;">${seq.noteTitle}</p>
+						${seq.noteDesc}
+						</td>
+						<td nowrap="nowrap" style="float: right;padding-left:20px;">
+							<a class="btn btn-danger-small" href="javaScript:operationNote('edit','${seq.id}','${seq.noteTitle}','${seq.noteDesc}')">Edit</a>
+							<a class="btn btn-danger-small" href="javaScript:operationNote('delete','${seq.id}')">Delete</a>
+						</td>
+						</tr>
+						<tr><td style="border-top:1px solid #CCC;" colspan="2"></td></tr>
+					#{/list}
+					</table>
+				#{/if}
+				</div>
+			</div>
 		</div>
 	</div>
 	<div id="ajax-content"></div>
 </div>
+
+<div class="modal fade" id="addEditmedication" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">ADD NEW MEDICATION</h4>
+			</div>
+			<div class="modal-body">
+				<table>
+					<tr><td colspan="2">NEW MEDICATION INFORMATION</td></tr>
+					<tr>
+						<td>Generic Name</td>
+						<td><input type="text" class="form-control"/></td>
+					</tr>
+					<tr>
+						<td>Brand Name</td>
+						<td><input type="text" class="form-control"/></td>
+					</tr>
+					<tr>
+						<td>Frequency</td>
+						<td>
+							<select class="form-control">
+								<option>3 Pill's daily</option>
+								<option>2 Pill's daily</option>
+								<option>1 Pill daily</option>
+								<option>1 Pill weekly</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Prescribing Physician</td>
+						<td>
+							<select class="form-control">
+								<option>Dr. A</option>
+								<option>Dr. B</option>
+								<option>Dr. C</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Special Intrsuctions</td>
+						<td><textarea class="otherDetails" style=" height: 60px;min-width: 385px;max-width: 385px;width: 385px;"></textarea></td>
+					</tr>
+				</table>
+      		</div>
+      		<div class="modal-footer">
+        		<button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
+      		</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="addEditAppointment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">ADD NEW APPOINTMENT</h4>
+			</div>
+			<div class="modal-body">
+				<table style="width: 100%">
+					<tr><td colspan="2">APPOINTMENT INFORMATION</td></tr>
+					<tr>
+						<td nowrap="nowrap">Purpose of Appointment</td>
+						<td><select class="form-control">
+								<option>Invasive Ductal Carcinoma</option>
+							</select></td>
+					</tr>
+					<tr>
+						<td>Time</td>
+						<td><select class="form-control">
+								<option>9 AM</option><option>10 AM</option><option>11 AM</option><option>12 Noon</option><option>1 PM</option><option>2 PM</option>
+								<option>3 PM</option><option>4 PM</option><option>5 PM</option><option>6 PM</option>
+							</select></td>
+					</tr>
+					<tr>
+						<td>Date</td>
+						<td><input type="text" class="form-control"/></td>
+					</tr>
+					<tr>
+						<td>Center</td>
+						<td><input type="text" class="form-control"/></td>
+					</tr>
+					<tr>
+						<td>Physician/Nurse</td>
+						<td><select class="form-control">
+								<option>Dr. A</option>
+								<option>Dr. B</option>
+								<option>Dr. C</option>
+							</select></td>
+					</tr>
+					<tr>
+						<td>Address1</td>
+						<td><input type="text" class="form-control"/></td>
+					</tr>
+					<tr>
+						<td>Address2</td>
+						<td><input type="text" class="form-control"/></td>
+					</tr>					
+					<tr>
+						<td>City</td>
+						<td><input type="text" class="form-control"/></td>
+					</tr>							
+					<tr>
+						<td>State</td>
+						<td><select class="form-control">
+								<option>New York</option>
+							</select></td>
+					</tr>
+				</table>
+      		</div>
+      		<div class="modal-footer">
+        		<button type="button" class="btn btn-default" data-dismiss="modal">SAVE</button>
+      		</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="addEditCareTeam" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">ADD NEW CARE TEAM</h4>
+			</div>
+			<div class="modal-body">
+				<table style="width: 100%">
+					<tr><td colspan="2">NEW CARE TEAM INFORMATION</td></tr>
+					<tr>
+						<td nowrap="nowrap">Type of Care Team</td>
+						<td><select class="form-control">
+								<option>Oncology</option>
+							</select></td>
+					</tr>
+					<tr>
+						<td>Center/Clinic Name</td>
+						<td><input type="text" class="form-control"/></td>
+					</tr>
+					<tr>
+						<td>Address1</td>
+						<td><input type="text" class="form-control"/></td>
+					</tr>
+					<tr>
+						<td>Address2</td>
+						<td><input type="text" class="form-control"/></td>
+					</tr>					
+					<tr>
+						<td>City</td>
+						<td><input type="text" class="form-control"/></td>
+					</tr>							
+					<tr>
+						<td>State</td>
+						<td><select class="form-control">
+								<option>New York</option>
+							</select></td>
+					</tr>
+				</table>
+      		</div>
+      		<div class="modal-footer">
+        		<button type="button" class="btn btn-default" data-dismiss="modal">SAVE</button>
+      		</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="addEditCareMemberTeam" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">ADD NEW CARE TEAM</h4>
+			</div>
+			<div class="modal-body">
+				<table style="width: 100%">
+					<tr><td colspan="2">NEW CARE TEAM INFORMATION</td></tr>
+					<tr>
+						<td nowrap="nowrap">Type of Care Team</td>
+						<td><select class="form-control">
+								<option>Oncology</option>
+							</select></td>
+					</tr>
+					<tr>
+						<td>Center/Clinic Name</td>
+						<td><input type="text" class="form-control"/></td>
+					</tr>
+					<tr>
+						<td>Address1</td>
+						<td><input type="text" class="form-control"/></td>
+					</tr>
+					<tr>
+						<td>Address2</td>
+						<td><input type="text" class="form-control"/></td>
+					</tr>					
+					<tr>
+						<td>City</td>
+						<td><input type="text" class="form-control"/></td>
+					</tr>							
+					<tr>
+						<td>State</td>
+						<td><select class="form-control">
+								<option>New York</option>
+							</select></td>
+					</tr>
+				</table>
+      		</div>
+      		<div class="modal-footer">
+        		<button type="button" class="btn btn-default" data-dismiss="modal">SAVE</button>
+      		</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="addEditNote" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-m">
+   <div class="modal-content col-xs-12 col-sm-12">
+   #{form @CarePatien.noteOperation() , id:'noteForm' }
+      	<input type="hidden" name="operation" />
+      	<input type="hidden" name="id" />
+   		<input type="hidden" name="patientId" value="${patientId}"/>
+    	
+      		<div class="modal-header">
+        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        		<h4 class="modal-title" id="myModalLabel">NEW NOTE</h4>
+      		</div>
+        	<div class="modal-body" style="float:left;display:block;">
+        	<table>
+        		<tr>
+        			<td>TITLE/LABEL</td>
+        			<td>
+        			<div class="input-group">
+									<input type="text" name="title" class="form-control" style="width: 400px;" required/>
+									<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+					    		</div>
+								<div class="help-block with-errors"></div>
+        				</td>
+        		</tr>
+        		<tr>
+        			<td>Note&nbsp;</td>
+        			<td>
+        			<div class="input-group">
+        				<textarea class="form-control" style="height: 120px;width:425px;max-width: 425px;" name="description"></textarea> 
+        				</div>
+        			</td>
+        		</tr>
+        	</table>
+    		</div>
+     		<div class="modal-footer col-xs-12 col-sm-12" >
+       			<button type="submit" class="btn btn-default" data-next="3">&nbsp;&nbsp;&nbsp;&nbsp; ADD NEW NOTE &nbsp;&nbsp;&nbsp;&nbsp;</button>
+    		</div>
+      
+      #{/form}
+		</div>
+	</div>
+</div>
 <script><!--
 $(document).ready(function() {
-	$("#tabs").tabs({ heightStyle: "fill"});
+	$("#tabs").tabs({
+	      beforeLoad: function( event, ui ) {
+	        ui.jqXHR.error(function() {
+	          ui.panel.html("Couldn't load this tab. We'll try to fix this as soon as possible." );
+	        });
+	      }
+	});
+	$('body').on('click', 'button.medicationBtn', function() {
+		operationMedication('add');
+	});
+	$('body').on('click', 'button.noteBtn', function() {
+		operationNote('add');
+	});
+	
+	$('body').on('click', 'button.appointmentBtn', function() {
+		operationAppointment('add');
+	});
+	
+	$('body').on('click', 'button.careTeamBtn', function() {
+		operationCareTeam('add');
+	});
+	
+	/* $('body').on('click', 'button.careTeamMemberBtn', function(event) {
+		 event.stopPropagation(); // this is
+		    event.preventDefault(); // the magic
+		operationCareTeamMember('add');
+	}); */
+	
+	// Load Sparkline plugin and run callback for draw Sparkline charts for dashboard(top of dashboard + plot in tables)
+	LoadSparkLineScript(DrawSparklineDashboardNew);
 });
+operationMedication = function(operation) {
+	if(operation == 'edit') {
+		$('#addEditmedication').modal();
+	} else if(operation == 'delete') {
+		
+	} else {
+		$('#addEditmedication').modal();
+	}
+}
+operationNote = function(operation,id,title,desc) {
+	if(operation == 'edit') {
+		$("#myModalLabel").html("EDIT NOTE");
+		$("#noteForm input[name='operation']").val("edit");
+		$("#noteForm input[name='id']").val(id);
+		$("#noteForm input[name='title']").val(title);
+		$("#noteForm textarea[name='description']").val(desc);
+		$('#addEditNote').modal();
+	} else if(operation == 'delete') {
+		if(confirm('Do you want to delete the note')) {
+			$("#noteForm input[name='operation']").val("delete");
+			$("#noteForm input[name='id']").val(id);
+			$("#noteForm").submit();
+		}
+	} else {
+		$("#myModalLabel").html("ADD NOTE");
+		$("#noteForm input[name='operation']").val("add");
+		$("#noteForm input[name='id']").val("0");
+		$("#noteForm input[name='title']").val("");
+		$("#noteForm textarea[name='description']").val("");
+		$('#addEditNote').modal();
+	}
+}
+operationAppointment = function(operation, id) {
+	$('#addEditAppointment').modal();
+}
+operationCareTeam = function(operation, id) {
+	$('#addEditCareTeam').modal();
+}
 
+operationCareTeamMember = function(operation, id) {
+// 	$('#addEditCareTeam').modal();
+	$('#addEditCareMemberTeam').modal();
+}
+
+function DrawSparklineDashboardNew(){
+// 	setInterval(SparklineLoop, 1000);
+	var sparkline_table = [ [1,341], [2,464], [4,564], [5,235], [6,335], [7,535], [8,642], [9,342], [10,765] ];
+	$('.td-graph').each(function(){
+		var arr = $.map( sparkline_table, function(val, index) {
+			return [[val[0], SmallChangeVal([val[1]])]];
+		});
+		$(this).sparkline( arr ,
+			{defaultPixelsPerValue: 13, minSpotColor: null, maxSpotColor: null, spotColor: null,
+			height: 35,fillColor: false, lineWidth: 2, lineColor: '#FFF'});
+		});
+	var sparkline_table = [ [1,641], [2,364], [4,564], [5,735], [6,235], [7,435], [8,342], [9,742], [10,465] ];
+	$('.td-symp').each(function(){
+		var arr = $.map( sparkline_table, function(val, index) {
+			return [[val[0], SmallChangeVal([val[1]])]];
+		});
+		$(this).sparkline( arr ,
+			{defaultPixelsPerValue: 13, minSpotColor: null, maxSpotColor: null, spotColor: null,
+			height: 35,fillColor: false, lineWidth: 2, lineColor: '#FFF'});
+		});
+}
 --></script>

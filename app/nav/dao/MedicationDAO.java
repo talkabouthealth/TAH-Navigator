@@ -11,7 +11,7 @@ import models.PatienCareTeamDTO;
 import models.PatientMedicationDTO;
 import models.UserDTO;
 
-public class MedicationDAO {
+public class MedicationDAO extends BaseDAO{
 
 	public static List<PatientMedicationDTO> getMedicine(String fieldName, Object value) {
 		System.out.println(fieldName +" : " + value.toString());

@@ -57,12 +57,20 @@ a {
 .acord h3{ color:#00509b; }
 
 .btn-default{background-color: #00509b !important;
-    border-color: #034b8e !important;
+    border-color: #00509b !important;
     color: #fff !important;
     }
 .btn-default-small {
 	background-color: #00509b !important;
     border-color: #034b8e !important;
+    color: #fff !important;
+     font-size: 11px;
+    font-weight: bold;
+    padding:2px 15px;
+}
+.btn-danger-small {
+	background-color: #843534 !important;
+    border-color: #843534 !important;
     color: #fff !important;
      font-size: 11px;
     font-weight: bold;

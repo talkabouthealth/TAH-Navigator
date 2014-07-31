@@ -1,15 +1,18 @@
 package nav.dto;
 
+import java.util.Date;
+
 public class DistressBean {
 
-	private String curDist;
+	private int curDist;
 	private boolean[] distressType;
+	private Date distressDate;
+	private String otherdetail;
 
-	
-	public String getCurDist() {
+	public int getCurDist() {
 		return curDist;
 	}
-	public void setCurDist(String curDist) {
+	public void setCurDist(int curDist) {
 		this.curDist = curDist;
 	}
 	public boolean[] getDistressType() {
@@ -17,6 +20,18 @@ public class DistressBean {
 	}
 	public void setDistressType(boolean[] distressType) {
 		this.distressType = distressType;
+	}
+	public Date getDistressDate() {
+		return distressDate;
+	}
+	public void setDistressDate(Date distressDate) {
+		this.distressDate = distressDate;
+	}
+	public String getOtherdetail() {
+		return otherdetail;
+	}
+	public void setOtherdetail(String otherdetail) {
+		this.otherdetail = otherdetail;
 	}
 
 	/*"1";1;"Child care"
@@ -53,5 +68,4 @@ public class DistressBean {
 	"32";4;"Skin dry/itchy"
 	"33";4;"Sleep"
 	"34";4;"Tingling in hands/feet"*/
-	
 }
