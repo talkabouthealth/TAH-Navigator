@@ -4,7 +4,6 @@ import org.apache.commons.lang.StringUtils;
 
 import nav.dao.DistressDAO;
 import nav.dao.UserDAO;
-import nav.dto.DistressBean;
 import nav.dto.UserBean;
 import models.PatientDistressDTO;
 import models.UserDTO;

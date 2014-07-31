@@ -1,6 +1,5 @@
 package controllers;
 
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -12,16 +11,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.imageio.ImageIO;
-
-import org.apache.commons.io.IOUtils;
-
 import models.AddressDTO;
 import models.CareTeamMemberDTO;
 import models.DesignationMasterDTO;
 import models.ExpertDetailDTO;
+import models.NoteDTO;
 import models.PatienCareTeamDTO;
 import models.PatientDetailDTO;
+import models.PatientDistressDTO;
 import models.UserCertificateDTO;
 import models.UserDTO;
 import models.UserDetailsDTO;
@@ -32,13 +29,18 @@ import nav.dao.AddressDAO;
 import nav.dao.BaseDAO;
 import nav.dao.CareTeamDAO;
 import nav.dao.DesignationMasterDAO;
+import nav.dao.DistressDAO;
 import nav.dao.ExpertDetailDAO;
+import nav.dao.NotesDAO;
 import nav.dao.ProfileDAO;
 import nav.dao.UserDAO;
 import nav.dao.UserTypeDAO;
+import nav.dto.DistressBean;
 import nav.dto.PatientBean;
 import nav.dto.UserBean;
-import play.data.Upload;
+
+import org.apache.commons.io.IOUtils;
+
 import play.mvc.Controller;
 import play.mvc.With;
 import util.CommonUtil;
@@ -70,6 +72,11 @@ public class Care extends Controller {
 	
 				patientDetail  = ProfileDAO.getPatientByField("id", patienCareTeamDTO.getPatienid());
 				patient.setPatientOtherDetails(patientDetail);
+				
+				DistressBean distress = DistressDAO.getLastDistress(patienCareTeamDTO.getPatien());
+				if(distress !=null) {
+					patient.setDistress(distress);
+				}
 				patients.add(patient);
 			}
 		}
@@ -85,9 +92,16 @@ public class Care extends Controller {
 
 	public static void patient(String patientId) {
 		UserBean user = CommonUtil.loadCachedUser(session);
-		System.out.println(session.getId());
 		ExpertDetailDTO expertDetail = ProfileDAO.getExpertByField("id", user.getId());
-        render(user,expertDetail);
+		
+		UserDetailsDTO patientDto = UserDAO.getDetailsById(patientId);
+		PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", patientId);
+		
+		DistressBean distress = DistressDAO.getLastDistress(patientDto.getUser());
+		
+		List<NoteDTO> noteList = NotesDAO.getPatientNotesList(patientId);
+		
+        render(user,expertDetail,patientId,patientDto,patientOtherDetails,distress,noteList);
     }
 	
 	public static void setting() {

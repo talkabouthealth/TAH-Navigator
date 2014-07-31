@@ -1,0 +1,170 @@
+                    <style>
+                    .d_dashboard_01{padding-bottom:10px;}
+                    </style>
+                    <!----------------->
+                     <div class="row margin_top">
+                      <div class="col-sm-10 ">
+                          <div class="d_dashboard_01">
+                          <p>Needs / Concerns</p>
+                          </div>
+                      </div>
+                    </div>
+            
+                     <div class="row">					
+                    <div class="col-xs-12 ">
+                        <div class="box table-responsive ui-draggable ui-droppable">
+                            
+                            <div class="box-content no-padding">
+                                <table class="table table-striped table-bordered table-hover table-heading no-border-bottom">
+                                    <thead>
+                                        <tr>
+                                            <th>CONCERN</th>
+                                            <th>NEXT STEPS</th>
+                                            <th>GOAL DATE</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Fertility</td>
+                                            <td>Research options for fertility. Find messages board / personal stories</td>
+                                            <td>05/16/2014</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Financial debt as a result of treatment.</td>
+                                            <td>Follow-up with case manager</td>
+                                            <td>05/20/2014</td>
+                                        </tr>
+                                </tbody></table>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    <!----------------->
+                    
+                    <!----------------->
+                    <div class="row margin_top">
+                      <div class="col-sm-10 ">
+                          <div class="d_dashboard_01">
+                          <p>Goals</p>
+                          </div>
+                      </div>
+                    </div>
+                    
+                    <div class="row">					
+                    <div class="col-xs-12 ">
+                        <div class="box table-responsive ui-draggable ui-droppable">
+                            <div class="box-content no-padding">
+                                <table class="table table-striped table-bordered table-hover table-heading no-border-bottom">
+                                    <thead>
+                                        <tr>
+                                            <th>GOALS</th>
+                                            <th>NEXT STEP</th>
+                                            <th>GOAL DATE</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Improve Physical Condition</td>
+                                            <td>Exercise 20 minutes daily, Sign up for local Yoga class, Find a walking partner.</td>
+                                            <td>05/14/2014</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Lose 10 Pounds</td>
+                                            <td>Eat smaller portions, shop for healtheir food options next trip to grocery store.</td>
+                                            <td>05/20/2014</td>
+                                        </tr>
+                                </tbody></table>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                    
+                    <!-------------------->
+                    
+                     <!----------------->
+                    <div class="row margin_top">
+                      <div class="col-sm-10 ">
+                          <div class="d_dashboard_01">
+                          <p>Follow-Up Care</p>
+                          </div>
+                      </div>
+                    </div>
+                    <div class="row">					
+                    <div class="col-xs-12 ">
+                        <div class="box table-responsive ui-draggable ui-droppable">
+                            
+                            <div class="box-content no-padding">
+                                <table class="table table-striped table-bordered table-hover table-heading no-border-bottom">
+                                    <thead>
+                                        <tr>
+                                            <th>CONCERN</th>
+                                            <th>FREQUENCY</th>
+                                            <th>END-DATE</th>
+                                            <th>PURPOSE</th>
+                                            <th>DOCTOR</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                       <tr>
+                                            <td>Breast self-exam</td>
+                                            <td>Monthly</td>
+                                            <td>Ongoing</td>
+                                            <td>To search for lumps and changes in breast</td>
+                                            <td></td>
+                                        </tr>
+										<tr>
+                                            <td>Mammogram</td>
+                                            <td>Every 6 Months</td>
+                                            <td>05/20/2014</td>
+                                            <td></td>
+                                            <td>Dr. Jen Lee</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Mammogram</td>
+                                            <td>Every year</td>
+                                            <td>05/20/2014</td>
+                                            <td></td>
+                                            <td>Dr. Jen Lee</td>
+                                        </tr>
+										<tr>
+                                            <td>Follow-up appointment</td>
+                                            <td>Every 6 months</td>
+                                            <td>05/01/2014</td>
+                                            <td>Regular check-up and physical exam</td>
+                                            <td>Dr. Murray Jones</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Pelvic Exam</td>
+                                            <td>Every year</td>
+                                            <td>Ongoing</td>
+                                            <td></td>
+                                            <td>Dr. Don Dizon</td>
+                                        </tr>
+                                </tbody></table>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-xs-12 col-sm-12 nopadding" style="border-top: 1px solid #CCC;margin-top: 20px;padding-top: 20px;">
+				<div style="padding-bottom:20px;">
+				<span class="title" style="vertical-align: middle;">NOTES</span>&nbsp;&nbsp;<button class="btn btn-default btn-sm noteBtn" style="font-weight:bold;">+ NEW NOTE</button>
+				</div>
+				#{if noteList != null}
+				<table class="col-xs-12 col-sm-12">
+					#{list noteList, as:'seq'}
+					<tr><td style="color: #686d73;">
+						<p class="last">#{userName userName: seq.noteBy.name, userId:seq.noteBy.id /}, ${seq.noteDate.format('MM/dd/yyyy - hh:mm a')}</p>
+						<p style="font-weight:bold;font-size: 15px;">${seq.noteTitle}</p>
+						${seq.noteDesc}
+						</td>
+						<td nowrap="nowrap" style="float: right;padding-left:20px;">
+							<a class="btn btn-danger-small" href="javaScript:operationNote('edit','${seq.id}','${seq.noteTitle}','${seq.noteDesc}')">Edit</a>
+							<a class="btn btn-danger-small" href="javaScript:operationNote('delete','${seq.id}')">Delete</a>
+						</td>
+						</tr>
+						<tr><td style="border-top:1px solid #CCC;" colspan="2"></td></tr>
+					#{/list}
+					</table>
+				#{/if}
+				</div>
+</div>
