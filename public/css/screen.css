@@ -27,13 +27,7 @@ a {
 .top-user-p p.last{font-size:10px;}
 .top-user-p p span{color:#00509b;}
 
-.media2{
-     margin-top: 15px; padding:10px;
-     }
 
-.media2 a img{
-  margin-top:10px; margin-left:10px; float:left; margin-right:8px;
-}
 
 .center_top{ /*line-height:70px; float:left;*/}
 .center_top p{  font-size:11px; /*text-align:center;*/ margin-top:37px;}
