@@ -170,12 +170,6 @@ line-height:30px;
   -moz-border-radius: 0 0 4px 0;
   border-radius: 0 0 4px 0;
 }
-#top-panel {
-  /*height: 100px;*/
-  background: #fff;
-  position:fixed absolute;
-  box-shadow:1px 1px #666;
-}
 #main {
   margin-top:/*87*/ 124px;
   min-height: 800px;
