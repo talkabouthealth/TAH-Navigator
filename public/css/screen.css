@@ -243,9 +243,6 @@ a {
 
 @media (min-width:768px) {
 .navbar2{display:none;}
-  .fa-bars {
-    display: none;
-  }
 }
 
 @media screen and (min-width:768px) and (max-width: 824px)
