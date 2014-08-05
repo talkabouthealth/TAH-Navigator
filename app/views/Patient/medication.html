@@ -1,11 +1,27 @@
 #{set pageType = 'medication' /}
 #{extends 'patientmain.html' /}
 	<!--Start Content-->
-<div id="content" class="col-xs-12 col-sm-10">
+<div class="col-xs-12 col-sm-10 medications content">
+  <div class="medication-calendar">
+    <label>My Medication Calendar</label>
+    <h2>Daily Medication Checklist</h2>
+    <table class="calendar">
+      <tbody>
+        <tr>
+          <td>
+            <h4>Monday <hr /></h4>
+            <h3>Tamoxifen</h3>
+          </td>
+          <td>
+            <h4>Tuesday</h4>
+            <h3>Tamoxifen</h3>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
  <div class="row">&nbsp;</div>
  <div class="row">
- 	
- 	
  		#{if medicationList != null && medicationList.size()>0}
  					#{list medicationList, as:'seq'}
  					<div class="col-xs-12 col-sm-12 nav-tabs">
