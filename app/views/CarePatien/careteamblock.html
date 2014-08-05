@@ -3,7 +3,11 @@
 		<div class="user-panel_02">
 			<div><img src="@{Image.show(expertBeanHead.expertDetail.id)}" class="user_img img-responsive"></div>
 			<div class="user_name">
-				<p><a href="#">${expertBeanHead.userDetails.firstName} ${expertBeanHead.userDetails.lastName}</a></p>
+				<p>
+					<a href="#">${expertBeanHead.userDetails.firstName} ${expertBeanHead.userDetails.lastName}</a>
+					<a href="javaScript:void('edit')" class="btn btn-danger-small">Edit</a>
+					<a href="javaScript:void('delete')" class="btn btn-danger-small">Delete</a>
+				</p>
 			</div>
 			<div class="user_bottm">
 				<p class="large-f"><span>${expertBeanHead.expertDetail.practiceAddr.line1} </span>, ${expertBeanHead.expertDetail.practiceAddr.line2}, ${expertBeanHead.expertDetail.practiceAddr.city}, 
@@ -46,8 +50,8 @@
 					#{if expertBean.expertDetail != null}
 					<div class="common_02_img"><img height="70" src="@{Image.show(expertBean.expertDetail.id)}"></div><!--  class="img-responsive" -->
 					<div class="common_02-name">
-					#{if expertBean.expertDetail.designation != null}
-						<b>${expertBean.expertDetail.designation.designation}</b>
+						#{if expertBean.expertDetail.designation != null}
+							<b>${expertBean.expertDetail.designation.designation}</b>
 						#{/if}
 						<p>
 							<a href="#">
@@ -56,9 +60,13 @@
 						<br/><b><span class="large-f">${expertBean.userDetails.mobile}
 						*{ &nbsp;|&nbsp;${expertBean.userDetails.email} }*
 						</span></b></p>
-       				</div>
+       				
        				#{/if}
+						<a href="javaScript:void('edit')" class="btn btn-danger-small">Edit</a>
+						<a href="javaScript:void('delete')" class="btn btn-danger-small">Delete</a>
+					</div>
 				</div>
+				
 			</div>
 		</div>
      #{/list}

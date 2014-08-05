@@ -101,7 +101,7 @@ ALTER TABLE nav.patientdetails ADD COLUMN proxyname character varying(250);
 ALTER TABLE nav.patientdetails ADD COLUMN proxynumber character varying(100);
 
 -- Date 15 July
-ALTER TABLE nav.careteammember RENAME 'primary' TO isprimary;
+ALTER TABLE nav.careteammember RENAME "primary" TO isprimary;
 
 -- Date 23 July
 INSERT INTO nav.designationmaster(abbr, designation) VALUES ('RN', 'Nurse Navigator');

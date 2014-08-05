@@ -263,13 +263,14 @@ background: linear-gradient(180deg, #ff4488 50%, #ff0000 50%);
 </div>
 
 <div class="modal fade" id="addEditAppointment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				<h4 class="modal-title" id="myModalLabel">ADD NEW APPOINTMENT</h4>
 			</div>
 			<div class="modal-body">
+				<p class="editNote"><span class="btn btn-default-small">CURRENT DATA:</span> <span style="font-size: 20px;">Thursday May 10th 2014 9AM - LUPECTOMY |</span> IF THIS IS NOT CORRECT, COMPLETE THE FORM BELOW</p>
 				<table style="width: 100%">
 					<tr><td colspan="2">APPOINTMENT INFORMATION</td></tr>
 					<tr>
@@ -463,6 +464,278 @@ background: linear-gradient(180deg, #ff4488 50%, #ff0000 50%);
 		</div>
 	</div>
 </div>
+
+
+
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" id="addRadiationTreatment">
+	<div class="modal-dialog modal-lg">
+	 <div class="modal-content col-xs-12 col-sm-12 panel-info">
+			  			<div class="modal-header">
+        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        		<h4 class="modal-title" id="myModalLabel">ADD NEW TREATMENT</h4>
+      		</div>
+        	<div class="modal-body">
+                    <form class="form-horizontal d_form" role="form">
+                       <div class="form-group">
+						<label class="col-sm-2 d_labl  ">Type of Radiation</label>
+						<div class="col-sm-7">
+							<input type="text" class="form-control" placeholder="APBI" data-toggle="tooltip" data-placement="bottom" title="Tooltip for name">
+						</div>
+					</div>
+                       <div class="form-group">
+						<label class="col-sm-2 d_labl ">Dose</label>
+						<div class="col-sm-7">
+							<input type="text" class="form-control" placeholder="60gy	" data-toggle="tooltip" data-placement="bottom" title="Tooltip for name">
+						</div>
+					</div>
+                       <div class="form-group">
+						<label class="col-sm-2 d_labl ">Schedule</label>
+						<div class="col-sm-7">
+							<select class="populate placeholder form-control" name="country">
+									<option value="">5X Weekly</option>
+									<option value="fr">3X Weekly</option>
+									<option value="de">6X Weekly</option>
+								</select>
+						</div>
+					</div>
+                       <div class="form-group">
+						<label class="col-sm-2 d_labl ">Dates</label>
+						<div class="col-sm-7">
+							<input type="text" id="input_date" class="form-control" style="width: 50px;float: left;margin-right: 10px;" placeholder="MM" size="2">
+                            <input type="text" id="input_date" class="form-control" style="width: 50px;float: left;margin-right: 10px;" placeholder="DD" size="2">
+                            <input type="text" id="input_date" class="form-control" style="width: 70px;float: left;margin-right: 10px;" placeholder="YYYY" size="4">
+                            <span style="float:left;margin-right:10px;">-</span>
+                            <input type="text" id="input_date" class="form-control" style="width: 50px;float: left;margin-right: 10px;" placeholder="MM" size="2">
+                            <input type="text" id="input_date" class="form-control" style="width: 50px;float: left;margin-right: 10px;" placeholder="DD" size="2">
+                            <input type="text" id="input_date" class="form-control" style="width: 70px;float: left;margin-right: 10px;" placeholder="YYYY" size="4">
+						</div>
+					</div>
+                       <div class="form-group">
+						<label class="col-sm-2 d_labl ">Side Effects</label>
+						<div class="col-sm-7">
+                        <div style="margin-bottom:12px; color:#999;"><i style="color:#C30;" class="fa fa-times"></i> Pain</div>
+                            <select class="populate placeholder form-control" name="country">
+									<option value="">Fatigue</option>
+									<option value="fr">Demo</option>
+									<option value="de">Demo</option>
+								</select>
+						</div>
+					</div>
+                       <div class="form-group">
+						<label class="col-sm-2 d_labl ">Note</label>
+						<div class="col-sm-7">
+                        <textarea class="form-control" style="width:475px;"></textarea>
+						</div>
+					</div>
+                    <br>
+                    <div class="modal-footer">
+						<div class="col-sm-7 col-sm-offset-5">
+							<button type="submit" class="btn btn-primary d_btn-blue">SUBMIT NEW TREATMENT</button>
+						</div>
+					</div>
+                    </form>
+              </div>           
+		</div>
+	</div>
+</div>
+ 
+   
+<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" id="addChemoTreatment">
+	<div class="modal-dialog modal-lg">
+	 <div class="modal-content col-xs-12 col-sm-12 panel-info">
+			  			<div class="modal-header">
+        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        		<h4 class="modal-title" id="myModalLabel">ADD NEW TREATMENT</h4>
+      		</div>
+        	<div class="modal-body">
+	<div class="dialogModal_content">
+     <div class="row"> 
+	 <div class="col-md-12 panel-info">
+			  			<div class="content-box-large box-with-header">
+				  			<div>
+
+                                <div class="row">
+									<div class="col-sm-12"> 
+                                    <div class="distress_01"><h3>NEW CHEMOTHERPAY TREATMENT</h3></div><br>
+                    <form class="form-horizontal d_form" role="form">
+                                    
+                       <div class="form-group">
+						<label class="col-sm-2 d_labl  ">Generic Name</label>
+						<div class="col-sm-7">
+							<input type="text" class="form-control" placeholder="APBI" data-toggle="tooltip" data-placement="bottom" title="Tooltip for name">
+						</div>
+					</div>
+                    
+                       <div class="form-group">
+						<label class="col-sm-2 d_labl ">Brand Name</label>
+						<div class="col-sm-7">
+							<input type="text" class="form-control" placeholder="60gy	" data-toggle="tooltip" data-placement="bottom" title="Tooltip for name">
+						</div>
+					</div>
+                    
+                       <div class="form-group">
+						<label class="col-sm-2 d_labl ">Schedule</label>
+						<div class="col-sm-7">
+							<select class="populate placeholder form-control" name="country">
+									<option value="">5X Weekly</option>
+									<option value="fr">3X Weekly</option>
+									<option value="de">6X Weekly</option>
+								</select>
+						</div>
+					</div>
+                    <div class="form-group">
+						<label class="col-sm-2 d_labl ">Dose Reduction</label>
+						<div class="col-sm-7">
+							<select class="populate placeholder form-control" name="country">
+									<option value="">50%</option>
+									<option value="fr">20%</option>
+									<option value="de">10%</option>
+								</select>
+						</div>
+					</div>
+                       <div class="form-group">
+						<label class="col-sm-2 d_labl ">Date</label>
+						<div class="col-sm-7">
+							<input type="text" id="input_date" class="form-control" placeholder="DD" style="width:50px;float:left;margin-right:10px;"/>
+                            <input type="text" id="input_date" class="form-control" placeholder="MM" style="width:50px;float:left;margin-right:10px;"/>
+                           	<input type="text" id="input_date" class="form-control" placeholder="YYYY" style="width:70px;float:left;margin-right:10px;"/>
+						</div>
+					</div>
+                       <div class="form-group">
+						<label class="col-sm-2 d_labl ">Side Effects</label>
+						<div class="col-sm-7">
+                           <div style="margin-bottom:12px; color:#999;"><i style="color:#C30;" class="fa fa-times"></i> Pain</div>
+                            <select class="populate placeholder form-control" name="country">
+									<option value="">Fatigue</option>
+									<option value="fr">Demo</option>
+									<option value="de">Demo</option>
+								</select>
+						</div>
+					</div>
+                       <div class="form-group">
+						<label class="col-sm-2 d_labl ">Note</label>
+						<div class="col-sm-7">
+                        <textarea class="form-control" rows="5">                        
+                        
+                        </textarea>
+						</div>
+					</div>
+                    <div class="modal-footer">
+						<div class="col-sm-7 col-sm-offset-5">
+							<button type="submit" class="btn btn-primary d_btn-blue">SUBMIT NEW TREATMENT</button>
+						</div>
+					</div>
+                    </form>
+                        </div>           
+   								</div>
+							</div>
+						</div>
+			  		</div>				
+				 </div>
+				</div>
+              </div>           
+		</div>
+	</div>
+</div>
+
+
+<div class="modal fade" id="addEditCaner" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-lg">
+   <div class="modal-content col-xs-12 col-sm-12">
+      	<input type="hidden" name="operation" />
+      	<input type="hidden" name="id" />
+   		<input type="hidden" name="patientId" value="${patientId}"/>
+      		<div class="modal-header">
+        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        		<h4 class="modal-title" id="myModalLabel">EDIT CANCER TYPE</h4>
+      		</div>
+        	<div class="modal-body">
+        	<p class="editNote"><span class="btn btn-default-small">CURRENT DATA:</span> <span style="font-size: 20px;">ER+, PR+, HER2- |</span> IF THIS IS NOT CORRECT, COMPLETE THE FORM BELOW</p>
+        	
+        	<table style="border: 1px solid #ccc; margin-top: 30px; width: 100%;">
+        		<tr>
+        			<td colspan="2"><h4 class="modal-title" id="myModalLabel">CANCER TYPE INFORMATION</h4></td>
+        		</tr>
+        		<tr>
+        			<td style="width: 50%; border-right: 1px solid #CCC; padding-right: 20px;"><table style="width:100%;">
+        		<tr>
+        			<td><span style="line-height: 16px;">Hormone and Her2 Status</span></td>
+        			<td>
+        			<div class="input-group">
+						<select class="form-control">
+        					<option>ER+</option>
+        					<option>ER-</option>
+        				</select>
+        				</div>
+        				<div class="input-group" style="margin: 5px 0;">
+        				<select class="form-control">
+        					<option>PR+</option>
+        					<option>PR-</option>
+        				</select>
+        				</div>
+        				<div class="input-group">
+        				<select class="form-control">
+        					<option>HER2+</option>
+        					<option>HER2-</option>
+        				</select>
+        				</div>
+        				</td>
+        		</tr>
+        		<tr>
+        			<td>Type&nbsp;</td>
+        			<td>
+        			<div class="input-group">
+        				<select class="form-control">
+        					<option>Invasive Ductal Carcinoma</option>
+        				</select>
+        				</div>
+        			</td>
+        		</tr>
+        		<tr>
+        			<td>Recurrence&nbsp;</td>
+        			<td>
+        			<div class="input-group">
+        				<select class="form-control">
+        					<option>NO</option>
+        					<option>YES</option>
+        				</select>
+        				</div>
+        			</td>
+        		</tr>
+        		<tr>
+        			<td>Symptoms&nbsp;</td>
+        			<td>
+        			<div class="input-group">
+        				Lump in Breast
+        				</div>
+        			</td>
+        		</tr>
+        		<tr>
+        			<td>Side Effects&nbsp;</td>
+        			<td>
+        			<div class="input-group">
+        				<select class="form-control">
+        					<option>Rash on Breast</option>
+        					<option>Other</option>
+        				</select>
+        				</div>
+        			</td>
+        		</tr>
+        		</table></td>
+        			<td style="width:50%;vertical-align: top;padding-left: 20px;">
+        			Aditional Comments<br/>
+        				<textarea style=" height: 300px;width: 360px;"></textarea>
+        			</td>
+        		</tr>
+        	</table>
+    		</div>
+     		<div class="modal-footer col-xs-12 col-sm-12" >
+       			<button type="submit" class="btn btn-default" data-next="3">&nbsp;&nbsp;&nbsp;&nbsp; UPDATE DATA &nbsp;&nbsp;&nbsp;&nbsp;</button>
+    		</div>
+		</div>
+	</div>
+</div>
+
 <script><!--
 $(document).ready(function() {
 	$("#tabs").tabs({
@@ -529,7 +802,17 @@ operationNote = function(operation,id,title,desc) {
 	}
 }
 operationAppointment = function(operation, id) {
-	$('#addEditAppointment').modal();
+	if(operation == 'edit') {
+		$('#addEditAppointment .editNote').show();
+		$('#addEditAppointment').modal();
+	} else if(operation == 'delete') {
+		if(confirm('Do you want to delete the note')) {
+			alert('deleting the appointment');			
+		}
+	} else {
+		$('#addEditAppointment .editNote').hide();
+		$('#addEditAppointment').modal();
+	}
 }
 operationCareTeam = function(operation, id) {
 	$('#addEditCareTeam').modal();
@@ -539,6 +822,17 @@ operationCareTeamMember = function(operation, id) {
 // 	$('#addEditCareTeam').modal();
 	$('#addEditCareMemberTeam').modal();
 }
+operationRadiationTreatment = function(operation, id) {
+	$('#addRadiationTreatment').modal();
+}
+operationChemoTreatment = function(operation, id) {
+	$('#addChemoTreatment').modal();
+}
+
+operationCancer = function(operation, id) {
+	$('#addEditCaner').modal();
+}
+
 
 function DrawSparklineDashboardNew(){
 // 	setInterval(SparklineLoop, 1000);
