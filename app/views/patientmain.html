@@ -47,14 +47,14 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
     </div>
   </div>
 </div>
-<header class="navbar">
+<div class="navbar">
   <div class="container-fluid expanded-panel">
     <div class="row">
-      <div  class="col-xs-12 col-sm-2">
-        <div class="logo-div"><img src="/public/images/moffitt-logo.png" /></div> <!-- height="87" -->
+      <div  class="col-xs-12 col-sm-2 logo-container">
+        <div class="logo"><img src="/public/images/moffitt-logo.png" /></div> <!-- height="87" -->
       </div>
-      <div class="top-panel col-xs-12 col-sm-10">
-        <div class="row header">
+      <div class="top-panel col-xs-12 col-sm-10 navigation">
+        <div class="row application-header">
           <div class="col-sm-4 user-info">
             <a href="#" class="show-sidebar">
               <i class="fa fa-bars"></i>
@@ -64,14 +64,15 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                 <img src="@{Image.show(user.id)}" />
               </div>
               <div class="profileInfo media-body top-user-p">
-                <em id="todayDate">Thusday 4/24/2014</em>
+                <em class="todayDate">Thusday 4/24/2014</em>
                 <h3>#{userName userName: user.name, userId:user.id /}</h3>
+                <h4>My Dashboard</h4>
                 #{if patientOtherDetails != null && patientOtherDetails.disease != null}
                 <p class="initialism">
                 ${patientOtherDetails.disease.name}, STAGE ${patientOtherDetails.stage}
                 </p>
                 #{/if}
-                <p class="last">Last Login <span id="timeAgo">${session.get("lastLoginTime")}</span></p>
+                <p class="last">Last Login: <span id="timeAgo">${session.get("lastLoginTime")}</span></p>
               </div>
             </div>
           </div>
@@ -121,12 +122,12 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                 </div>
               </div>
             </nav>
-          </div>	
+          </div>
         </div>
       </div>
     </div>
   </div>
-</header>
+</div>
 <!--End Header-->
 <!--Start Container-->
 <div id="main" class="container-fluid">
