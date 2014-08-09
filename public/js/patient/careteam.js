@@ -15,7 +15,6 @@
 
   /* This function handles show and hide */
   var beforeActivate = function(event, ui) {
-    debugger;
     if (ui.newHeader[0]) {
       var currHeader  = ui.newHeader;
       var currContent = currHeader.next('.ui-accordion-content');
