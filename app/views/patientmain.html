@@ -66,19 +66,25 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
               <div class="profileInfo media-body top-user-p">
                 <em class="todayDate">Thusday 4/24/2014</em>
                 <h3>#{userName userName: user.name, userId:user.id /}</h3>
-                <h4>My Dashboard</h4>
                 #{if patientOtherDetails != null && patientOtherDetails.disease != null}
-                <p class="initialism">
+                <h4>
                 ${patientOtherDetails.disease.name}, STAGE ${patientOtherDetails.stage}
-                </p>
+                </h4>
                 #{/if}
+                #{else}
+                <h4>Disease, for Testing Purposes</h4>
+                #{/else}
                 <p class="last">Last Login: <span id="timeAgo">${session.get("lastLoginTime")}</span></p>
               </div>
             </div>
           </div>
-          <div class="col-sm-4 text-center emergency-info">
-            <div class="center_top">
-              <p class="top-cent-t"> IF YOU HAVE AN EMERGENCY <span> DIAL 911 </span></p>
+          <div class="col-sm-4 text-center feedback">
+            <p class="emergency"> IF YOU HAVE AN EMERGENCY <span> DIAL 911 </span></p>
+            <h4>Share how you are doing</h4>
+            <div class="buttons">
+              <a href="#">Share Distress</a>
+              <a href="#">Share Symptoms</a>
+              <a href="#">Share Satisfaction</a>
             </div>
           </div>
           <div class="col-sm-4 settings-info">

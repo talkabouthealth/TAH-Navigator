@@ -1,0 +1,97 @@
+
+.medications {
+  @header-font-size: 14px;
+
+  .calendar {
+    margin-top: 10px;
+    border-collapse: separate;
+    border-spacing: 5px;
+    text-align: center;
+    display: table;
+    width: 100%;
+
+    .cell {
+      margin-bottom: 5px;
+    }
+
+    .day {
+      display: table-cell;
+    }
+
+    .cell-container {
+      padding: 5px 5px 0;
+      border: 1px solid @table-border;
+    }
+
+
+    .header {
+      .gradient(@table-gradient, rgba(255,255,255,0));
+      padding-top: 8px;
+      h4 {
+        margin: 0;
+        color: @blue;
+        font-size: @header-font-size;
+        
+
+      }
+
+    }
+
+    h3, h4 {
+      text-transform: uppercase;
+    }
+
+    h3 {
+      font-size: @header-font-size;
+      color: @dark-gray;
+      margin-top: 5px;
+    }
+
+    p {
+      font-size: 12px;
+      span {
+        color: @blue;
+
+      }
+
+    }
+
+    hr {
+      border: none;
+      border-bottom: 1px solid @light-gray;
+      margin: 5px 0;
+
+    }
+
+    .recommendations {
+      label, p {
+
+        font-size: 10px;
+        text-transform: uppercase;
+        margin: 0;
+      }
+
+      label {
+        font-weight: bold;
+      }
+
+      margin: 15px 0 10px 0;
+
+    }
+
+    .cell-content {
+      padding: 5px;
+      border-bottom: 5px solid @table-gradient;
+
+    }
+
+    .location {
+      h4 {
+        font-size: 12px;
+        margin: 10px 0 0 0;
+
+      }
+
+    }
+  }
+}

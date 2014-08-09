@@ -10,9 +10,18 @@
 @import (css) "/public/css/style.css";
 @import (css) "/public/css/screen.css";
 
+/* Import LESS helpers and libraries */
+@import "mixins.less";
+@import "constants.less";
+
 /* Import LESS files */
 @import "application/header.less";
+@import "global.less";
+@import "page.less";
+
+/* Page Specific LESS files */
 @import "patient-header.less";
+@import "medications.less";
 
 body {
   color: #00509b;
@@ -28,4 +37,3 @@ body {
 .body-screensaver {
   overflow: hidden;
 }
-
