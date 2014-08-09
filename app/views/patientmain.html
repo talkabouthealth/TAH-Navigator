@@ -1,737 +1,695 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" 
-		xmlns:og="http://ogp.me/ns#"
-		xmlns:fb="http://www.facebook.com/2008/fbml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+xmlns:og="http://ogp.me/ns#"
+xmlns:fb="http://www.facebook.com/2008/fbml">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-	<meta name="author" content="TalkAboutHealth" /> 
-	<meta name="robots" content="all" /> 
-	<meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" href="@{'/public/img/favicon.ico'}" />
-	<title>Patient : TAH Navigator</title>
-<style>
-<!--
-div.progress-bar label { position: absolute; margin-left: 50px; width: 200px; color: #000000;font-weight:normal; text-align: left; }
-.progress-ui { height: 300px !important;width: 20px !important;    
-	background-image: -webkit-gradient(linear,right bottom,right top,color-stop(0, #FFFFFF),color-stop(1, #FF6429));
-	background-image: -o-linear-gradient(top, #FFFFFF 0%, #FF6429 100%);
-	background-image: -moz-linear-gradient(top, #FFFFFF 0%, #FF6429 100%);
-	background-image: -webkit-linear-gradient(top, #FFFFFF 0%, #FF6429 100%);
-	background-image: -ms-linear-gradient(top, #FFFFFF 0%, #FF6429 100%);
-	background-image: linear-gradient(to top, #FFFFFF 0%, #FF6429 100%);
-}
-.progress-bar, .progress {border-radius: 15px !important;}
-.progress-bar.ui-slider-vertical .ui-state-default {
-    border-radius: 15px !important;
-    height: 30px !important;
-    left: 0 !important;
-    margin-left: -5px !important;
-    width: 30px !important;
-    background: none repeat scroll 0 0 #FFFFFF;
-    border: 5px solid #428BCA;
-    box-shadow: 13px 0 4px 0 #CCCCCC;
-}
-.progress-bar-success .ui-widget-header {
-/*     background: none repeat scroll 0 0 #428BCA !important; */
-    background: url("/public/plugins/jquery-ui/images/animated-overlay.gif") repeat scroll 0 0 #428BCA !important;
-    color: #F8F8F8;
-    border: 5px solid #D8D8D8 !important;
-    border-radius: 0 0 10px   10px ;
-}
-.stepchecker strong{ font-size: 12px;
-color: #878C92;}
-.toggle-switch {
-    float: left;
-}
-.top-user-p p{padding-top: 15px;}
-.stepchecker {
-    clear: both;
-}
--->
-</style>
-		<link href="/public/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
-		<link href="/public/plugins/bootstrap/bootstrap.css" rel="stylesheet">
-		<link href="/public/css/font-awesome.css" rel="stylesheet">
-		<link href='/public/css/righteous.css' rel='stylesheet' type='text/css'>
-		<link href="/public/plugins/fancybox/jquery.fancybox.css" rel="stylesheet">
-		<link href="/public/plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
-		<link href="/public/plugins/xcharts/xcharts.min.css" rel="stylesheet">
-		<link href="/public/plugins/select2/select2.css" rel="stylesheet">
-		<link href="/public/css/style.css" rel="stylesheet">
-		<link href="/public/css/screen.css" rel="stylesheet">
-		<!--End Container-->
-		<script src="/public/plugins/jquery/jquery-2.1.0.min.js"></script>
-		<script src="/public/plugins/jquery-ui/jquery-ui.min.js"></script>
-		<script src="/public/plugins/bootstrap/bootstrap.min.js"></script>
-		<script src="/public/plugins/justified-gallery/jquery.justifiedgallery.min.js"></script>
-		<script src="/public/plugins/tinymce/tinymce.min.js"></script>
-		<script src="/public/plugins/tinymce/jquery.tinymce.min.js"></script>
-		<script src="/public/plugins/timeago/jquery.timeago.js"></script>
-		<script src="/public/js/validator.min.js"></script>
-		<script src="/public/js/devoops.js"></script>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
+  <meta name="author" content="TalkAboutHealth" />
+  <meta name="robots" content="all" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="shortcut icon" href="@{'/public/img/favicon.ico'}" />
+  <title>Patient : TAH Navigator</title>
+  <link href="/public/css/styles.less" rel="stylesheet/less" />
+  <script src="/public/js/lib/less-1.7.4.min.js"></script>
+  <script src="/public/plugins/jquery/jquery-2.1.0.min.js"></script>
+  <script src="/public/plugins/jquery-ui/jquery-ui.min.js"></script>
+  <script src="/public/plugins/bootstrap/bootstrap.min.js"></script>
+  <script src="/public/plugins/justified-gallery/jquery.justifiedgallery.min.js"></script>
+  <script src="/public/plugins/tinymce/tinymce.min.js"></script>
+  <script src="/public/plugins/tinymce/jquery.tinymce.min.js"></script>
+  <script src="/public/plugins/timeago/jquery.timeago.js"></script>
+  <script src="/public/js/validator.min.js"></script>
+  <script src="/public/js/devoops.js"></script>
 </head>
 <body>
-	<div id="screensaver">
-		<canvas id="canvas"></canvas>
-		<i class="fa fa-lock" id="screen_unlock"></i>
-	</div>
-	<div id="modalbox">
-		<div class="devoops-modal">
-			<div class="devoops-modal-header">
-				<div class="modal-header-name">
-					<span>Basic table</span>
-				</div>
-				<div class="box-icons">
-					<a class="close-link">
-						<i class="fa fa-times"></i>
-					</a>
-				</div>
-			</div>
-			<div class="devoops-modal-inner">
-			</div>
-			<div class="devoops-modal-bottom">
-			</div>
-		</div>
-	</div>
-	<header class="navbar">
-	<div class="container-fluid expanded-panel">
-		<div class="row">
-			<div  class="col-xs-12 col-sm-2 logo-div">
-				<div class="logo-div"><img src="/public/images/moffitt-logo.png" ></div> <!-- height="87" -->
-			</div>
-			<div id="top-panel" class="col-xs-12 col-sm-10" style="box-shadow: 0 -3px 6px 0 #000; height: 124px;">
-				<div class="row">
-					<div class="col-sm-4" style="height: 85px;">
-						<a href="#" class="show-sidebar">
-						  <i class="fa fa-bars"></i>
-						</a>
-                       <div class="media2">
-                    <a href="javaScript:void(0);">
-                    <img class="profilePic" src="@{Image.show(user.id)}"  height="50">
-                    </a> 
-                       <div class="media-body top-user-p">
-                        <em id="todayDate">Thusday 4/24/2014</em>
-                        <h3>#{userName userName: user.name, userId:user.id /}</h3>
-                        <p class="initialism">
-                        	#{if patientOtherDetails != null && patientOtherDetails.disease != null}
-                        		${patientOtherDetails.disease.name}, STAGE ${patientOtherDetails.stage}
-                        	#{/if}
-                        </p>
-                        <p class="last">Last Login <span id="timeAgo">${session.get("lastLoginTime")}</span></p>
-                      </div>    
-                        </div>
-					</div>
-                    <div class="col-sm-4 text-center">
-                    <div class="center_top">
-                    <p class="top-cent-t"> IF YOU HAVE AN EMERGENCY <span> DIAL 911 </span></p>
-                    </div>
-                    </div>
-					<div class="col-sm-4 ">
-						<ul class="nav navbar-nav pull-right panel-menu right-lint-i" style="margin-top: 50px;">
-							<li><a href="javaScript:distressMeter()"><i class="fa fa-sort-numeric-desc"></i></a></li>
-<!-- 							<li><a href="#"><i class="fa fa-bell"></i><span class="coun-n">2</span></a></li> -->
-							<li>
-							<!-- <a href="@{Patient.setting()}"><i class="fa fa-cog"></i></a> -->
-								<a href="#"  data-toggle="dropdown"><i class="fa fa-cog"></i></a>
-								<ul class="dropdown-menu">
-									<li><a href="@{Patient.setting()}"><i class="fa fa-spinner"></i><span class="hidden-sm text">Profile Image [Test]</span></a></li>
-									<li><a href="@{Patient.profile()}"><i class="fa fa-inbox"></i><span class="hidden-sm text">Edit Communication Preferences</span></a></li>
-									<li><a href="@{Patient.editContact()}"><i class="fa fa-user"></i><span class="hidden-sm text">Edit Contact's</span></a></li>
-									<li><a href="@{Patient.password()}"><i class="fa fa-lock"></i><span class="hidden-sm text">Edit password</span></a></li>
-								</ul>
-							</li>
-							<li><a href="/logout"><i class="fa fa-power-off"></i></a></li>
-						</ul>  
-                    <nav class="navbar2 navbar-default" role="navigation">
-					   <div style=" text-align: center;width: 30px;margin-top: 25px;">
-					      <a type="button" style="cursor: pointer;position: relative;" data-toggle="collapse" data-target="#example-navbar-collapse">
-					         <i class="fa fa-bars"></i>
-					      </a>
-					   </div>
-					   <div style=" height: 1px;overflow-x: hidden;" id="example-navbar-collapse">
-					     <div class="menu">
-					     <ul class="nav navbar-nav">
-					        <li><a href="javaScript:distressMeter()"><i class="fa fa-sort-numeric-desc"></i></a></li>
-<!-- 					        <li><a href="#" class="active"><i class="fa fa-bell"></i><span class="coun-n">2</span></a></li> -->
-<!-- 					        <li> <a href="#"><i class="fa fa-pencil"></i></a></li> -->
-					        <li><a href="#" data-toggle="dropdown"><i class="fa fa-cog"></i></a>
-								<ul class="dropdown-menu">
-									<li><a href="@{Patient.setting()}"><i class="fa fa-spinner"></i><span class="hidden-sm text"></span></a></li>
-									<li><a href="@{Patient.profile()}"><i class="fa fa-inbox"></i><span class="hidden-sm text"></span></a></li>
-									<li><a href="@{Patient.editContact()}"><i class="fa fa-user"></i><span class="hidden-sm text"></span></a></li>
-									<li><a href="@{Patient.password()}"><i class="fa fa-lock"></i><span class="hidden-sm text"></span></a></li>
-								</ul>
-					        </li>
-					         <li><a href="/logout"><i class="fa fa-power-off"></i></a></li>
-					     </ul>
-					   	</div>
-					   </div>
-					</nav>
-					</div>	
-				</div>
-			</div>
-		</div>
-	</div>
-</header>
-<!--End Header-->
-<!--Start Container-->
-<div id="main" class="container-fluid">
-	<div class="row">
-		<div id="sidebar-left" class="col-xs-2 col-sm-2">
-			<ul class="nav main-menu">
-				<li>
-					#{if pageType == 'dashboard'}<a href="#" class="active">#{/if} 
-					#{else}<a href="@{Patient.index()}">#{/else}
-						<i class="fa fa-th-large"></i>
-						<span class="hidden-xs">Quick-Look</span>
-					</a>
-				</li>
-				#{if user.verifiedFlag}
-					<li>	#{if pageType == 'appointment'}<a href="#" class="active">#{/if} 
-							#{else}<a href="@{Patient.appointment()}">#{/else}
-							<i class="fa fa-calendar-o"><span style="position: absolute; left: 22px; font-size: 7px; top: 24px;">5</span></i> <span class="hidden-xs">My Appointments</span></a></li>
-		            <li>
-		           		#{if pageType == 'careteam'}<a href="#" class="active">#{/if} 
-						#{else}<a href="@{Patient.careteam()}">#{/else}
-		            	<i class="fa fa-user-md"></i> <span class="hidden-xs">My Care Team</span></a></li>
-		            <li>
-		           		#{if pageType == 'medication'}<a href="#" class="active">#{/if} 
-						#{else}<a href="@{Patient.medication()}">#{/else}
-		            	<i class="fa fa-tint"></i> <span class="hidden-xs">My Medications</span></a></li>
-		            <li>
-		            	#{if pageType == 'treatmentplan'}<a href="#" class="active">#{/if} 
-						#{else}<a href="@{Patient.treatmentplan()}">#{/else}
-		            	<i class="fa fa-flag"></i> <span class="hidden-xs">My Treatment Plan</span></a></li>
-		            <li>
-		            	#{if pageType == 'thrivercareplan'}<a href="#" class="active">#{/if} 
-						#{else}<a href="@{Patient.thrivercareplan()}">#{/else}
-		            	<i class="fa fa-book"></i> <span class="hidden-xs">My Survivorship Care Plan</span></a></li>
-<!-- 		            	<i class="fa fa-book"></i> <span class="hidden-xs">My Thriver Care Plan</span></a></li> -->
-		            	
-		            <li>
-		            	#{if pageType == 'diagnosis'}<a href="#" class="active">#{/if} 
-						#{else}<a href="@{Patient.diagnosis()}">#{/else}
-		            	<i class="fa fa-user"></i> <span class="hidden-xs">My Diagnosis</span></a></li>
-		            	
-	            #{/if}
-	            #{else}
-		            <li class="disabled"><a disabled href="#"><i class="fa fa-calendar"></i> <span class="hidden-xs">My Appointments</span></a></li>
-		            <li class="disabled"><a disabled href="#"><i class="fa fa-user-md"></i> <span class="hidden-xs">My Care Team</span></a></li>
-		            <li class="disabled"><a disabled href="#"><i class="fa fa-medkit"></i> <span class="hidden-xs">My Medications</span></a></li>
-		            <li class="disabled"><a disabled href="#"><i class="fa fa-flag"></i> <span class="hidden-xs">My Treatment Plan</span></a></li>
-<!-- 		            <li class="disabled"><a disabled href="#"><i class="fa fa-book"></i> <span class="hidden-xs">My Thriver Care Plan</span></a></li> -->
-					<li class="disabled"><a disabled href="#"><i class="fa fa-book"></i> <span class="hidden-xs">My Survivorship Care Plan</span></a></li>
-		            <li class="disabled"><a disabled href="#"><i class="fa fa-user"></i> <span class="hidden-xs">My Diagnosis</span></a></li>
-	            #{/else}
-			</ul>
-		</div>
-		#{doLayout /}
-	</div>
-</div>	
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Account not verified</h4>
+<div id="screensaver">
+  <canvas id="canvas"></canvas>
+  <i class="fa fa-lock" id="screen_unlock"></i>
+</div>
+<div id="modalbox">
+  <div class="devoops-modal">
+    <div class="devoops-modal-header">
+      <div class="modal-header-name">
+        <span>Basic table</span>
       </div>
-      <div class="modal-body">
-       Please contact admin to verify your account. 
+      <div class="box-icons">
+        <a class="close-link">
+          <i class="fa fa-times"></i>
+        </a>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+    </div>
+    <div class="devoops-modal-inner">
+    </div>
+    <div class="devoops-modal-bottom">
+    </div>
+  </div>
+</div>
+<div class="navbar">
+  <div class="container-fluid expanded-panel">
+    <div class="row">
+      <div  class="col-xs-12 col-sm-2 logo-container">
+        <div class="logo"><img src="/public/images/moffitt-logo.png" /></div> <!-- height="87" -->
+      </div>
+      <div class="top-panel col-xs-12 col-sm-10 navigation">
+        <div class="row application-header">
+          <div class="col-sm-4 user-info">
+            <a href="#" class="show-sidebar">
+              <i class="fa fa-bars"></i>
+            </a>
+            <div class="media2">
+              <div class="profilePic">
+                <img src="@{Image.show(user.id)}" />
+              </div>
+              <div class="profileInfo media-body top-user-p">
+                <em class="todayDate">Thusday 4/24/2014</em>
+                <h3>#{userName userName: user.name, userId:user.id /}</h3>
+                #{if patientOtherDetails != null && patientOtherDetails.disease != null}
+                <h4>
+                ${patientOtherDetails.disease.name}, STAGE ${patientOtherDetails.stage}
+                </h4>
+                #{/if}
+                #{else}
+                <h4>Disease, for Testing Purposes</h4>
+                #{/else}
+                <p class="last">Last Login: <span id="timeAgo">${session.get("lastLoginTime")}</span></p>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm-4 text-center feedback">
+            <p class="emergency"> IF YOU HAVE AN EMERGENCY <span> DIAL 911 </span></p>
+            <h4>Share how you are doing</h4>
+            <div class="buttons">
+              <a href="#">Share Distress</a>
+              <a href="#">Share Symptoms</a>
+              <a href="#">Share Satisfaction</a>
+            </div>
+          </div>
+          <div class="col-sm-4 settings">
+            <ul class="nav navbar-nav pull-right panel-menu right-lint-i">
+              <!-- <li><a href="javaScript:distressMeter()"><i class="fa fa-sort-numeric-desc"></i></a></li> -->
+              <!-- 							<li><a href="#"><i class="fa fa-bell"></i><span class="coun-n">2</span></a></li> -->
+              <li>
+              <!-- <a href="@{Patient.setting()}"><i class="fa fa-cog"></i></a> -->
+              <a href="#"  data-toggle="dropdown"><i class="fa fa-cog"></i></a>
+              <ul class="dropdown-menu">
+                <li><a href="@{Patient.setting()}"><i class="fa fa-spinner"></i><span class="hidden-sm text">Profile Image [Test]</span></a></li>
+                <li><a href="@{Patient.profile()}"><i class="fa fa-inbox"></i><span class="hidden-sm text">Edit Communication Preferences</span></a></li>
+                <li><a href="@{Patient.editContact()}"><i class="fa fa-user"></i><span class="hidden-sm text">Edit Contact's</span></a></li>
+                <li><a href="@{Patient.password()}"><i class="fa fa-lock"></i><span class="hidden-sm text">Edit password</span></a></li>
+              </ul>
+              </li>
+              <li><a href="/logout"><i class="fa fa-power-off"></i></a></li>
+            </ul>  
+            <nav class="navbar2 navbar-default" role="navigation">
+              <div style=" text-align: center;width: 30px;margin-top: 25px;">
+                <a type="button" style="cursor: pointer;position: relative;" data-toggle="collapse" data-target="#example-navbar-collapse">
+                  <i class="fa fa-bars"></i>
+                </a>
+              </div>
+              <div style=" height: 1px;overflow-x: hidden;" id="example-navbar-collapse">
+                <div class="menu">
+                  <ul class="nav navbar-nav">
+                    <li><a href="javaScript:distressMeter()"><i class="fa fa-sort-numeric-desc"></i></a></li>
+                    <!-- 					        <li><a href="#" class="active"><i class="fa fa-bell"></i><span class="coun-n">2</span></a></li> -->
+                    <!-- 					        <li> <a href="#"><i class="fa fa-pencil"></i></a></li> -->
+                    <li><a href="#" data-toggle="dropdown"><i class="fa fa-cog"></i></a>
+                    <ul class="dropdown-menu">
+                      <li><a href="@{Patient.setting()}"><i class="fa fa-spinner"></i><span class="hidden-sm text"></span></a></li>
+                      <li><a href="@{Patient.profile()}"><i class="fa fa-inbox"></i><span class="hidden-sm text"></span></a></li>
+                      <li><a href="@{Patient.editContact()}"><i class="fa fa-user"></i><span class="hidden-sm text"></span></a></li>
+                      <li><a href="@{Patient.password()}"><i class="fa fa-lock"></i><span class="hidden-sm text"></span></a></li>
+                    </ul>
+                    </li>
+                    <li><a href="/logout"><i class="fa fa-power-off"></i></a></li>
+                  </ul>
+                </div>
+              </div>
+            </nav>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </div>
-<div class="modal fade" id="distress" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content col-xs-12 col-sm-12">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">DISTRESS MEASUREMENT TOOL</h4>
-      </div>
-      #{form @Distress.save() , id:'distressForm' }
-      	<input type="hidden" name="curDist" value="1"/>
-      <div id="step1" class="modal-body" style="float:left;display:block;  padding-top: 50px;">
-      <div class="col-xs-12 col-sm-12">
-      	<div class="col-xs-6 col-sm-6">
-      	<br/>
-      	<p style="font-size:12px"><span class="btn" style="padding: 0px 10px; border-radius: 15px;font-size:12px">STEP 1</span>  DISTRESS TOOL</p>
-      	<br/><br/>
-      	<h4>HOW IT WORKS</h4>
-		<p>Please use the slider to the right to choose a level of distress starting at 1 (no distress) up to 10- (extreme distress and discomfort) based on your distress over the last 7 days including today. Once complete click the "continue" button below to indicate specifics as they relate to youur distress level.
-		</p>
-      	</div>
-      	<div class="col-xs-6 col-sm-6" style="border-left:1px solid #CCC">
-      		<div class="progress progress-ui center-block">
-			<div class="progress-bar progress-bar-success slider-style slider-range-min ui-slider-vertical" aria-disabled="false">
-			</div>
-		</div>
-      	</div>
-      </div>
-        <div class="modal-footer col-xs-12 col-sm-12" >
-     <button type="button" class="btn btn-default btn-label-right" data-next="2">CONTINUE <span><i class="fa fa-chevron-right"></i></span></button>
-      </div>
-	 </div>	
-	 <div id="step2" class="modal-body" style="float:left;display:none; padding-top: 25px;">
-      <div class="col-xs-12 col-sm-12">
-      	<div class="col-xs-3 col-sm-3">
-	      	<br/>
-	      	<p style="font-size:12px"><span class="btn" style="padding: 0px 10px; border-radius: 15px;font-size:12px">STEP 2</span>  DISTRESS TOOL</p>
-	      	<br/>
-	      	<div class="text-info">
-				<span class="step2Distress" style="font-weight:bold;font-size:50px;border:5px solid #31708F;border-radius:40px;padding:0px 20px;">5</span>
-			</div>
-	      	<br/>
-	      	<h4>INDICATE PROBLEMS RELATED TO DISTRESS</h4>
-			<p>Please fill out the checklist to the right to so we can accurately address your discomfort. Be sure to indicate any and all issues or problems that have affected you over the course of the last seven days including today. Once complete, click the "submit" button on the bottom right.
-			</p>
-      	</div>
-      	<div class="col-xs-9 col-sm-9 top-user-p" style="border-left:1px solid #CCC">
-			<div class="col-xs-6 col-sm-6">
-				<p><strong style="line-height: 20px;">YES&nbsp;&nbsp;&nbsp;NO&nbsp;&nbsp; <span style="color:#B3B3B3;text-decoration: underline;">PRACTICAL PROBLEMS</span></strong></p>
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="1"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Child care</strong>
-				</div>
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="2"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Housing</strong>
-				</div>
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="3"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Insurance/financial</strong>
-				</div>
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="4"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Transportation</strong>
-				</div>
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="5"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Work/school</strong>
-				</div>
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="6"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Treatment decision</strong>
-				</div>
-				
-				<p style="padding-top:10px;"><strong style="line-height: 20px;">YES&nbsp;&nbsp;&nbsp;NO&nbsp;&nbsp; <span style="color:#B3B3B3;text-decoration: underline;">FAMILY PROBLEMS</span></strong></p>
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="7"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Dealing with children</strong>
-				</div>
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="8"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Dealing with partner</strong>
-				</div>
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="9"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Ability to have children</strong>
-				</div>
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="10"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Family health issues</strong>
-				</div>
-			<p><strong style="line-height: 20px;">YES&nbsp;&nbsp;&nbsp;NO&nbsp;&nbsp; <span style="color:#B3B3B3;text-decoration: underline;">EMOTIONAL PROBLEMS</span></strong></p>
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="11"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Depression</strong>
-				</div>
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="12"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Fears</strong>
-				</div>
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="13"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Nervousness</strong>
-				</div>
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="14"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Sadness</strong>
-				</div>
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="15"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Worry</strong>
-				</div>
+<!--End Header-->
+<!--Start Container-->
+<div id="main" class="container-fluid">
+  <div class="row">
+    <div id="sidebar-left" class="col-xs-2 col-sm-2">
+      <ul class="nav main-menu">
+        <li>
+        #{if pageType == 'dashboard'}<a href="#" class="active">#{/if}
+          #{else}<a href="@{Patient.index()}">#{/else}
+            <i class="fa fa-th-large"></i>
+            <span class="hidden-xs">Quick-Look</span>
+          </a>
+          </li>
+          #{if user.verifiedFlag}
+          <li>	#{if pageType == 'appointment'}<a href="#" class="active">#{/if} 
+            #{else}<a href="@{Patient.appointment()}">#{/else}
+              <i class="fa fa-calendar-o"><span style="position: absolute; left: 22px; font-size: 7px; top: 24px;">5</span></i> <span class="hidden-xs">My Appointments</span></a></li>
+            <li>
+            #{if pageType == 'careteam'}<a href="#" class="active">#{/if} 
+              #{else}<a href="@{Patient.careteam()}">#{/else}
+                <i class="fa fa-user-md"></i> <span class="hidden-xs">My Care Team</span></a></li>
+              <li>
+              #{if pageType == 'medication'}<a href="#" class="active">#{/if} 
+                #{else}<a href="@{Patient.medication()}">#{/else}
+                  <i class="fa fa-tint"></i> <span class="hidden-xs">My Medications</span></a></li>
+                <li>
+                #{if pageType == 'treatmentplan'}<a href="#" class="active">#{/if} 
+                  #{else}<a href="@{Patient.treatmentplan()}">#{/else}
+                    <i class="fa fa-flag"></i> <span class="hidden-xs">My Treatment Plan</span></a></li>
+                  <li>
+                  #{if pageType == 'thrivercareplan'}<a href="#" class="active">#{/if} 
+                    #{else}<a href="@{Patient.thrivercareplan()}">#{/else}
+                      <i class="fa fa-book"></i> <span class="hidden-xs">My Survivorship Care Plan</span></a></li>
+                    <!-- 		            	<i class="fa fa-book"></i> <span class="hidden-xs">My Thriver Care Plan</span></a></li> -->
 
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="16"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Loss of interest in usual activities</strong>
-				</div>
-			</div>
-			<div class="col-xs-6 col-sm-6">
-				<p><strong style="line-height: 20px;">YES&nbsp;&nbsp;&nbsp;NO&nbsp;&nbsp; <span style="color:#B3B3B3;text-decoration: underline;">PHYSICAL PROBLEMS</span></strong></p>
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="17"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Appearance</strong>
-				</div>
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="18"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Bathing/Dressing</strong>
-				</div>
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="19"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Breathing</strong>
-				</div>				
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="20"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Changes in Urination</strong>
-				</div>	
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="21"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Constipation</strong>
-				</div>					
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="22"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Diarrhea</strong>
-				</div>				
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="23"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Eating</strong>
-				</div>		
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="24"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Fatigue</strong>
-				</div>		
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="25"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Feeling Swollen</strong>
-				</div>		
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="26"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Fevers</strong>
-				</div>	
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="27"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Getting Around</strong>
-				</div>	
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="28"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Indigestion</strong>
-				</div>	
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="29"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Memory/Concentration</strong>
-				</div>	
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="30"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Mouth Sores</strong>
-				</div>				
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="31"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Nausea</strong>
-				</div>	
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="32"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Nose dry/congested</strong>
-				</div>	
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="33"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Pain</strong>
-				</div>	
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="34"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Sexual</strong>
-				</div>	
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="35"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Skin dry/itchy</strong>
-				</div>	
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="36"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Sleep</strong>
-				</div>	
-				<div class="stepchecker">
-					<div class="toggle-switch toggle-switch-primary">
-					<label>
-						<input type="checkbox" name="distressType" value="37"></input>
-						<div class="toggle-switch-inner"></div>
-						<div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
-					</label>
-					</div>&nbsp;&nbsp;<strong>Tingling in hands/feet</strong>
-				</div>	
-			</div>
-			<div class="col-xs-12 col-sm-12 top-user-p stepchecker"><strong>OTHER/ADDITIONAL ISSUES:</strong></div>
-			<div class="col-xs-12 col-sm-12 top-user-p stepchecker">
-				<textarea class="otherDetails" name="otherDetail" rows="3" cols="40" style="width:100%" ></textarea>
-			</div>
-      	</div>
-      </div>
-      <div class="modal-footer col-xs-12 col-sm-12" >
-       <button type="button" class="btn btn-default" data-next="3">&nbsp;&nbsp;&nbsp;&nbsp; SUBMIT &nbsp;&nbsp;&nbsp;&nbsp;</button>
-      </div>
-	 </div>	
-	 #{/form}
-  </div>
-  </div>
-</div>
-<script>
+                    <li>
+                    #{if pageType == 'diagnosis'}<a href="#" class="active">#{/if} 
+                      #{else}<a href="@{Patient.diagnosis()}">#{/else}
+                        <i class="fa fa-user"></i> <span class="hidden-xs">My Diagnosis</span></a></li>
+
+                      #{/if}
+                      #{else}
+                      <li class="disabled"><a disabled href="#"><i class="fa fa-calendar"></i> <span class="hidden-xs">My Appointments</span></a></li>
+                      <li class="disabled"><a disabled href="#"><i class="fa fa-user-md"></i> <span class="hidden-xs">My Care Team</span></a></li>
+                      <li class="disabled"><a disabled href="#"><i class="fa fa-medkit"></i> <span class="hidden-xs">My Medications</span></a></li>
+                      <li class="disabled"><a disabled href="#"><i class="fa fa-flag"></i> <span class="hidden-xs">My Treatment Plan</span></a></li>
+                      <!-- 		            <li class="disabled"><a disabled href="#"><i class="fa fa-book"></i> <span class="hidden-xs">My Thriver Care Plan</span></a></li> -->
+                      <li class="disabled"><a disabled href="#"><i class="fa fa-book"></i> <span class="hidden-xs">My Survivorship Care Plan</span></a></li>
+                      <li class="disabled"><a disabled href="#"><i class="fa fa-user"></i> <span class="hidden-xs">My Diagnosis</span></a></li>
+                      #{/else}
+                    </ul>
+                  </div>
+                  #{doLayout /}
+                </div>
+              </div>	
+              <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                      <h4 class="modal-title" id="myModalLabel">Account not verified</h4>
+                    </div>
+                    <div class="modal-body">
+                      Please contact admin to verify your account. 
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal fade" id="distress" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content col-xs-12 col-sm-12">
+                    <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                      <h4 class="modal-title" id="myModalLabel">DISTRESS MEASUREMENT TOOL</h4>
+                    </div>
+                    #{form @Distress.save() , id:'distressForm' }
+                    <input type="hidden" name="curDist" value="1"/>
+                    <div id="step1" class="modal-body" style="float:left;display:block;  padding-top: 50px;">
+                      <div class="col-xs-12 col-sm-12">
+                        <div class="col-xs-6 col-sm-6">
+                          <br/>
+                          <p style="font-size:12px"><span class="btn" style="padding: 0px 10px; border-radius: 15px;font-size:12px">STEP 1</span>  DISTRESS TOOL</p>
+                          <br/><br/>
+                          <h4>HOW IT WORKS</h4>
+                          <p>Please use the slider to the right to choose a level of distress starting at 1 (no distress) up to 10- (extreme distress and discomfort) based on your distress over the last 7 days including today. Once complete click the "continue" button below to indicate specifics as they relate to youur distress level.
+                          </p>
+                        </div>
+                        <div class="col-xs-6 col-sm-6" style="border-left:1px solid #CCC">
+                          <div class="progress progress-ui center-block">
+                            <div class="progress-bar progress-bar-success slider-style slider-range-min ui-slider-vertical" aria-disabled="false">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer col-xs-12 col-sm-12" >
+                        <button type="button" class="btn btn-default btn-label-right" data-next="2">CONTINUE <span><i class="fa fa-chevron-right"></i></span></button>
+                      </div>
+                    </div>	
+                    <div id="step2" class="modal-body" style="float:left;display:none; padding-top: 25px;">
+                      <div class="col-xs-12 col-sm-12">
+                        <div class="col-xs-3 col-sm-3">
+                          <br/>
+                          <p style="font-size:12px"><span class="btn" style="padding: 0px 10px; border-radius: 15px;font-size:12px">STEP 2</span>  DISTRESS TOOL</p>
+                          <br/>
+                          <div class="text-info">
+                            <span class="step2Distress" style="font-weight:bold;font-size:50px;border:5px solid #31708F;border-radius:40px;padding:0px 20px;">5</span>
+                          </div>
+                          <br/>
+                          <h4>INDICATE PROBLEMS RELATED TO DISTRESS</h4>
+                          <p>Please fill out the checklist to the right to so we can accurately address your discomfort. Be sure to indicate any and all issues or problems that have affected you over the course of the last seven days including today. Once complete, click the "submit" button on the bottom right.
+                          </p>
+                        </div>
+                        <div class="col-xs-9 col-sm-9 top-user-p" style="border-left:1px solid #CCC">
+                          <div class="col-xs-6 col-sm-6">
+                            <p><strong style="line-height: 20px;">YES&nbsp;&nbsp;&nbsp;NO&nbsp;&nbsp; <span style="color:#B3B3B3;text-decoration: underline;">PRACTICAL PROBLEMS</span></strong></p>
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="1"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Child care</strong>
+                            </div>
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="2"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Housing</strong>
+                            </div>
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="3"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Insurance/financial</strong>
+                            </div>
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="4"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Transportation</strong>
+                            </div>
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="5"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Work/school</strong>
+                            </div>
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="6"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Treatment decision</strong>
+                            </div>
+
+                            <p style="padding-top:10px;"><strong style="line-height: 20px;">YES&nbsp;&nbsp;&nbsp;NO&nbsp;&nbsp; <span style="color:#B3B3B3;text-decoration: underline;">FAMILY PROBLEMS</span></strong></p>
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="7"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Dealing with children</strong>
+                            </div>
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="8"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Dealing with partner</strong>
+                            </div>
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="9"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Ability to have children</strong>
+                            </div>
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="10"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Family health issues</strong>
+                            </div>
+                            <p><strong style="line-height: 20px;">YES&nbsp;&nbsp;&nbsp;NO&nbsp;&nbsp; <span style="color:#B3B3B3;text-decoration: underline;">EMOTIONAL PROBLEMS</span></strong></p>
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="11"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Depression</strong>
+                            </div>
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="12"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Fears</strong>
+                            </div>
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="13"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Nervousness</strong>
+                            </div>
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="14"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Sadness</strong>
+                            </div>
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="15"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Worry</strong>
+                            </div>
+
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="16"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Loss of interest in usual activities</strong>
+                            </div>
+                          </div>
+                          <div class="col-xs-6 col-sm-6">
+                            <p><strong style="line-height: 20px;">YES&nbsp;&nbsp;&nbsp;NO&nbsp;&nbsp; <span style="color:#B3B3B3;text-decoration: underline;">PHYSICAL PROBLEMS</span></strong></p>
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="17"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Appearance</strong>
+                            </div>
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="18"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Bathing/Dressing</strong>
+                            </div>
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="19"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Breathing</strong>
+                            </div>				
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="20"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Changes in Urination</strong>
+                            </div>	
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="21"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Constipation</strong>
+                            </div>					
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="22"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Diarrhea</strong>
+                            </div>				
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="23"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Eating</strong>
+                            </div>		
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="24"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Fatigue</strong>
+                            </div>		
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="25"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Feeling Swollen</strong>
+                            </div>		
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="26"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Fevers</strong>
+                            </div>	
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="27"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Getting Around</strong>
+                            </div>	
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="28"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Indigestion</strong>
+                            </div>	
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="29"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Memory/Concentration</strong>
+                            </div>	
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="30"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Mouth Sores</strong>
+                            </div>				
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="31"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Nausea</strong>
+                            </div>	
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="32"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Nose dry/congested</strong>
+                            </div>	
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="33"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Pain</strong>
+                            </div>	
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="34"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Sexual</strong>
+                            </div>	
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="35"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Skin dry/itchy</strong>
+                            </div>	
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="36"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Sleep</strong>
+                            </div>	
+                            <div class="stepchecker">
+                              <div class="toggle-switch toggle-switch-primary">
+                                <label>
+                                  <input type="checkbox" name="distressType" value="37"></input>
+                                  <div class="toggle-switch-inner"></div>
+                                  <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
+                                </label>
+                              </div>&nbsp;&nbsp;<strong>Tingling in hands/feet</strong>
+                            </div>	
+                          </div>
+                          <div class="col-xs-12 col-sm-12 top-user-p stepchecker"><strong>OTHER/ADDITIONAL ISSUES:</strong></div>
+                          <div class="col-xs-12 col-sm-12 top-user-p stepchecker">
+                            <textarea class="otherDetails" name="otherDetail" rows="3" cols="40" style="width:100%" ></textarea>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="modal-footer col-xs-12 col-sm-12" >
+                        <button type="button" class="btn btn-default" data-next="3">&nbsp;&nbsp;&nbsp;&nbsp; SUBMIT &nbsp;&nbsp;&nbsp;&nbsp;</button>
+                      </div>
+                    </div>	
+                    #{/form}
+                  </div>
+                </div>
+              </div>
+              <script>
 <!--
 var slider_range_min_amount;
 $(document).ready(function() {
-	$("#todayDate").html($.datepicker.formatDate('DD dd/mm/yy', new Date()));//Thusday 4/24/2014
-	console.log('${session.get("lastLoginTime")}');
-	$("#timeAgo").html($.timeago('${session.get("lastLoginTime")}'));
-	$('body').on('click', 'li.disabled', function() {
-		$('#myModal').modal();
-	});
-	var slider_range = $(".progress-bar");
-	slider_range_min_amount = $(".slider-range-min-amount");
-	slider_range.slider({
-		range:  "min",
-		min: 1,
-		max: 10,
-		value: 1,
-		step: 1,
-		orientation : 'vertical',
-		slide: function( event, ui ) {
-			slider_range_min_amount.val( ui.value );
-			document.forms.distressForm.curDist.value = ui.value;
-			var topOps = ui.value-1;
-			var topOps = topOps  * 10;
-			if(topOps>1) {
-				topOps = topOps+2;
-			}
-			topOps =   topOps + '%'; 
-			$(".moving").css('bottom', topOps);
-			$(".moving").html(ui.value );
-		}
-	}).each(function() {
-	    var el = $('<label>1 NO DISTRESS</label>').css('top',  '92%');
-        $(this).append(el);
-        var el = $('<label>10 EXTREME DISTRESS</label>').css('top',  '0%');
-        $(this).append(el);
-        var el = $('<label class="moving">1</label>').css('bottom',  '0%');
-        $(this).append(el);
-	});
+    $("#todayDate").html($.datepicker.formatDate('DD dd/mm/yy', new Date()));//Thusday 4/24/2014
+    console.log('${session.get("lastLoginTime")}');
+    $("#timeAgo").html($.timeago('${session.get("lastLoginTime")}'));
+    $('body').on('click', 'li.disabled', function() {
+      $('#myModal').modal();
+      });
+    var slider_range = $(".progress-bar");
+    slider_range_min_amount = $(".slider-range-min-amount");
+    slider_range.slider({
+range:  "min",
+min: 1,
+max: 10,
+value: 1,
+step: 1,
+orientation : 'vertical',
+slide: function( event, ui ) {
+slider_range_min_amount.val( ui.value );
+document.forms.distressForm.curDist.value = ui.value;
+var topOps = ui.value-1;
+var topOps = topOps  * 10;
+if(topOps>1) {
+topOps = topOps+2;
+}
+topOps =   topOps + '%'; 
+$(".moving").css('bottom', topOps);
+$(".moving").html(ui.value );
+}
+}).each(function() {
+  var el = $('<label>1 NO DISTRESS</label>').css('top',  '92%');
+  $(this).append(el);
+  var el = $('<label>10 EXTREME DISTRESS</label>').css('top',  '0%');
+  $(this).append(el);
+  var el = $('<label class="moving">1</label>').css('bottom',  '0%');
+  $(this).append(el);
+  });
 
-	#{set showPopup = session.get("showdistress") /}
-	#{ if showPopup == null  }
-		#{set showPopup = 'true' /}
-		#{set session.put("showdistress",'false') /}
-	#{/if}
-	#{elseif showPopup == 'true'}
-		#{set session.put("showdistress",'false') /}
-	#{/elseif}
-	#{ if showPopup == 'true'}
-		distressMeter();
-	#{/if}
-	$("#distress button").click(function(){
-		var selection = $( ".progress-bar" ).slider( "value" );
-		if($(this).data('next') == 2) {
-			$("#step1").hide();
-			$(".step2Distress").html(selection);
-			$("#step2").show();
-		} else if($(this).data('next') == 3) {
-			var postData = $("#distressForm").serializeArray();
-			var formURL = $("#distressForm").attr("action");
-        	$.post(formURL, postData, function( data ) {
-				/*
-				if( data.members.status == '200'){
-				} else {
-				}
-				*/
-				$("#distress").modal('hide');
-			});
-		}
-	});
+#{set showPopup = session.get("showdistress") /}
+#{ if showPopup == null  }
+#{set showPopup = 'true' /}
+#{set session.put("showdistress",'false') /}
+#{/if}
+#{elseif showPopup == 'true'}
+#{set session.put("showdistress",'false') /}
+#{/elseif}
+#{ if showPopup == 'true'}
+distressMeter();
+#{/if}
+$("#distress button").click(function(){
+    var selection = $( ".progress-bar" ).slider( "value" );
+    if($(this).data('next') == 2) {
+    $("#step1").hide();
+    $(".step2Distress").html(selection);
+    $("#step2").show();
+    } else if($(this).data('next') == 3) {
+    var postData = $("#distressForm").serializeArray();
+    var formURL = $("#distressForm").attr("action");
+    $.post(formURL, postData, function( data ) {
+      /*
+         if( data.members.status == '200'){
+         } else {
+         }
+       */
+      $("#distress").modal('hide');
+      });
+    }
+    });
 });
 distressMeter = function() {
-	$("#step1").show();
-	$(".step2Distress").html("1");
-	$("#step2").hide();
-	$(".progress-bar").slider( "value", 0 );
-	$(".moving").css('bottom', '0%');
-	$(".moving").html("1");
-	$(".otherDetails").val('');
-	$('.toggle-switch input[name="distressType"]').prop('checked', false);
-	$("#distress").modal({ keyboard: false });
+  $("#step1").show();
+  $(".step2Distress").html("1");
+  $("#step2").hide();
+  $(".progress-bar").slider( "value", 0 );
+  $(".moving").css('bottom', '0%');
+  $(".moving").html("1");
+  $(".otherDetails").val('');
+  $('.toggle-switch input[name="distressType"]').prop('checked', false);
+  $("#distress").modal({ keyboard: false });
 }
 -->
-</script>
-</body>
-</html>
+              </script>
+              </body>
+              </html>

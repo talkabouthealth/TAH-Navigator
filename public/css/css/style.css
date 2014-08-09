@@ -1,17 +1,3 @@
-body {
-  color: #00509b;
-  background: #00509b /*url(/public/img/devoops_pattern_b10.png) 0 0 repeat*/;
-}
-.body-expanded, .modal-open {
-  overflow-y:hidden;
-  margin-right: 15px;
-}
-.body-expanded .expanded-panel, .fancybox-margin .expanded-panel, .modal-open .expanded-panel {
-  margin-right: 15px;
-}
-.body-screensaver {
-  overflow: hidden;
-}
 h1, .h1, h2, .h2, h3, .h3 {
   margin:0;
 }
@@ -70,19 +56,6 @@ a.show-sidebar:hover {
   padding-bottom: 3000px !important;
   margin-bottom: -3000px !important;
 /*   background: #6AA6D6 url(/public/img/devoops_pattern_b10.png) 0 0 repeat; */
-  -webkit-transition: 0.2s;
-  -moz-transition: 0.2s;
-  -o-transition: 0.2s;
-  transition: 0.2s;
-}
-#content {
-  position: relative;
-  z-index: 10;
-  background: #FFF;
-  box-shadow: 0 0 6px #131313;
-  padding-bottom: 3000px !important;
-  margin-bottom: -2980px !important;
-  overflow: hidden;
   -webkit-transition: 0.2s;
   -moz-transition: 0.2s;
   -o-transition: 0.2s;
@@ -169,17 +142,6 @@ line-height:30px;
   -webkit-border-radius: 0 0 4px 0;
   -moz-border-radius: 0 0 4px 0;
   border-radius: 0 0 4px 0;
-}
-#top-panel {
-  /*height: 100px;*/
-  background: #fff;
-  position:fixed absolute;
-  box-shadow:1px 1px #666;
-}
-#main {
-  margin-top:/*87*/ 124px;
-  min-height: 800px;
-  overflow: hidden;
 }
 #search {
   position: relative;
@@ -2337,9 +2299,6 @@ td.beauty-hover {
   }
 }
 @media (max-width: 767px) {
-  #main {
-    margin-top: 100px;
-  }
   #messages-menu {
     top:140px;
   }
