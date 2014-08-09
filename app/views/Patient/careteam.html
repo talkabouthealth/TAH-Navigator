@@ -6,7 +6,7 @@
   <div class="row col-xs-12" id="careTeamList">
     #{list careTeams, as:'seq'}
     <h3 class="user_first" data-teamid="${seq.careteamid}" ><i class="fa fa-table"></i> ${seq.careteam.name} CARE TEAM</h3>
-    <div>
+    <div class="careteam-container">
       Loading...
     </div>
     #{/list}

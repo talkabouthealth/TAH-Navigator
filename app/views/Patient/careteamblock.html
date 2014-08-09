@@ -1,70 +1,85 @@
-<div class="col-sm-12" style="padding-top:15px;">
-	<div class="col-lg-8">
-		<div class="user-panel_02">
-			<div><img src="@{Image.show(expertBeanHead.expertDetail.id)}" class="user_img img-responsive"></div>
-			<div class="user_name">
-<!-- 				<b>${expertBeanHead.expertDetail.designation.designation}</b> -->
-				<p><a href="@{Patient.careMember(expertBeanHead.expertDetail.id,careteam.id)}">${expertBeanHead.userDetails.firstName} ${expertBeanHead.userDetails.lastName}</a></p>
-				<!-- ${expertBeanHead.expertDetail.designation.abbr}.  -->
-			</div>
-			<div class="user_bottm">
-				<p class="large-f"><span>${expertBeanHead.expertDetail.practiceAddr.line1} </span>, ${expertBeanHead.expertDetail.practiceAddr.line2}, ${expertBeanHead.expertDetail.practiceAddr.city}, 
-				${expertBeanHead.expertDetail.practiceAddr.state}
-                		${expertBeanHead.expertDetail.practiceAddr.country} ${expertBeanHead.expertDetail.practiceAddr.zip}</p>
-				<p class="large-f">${expertBeanHead.userDetails.mobile}
-				*{ &nbsp;|&nbsp;${expertBeanHead.userDetails.email} }*
-				</p>
-				<!-- <b>office Hours :</b> Mon-Thurs 8am-5pm, Sunday 8am-1pm -->
-			</div>
-		</div>
-	</div>
-	<div class="col-lg-4 common_05 ">
-		<div class="user_first"><i class="fa fa-map-marker"></i> ${careteam.name} CARE TEAM / OFFICE LOCATION </div>
-		<div class="row margin_top">
-			<div class="col-sm-6">
-			<a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${careteam.address.line1}+${careteam.address.line2},${careteam.address.city},${careteam.address.state},${careteam.address.country} - ${careteam.address.zip}">
-				<img width="100%" src="http://maps.googleapis.com/maps/api/staticmap?center=${careteam.address.lat},${careteam.address.lang}&maptype=roadmap&zoom=12&size=200x100&scale=false&&markers=color:red%7Csize:small%7C${careteam.address.lat},${careteam.address.lang}">
-				</a>
-			</div>
-			<div class="col-sm-6 map-div">
-				<p style="font-size:16px;">${careteam.address.line1}</p>
-				<p>${careteam.address.line2}</p>
-				<p>${careteam.address.city}, ${careteam.address.state}, </p>
-				<p>${careteam.address.country} - ${careteam.address.zip}</p>
-			</div>
-		</div>
-		<p>&nbsp;</p>
-		<p class="text-center"><a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${careteam.address.line1}+${careteam.address.line2},${careteam.address.city},${careteam.address.state},${careteam.address.country} - ${careteam.address.zip}" class="btn btn-default-small">GET DIRECTIONS</a></p>
-	</div>
+<div class="careteam row">
+<div class="col-sm-12 primary-caretaker" style="padding-top:15px;">
+  <div class="col-lg-8">
+    <div class="caretaker-title">
+      <div class="image">
+        <img src="@{Image.show(expertBeanHead.expertDetail.id)}" class="">
+      </div>
+      <h3>Lead Surgeon</h3>
+      <h2><a href="@{Patient.careMember(expertBeanHead.expertDetail.id,careteam.id)}">
+          ${expertBeanHead.expertDetail.designation.abbr}.  ${expertBeanHead.userDetails.firstName} ${expertBeanHead.userDetails.lastName}
+      </a></h2>
+      </div>
+      <div class="caretaker-details">
+        <h4>Careview Center.</h4>
+        <p class="address">${expertBeanHead.expertDetail.practiceAddr.line1}, ${expertBeanHead.expertDetail.practiceAddr.line2}, ${expertBeanHead.expertDetail.practiceAddr.city}, 
+        ${expertBeanHead.expertDetail.practiceAddr.state}
+        ${expertBeanHead.expertDetail.practiceAddr.country} ${expertBeanHead.expertDetail.practiceAddr.zip}</p>
+        <p class="contact">
+          <span class="phone"></span>
+            ${expertBeanHead.userDetails.mobile}
+          </span>
+          <span class="email">
+            *{ &nbsp;|&nbsp;${expertBeanHead.userDetails.email} }*
+          </span>
+          </p>
+        </p>
+        <p class="hours"><label>Office Hours:</label> Mon-Thurs 8am-5pm, Sunday 8am-1pm</p>
+      </div>
+  </div>
+  <div class="col-lg-4 location">
+    <div class="user_first"><i class="fa fa-map-marker"></i> ${careteam.name} CARE TEAM / OFFICE LOCATION </div>
+    <div class="row margin_top">
+      <div class="col-sm-6">
+        <a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${careteam.address.line1}+${careteam.address.line2},${careteam.address.city},${careteam.address.state},${careteam.address.country} - ${careteam.address.zip}">
+          <img width="100%" src="http://maps.googleapis.com/maps/api/staticmap?center=${careteam.address.lat},${careteam.address.lang}&maptype=roadmap&zoom=12&size=200x100&scale=false&&markers=color:red%7Csize:small%7C${careteam.address.lat},${careteam.address.lang}">
+        </a>
+      </div>
+      <div class="col-sm-6 map-div">
+
+      <h2><a href="@{Patient.careMember(expertBeanHead.expertDetail.id,careteam.id)}">
+          ${expertBeanHead.expertDetail.designation.abbr}.  ${expertBeanHead.userDetails.firstName} ${expertBeanHead.userDetails.lastName}
+      </a></h2>
+        <h3>Careview Center</h3>
+        <p>${careteam.address.line1} ${careteam.address.line2}</p>
+        <p>${careteam.address.city}, ${careteam.address.state}, ${careteam.address.zip}</p>
+      </div>
+    </div>
+    <p>&nbsp;</p>
+    <p class="text-center"><a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${careteam.address.line1}+${careteam.address.line2},${careteam.address.city},${careteam.address.state},${careteam.address.country} - ${careteam.address.zip}" class="btn btn-default-small">GET DIRECTIONS</a></p>
+  </div>
 </div>
 #{if otherExpert.size() > 0}
-<div class="common_04"></div>
-<div class="col-lg-12">
-	<div class="row">
-	#{list otherExpert, as:'expertBean'}
-    	<div class="col-lg-4">
-			<div class="row">
-				<div class="common_02">
-					#{if expertBean.expertDetail != null}
-					<div class="common_02_img"><img height="70" src="@{Image.show(expertBean.expertDetail.id)}"></div><!--  class="img-responsive" -->
-					<div class="common_02-name">
-					#{if expertBean.expertDetail.designation != null}
-						<b>${expertBean.expertDetail.designation.designation}</b>
-						#{/if}
-						<p>
-							<a href="@{Patient.careMember(expertBean.expertDetail.id,careteam.id)}">
-							${expertBean.userDetails.firstName} ${expertBean.userDetails.lastName} 
-							</a>
-						<br/><b><span class="large-f">${expertBean.userDetails.mobile}
-						*{ &nbsp;|&nbsp;${expertBean.userDetails.email} }*
-						</span></b></p>
-       				</div>
-       				#{/if}
-				</div>
-			</div>
-		</div>
-     #{/list}
-	</div>
+<div class="col-lg-12 support">
+  <div class="row">
+    #{list otherExpert, as:'expertBean'}
+    <div class="col-lg-4">
+        <div class="common_02">
+          #{if expertBean.expertDetail != null}
+          <div class="supporter">
+            <div class="image">
+              <img src="@{Image.show(expertBean.expertDetail.id)}">
+            </div>
+            <div class="title">
+              #{if expertBean.expertDetail.designation != null}
+              <h3> ${expertBean.expertDetail.designation.designation}</h3>
+              #{/if}
+              <h2>
+                <a href="@{Patient.careMember(expertBean.expertDetail.id,careteam.id)}">
+                  ${expertBean.userDetails.firstName} ${expertBean.userDetails.lastName} 
+                </a>
+              </h2>
+              <p class="contact">
+                <span class="phone">${expertBean.userDetails.mobile}</span>
+                <span class="email">*{ &nbsp;|&nbsp;${expertBean.userDetails.email} }*</span>
+              </p>
+            </div>
+          </div>
+          #{/if}
+        </div>
+    </div>
+    #{/list}
+  </div>
 </div>
 #{/if}
-<div class="common_03"></div>
+</div>

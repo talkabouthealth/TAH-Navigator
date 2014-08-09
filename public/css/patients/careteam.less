@@ -1,4 +1,143 @@
+.careteam-container {
+  margin-bottom: 20px;
+  border-radius: 0;
+
+}
+
+.careteam {
+  border-bottom: 8px solid #CCC
+}
+
+.primary-caretaker {
+  border-bottom: 1px solid @primary-caretaker-border;
+  padding-bottom: 20px;
+
+  h2 {
+    font-size: 35px;
+  }
+
+  h3 {
+    text-transform: uppercase;
+    border: none;
+    font-size: 13px;
+    padding: 0;
+
+  }
+
+  h4 {
+    display: inline;
+    font-size: 30px;
+    color: @gray;
+
+  }
+
+  p {
+    color: @gray;
+    display: inline;
+
+    font-size: 14px;
+
+    &.address {
+      font-size: 18px;
+    }
+
+    &.contact, &.hours {
+      display: block;
+
+    }
+  }
+
+  .caretaker-title {
+    color: @blue;
+    .clearfix();
+
+    margin-bottom: 10px;
+  }
+
+  .image {
+    height: 70px;
+    width: 70px;
+    overflow: hidden;
+    border-radius: 50%;
+    float: left;
+    margin-right: 10px;
+
+    img {
+      padding: 0;
+      width: 100%;
+    }
+  }
+
+}
+
+.location {
+  border-left: 1px solid @primary-caretaker-border;
+
+  h2 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    a {
+      color: @gray;
+    }
+  }
+
+  h3 {
+    font-size: 14px;
+    color: @gray;
+  }
+
+  p {
+    font-size: 12px;
+    margin: 0;
+    display: block;
+  }
+}
+
+.support {
+  .clearfix();
+  margin-bottom: 20px;
+
+  .supporter {
+    .clearfix();
+  }
+
+  h3 {
+    font-size: 12px;
+    color: @blue;
+
+  }
+
+  h2 {
+    font-size: 18px;
+    margin: 0;
+
+    a {
+      color: @gray;
+    }
+  }
+
+  .image {
+    height: 50px;
+    width: 50px;
+    overflow: hidden;
+    border-radius: 50%;
+    float: left;
+    margin-right: 10px;
+
+    img {
+      padding: 0;
+      width: 100%;
+    }
+  }
+
+  .title {
+    float: left;
+
+  }
+
+}
+
 .ui-accordion .ui-accordion-content{border-width: 0px;padding:0px;}
 .ui-accordion-header.ui-state-default, .ui-accordion-header.ui-state-active{background:#FFF !important;}
 .ui-accordion-header-icon1{ content: "\f02b"; width: 15px;left: 98% !important;} /* background-image: none !important; */
-#careTeamList h3{ padding-left:0px; border-bottom: 1px solid #EFEFEF; padding: 15px 0;}
+
