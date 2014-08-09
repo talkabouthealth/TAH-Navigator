@@ -1,10 +1,21 @@
 .logo-container {
   background: #00509b;
+  height: @header-height;
 }
 
 .application-header {
   padding: 13px 0px;
   color: #515151;
+  display: table;
+  width: 100%;
+
+  >div {
+    display: table-cell;
+    float: none;
+    vertical-align: middle;
+
+  }
+
   h3 {
     font-size: 20px;
     margin-bottom: 2px;
@@ -40,7 +51,6 @@
 
   img {
     max-width: 100%;
-    width: 149px;
   }
 }
 
@@ -79,21 +89,33 @@
 
   }
 
+  .buttons {
+    margin-bottom: 5px;
+  }
+
   a {
     font-size: 9px;
     border: 1px solid #6092c1;
     border-radius: 5px;
     padding: 6px 10px;
+    .transition-duration(0.2s);
 
     &:hover {
       background: #EEE;
+      text-decoration: none;
 
     }
 
   }
 }
 
+.settings {
+  ul {
+    margin: 0;
 
+  }
+
+}
 
 
 @media (min-width:768px) {

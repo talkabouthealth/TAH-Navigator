@@ -143,11 +143,6 @@ line-height:30px;
   -moz-border-radius: 0 0 4px 0;
   border-radius: 0 0 4px 0;
 }
-#main {
-  margin-top: 87px;
-  min-height: 800px;
-  overflow: hidden;
-}
 #search {
   position: relative;
   margin-left: 20px;
@@ -2304,9 +2299,6 @@ td.beauty-hover {
   }
 }
 @media (max-width: 767px) {
-  #main {
-    margin-top: 100px;
-  }
   #messages-menu {
     top:140px;
   }
