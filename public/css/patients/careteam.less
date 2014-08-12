@@ -4,6 +4,13 @@
 
 }
 
+/* This is a hack, to get around the ui-accordion overflow rule */
+#content {
+  .careteam-container {
+    overflow: hidden;
+  }
+}
+
 .careteam {
   border-bottom: 8px solid #CCC
 }
@@ -14,6 +21,7 @@
 
   h2 {
     font-size: 35px;
+    margin-bottom: 5px;
   }
 
   h3 {
@@ -47,18 +55,21 @@
     }
   }
 
-  .caretaker-title {
+  .caretaker {
     color: @blue;
     .clearfix();
 
     margin-bottom: 10px;
+
+    p {
+      margin: 0;
+
+    }
   }
 
   .image {
-    height: 70px;
     width: 70px;
     overflow: hidden;
-    border-radius: 50%;
     float: left;
     margin-right: 10px;
 
@@ -117,10 +128,8 @@
   }
 
   .image {
-    height: 50px;
     width: 50px;
     overflow: hidden;
-    border-radius: 50%;
     float: left;
     margin-right: 10px;
 

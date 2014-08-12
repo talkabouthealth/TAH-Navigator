@@ -1,7 +1,7 @@
 <div class="careteam row">
 <div class="col-sm-12 primary-caretaker" style="padding-top:15px;">
   <div class="col-lg-8">
-    <div class="caretaker-title">
+    <div class="caretaker">
       <div class="image">
         <img src="@{Image.show(expertBeanHead.expertDetail.id)}" class="">
       </div>
@@ -9,12 +9,6 @@
       <h2><a href="@{Patient.careMember(expertBeanHead.expertDetail.id,careteam.id)}">
           ${expertBeanHead.expertDetail.designation.abbr}.  ${expertBeanHead.userDetails.firstName} ${expertBeanHead.userDetails.lastName}
       </a></h2>
-      </div>
-      <div class="caretaker-details">
-        <h4>Careview Center.</h4>
-        <p class="address">${expertBeanHead.expertDetail.practiceAddr.line1}, ${expertBeanHead.expertDetail.practiceAddr.line2}, ${expertBeanHead.expertDetail.practiceAddr.city}, 
-        ${expertBeanHead.expertDetail.practiceAddr.state}
-        ${expertBeanHead.expertDetail.practiceAddr.country} ${expertBeanHead.expertDetail.practiceAddr.zip}</p>
         <p class="contact">
           <span class="phone"></span>
             ${expertBeanHead.userDetails.mobile}
@@ -22,7 +16,6 @@
           <span class="email">
             *{ &nbsp;|&nbsp;${expertBeanHead.userDetails.email} }*
           </span>
-          </p>
         </p>
         <p class="hours"><label>Office Hours:</label> Mon-Thurs 8am-5pm, Sunday 8am-1pm</p>
       </div>
@@ -37,10 +30,14 @@
       </div>
       <div class="col-sm-6 map-div">
 
+        <!-- 
       <h2><a href="@{Patient.careMember(expertBeanHead.expertDetail.id,careteam.id)}">
           ${expertBeanHead.expertDetail.designation.abbr}.  ${expertBeanHead.userDetails.firstName} ${expertBeanHead.userDetails.lastName}
       </a></h2>
+      -->
+      <!-- 
         <h3>Careview Center</h3>
+        -->
         <p>${careteam.address.line1} ${careteam.address.line2}</p>
         <p>${careteam.address.city}, ${careteam.address.state}, ${careteam.address.zip}</p>
       </div>
