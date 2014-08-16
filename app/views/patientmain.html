@@ -102,7 +102,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
               </ul>
               </li>
               <li><a href="/logout"><i class="fa fa-power-off"></i></a></li>
-            </ul>  
+            </ul>
             <nav class="navbar2 navbar-default" role="navigation">
               <div style=" text-align: center;width: 30px;margin-top: 25px;">
                 <a type="button" style="cursor: pointer;position: relative;" data-toggle="collapse" data-target="#example-navbar-collapse">
@@ -148,29 +148,29 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
           </a>
           </li>
           #{if user.verifiedFlag}
-          <li>	#{if pageType == 'appointment'}<a href="#" class="active">#{/if} 
+          <li>	#{if pageType == 'appointment'}<a href="#" class="active">#{/if}
             #{else}<a href="@{Patient.appointment()}">#{/else}
               <i class="fa fa-calendar-o"><span style="position: absolute; left: 22px; font-size: 7px; top: 24px;">5</span></i> <span class="hidden-xs">My Appointments</span></a></li>
             <li>
-            #{if pageType == 'careteam'}<a href="#" class="active">#{/if} 
+            #{if pageType == 'careteam'}<a href="#" class="active">#{/if}
               #{else}<a href="@{Patient.careteam()}">#{/else}
                 <i class="fa fa-user-md"></i> <span class="hidden-xs">My Care Team</span></a></li>
               <li>
-              #{if pageType == 'medication'}<a href="#" class="active">#{/if} 
+              #{if pageType == 'medication'}<a href="#" class="active">#{/if}
                 #{else}<a href="@{Patient.medication()}">#{/else}
                   <i class="fa fa-tint"></i> <span class="hidden-xs">My Medications</span></a></li>
                 <li>
-                #{if pageType == 'treatmentplan'}<a href="#" class="active">#{/if} 
+                #{if pageType == 'treatmentplan'}<a href="#" class="active">#{/if}
                   #{else}<a href="@{Patient.treatmentplan()}">#{/else}
                     <i class="fa fa-flag"></i> <span class="hidden-xs">My Treatment Plan</span></a></li>
                   <li>
-                  #{if pageType == 'thrivercareplan'}<a href="#" class="active">#{/if} 
+                  #{if pageType == 'thrivercareplan'}<a href="#" class="active">#{/if}
                     #{else}<a href="@{Patient.thrivercareplan()}">#{/else}
                       <i class="fa fa-book"></i> <span class="hidden-xs">My Survivorship Care Plan</span></a></li>
                     <!-- 		            	<i class="fa fa-book"></i> <span class="hidden-xs">My Thriver Care Plan</span></a></li> -->
 
                     <li>
-                    #{if pageType == 'diagnosis'}<a href="#" class="active">#{/if} 
+                    #{if pageType == 'diagnosis'}<a href="#" class="active">#{/if}
                       #{else}<a href="@{Patient.diagnosis()}">#{/else}
                         <i class="fa fa-user"></i> <span class="hidden-xs">My Diagnosis</span></a></li>
 
@@ -188,7 +188,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                   </div>
                   #{doLayout /}
                 </div>
-              </div>	
+              </div>
               <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                   <div class="modal-content">
@@ -197,7 +197,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                       <h4 class="modal-title" id="myModalLabel">Account not verified</h4>
                     </div>
                     <div class="modal-body">
-                      Please contact admin to verify your account. 
+                      Please contact admin to verify your account.
                     </div>
                     <div class="modal-footer">
                       <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -234,7 +234,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                       <div class="modal-footer col-xs-12 col-sm-12" >
                         <button type="button" class="btn btn-default btn-label-right" data-next="2">CONTINUE <span><i class="fa fa-chevron-right"></i></span></button>
                       </div>
-                    </div>	
+                    </div>
                     <div id="step2" class="modal-body" style="float:left;display:none; padding-top: 25px;">
                       <div class="col-xs-12 col-sm-12">
                         <div class="col-xs-3 col-sm-3">
@@ -242,7 +242,8 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                           <p style="font-size:12px"><span class="btn" style="padding: 0px 10px; border-radius: 15px;font-size:12px">STEP 2</span>  DISTRESS TOOL</p>
                           <br/>
                           <div class="text-info">
-                            <span class="step2Distress" style="font-weight:bold;font-size:50px;border:5px solid #31708F;border-radius:40px;padding:0px 20px;">5</span>
+                            <span class="step2Distress" style="">5</span>
+                            <span class="descriptor-text">Mild Distress</span>
                           </div>
                           <br/>
                           <h4>INDICATE PROBLEMS RELATED TO DISTRESS</h4>
@@ -251,7 +252,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                         </div>
                         <div class="col-xs-9 col-sm-9 top-user-p" style="border-left:1px solid #CCC">
                           <div class="col-xs-6 col-sm-6">
-                            <p><strong style="line-height: 20px;">YES&nbsp;&nbsp;&nbsp;NO&nbsp;&nbsp; <span style="color:#B3B3B3;text-decoration: underline;">PRACTICAL PROBLEMS</span></strong></p>
+                            <p class="problem-title">Practical Problems</p>
                             <div class="stepchecker">
                               <div class="toggle-switch toggle-switch-primary">
                                 <label>
@@ -307,7 +308,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                               </div>&nbsp;&nbsp;<strong>Treatment decision</strong>
                             </div>
 
-                            <p style="padding-top:10px;"><strong style="line-height: 20px;">YES&nbsp;&nbsp;&nbsp;NO&nbsp;&nbsp; <span style="color:#B3B3B3;text-decoration: underline;">FAMILY PROBLEMS</span></strong></p>
+                            <p class="problem-title">Family Problems</p>
                             <div class="stepchecker">
                               <div class="toggle-switch toggle-switch-primary">
                                 <label>
@@ -344,7 +345,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                                 </label>
                               </div>&nbsp;&nbsp;<strong>Family health issues</strong>
                             </div>
-                            <p><strong style="line-height: 20px;">YES&nbsp;&nbsp;&nbsp;NO&nbsp;&nbsp; <span style="color:#B3B3B3;text-decoration: underline;">EMOTIONAL PROBLEMS</span></strong></p>
+                            <p class="problem-title">Emotional Problems</p>
                             <div class="stepchecker">
                               <div class="toggle-switch toggle-switch-primary">
                                 <label>
@@ -402,7 +403,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                             </div>
                           </div>
                           <div class="col-xs-6 col-sm-6">
-                            <p><strong style="line-height: 20px;">YES&nbsp;&nbsp;&nbsp;NO&nbsp;&nbsp; <span style="color:#B3B3B3;text-decoration: underline;">PHYSICAL PROBLEMS</span></strong></p>
+                            <p class="problem-title">Physical Problems</p>
                             <div class="stepchecker">
                               <div class="toggle-switch toggle-switch-primary">
                                 <label>
@@ -429,7 +430,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                                   <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
                                 </label>
                               </div>&nbsp;&nbsp;<strong>Breathing</strong>
-                            </div>				
+                            </div>
                             <div class="stepchecker">
                               <div class="toggle-switch toggle-switch-primary">
                                 <label>
@@ -438,7 +439,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                                   <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
                                 </label>
                               </div>&nbsp;&nbsp;<strong>Changes in Urination</strong>
-                            </div>	
+                            </div>
                             <div class="stepchecker">
                               <div class="toggle-switch toggle-switch-primary">
                                 <label>
@@ -447,7 +448,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                                   <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
                                 </label>
                               </div>&nbsp;&nbsp;<strong>Constipation</strong>
-                            </div>					
+                            </div>
                             <div class="stepchecker">
                               <div class="toggle-switch toggle-switch-primary">
                                 <label>
@@ -456,7 +457,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                                   <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
                                 </label>
                               </div>&nbsp;&nbsp;<strong>Diarrhea</strong>
-                            </div>				
+                            </div>
                             <div class="stepchecker">
                               <div class="toggle-switch toggle-switch-primary">
                                 <label>
@@ -465,7 +466,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                                   <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
                                 </label>
                               </div>&nbsp;&nbsp;<strong>Eating</strong>
-                            </div>		
+                            </div>
                             <div class="stepchecker">
                               <div class="toggle-switch toggle-switch-primary">
                                 <label>
@@ -474,7 +475,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                                   <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
                                 </label>
                               </div>&nbsp;&nbsp;<strong>Fatigue</strong>
-                            </div>		
+                            </div>
                             <div class="stepchecker">
                               <div class="toggle-switch toggle-switch-primary">
                                 <label>
@@ -483,7 +484,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                                   <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
                                 </label>
                               </div>&nbsp;&nbsp;<strong>Feeling Swollen</strong>
-                            </div>		
+                            </div>
                             <div class="stepchecker">
                               <div class="toggle-switch toggle-switch-primary">
                                 <label>
@@ -492,7 +493,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                                   <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
                                 </label>
                               </div>&nbsp;&nbsp;<strong>Fevers</strong>
-                            </div>	
+                            </div>
                             <div class="stepchecker">
                               <div class="toggle-switch toggle-switch-primary">
                                 <label>
@@ -501,7 +502,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                                   <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
                                 </label>
                               </div>&nbsp;&nbsp;<strong>Getting Around</strong>
-                            </div>	
+                            </div>
                             <div class="stepchecker">
                               <div class="toggle-switch toggle-switch-primary">
                                 <label>
@@ -510,7 +511,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                                   <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
                                 </label>
                               </div>&nbsp;&nbsp;<strong>Indigestion</strong>
-                            </div>	
+                            </div>
                             <div class="stepchecker">
                               <div class="toggle-switch toggle-switch-primary">
                                 <label>
@@ -519,7 +520,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                                   <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
                                 </label>
                               </div>&nbsp;&nbsp;<strong>Memory/Concentration</strong>
-                            </div>	
+                            </div>
                             <div class="stepchecker">
                               <div class="toggle-switch toggle-switch-primary">
                                 <label>
@@ -528,7 +529,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                                   <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
                                 </label>
                               </div>&nbsp;&nbsp;<strong>Mouth Sores</strong>
-                            </div>				
+                            </div>
                             <div class="stepchecker">
                               <div class="toggle-switch toggle-switch-primary">
                                 <label>
@@ -537,7 +538,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                                   <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
                                 </label>
                               </div>&nbsp;&nbsp;<strong>Nausea</strong>
-                            </div>	
+                            </div>
                             <div class="stepchecker">
                               <div class="toggle-switch toggle-switch-primary">
                                 <label>
@@ -546,7 +547,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                                   <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
                                 </label>
                               </div>&nbsp;&nbsp;<strong>Nose dry/congested</strong>
-                            </div>	
+                            </div>
                             <div class="stepchecker">
                               <div class="toggle-switch toggle-switch-primary">
                                 <label>
@@ -555,7 +556,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                                   <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
                                 </label>
                               </div>&nbsp;&nbsp;<strong>Pain</strong>
-                            </div>	
+                            </div>
                             <div class="stepchecker">
                               <div class="toggle-switch toggle-switch-primary">
                                 <label>
@@ -564,7 +565,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                                   <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
                                 </label>
                               </div>&nbsp;&nbsp;<strong>Sexual</strong>
-                            </div>	
+                            </div>
                             <div class="stepchecker">
                               <div class="toggle-switch toggle-switch-primary">
                                 <label>
@@ -573,7 +574,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                                   <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
                                 </label>
                               </div>&nbsp;&nbsp;<strong>Skin dry/itchy</strong>
-                            </div>	
+                            </div>
                             <div class="stepchecker">
                               <div class="toggle-switch toggle-switch-primary">
                                 <label>
@@ -582,7 +583,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                                   <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
                                 </label>
                               </div>&nbsp;&nbsp;<strong>Sleep</strong>
-                            </div>	
+                            </div>
                             <div class="stepchecker">
                               <div class="toggle-switch toggle-switch-primary">
                                 <label>
@@ -591,7 +592,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                                   <div class="toggle-switch-switch"><i class="fa fa-check"></i></div>
                                 </label>
                               </div>&nbsp;&nbsp;<strong>Tingling in hands/feet</strong>
-                            </div>	
+                            </div>
                           </div>
                           <div class="col-xs-12 col-sm-12 top-user-p stepchecker"><strong>OTHER/ADDITIONAL ISSUES:</strong></div>
                           <div class="col-xs-12 col-sm-12 top-user-p stepchecker">
@@ -602,7 +603,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                       <div class="modal-footer col-xs-12 col-sm-12" >
                         <button type="button" class="btn btn-default" data-next="3">&nbsp;&nbsp;&nbsp;&nbsp; SUBMIT &nbsp;&nbsp;&nbsp;&nbsp;</button>
                       </div>
-                    </div>	
+                    </div>
                     #{/form}
                   </div>
                 </div>
@@ -634,7 +635,7 @@ var topOps = topOps  * 10;
 if(topOps>1) {
 topOps = topOps+2;
 }
-topOps =   topOps + '%'; 
+topOps =   topOps + '%';
 $(".moving").css('bottom', topOps);
 $(".moving").html(ui.value );
 }
