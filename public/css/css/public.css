@@ -25,7 +25,7 @@ body {
 .col-md-6 img {height:40px;}
 #log_contaner{ max-width:400px; width:98%; margin:0 auto;}
 .log_heading{ color:#FFF; text-align:center; font-size:40px; padding:15px 0}
-.log_bg{ background:url(../images/login_bg.png) no-repeat center #004261; width:100%; float:left; /*padding:5px 0px 5px 0px;*/ } 
+.log_bg{ background:url(../../images/login_bg.png) no-repeat center #004261; width:100%; float:left; /*padding:5px 0px 5px 0px;*/ } 
 .log_bg_01{ background:#006ea1; no-repeat center; width:100%; float:left; padding:20px 0px 20px 0px;} 
 .log_padding{ margin:20px 300px;}
 .log_center{width:100%;}
@@ -56,8 +56,8 @@ body {
 .my-btn-cont{background:none; border:2px solid #8baab8;font-size: 13px;padding: 2px 15px !important;}
 .btn-lg{padding:5px 15px;text-shadow: 2px 2px 2px #333;}
 .myform .input-group-addon{background:#fff}
-.line-or{background:url(../images/line-or.png) repeat-x center; padding:25px 0 }
-.line-or span{padding:0 10px; display:table; margin:0 auto; background:url(../images/or-i-bg.png) repeat; font-size:25px; color:#8baab8;}
+.line-or{background:url(../../images/line-or.png) repeat-x center; padding:25px 0 }
+.line-or span{padding:0 10px; display:table; margin:0 auto; background:url(../../images/or-i-bg.png) repeat; font-size:25px; color:#8baab8;}
 
 
 /***************************************login first page**************************************/
