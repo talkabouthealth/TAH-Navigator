@@ -11,28 +11,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="shortcut icon" href="@{'/public/img/favicon.ico'}" />
 	<title>Care : TAH Navigator</title>
-		<link href="/public/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet"/>
-		<link href="/public/plugins/bootstrap/bootstrap.css" rel="stylesheet"/>
-		<link href="/public/css/font-awesome.css" rel="stylesheet"/>
-		<link href='/public/css/righteous.css' rel='stylesheet' type='text/css'/>
-		<link href="/public/plugins/fancybox/jquery.fancybox.css" rel="stylesheet"/>
-		<link href="/public/plugins/fullcalendar/fullcalendar.css" rel="stylesheet"/>
-		<link href="/public/plugins/xcharts/xcharts.min.css" rel="stylesheet"/>
-		<link href="/public/plugins/select2/select2.css" rel="stylesheet"/>
-		<link href="/public/css/style.css" rel="stylesheet"/>
-		<link href="/public/css/screen.css" rel="stylesheet"/>
-		<style type="text/css">
-		<!--
-			body,#sidebar-left ,#breadcrumb{
-				background: #0F7970 url('/public/img/devoops_pattern_b10.png') 0 0 repeat !important;
-			}
-			#content{ padding:20px 0 0 0 }
-/* 			.table{FONT-SIZE:11px;} */
-			.navbar{ background-color: #00509b; /*border-bottom: 3px solid #000000;*/ }
-			select.form-control {    padding-top: 10px; }
-			.nopadding{padding:0px;margin: 0px;}
-		-->
-		</style>
+  <link href="/public/css/styles.less" rel="stylesheet/less" />
+  <script src="/public/js/lib/less-1.7.4.min.js"></script>
 		<!--End Container-->
 		<script src="/public/plugins/jquery/jquery-2.1.0.min.js"></script>
 		<script src="/public/plugins/jquery-ui/jquery-ui.min.js"></script>
@@ -45,7 +25,7 @@
 		<script src="/public/js/devoops.js"></script>
 </head>
 <body>
-	<header class="navbar">
+	<div class="navbar">
 	<div class="container-fluid expanded-panel">
 		<div class="row">
 			<div  class="col-xs-12 col-sm-2 logo-div">
@@ -114,7 +94,7 @@
 			</div>
 		</div>
 	</div>
-</header>
+</div>
 <!--End Header-->
 <!--Start Container-->
 <div id="main" class="container-fluid">
