@@ -147,13 +147,6 @@ right: 20px;}
 top: -55px; right:5px;}
 }
 
-@media (max-width: 340px) {
-
-}
-.row {
-    margin-top: 25px;
-}
-
 .nopadding {
    padding: 0 !important;
    margin: 0 !important;
