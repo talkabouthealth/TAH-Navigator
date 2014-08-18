@@ -1,0 +1,147 @@
+/* Defines our Application header styles */
+.logo {
+  float: left;
+  width: @nav-width;
+  background: @dark-blue;
+  height: 100%;
+
+  img {
+    width: @nav-width - @padding*2;
+    display: block;
+    margin: @padding;
+  }
+
+
+/*
+
+
+
+
+.logo-container {
+  background: #00509b;
+  height: @header-height;
+}
+
+.application-header {
+  padding: 13px 0px;
+  color: #515151;
+  display: table;
+  width: 100%;
+
+  >div {
+    display: table-cell;
+    float: none;
+    vertical-align: middle;
+
+  }
+
+  h3 {
+    font-size: 20px;
+    margin-bottom: 2px;
+
+  }
+  h4 {
+    text-transform: uppercase;
+    font-size: 13px;
+    margin: 0 0 2px 0;
+  }
+
+  .todayDate {
+    opacity: 0.5;
+
+  }
+
+  .last {
+    text-transform: uppercase;
+
+
+  }
+}
+
+.top-panel {
+  background: #fff;
+  position:fixed absolute;
+  box-shadow: 0 -3px 6px 0 #000;
+}
+
+
+.logo {
+  margin: 15px 0 10px 0;
+
+  img {
+    max-width: 100%;
+  }
+}
+
+.profilePic {
+  height: 67px;
+  float: left;
+  padding-right: 10px;
+  border-right: 1px solid #e4e4e4;
+  margin-right: 25px;
+
+  img {
+    height: 100%;
+  }
+}
+
+.profileInfo {
+
+}
+
+.emergency {
+  border: 1px solid #888e94;
+  border-radius: 25px;
+  display: inline-block;
+  padding: 6px 10px;
+
+}
+
+.feedback {
+  text-transform: uppercase;
+
+  h4 {
+    border-top: 1px solid #d4d4d4;
+    font-size: 13px;
+    padding-top: 5px;
+
+  }
+
+  .buttons {
+  }
+
+  a {
+    font-size: 9px;
+    border: 1px solid #6092c1;
+    border-radius: 5px;
+    padding: 6px 10px;
+    white-space: nowrap;
+    display: inline-block;
+    margin-top: 5px;
+    .transition-duration(0.2s);
+
+    &:hover {
+      background: #EEE;
+      text-decoration: none;
+
+    }
+
+  }
+}
+
+.settings {
+  ul {
+    margin: 0;
+
+  }
+
+}
+
+
+@media (min-width:768px) {
+  .show-sidebar {
+    display: none;
+  }
+}
+
+*/
