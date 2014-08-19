@@ -1,0 +1,36 @@
+/* Layout Styles */
+.wrapper {
+  padding-top: @header-height;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.body {
+  position: relative;
+  width: 100%;
+  z-index: 0;
+  color: @dark-blue;
+  background: white;
+  min-height: 100%;
+}
+
+// header style definition lives in application/header.less
+
+.nav {
+  width: @nav-width;
+  background: @dark-gray; 
+  position: fixed;
+  height: 100%;
+  top: @header-height;
+  left: 0;
+}
+
+.content {
+  background: white;
+  margin-left: @nav-width;
+  overflow: auto;
+  padding: @padding;
+}

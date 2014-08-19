@@ -8,6 +8,7 @@
   z-index: 1;
   background: white;
   color: @dark-gray;
+  box-shadow: 0 -3px 6px 0 #000000;
 }
 
 .logo {
@@ -60,7 +61,8 @@
     }
 
     .account-data {
-      padding: @padding;
+      padding: @padding 0;
+      float: left;
     }
 
     h3 {
@@ -94,12 +96,14 @@
     z-index: 2;
     margin: 0 auto;
     padding: @padding;
+    text-transform: uppercase;
 
     label {
       display: block;
       border-top: 1px solid #d4d4d4;
       font-size: 13px;
       padding-top: 5px;
+      margin: 0;
     }
   }
 
@@ -151,17 +155,12 @@
         }
       }
     }
-
-
   }
-
 }
-
-
 
 /* I don't know if this is a global style or not. */
 .button {
-  font-size: 9px;
+  font-size: @header-button-font;
   border: 1px solid #6092c1;
   padding: 6px 10px;
   white-space: nowrap;
