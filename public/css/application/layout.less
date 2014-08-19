@@ -1,14 +1,3 @@
-/* Anonymous element styles */
-body, html {
-  height: 100%;
-  padding: 0;
-  margin: 0;
-}
-
-a {
-  cursor: pointer;
-}
-
 /* Layout Styles */
 .wrapper {
   padding-top: @header-height;
@@ -25,7 +14,10 @@ a {
   z-index: 0;
   color: @dark-blue;
   background: white;
+  min-height: 100%;
 }
+
+// header style definition lives in application/header.less
 
 .nav {
   width: @nav-width;
@@ -39,4 +31,6 @@ a {
 .content {
   background: white;
   margin-left: @nav-width;
+  overflow: auto;
+  padding: @padding;
 }
