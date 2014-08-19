@@ -1,0 +1,128 @@
+.distress {
+  color: @gray; 
+
+  label {
+    opacity: 0;
+    display: none;
+  }
+
+  label, .distress-amount {
+    position: absolute; margin-left: 50px; width: 240px; color: #000000;font-weight:normal; text-align: left;
+
+    &.no-distress {
+      top: 92%
+    }
+  }
+
+  .distress-amount-value {
+    padding:  20px;
+    line-height: normal;
+  }
+
+  .distress-amount-text {
+    display: inline;
+    font-size: 12px;
+    display: block;
+    margin-top: -51px;
+
+    float: left;
+    margin-left: 96px;
+
+  }
+
+  .step2 {
+
+    .distress-amount {
+      position: relative;
+      width: auto;
+      margin: 0;
+      text-align: center;
+
+    }
+
+    .distress-amount-text {
+      float: none;
+      margin: @padding 0 0 0;
+
+    }
+
+  }
+}
+
+
+.progress {
+  margin-left: 120px;
+}
+
+.progress-ui { height: 300px !important;width: 20px !important;
+  background-image: -webkit-gradient(linear,right bottom,right top,color-stop(0, #FFFFFF),color-stop(1, #FF6429));
+  background-image: -o-linear-gradient(top, #FFFFFF 0%, #FF6429 100%);
+  background-image: -moz-linear-gradient(top, #FFFFFF 0%, #FF6429 100%);
+  background-image: -webkit-linear-gradient(top, #FFFFFF 0%, #FF6429 100%);
+  background-image: -ms-linear-gradient(top, #FFFFFF 0%, #FF6429 100%);
+  background-image: linear-gradient(to top, #FFFFFF 0%, #FF6429 100%);
+}
+.progress-bar, .progress {border-radius: 15px !important;}
+.progress-bar.ui-slider-vertical .ui-state-default {
+  border-radius: 15px !important;
+  height: 30px !important;
+  left: 0 !important;
+  margin-left: -5px !important;
+  width: 30px !important;
+  background: none repeat scroll 0 0 #FFFFFF;
+  border: 5px solid #428BCA;
+  box-shadow: 13px 0 4px 0 #CCCCCC;
+}
+.progress-bar-success .ui-widget-header {
+  background: url("/public/plugins/jquery-ui/images/animated-overlay.gif") repeat scroll 0 0 #428BCA !important;
+  color: #F8F8F8;
+  border: 5px solid #D8D8D8 !important;
+  border-radius: 0 0 10px   10px ;
+}
+.stepchecker strong{
+  font-size: 12px;
+  color: #686d73;
+}
+
+.toggle-switch {
+  float: left;
+}
+.stepchecker {
+  clear: both;
+}
+
+
+
+.problem-title {
+  color:#B3B3B3;text-decoration: underline;
+  line-height: 20px;
+  text-transform: uppercase;
+  clear: both;
+}
+
+.distress-amount {
+  text-align: center;
+}
+
+.distress-amount-value {
+  font-weight:bold;
+  font-size:30px;
+  border:5px solid #31708F;
+  color: #31708F;
+  border-radius:50%;
+  // padding: 25px 20px;
+  display: inline-block;
+  min-width: 82px;
+  min-height: 68px;
+  text-align: center;
+  line-height: 70px;
+}
+.distress-amount-text {
+  text-transform: uppercase;
+  font-weight: bold;
+  color: @blue;
+  margin-top: 10px;
+
+}
+
+

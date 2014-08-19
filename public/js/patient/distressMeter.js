@@ -12,13 +12,13 @@ var DistressMeter = function() {
   var distressRange = {
     1: 'No Distress',
     2: 'Mild Distress',
-    3: 'Mild Distress',
-    4: 'Mild Distress',
-    5: 'Mild Distress',
-    6: 'Mild Distress',
-    7: 'Mild Distress',
-    8: 'Mild Distress',
-    9: 'Mild Distress',
+    3: 'Low Distress',
+    4: 'Modest Distress',
+    5: 'Moderate Distress',
+    6: 'More Than Moderate Distress',
+    7: 'High Distress',
+    8: 'Severe Distress',
+    9: 'Very Severe Distress',
     10: 'Extreme Distress'
   };
 
@@ -30,7 +30,6 @@ var DistressMeter = function() {
 
   var setIndicator = function(amount) {
     // 0 - 76
-    // console.log(range(calculateTopOps(amount), 0, .76));
     indicator.css('bottom', range(calculateTopOps(amount), 0, .81) + '%');
     indicatorAmount.html(amount);
     indicatorText.html(distressRange[amount]);
@@ -42,21 +41,17 @@ var DistressMeter = function() {
       labelNone.show().animate({opacity: 1});
     }
 
-
     if ( labelExtreme.is(':visible') && amount > 8 ) {
-      console.log('fade out');
       labelExtreme.animate({opacity: 0}).hide();
     } else if ( !labelExtreme.is(':visible') && amount <= 8 ) {
-      console.log('fade in');
       labelExtreme.show().animate({opacity: 1});
     }
-
-
   }
 
 
 
   var launchDistressMeter = function() {
+    amount = 1;
 
     page = 1;
     $("#step1").show();
