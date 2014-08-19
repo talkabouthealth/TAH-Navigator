@@ -19,7 +19,14 @@
 
 // header style definition lives in application/header.less
 
-.nav {
+/* 
+ugh. we have to wrap this in a selector to avoid conflicting
+with the similarly named .nav on the login file (whose file
+is stored in the play directory, so we can't change it).
+
+the below wrapper is a nasty hack until we can update that.
+*/
+.sidebar {
   width: @nav-width;
   background: @dark-gray; 
   position: fixed;

@@ -1,5 +1,5 @@
 #{extends 'outermain.html' /}
-<!-- <link rel="stylesheet" media="screen" href="@{'/public/css/static.css'}"> -->
+
  <div id="log_contaner" class="myform">
 	<div class="log_center"> <br/>
         <div class="log_heading">Re-generate a password.</div>
@@ -15,7 +15,7 @@
 					<p class="alert alert-danger">&{flash.error}</p>
 					#{/if} #{if flash.success}
 					<p class="alert alert-success">&{flash.success}
-					<span class="success">Your username and password were sent to you email. 
+					<span class="success">Your username and password were sent to you email.
 					    	Please sign in <a href='@{Secure.login()}'>here</a>.</span>
 					    	</p>
 					#{/if}
