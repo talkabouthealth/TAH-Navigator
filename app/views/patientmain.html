@@ -627,7 +627,20 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
   </div>
 </div>
 <script type='text/javascript' src="/public/js/patient/distressMeter.js"></script>
-<script>
+
+
+      <script>
+      (function($){
+        var todayDate;
+        var lastLogin;
+        $(document).ready(function(){
+          todayDate = $('.today-date');
+          lastLogin = $('.last-login span');
+
+          todayDate.html($.datepicker.formatDate('DD mm/dd/yy', new Date()));
+          lastLogin.timeago();
+        });
+      })(jQuery);
 
 // KEVIN: I don't know what this is for.
 #{set showPopup = session.get("showdistress") /}
@@ -642,8 +655,6 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
 distressMeter();
 #{/if}
 
--->
-  $(".todayDate").html($.datepicker.formatDate('DD mm/dd/yy', new Date()));//Thusday 4/24/2014
   </script>
 </body>
 </html>

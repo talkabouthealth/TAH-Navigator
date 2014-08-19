@@ -6,81 +6,79 @@
 .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{padding:5px;}
 -->
 </style>
-<div id="content" class="col-xs-12 col-sm-10">
-	<div class="col-xs-12 col-sm-12">
-		<span class="initialism" style="color:#525252;">PRIORITY&nbsp;&nbsp;&nbsp;</span>
-		<span><img src="/public/images/low.png" style="height:25px;" /></span>
-		<span><img src="/public/images/med.png" style="height:25px;"/></span>
-		<span><img src="/public/images/high.png" style="height:25px;"/></span>
-		<br/>
-		<br/>
-	</div>
-	<div class="col-xs-12 col-sm-12">
-			<div class="table-responsive">
-				<table class="table table-striped table-bordered table-hover table-heading no-border-bottom">
-					<thead>
-		  			<tr>
-		  				<th>NAME</th>
-						<th>DIAGNOSIS</th>
-						<th>LAST VISIT</th>
-						<th>LAST VISIT INFO</th>
-						<th>LAST MD</th>
-						<th>LAST DISTRESS LEVEL</th>
-						<th>LAST DISTRESS CHECK-IN</th>
-						<th>PROBLEM LIST</th>
-						<th>SYMPTOMS</th>
-						<th>LAST SYMPTOM CHECK-IN</th>
-						<th>LAST NOTE</th>
-		  			</tr>
-		  			</thead>
-		  			<tbody>
-		  			#{if patients != null}
-						#{list patients, as:'seq'}
-				  			<tr>
-				  				<td><a href="@{Care.patient(seq.userDetails.id)}">${seq.userDetails.firstName} ${seq.userDetails.lastName}</a></td>
-								<td>
-									#{if seq.patientOtherDetails != null}
-										#{if seq.patientOtherDetails.disease != null}
-									${seq.patientOtherDetails.disease.name}
-									#{/if}
-									<br/>Stage ${seq.patientOtherDetails.stage}
-									#{/if}
-									#{else}-#{/else}
-									</td>
-								<td>-</td>
-								<td>-</td>
-								<td>-</td>
-								<td>
-									#{if seq.distress != null}
-									${seq.distress.curDist}
-									#{/if}
-									#{else}-#{/else}
-								</td>
-								<td>	
-									#{if seq.distress != null}
-									<span class="timeAgo" title="${seq.distress.distressDate}">${seq.distress.distressDate}</span>
-									#{/if}
-									#{else}-#{/else}
-								</td>
-								<td>#{if seq.distress != null}
-									${seq.distress.otherdetail.printMessage()}
-									#{/if}
-									#{else}-#{/else}</td>
-								<td>-</td>
-								<td>-</td>
-								<td>-</td>
-				  			</tr>
-		  				#{/list}
-		  			#{/if}
-		  			#{else}
-		  				<tr>
-		  					<td colspan="11" align="center">No record found</td>
-		  				</tr>
-		  			#{/else}
-		  			</tbody>
-		  			<tbody>
-		  			</tbody>
-		  			</table>
-		  			</div>
-	</div>
+<div class="col-xs-12 col-sm-12">
+  <span class="initialism" style="color:#525252;">PRIORITY&nbsp;&nbsp;&nbsp;</span>
+  <span><img src="/public/images/low.png" style="height:25px;" /></span>
+  <span><img src="/public/images/med.png" style="height:25px;"/></span>
+  <span><img src="/public/images/high.png" style="height:25px;"/></span>
+  <br/>
+  <br/>
+</div>
+<div class="col-xs-12 col-sm-12">
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover table-heading no-border-bottom">
+      <thead>
+        <tr>
+          <th>NAME</th>
+          <th>DIAGNOSIS</th>
+          <th>LAST VISIT</th>
+          <th>LAST VISIT INFO</th>
+          <th>LAST MD</th>
+          <th>LAST DISTRESS LEVEL</th>
+          <th>LAST DISTRESS CHECK-IN</th>
+          <th>PROBLEM LIST</th>
+          <th>SYMPTOMS</th>
+          <th>LAST SYMPTOM CHECK-IN</th>
+          <th>LAST NOTE</th>
+        </tr>
+      </thead>
+      <tbody>
+      #{if patients != null}
+      #{list patients, as:'seq'}
+      <tr>
+        <td><a href="@{Care.patient(seq.userDetails.id)}">${seq.userDetails.firstName} ${seq.userDetails.lastName}</a></td>
+        <td>
+          #{if seq.patientOtherDetails != null}
+          #{if seq.patientOtherDetails.disease != null}
+          ${seq.patientOtherDetails.disease.name}
+          #{/if}
+          <br/>Stage ${seq.patientOtherDetails.stage}
+          #{/if}
+          #{else}-#{/else}
+        </td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+        <td>
+          #{if seq.distress != null}
+          ${seq.distress.curDist}
+          #{/if}
+          #{else}-#{/else}
+        </td>
+        <td>	
+          #{if seq.distress != null}
+          <span class="timeAgo" title="${seq.distress.distressDate}">${seq.distress.distressDate}</span>
+          #{/if}
+          #{else}-#{/else}
+        </td>
+        <td>#{if seq.distress != null}
+          ${seq.distress.otherdetail.printMessage()}
+          #{/if}
+          #{else}-#{/else}</td>
+        <td>-</td>
+        <td>-</td>
+        <td>-</td>
+      </tr>
+      #{/list}
+      #{/if}
+      #{else}
+      <tr>
+        <td colspan="11" align="center">No record found</td>
+      </tr>
+      #{/else}
+      </tbody>
+      <tbody>
+      </tbody>
+    </table>
+  </div>
 </div>
