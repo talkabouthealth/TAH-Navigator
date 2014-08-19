@@ -95,6 +95,20 @@
     margin: 0 auto;
     padding: @padding;
 
+    label {
+      display: block;
+      border-top: 1px solid #d4d4d4;
+      font-size: 13px;
+      padding-top: 5px;
+    }
+  }
+
+  .emergency {
+    border: 1px solid #888e94;
+    border-radius: 25px;
+    display: inline-block;
+    padding: 6px 10px;
+
   }
 
   .account-actions {
@@ -142,3 +156,26 @@
   }
 
 }
+
+
+
+/* I don't know if this is a global style or not. */
+.button {
+  font-size: 9px;
+  border: 1px solid #6092c1;
+  padding: 6px 10px;
+  white-space: nowrap;
+  display: inline-block;
+  margin-top: 5px;
+  .transition-duration(0.2s);
+
+  &:hover {
+    background: #EEE;
+    text-decoration: none;
+  }
+
+  &.rounded {
+    border-radius: 5px;
+  }
+}
+

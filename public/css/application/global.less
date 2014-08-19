@@ -1,34 +1,15 @@
-.content {
-  position: relative;
-  z-index: 10;
-  background: #FFF;
-  box-shadow: 0 0 6px #131313;
-  padding-bottom: 3000px !important;
-  margin-bottom: -2980px !important;
-  overflow: hidden;
-}
-
-#main {
-  margin-top: @header-height;
-  min-height: 800px;
-  overflow: hidden;
-}
-
-
-@media (max-width: @tablet-min) {
-  #main {
-    margin-top: 100px;
-  }
-}
-
-/* Defines our Global styles */
-
+/* Anonymous element styles */
 body, html {
   height: 100%;
   padding: 0;
   margin: 0;
 }
 
+a {
+  cursor: pointer;
+}
+
+/* Layout Styles */
 .wrapper {
   padding-top: @header-height;
   position: absolute;
@@ -58,5 +39,4 @@ body, html {
 .content {
   background: white;
   margin-left: @nav-width;
-
 }
