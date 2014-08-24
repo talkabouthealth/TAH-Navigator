@@ -1,25 +1,31 @@
 #{set pageType = 'setting' /}
 #{extends 'patientmain.html' /}
+<link rel="stylesheet" media="screen" href="@{'/public/plugins/datepicker/css/datepicker.css'}">
+<script src="@{'/public/plugins/datepicker/js/bootstrap-datepicker.js'}"></script>
+
 	<!--Start Content-->
 <div id="content" class="col-xs-12 col-sm-10">
 	<div class="row">&nbsp;</div>
 	<div class="row">
- 		<div class="col-xs-12 col-sm-12"><h4 class="page-header">Update Key Contact info</h4></div>
+ 		<div class="col-xs-12 col-sm-12"><h4 class="page-header">Update Personal Info</h4></div>
  		<div class="col-xs-12 col-sm-12">
 			#{form @Profile.updateContact() , id:'contactForm' }
  			<table class="col-xs-10 col-sm-5 table-condensed">	
  				<tr><td><ul class="list-group" id="errorGroup"></ul></td></tr>
+ 				
+ 				
  				<tr>
  					<td> 
 	 					<div class="form-group">
-					    <label>Emergency Contact 1 Name</label>
+					    <label>Support Contact 1 Name</label>
 					    <div class="form-group">
 						    <div class="input-group">
-						    <input type="text" maxlength="249"
-						    #{if patientOtherDetails != null}  
-						    value="${patientOtherDetails.ec1name}"
-						    #{/if} class="form-control" name="ec1name" placeholder="Emergency Contact 1 Name" data-toggle="validator"  required>
-						     <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+						    	<input type="text" maxlength="249"
+						    		#{if patientOtherDetails != null}  
+						    			value="${patientOtherDetails.ec1name}"
+						    		#{/if} 
+						    		class="form-control" name="ec1name" placeholder="Support Contact 1 Name" data-toggle="validator"  >
+						     
 						    </div>
 						    <p class="help-block"></p>
 						</div>
@@ -30,14 +36,14 @@
  				<tr>
  					<td> 
 	 					<div class="form-group">
-					    <label>Emergency Contact 1 Number</label>
+					    <label>Support Contact 1 Number</label>
 					    <div class="form-group">
 						    <div class="input-group">
 						    <input type="text" maxlength="99" #{if patientOtherDetails != null}  
 						    value="${patientOtherDetails.ec1number}"
 						    #{/if}
-						    class="form-control" name="ec1number" placeholder="Emergency Contact 1 Number" data-toggle="validator"  required>
-						     <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+						    class="form-control" name="ec1number" placeholder="Support Contact 1 Number" data-toggle="validator"  >
+						     
 						    </div>
 						    <p class="help-block"></p>
 						</div>
@@ -48,13 +54,14 @@
  				<tr>
  					<td> 
 	 					<div class="form-group">
-					    <label>Emergency Contact 2 Name</label>
+					    <label>Support Contact 2 Name</label>
 					    <div class="form-group">
 						    <div class="input-group">
 						    <input type="text" maxlength="249" #{if patientOtherDetails != null}  
 						    value="${patientOtherDetails.ec2name}"
-						    #{/if} class="form-control" name="ec2name" placeholder="Emergency Contact 2 Name" data-toggle="validator"  required>
-						     <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+						    #{/if} 
+						    class="form-control" name="ec2name" placeholder="Support Contact 2 Name" data-toggle="validator"  >
+						    
 						    </div>
 						    <p class="help-block"></p>
 						</div>
@@ -65,13 +72,13 @@
  				 <tr>
  					<td> 
 	 					<div class="form-group">
-					    <label>Emergency Contact 2 Number</label>
+					    <label>Support Contact 2 Number</label>
 					    <div class="form-group">
 						    <div class="input-group">
 						    <input type="text" maxlength="99" #{if patientOtherDetails != null}  
 						    value="${patientOtherDetails.ec2number}"
-						    #{/if} class="form-control" name="ec2number" placeholder="Emergency Contact 1 Number" data-toggle="validator"  required>
-						     <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+						    #{/if} class="form-control" name="ec2number" placeholder="Support Contact 1 Number" data-toggle="validator"  >
+						     
 						    </div>
 						    <p class="help-block"></p>
 						</div>
@@ -87,8 +94,8 @@
 						    <div class="input-group">
 						    <input type="text" maxlength="249" #{if patientOtherDetails != null}  
 						    value="${patientOtherDetails.kinname}"
-						    #{/if} class="form-control" name="kinname" placeholder="Next of Kin Name" data-toggle="validator"  required>
-						     <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+						    #{/if} class="form-control" name="kinname" placeholder="Next of Kin Name" data-toggle="validator"  >
+						     
 						    </div>
 						    <p class="help-block"></p>
 						</div>
@@ -104,8 +111,8 @@
 						    <div class="input-group">
 						    <input type="text" maxlength="99" #{if patientOtherDetails != null}  
 						    value="${patientOtherDetails.kinnumber}"
-						    #{/if} class="form-control" name="kinnumber" placeholder="Next of Kin Number" data-toggle="validator"  required>
-						     <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+						    #{/if} class="form-control" name="kinnumber" placeholder="Next of Kin Number" data-toggle="validator"  >
+						     
 						    </div>
 						    <p class="help-block"></p>
 						</div>
@@ -121,8 +128,8 @@
 						    <div class="input-group">
 						    <input type="text" maxlength="249" #{if patientOtherDetails != null}  
 						    value="${patientOtherDetails.proxyname}"
-						    #{/if} class="form-control" name="proxyname" placeholder="Healthcare Proxy Name" data-toggle="validator"  required>
-						     <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+						    #{/if} class="form-control" name="proxyname" placeholder="Healthcare Proxy Name" data-toggle="validator"  >
+						     
 						    </div>
 						    <p class="help-block"></p>
 						</div>
@@ -138,8 +145,8 @@
 						    <div class="input-group">
 						    <input type="text" maxlength="99" #{if patientOtherDetails != null}  
 						    value="${patientOtherDetails.proxynumber}"
-						    #{/if} class="form-control" name="proxynumber" placeholder="Healthcare Proxy Number" data-toggle="validator"  required>
-						     <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+						    #{/if} class="form-control" name="proxynumber" placeholder="Healthcare Proxy Number" data-toggle="validator"  >
+						     
 						    </div>
 						    <p class="help-block"></p>
 						</div>

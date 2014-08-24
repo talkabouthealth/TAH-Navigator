@@ -1621,6 +1621,7 @@ COPY medicinemaster (id, genericname, brandname, method, image) FROM stdin;
 2	TRASTUZUMAB	Herceptin	1 Weekly infusion	\N
 3	TAMOXIFAN	Nolvadex	Daily, 1 pill per day	\N
 4	TRASTUZUMAB	Herception	1 weekly infusion	\N
+
 \.
 
 

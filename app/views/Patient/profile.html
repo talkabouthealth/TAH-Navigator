@@ -11,6 +11,8 @@
 			#{form @Profile.updateProfile() , id:'passForm' }
  			<table class="col-xs-10 col-sm-5 table-condensed">	
  				<tr><td><ul class="list-group" id="errorGroup"></ul></td></tr>
+ 				
+ 								
  				<tr>
  					<td> 
 	 					<div class="form-group">
@@ -93,8 +95,8 @@
  								<td style="width: 115px;">Mobile phone</td>
  								<td>
  								<div class="input-group">
-								<input type="tel" value="${userDto.mobile}" class="form-control" name="mobile" placeholder="Mobile phone" required>
-								<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+								<input type="tel" value="${userDto.mobile}" class="form-control" name="mobile" placeholder="Mobile phone" >
+								
 					    	</div>
 							<div class="help-block with-errors"></div>
  								</td>
@@ -103,8 +105,8 @@
  								<td style="width: 115px;">Home phone</td>
  								<td>
  								<div class="input-group">
-								<input type="tel" class="form-control" value="${userDto.homePhone}" name="homephone" placeholder="Home phone" required>
-								<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+								<input type="tel" class="form-control" value="${userDto.homePhone}" name="homephone" placeholder="Home phone" >
+								
 					    	</div>
 							<div class="help-block with-errors"></div>
  								</td>
