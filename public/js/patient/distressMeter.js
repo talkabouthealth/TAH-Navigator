@@ -140,11 +140,6 @@ var DistressMeter = function() {
       slide: slide
     });
 
-    $("#distress button").click(function(){
-
-    });
   });
-  return {
 
-  };
 }();
