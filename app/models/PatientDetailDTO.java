@@ -58,6 +58,12 @@ public class PatientDetailDTO {
 
 	@Column(name = "proxynumber")
 	private String proxynumber;
+	
+	@Column(name = "cancer_type_info")
+	private String cancerTypeInfo;
+	
+	@Column(name = "family_history")
+	private String familyHistory;
 
 	public int getId() {
 		return id;
@@ -169,5 +175,21 @@ public class PatientDetailDTO {
 
 	public void setProxynumber(String proxynumber) {
 		this.proxynumber = proxynumber;
+	}
+
+	public String getCancerTypeInfo() {
+		return cancerTypeInfo;
+	}
+
+	public void setCancerTypeInfo(String cancerTypeInfo) {
+		this.cancerTypeInfo = cancerTypeInfo;
+	}
+
+	public String getFamilyHistory() {
+		return familyHistory;
+	}
+
+	public void setFamilyHistory(String familyHistory) {
+		this.familyHistory = familyHistory;
 	}
 }

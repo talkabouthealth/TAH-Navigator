@@ -1,12 +1,83 @@
 #{set pageType = 'diagnosis' /}
 #{extends 'patientmain.html' /}
-	<!--Start Content-->
+    <!--Start Content-->
 
-	
-	
-			<div id="content" class="col-xs-12 col-sm-10">
-        
-      
+
+<div id="content" class="col-xs-12 col-sm-10">
+    #{if patientOtherDetails != null && patientOtherDetails.disease != null && patientOtherDetails.disease.name}
+    <div class="col-sm-12">
+        <div class="product_tr">
+          <p><i class="fa fa-file-text-o"></i> Diagnosis</p>
+            <div>${patientOtherDetails.disease.name} 
+            #{if patientOtherDetails.dateofdiagnosis}
+             | First Diagnosed: ${patientOtherDetails.dateofdiagnosis.format('MM/dd/yyyy')}
+            #{/if}
+            </div>
+        </div>
+    <div class="bottom_hr"></div>
+    </div>
+    #{/if}
+    
+    #{if patientOtherDetails != null && patientOtherDetails.cancerTypeInfo}
+    <div class="col-sm-12">
+        <div class="product_tr">
+          <p><i class="fa fa-file-text-o"></i> Cancer Type Information</p>
+          <div>${patientOtherDetails.cancerTypeInfo}</div>
+        </div>
+        <div class="bottom_hr"></div>
+    </div>
+    #{/if}  
+    
+    #{if patientOtherDetails != null && patientOtherDetails.stage}
+    <div class="col-sm-12">
+        <div class="product_tr">
+          <p><i class="fa fa-file-text-o"></i> Stage Information</p>
+          <div>Stage ${patientOtherDetails.stage}</div>
+        </div>
+        <div class="bottom_hr"></div>
+    </div>
+    #{/if}  
+    
+    #{if patientOtherDetails != null && patientOtherDetails.familyHistory}
+    <div class="col-sm-12">
+        <div class="product_tr">
+          <p><i class="fa fa-file-text-o"></i> Family History & Genetics</p>
+          <div>${patientOtherDetails.familyHistory}</div>
+        </div>
+        <div class="bottom_hr"></div>
+    </div>
+    #{/if}
+    
+    #{if (patientOtherDetails && (patientOtherDetails.dateofdiagnosis || patientOtherDetails.ec1name || patientOtherDetails.ec1number)) || (userDto && (userDto.dob || userDto.homePhone))}
+    <div class="col-sm-12">
+       <div class="product_tr">
+           <p><i class="fa fa-file-text-o"></i> Patient Information</p>
+           #{if patientOtherDetails && patientOtherDetails.dateofdiagnosis}
+           <div>Date of Diagnosis: ${patientOtherDetails.dateofdiagnosis.format('MM/dd/yyyy')}</div>
+           #{/if}
+           #{if patientOtherDetails && (patientOtherDetails.ec1name || patientOtherDetails.ec1number)}
+           <div>Support Contact:
+           #{if patientOtherDetails.ec1name && patientOtherDetails.ec1number}
+           ${patientOtherDetails.ec1name} - ${patientOtherDetails.ec1number} 
+           #{/if}
+           #{elseif patientOtherDetails.ec1name}
+           ${patientOtherDetails.ec1name}
+           #{/elseif}
+           #{else}
+           ${patientOtherDetails.ec1number}
+           #{/else}
+           </div>
+           #{/if}
+           #{if userDto.dob}
+           <div>DOB: ${userDto.dob.format('MM/dd/yyyy')}</div>
+           #{/if}
+           #{if userDto.homePhone}
+           <div>Phone: ${userDto.homePhone}</div>
+           #{/if}
+       </div>
+    </div>
+    #{/if}    
+      *{ ****   Below is part of Original Layout Inactive Now
              
 <!--            <div class="line-h"></div> -->
            <div class="row margin_top">
@@ -37,33 +108,33 @@
                 <div class="product_title02"><b>Phone:</b>917.710.1927</div>
                 <div class="product_title02"><b>Location:</b>Lungs</div><br>
                 <div class="product_title02"><b>Height:</b>69 in, | <span>Last Menstrual Period:</span> 04/15/2014</div><br>
-			 
-				
-				<table class="table table-bordered">
-					<thead>
-						<tr>
-							
-							<th></th>
-							<th>PRE-TREATMENT</th>
-							<th>CURRENT</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							
-							<td>WEIGHT</td>
-							<td>145/bs</td>
-							<td>20.5</td>
-						</tr>
-						<tr>
-							
-							<td>BMI</td>
-							<td>135/bs</td>
-							<td>18.7</td>
-						</tr>
-						
-					</tbody>
-				</table>
+             
+                
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            
+                            <th></th>
+                            <th>PRE-TREATMENT</th>
+                            <th>CURRENT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            
+                            <td>WEIGHT</td>
+                            <td>145/bs</td>
+                            <td>20.5</td>
+                        </tr>
+                        <tr>
+                            
+                            <td>BMI</td>
+                            <td>135/bs</td>
+                            <td>18.7</td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
                  <div class="note">Comments:Die to size of tumor in breast and painful,
                        matted nodes under arm,neoadjuvant selected</div>
                 </div>
@@ -115,6 +186,7 @@ under arm in August</div>
          
 <!--             <div class="line-h"></div> -->
              
-	
-	<div id="ajax-content"></div>
+    
+    <div id="ajax-content"></div>
+    *}
 </div>
