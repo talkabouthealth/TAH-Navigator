@@ -1,3 +1,55 @@
 .sidebar {
     background: #0F7970 url('/public/img/devoops_pattern_b10.png') 0 0 repeat !important;
 }
+
+.table{
+	font-size: @body-font;
+
+	th {
+		padding: @table-cell-padding;
+	}
+
+	> thead > tr > td, > tbody > tr > td, > tfoot > tr > td {
+		padding: 0;
+
+	}
+
+	tr:nth-child(2n) {
+		td {
+			background: white;
+
+			div {
+				&:before {
+					.gradient(rgba(255,255,255,0), rgba(255,255,255,1))
+				}
+			}
+		}
+	}
+}
+
+td {
+	padding: 0;
+	position: relative;
+
+  div {
+    max-height: @table-cell-max-height;
+    overflow: hidden;
+    padding: @table-cell-padding;
+
+    &.tooltipstered {
+    	cursor: pointer;
+    }
+
+    &:before {
+    	@height: 35px;
+    	content: "";
+    	display: block;
+    	position: absolute;
+    	top: @table-cell-max-height - @height;
+    	left: 0;
+    	height: @height;
+    	width: 100%;
+    	.gradient(rgba(249,249,249,0), rgba(249,249,249,1))
+    }
+  }
+}
