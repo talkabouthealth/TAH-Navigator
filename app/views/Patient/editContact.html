@@ -14,6 +14,50 @@
  				<tr><td><ul class="list-group" id="errorGroup"></ul></td></tr>
  				
  				
+ 				
+ 				<tr>
+ 					<td> 
+	 					
+ 						<div class="form-group for-patient">
+					    	<label for="exampleInputEmail1">Date of birth (mm/dd/yyyy)</label>
+				    		<div class="form-group for-patient">
+				    		 	<div class="input-group">
+						    		<input type="text" 
+									#{if userDto != null}  
+									    value="${userDto.dob.format('MM/dd/yyy')}"
+								    #{/if} 
+								    class="form-control datepicker" name="dob" value="${flash['userDto.dob']}" placeholder="Date of birth" data-date-format="mm/dd/yyyy" data-date-viewmode="day" data-date-minviewmode="day">
+								    <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+						    	</div>
+							</div>
+						</div>
+ 								 					
+ 							  
+					</td>
+ 				</tr>
+ 				
+ 				
+  				<tr>
+ 					<td>
+  						<div class="form-group">
+				    			<label>Last 4 Digits of Social Security Number</label>
+				    			<div class="form-group">
+				    		 	<div class="input-group">
+						    		<div class="col-xs-5 nopadding">
+				    				<input type="text" 
+				    	 			#{if userDto != null}  
+									    value="${userDto.ssnLast4}"
+								    #{/if} 
+								    class="form-control" name="ssnLast4" placeholder="0000" data-minlength="4" maxlength="4" >
+								</div>
+								</div>
+								</div>
+						</div>
+							
+					</td>
+ 				</tr>
+				
+ 				
  				<tr>
  					<td> 
 	 					<div class="form-group">
@@ -196,5 +240,34 @@
 		}
 	}
 
+-->
+</script>
+
+    <script>
+<!--
+$(document).ready(function() {
+	$('.datepicker').datepicker({onRender: function(date) {
+	    return date.valueOf() >= new Date().valueOf() ? 'disabled' : '';
+	  }});
+	$('#signup').validator();
+	var userType = $("#userType").val();
+	if(userType == '5' || userType == '4') {
+		$(".for-patient").hide();
+		$(".for-doctor").show();
+	} else {
+		$(".for-patient").show();
+		$(".for-doctor").hide();
+	}
+	$("#userType").change(function(){
+		var userType = $(this).val();
+		if(userType == '5' || userType == '4') {
+			$(".for-patient").hide();
+			$(".for-doctor").show();
+		} else {
+			$(".for-patient").show();
+			$(".for-doctor").hide();
+		} 
+	});
+});
 -->
 </script>

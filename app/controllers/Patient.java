@@ -1,7 +1,12 @@
 package controllers;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 import models.CareTeamMasterDTO;
 import models.CareTeamMemberDTO;
@@ -34,7 +39,7 @@ public class Patient extends Controller {
 		UserBean user = CommonUtil.loadCachedUser(session);
 		UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());
 		PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", user.getId());
-		System.out.println(session.getId());
+		System.out.println("Session ID: " + session.getId());
         render(user,userDto,patientOtherDetails);
     }
 	
@@ -165,6 +170,7 @@ public class Patient extends Controller {
 		UserBean user = CommonUtil.loadCachedUser(session);
 		UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());
 		PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", user.getId());
+		
 		System.out.println(session.getId());
 		render(user,userDto,patientOtherDetails);
 	}

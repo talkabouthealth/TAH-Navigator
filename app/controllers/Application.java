@@ -116,14 +116,15 @@ public class Application extends Controller {
              validation.keep();
              System.out.println(validation.errors().size());
              System.out.println(validation.errors().get(0).message("username.empty"));
-             create();
+             create(); 
          } 
     	 if(UserDAO.parseAndSaveMember(member)) {
     		 UserBean user = UserDAO.getByUserEmail(member.getEmail());
     		 UserDetailsDTO detailDto = UserDAO.getDetailsById(user.getId()+"");
     		 //Mail.welcome(detailDto);
     		 //Mail for welcome user may needed in future.
-
+    		 System.out.println("Application.java - User email: " + detailDto.getEmail());
+    		 
     		 String url = "http://"+request.host;
     		 Mail.activation(detailDto,url);
     		 LoginHistoryDAO.saveLogin(member.getEmail(),"local",false,session.getId());
@@ -185,7 +186,7 @@ public class Application extends Controller {
     				validation.addError("member.email", "email.exists", "");
     			}
     		} else {
-    			System.out.println("Not null emial");
+    			System.out.println("Not null email");
     		}
     	} else {
 //    		System.out.println("Is null");

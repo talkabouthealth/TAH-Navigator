@@ -32,6 +32,9 @@ public class UserDetailsDTO {
 	@Column(name = "dob")
 	private Date dob;
 	
+	@Column(name = "ssnlast4")
+	private int ssnLast4;
+	
 	@OneToOne
 	@JoinColumn(name = "contactmethod")
 	private ContactTypeDTO contactMethod;
@@ -107,8 +110,16 @@ public class UserDetailsDTO {
 		return lastName;
 	}
 
-	public void setLastName(String lastName) {
+	public void setLastName(String ssn) {
 		this.lastName = lastName;
+	}
+	
+	public int getSsnLast4() {
+		return ssnLast4;
+	}
+
+	public void setSsnLast4(int ssnLast4) {
+		this.ssnLast4 = ssnLast4;
 	}
 
 	public Date getDob() {
