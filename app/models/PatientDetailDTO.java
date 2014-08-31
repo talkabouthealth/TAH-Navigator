@@ -21,9 +21,14 @@ public class PatientDetailDTO {
 	@JoinColumn(name = "id")
 	private UserDTO user;
 
+	@Column(name="disease")
+	private Integer diseaseId;
+	
 	@OneToOne(fetch=FetchType.EAGER)
-	@JoinColumn(name = "disease")
+	@JoinColumn(name = "disease", insertable=false, updatable=false)
 	private DiseaseMasterDTO disease;
+	
+	
 
 	@Column(name = "dateofdiagnosis")
 	private Date dateofdiagnosis;
@@ -59,12 +64,7 @@ public class PatientDetailDTO {
 	@Column(name = "proxynumber")
 	private String proxynumber;
 	
-	@Column(name = "cancer_type_info")
-	private String cancerTypeInfo;
 	
-	@Column(name = "family_history")
-	private String familyHistory;
-
 	public int getId() {
 		return id;
 	}
@@ -177,19 +177,13 @@ public class PatientDetailDTO {
 		this.proxynumber = proxynumber;
 	}
 
-	public String getCancerTypeInfo() {
-		return cancerTypeInfo;
+	public Integer getDiseaseId() {
+		return diseaseId;
 	}
 
-	public void setCancerTypeInfo(String cancerTypeInfo) {
-		this.cancerTypeInfo = cancerTypeInfo;
+	public void setDiseaseId(Integer diseaseId) {
+		this.diseaseId = diseaseId;
 	}
 
-	public String getFamilyHistory() {
-		return familyHistory;
-	}
-
-	public void setFamilyHistory(String familyHistory) {
-		this.familyHistory = familyHistory;
-	}
+	
 }

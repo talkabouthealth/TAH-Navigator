@@ -736,6 +736,238 @@ background: linear-gradient(180deg, #ff4488 50%, #ff0000 50%);
 	</div>
 </div>
 
+
+
+<div id="diagnosis-edit-form" title="Edit Diagnosis Info">
+    <div style="padding: 5px; font-size: 12px;">
+        <div style="padding: 3px;">
+            <span style="display:inline-block; width: 200px;">Disease</span>
+            <span>
+                <select id="disease">
+                    <option></option>
+                    #{list items:diseases, as:'disease'}
+                    <option value="${disease.id}">${disease.name}</option>
+                    #{/list}
+                </select>
+            </span>
+        </div>
+        <div style="padding: 3px;">
+            <span style="display:inline-block; width: 200px;">First Diagnosed</span>
+            <span>
+                <input type="text" id="first-diagnosed">
+            </span>
+        </div>
+        <div id="er_div" style="padding: 3px;">
+            <span style="display:inline-block; width: 200px;">Hormone and Her2 Status</span>
+            <span>
+                <select id="er">
+                    <option value="na"></option>
+                    <option value="yes">ER+</option>
+                    <option value="no">ER-</option>
+                </select>
+            </span>
+        </div>
+        <div id="pr_div" style="padding: 3px;">
+            <span style="display:inline-block; width: 200px;"></span>
+            <span>
+                <select id="pr">
+                    <option value="na"></option>
+                    <option value="yes">PR+</option>
+                    <option value="no">PR-</option>
+                </select>
+            </span>
+        </div>
+        <div id="her2_div" style="padding: 3px;">
+            <span style="display:inline-block; width: 200px;"></span>
+            <span>
+                <select id="her2">
+                    <option value="na"></option>
+                    <option value="yes">HER2+</option>
+                    <option value="no">HER2-</option>
+                </select>
+            </span>
+        </div>
+        <div id="stage_div" style="padding: 3px;">
+            <span style="display:inline-block; width: 200px;">Stage</span>
+            <span>
+                <select id="stage">
+                    <option></option>
+                    #{list items:stages, as:'stage'}
+                    <option value="${stage.id}">${stage.name}</option>
+                    #{/list}
+                </select>
+            </span>
+        </div>
+        <div id="brca_div" style="padding: 3px;">
+            <span style="display:inline-block; width: 200px;">BRCA+</span>
+            <span>
+                <select id="brca">
+                    <option value="na"></option>
+                    <option value="yes">Yes</option>
+                    <option value="no">No</option>
+                </select>
+            </span>
+        </div>
+        <div style="padding: 3px;">
+            <span style="display:inline-block; width: 200px;">Date of Birth</span>
+            <span>
+                <input type="text" id="dob">
+            </span>
+        </div>
+        <div style="padding: 3px;">
+            <span style="display:inline-block; width: 200px;">Phone</span>
+            <span>
+                <input type="text" id="phone">
+            </span>
+        </div>
+        <div style="padding: 3px;">
+            <span style="display:inline-block; width: 200px;">Support Contact</span>
+            <span>
+                <input type="text" id="ec1name">
+            </span>
+        </div>
+        <div style="padding: 3px;">
+            <span style="display:inline-block; width: 200px;">Support Contact Phone</span>
+            <span>
+                <input type="text" id="ec1number">
+            </span>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$('#diagnosis-edit-form').dialog({
+	autoOpen: false,
+	width: 500,
+	buttons: [{
+		text: "Update Data",
+		click: function() {
+			careTeamController.evtMsgHandler('update_diagnosis_data');
+		}
+	}]
+});
+
+$('#first-diagnosed').datepicker({
+	dateFormat: "yy-mm-dd"
+});
+$('#dob').datepicker({
+    dateFormat: "yy-mm-dd"
+});
+
+$('#disease').change(function() {
+	var breastCancerId = ${breastCancerId};
+	var disease_id = $(this).val();
+	if (disease_id != breastCancerId) {  
+		$('#er_div').hide();
+		$('#pr_div').hide();
+		$('#her2_div').hide();
+		$('#stage_div').hide();
+		$('#brca_div').hide();
+	}
+	else {
+		$('#er_div').show();
+        $('#pr_div').show();
+        $('#her2_div').show();
+        $('#stage_div').show();
+        $('#brca_div').show();
+	}
+});
+
+
+
+var careTeamController = (function() {
+	var breastCancerId = ${breastCancerId};
+    var diagnosis = function(domElement) {
+    	var patientId = $(domElement).attr("patient_id");
+    	
+    	$.post("/carepatien/diagnosisjson", {
+    		   patientId: patientId
+    	}, function(data) {
+    		if ("diseaseId" in data) {
+    		  $('#disease').val(data.diseaseId);
+    		  if (data.breastCancerId == data.diseaseId) {
+    			  if ("stageId" in data) {
+    				  $('#stage').val(data.stageId);
+    			  }
+    			  $('#er').val(data.er);
+    			  $('#pr').val(data.pr);
+    			  $('#her2').val(data.her2);
+    			  $('#brca').val(data.brca);
+    		  }
+    		}
+            if ("firstDiagnosed" in data) {
+                $('#first-diagnosed').val(data.firstDiagnosed);
+    		}
+    		if ("dateOfBirth" in data) {
+    			$('#dob').val(data.dateOfBirth);
+    		}
+    		if ("Phone" in data) {
+    			$("#phone").val(data.Phone);
+    		}
+    		if ("supportName" in data) {
+    			$('#ec1name').val(data.supportName);
+    		}
+    		if ("supportNumber" in data) {
+    			$('#ec1number').val(data.supportNumber);
+    		}
+    		
+    		$('#diagnosis-edit-form').dialog("open");
+            $('#diagnosis-edit-form').attr("patient_id", patientId);
+            $('#disease').change();	
+    	}, "json");
+    };
+    
+    var updateDiagnosisData = function() {
+    	var patientId = $('#diagnosis-edit-form').attr("patient_id");
+    	// collect data and send
+    	var tmpFunc = #{jsAction @CarePatien.updateDiagnosis(':patientId', ':diseaseId', ':dateOfDiagnosis', ':dob', ':phone', ':supportName', ':supportNumber') /}
+    	var diseaseId = $('#disease').val();
+    	var dateOfDiagnosis = $('#first-diagnosed').val();
+    	var dob = $('#dob').val();
+    	var phone = $('#phone').val();
+    	var supportName = $('#ec1name').val();
+    	var supportNumber = $('#ec1number').val();
+    	var params = {
+	        'patientId': patientId, 
+	        'diseaseId': diseaseId, 
+	        'dateOfDiagnosis': dateOfDiagnosis, 
+	        'dob' : dob, 
+	        'phone' : phone, 
+	        'supportName' : supportName, 
+	        'supportNumber' : supportNumber
+        };
+    	var url = tmpFunc(params);
+    	if (diseaseId == breastCancerId) {
+    		url += '&diseaseInfo.er=' + $('#er').val();
+    		url += '&diseaseInfo.pr=' + $('#pr').val();
+    		url += '&diseaseInfo.her2=' +  $('#her2').val();
+    		url += '&diseaseInfo.stage_id=' + $('#stage').val();
+    		url += '&diseaseInfo.brca=' + $('#brca').val();
+    	}
+    	$.post(url, function(htmlText) {
+    		$('#ui-tabs-6').html(htmlText);
+    	});
+    	$('#diagnosis-edit-form').dialog("close");
+    };
+
+    var msgMap = {
+        'diagnosis': diagnosis,
+        'update_diagnosis_data': updateDiagnosisData
+    };
+    function evtMsgHandler(msg, domElement, params) {
+        var func = msgMap[msg];
+        if (typeof func !== 'undefined') {
+            func(domElement, params);
+        }
+    }
+    return {        
+        evtMsgHandler: evtMsgHandler    
+    };
+})();
+
+
+</script>
+
 <script><!--
 $(document).ready(function() {
 	$("#tabs").tabs({
