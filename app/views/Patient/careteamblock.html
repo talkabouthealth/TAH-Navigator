@@ -3,7 +3,7 @@
   <div class="col-lg-8">
     <div class="caretaker">
       <div class="image">
-        <img src="@{Image.show(expertBeanHead.expertDetail.id)}" class="">
+        <a href="@{Patient.careMember(expertBeanHead.expertDetail.id,careteam.id)}"><img src="@{Image.show(expertBeanHead.expertDetail.id)}" class=""></a>
       </div>
       <h2><a href="@{Patient.careMember(expertBeanHead.expertDetail.id,careteam.id)}">
           ${expertBeanHead.expertDetail.designation.abbr}.  ${expertBeanHead.userDetails.firstName} ${expertBeanHead.userDetails.lastName}
@@ -54,7 +54,7 @@
           #{if expertBean.expertDetail != null}
           <div class="supporter">
             <div class="image">
-              <img src="@{Image.show(expertBean.expertDetail.id)}">
+              <a href="@{Patient.careMember(expertBean.expertDetail.id,careteam.id)}"><img src="@{Image.show(expertBean.expertDetail.id)}"></a>
             </div>
             <div class="title">
               #{if expertBean.expertDetail.designation != null}

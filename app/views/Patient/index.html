@@ -2,63 +2,131 @@
 #{extends 'patientmain.html' /}
 	<!--Start Content-->
 <div id="content">
-	<!-- <div class="row">
-		<div id="breadcrumb" class="col-xs-12">
-		<ol class="breadcrumb">
-			<li><a href="#">Home</a></li>
-			<li><a href="#">Dashboard</a></li>
-		</ol>
-		</div>
-	</div> -->
-	 <div class="grey-box">
-            	<div class="row">
-            		<div class="col-sm-12">
-            			<span style="background-color: #FFFFFF;border: 5px solid #FFFFFF;border-radius: 5px;color: #01AF58;font-size: 10px;font-weight: bold;margin-left: -15px;">PATIENT</span>
-            			<span class="text-muted" style="margin-left: 5px;font-size:10px;">LAST UPDATED ${userDto.editdate.format("M/d/yyyy")}</span>
-            		</div>
-                	<div class="col-sm-6">
-                    	<div class="row">
-                        	<div class="col-sm-6">
-                    			<h3>${userDto.firstName} ${userDto.lastName}</h3>
-                                <p><strong>DOB:</strong> #{if userDto.dob != null}${userDto.dob.format("M/d/yyyy")}#{/if}</p>
-                                <p><strong>Phone: </strong> ${userDto.homePhone}</p>
-                    		</div>
-                    		<div class="col-sm-6 border_01">
-                    			<h3>&nbsp;</h3>
-                                <p><strong>Phone(2):</strong> ${userDto.mobile}</p>
-                                <p><strong>Email: </strong> ${userDto.email}</p>
-                   			 </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                    	<div class="row">
-                        	<div class="col-sm-6">
-		                    	<p><strong>Support Contact:</strong>support@email.com</p>
-		                        <p><strong>Contact Phone:</strong>: 352.751.8000</p>
-		                        <p><strong>Contact Email:</strong> test@gmail.com</p>
-                    		</div>
-                    		<div class="col-sm-6 border_02">
-                    		#{if patientOtherDetails != null}
-                    			#{if patientOtherDetails.disease != null}
-                    	   			<p><strong>Diagnosis:</strong> ${patientOtherDetails.disease.name}</p>
-                    	   		#{/if}
-                    	   		#{if patientOtherDetails.dateofdiagnosis != null}
-                        		<p><strong>Date of Diagnosis:</strong> ${patientOtherDetails.dateofdiagnosis.format('dd.MM.yyyy')}</p>
-                        		#{/if}
-								<p><strong>Stage:</strong> ${patientOtherDetails.stage}</p>
-							#{/if}
-							#{else}
-                    	   		<p><strong>Diagnosis:</strong> -</p>
-                        		<p><strong>Date of Diagnosis:</strong> -</p>
-								<p><strong>Stage:</strong> -</p>
-							#{/else}
-                   			</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+	
 	<div class="col-xs-12 col-sm-12">
-			Welcome on Patient dashboard
+			Preparation
+			<div><h4>
+					My Next Appointment is Schedule for:
+			</h4></div>
+	<div class="row margin_top">
+      <div class="col-sm-6">
+        <a target="_new" href="https://www.google.com/maps/preview?saddr=&daddr=1400+U.S.+Highway+441+Suite+540,The+Villages,FL,USA+-+32159">
+          <img width="100%" src="http://maps.googleapis.com/maps/api/staticmap?center=28.891861,-81.906883&maptype=roadmap&zoom=12&size=200x100&scale=false&&markers=color:red%7Csize:small%7C28.891861,-81.906883">
+        </a>
+      </div>
+      <div>
+      	Monday, October 20, 2014
+      </div>
+      <div>
+      	9:15 AM | Moffitt Cancer Center TVRH
+      </div>
+      <div>
+      	<a href="caremember?memberId=552&teamId=2"><img src="http://173.203.101.101/image/show/552"></a>
+      </div>
+      <div>
+      	MY APPOINTMENT IS WITH
+      </div>
+      <div>
+      	Dr. Jorge Freire
+      </div>
+      <div>
+      	352.751.8000
+      </div>
+      	
 	</div>
+	
+	<div>&nbsp;
+	</div>
+	<div>&nbsp;
+	</div>
+	
+	<div class="col-xs-12 col-sm-12">
+			Preparation Checklist
+				<div><h4>
+					Do I have everything I need to ensure a successful visit on my next appointment?
+					</h4>
+				</div>
+				<div>
+					PACK ALL MEDICATION PILL BOTTLES IN A ZIPLOC BAG
+				</div>
+				<div>
+					BRING DRIVERS LICENSE AND INSURANCE CARD
+				</div>
+				<div>
+					BRING ALL TEST RESULTS, LAB WORK, AND PAST PATIENT RECORDS
+				</div>
+				<div>
+					WRITE DOWN ALL QUESTIONS TO ASK MY DOCTOR
+				</div>
+				<div>
+					BRING A FRIEND OR FAMILY MEMBER
+				</div>
+	</div>
+	
+	
+	<div>&nbsp;
+	</div>
+	<div>&nbsp;
+	</div>
+	
+	<div class="col-xs-12 col-sm-12">
+			Video Walkthrough
+				<div>
+					<iframe width="560" height="315" src="//www.youtube.com/embed/u-0P5hQP02k" frameborder="0" allowfullscreen></iframe>
+				</div>
+	</div>
+	
+	<div>&nbsp;
+	</div>
+	<div>&nbsp;
+	</div>
+	
+	
+	<div class="col-xs-12 col-sm-12">
+			My Care Team
+		<div>
+			My Current Care Team has (6) Members:
+		</div>
+		<div>
+			<div>
+      			<a href="caremember?memberId=552&teamId=2"><img src="http://173.203.101.101/image/show/552"></a>
+      		</div>
+      		Dr. Jorge Freire | Moffitt Cancer Center TVRH</br>
+			352.751.8000
+		</div>
+		<div>
+			<div>
+      			<a href="caremember?memberId=552&teamId=2"><img src="http://173.203.101.101/image/show/616"></a>
+      		</div>
+			Kristie Todd, RN, Nurse Navigator | Moffitt Cancer Center TVRH</br>
+			352.751.8000
+		</div>
+		<div>
+			<div>
+      			<a href="caremember?memberId=552&teamId=2"><img src="http://173.203.101.101/image/show/623"></a>
+      		</div>
+			Ryan Belen, Chief Radiation Therapist | Moffitt Cancer Center TVRH</br>
+			352.751.8000
+		</div>
+		<div>
+			<div>
+      			<a href="caremember?memberId=552&teamId=2"><img src="http://173.203.101.101/image/show/627"></a>
+      		</div>
+			Jessica Santiago, Support Specialist | Moffitt Cancer Center TVRH</br>
+			352.751.8000
+		</div>	
+	</div>
+	
+	<div>&nbsp;
+	</div>
+	<div>&nbsp;
+	</div>
+	
+	<div class="col-xs-12 col-sm-12">
+			What's Next. Where am I in the Process?
+	</div>
+	
+	
 	<div id="ajax-content"></div>
 </div>

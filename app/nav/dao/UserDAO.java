@@ -77,7 +77,6 @@ public class UserDAO {
 			TypedQuery<UserDTO> query = em.createQuery("SELECT c FROM UserDTO c WHERE c."+fieldName+" = :field", UserDTO.class); 
 			query.setParameter("field", value);
 			dto = query.getResultList().get(0);
-			System.out.println("Is DTO null? : " + dto.getName());
 			} catch(Exception e) {
 		} finally {
 			em.close();
