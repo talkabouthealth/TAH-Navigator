@@ -33,7 +33,7 @@ public class SignUpMemberBean {
 	
 	private int ssn2;
 	
-	private int ssn3;
+	private int ssnLast4;
 	
 	private String contactMethod;
 	
@@ -44,6 +44,10 @@ public class SignUpMemberBean {
 	private String mobile;
 	
 	private String homePhone;
+	
+	private String supportContactName;
+	
+	private String supportContactPhone;
 	
 	private String seq1;
 	
@@ -133,6 +137,14 @@ public class SignUpMemberBean {
 		this.lastName = lastName;
 	}
 
+	public int getSsnLast4() {
+		return ssnLast4;
+	}
+
+	public void setSsnLast4(int ssnLast4) {
+		this.ssnLast4 = ssnLast4;
+	}
+
 	public String getDob() {
 		return dob;
 	}
@@ -155,14 +167,6 @@ public class SignUpMemberBean {
 
 	public void setSsn2(int ssn2) {
 		this.ssn2 = ssn2;
-	}
-
-	public int getSsn3() {
-		return ssn3;
-	}
-
-	public void setSsn3(int ssn3) {
-		this.ssn3 = ssn3;
 	}
 
 	public String getContactMethod() {
@@ -203,6 +207,21 @@ public class SignUpMemberBean {
 
 	public void setHomePhone(String homePhone) {
 		this.homePhone = homePhone;
+	}
+
+	public String getSupportContactName() {
+		return supportContactName;
+	}
+	public void setSupportContactName (String supportContactName) {
+		this.supportContactName = supportContactName;
+	}
+
+	public String getSupportContactPhone() {
+		return supportContactPhone;
+	}
+	
+	public void setSupportContactPhone(String supportContactPhone) {
+		this.supportContactPhone = supportContactPhone;
 	}
 
 	public String getSeq1() {

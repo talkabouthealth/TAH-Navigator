@@ -42,7 +42,7 @@ table.table-condensed {
        	   <div class="col-md-12">
        	    <ul class="list-group">
 						#{ifErrors}
-							   <li class="list-group-item list-group-item-warning">Validation failed! Please correct the following errors,</li>
+							   <li class="list-group-item list	-group-item-warning">Validation failed! Please correct the following errors,</li>
 						   #{errors}
 						      <li class="list-group-item list-group-item-danger">${error}</li>
 						   #{/errors}
@@ -95,7 +95,7 @@ table.table-condensed {
 				     <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
 				      </div>
 				      <div class="help-block with-errors"></div>
-				    <label class="for-doctor">(As you would like it to appear for patients. For example: Jhon Smith, MD or Nancy Smith, RN)</label>
+				    <label class="for-doctor">(As you would like it to appear for patients. For example: John Smith, MD or Nancy Smith, RN)</label>
 				</div>			  
 		 		<div class="form-group for-patient">
 				    <label for="exampleInputEmail1">Last Name</label>
@@ -121,7 +121,7 @@ table.table-condensed {
 				     <input type="text" class="form-control" name="member.ssn2" value="${flash['member.ssn2']}" placeholder="00">
 				    </div>-->
 				    <div class="col-xs-3 nopadding">
-				    	<input type="text" class="form-control" name="member.ssn3" value="${flash['member.ssn3']}" placeholder="0000" data-minlength="4" maxlength="4">
+				    	<input type="text" class="form-control" name="member.ssnLast4" value="${flash['member.ssnLast4']}" placeholder="0000" data-minlength="4" maxlength="4">
 				    	  <div class="help-block with-errors"></div>
 					</div>
 				</div>
@@ -157,20 +157,30 @@ table.table-condensed {
 			    <div class="help-block with-errors"></div>
 			</div>
 	    	<div class="form-group for-patient">
-			    <label for="exampleInputEmail1">Mobile Phone</label>
+			    <label for="exampleInputEmail1">Mobile Phone (i.e. 352.750.1234)</label>
 			    <input type="text" class="form-control" name="member.mobile" value="${flash['member.mobile']}" placeholder="Enter mobile number">
 			</div>
 	    	<div class="form-group for-patient">
-			    <label for="exampleInputEmail1">Home Phone</label>
+			    <label for="exampleInputEmail1">Home Phone (i.e. 352.750.1234)</label>
 			    <input type="text" class="form-control" name="member.homePhone" value="${flash['member.homePhone']}" placeholder="Enter home phone">
 			</div>
+			
+			<div class="form-group for-patient">
+				    <label for="exampleInputEmail1">Support Contact Name</label>
+				    <input type="text" class="form-control" name="member.supportContactName" value="${flash['member.supportContactName']}" placeholder="Enter support contact name">
+			</div>
+			<div class="form-group for-patient">
+			    <label for="exampleInputEmail1">Support Contact Phone (i.e. 352.750.1234)</label>
+			    <input type="text" class="form-control" name="member.supportContactPhone" value="${flash['member.supportContactPhone']}" placeholder="Enter support contact phone">
+			</div>
+			
 		</div>
 		<div class="col-md-12">
 			<div class="headding"><h4>Security Information</h4></div>
-				<div class="form-group"><p class="nopadding">Choose all questions below and enter one answer for each question.</p></div>
+				<!--<div class="form-group"><p class="nopadding">Choose all questions below and enter one answer for each question.</p></div>-->
 			  	<div class="form-group">
 			  		
-				    <label for="exampleInputEmail1">Security question 1 </label>
+				    <label for="exampleInputEmail1">Security question</label>
 				    <select class="form-control" name="member.seq1">
 				    	#{if securityQuestionList != null}
 				    		#{list securityQuestionList, as:'seq'}
@@ -181,14 +191,14 @@ table.table-condensed {
 				    *{ <input type="text" class="form-control" name="member.seq1" placeholder="Security question 1">}*
 				</div>			  
 		 		<div class="form-group">
-				    <label for="exampleInputEmail1">Security answer 1</label>
+				    <label for="exampleInputEmail1">Security answer</label>
 				     <div class="input-group">
 				    <input type="text" class="form-control" name="member.sea1"  value="${flash['member.sea1']}" placeholder="Enter Security answer 1" required>
 				     <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
 				    </div>
 				    <div class="help-block with-errors"></div>
 				</div>
-		    	<div class="form-group">
+<!--	    	<div class="form-group">
 				    <label for="exampleInputEmail1">Security question 2</label>
 				    *{ <input type="text" class="form-control" name="member.seq2" placeholder="Enter Security question 2"> }*
 				    <select class="form-control" name="member.seq2">
@@ -206,7 +216,7 @@ table.table-condensed {
 				    <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
 				    </div>
 				    <div class="help-block with-errors"></div>
-				</div>
+				</div>-->
 		</div>
 		</div>
 		  <div class="col-md-12">
@@ -246,7 +256,7 @@ table.table-condensed {
 		</div><!--
       </div>
       <div class="footer">
-        <p>&copy; Copyright 2014 - Talk About Health</p>
+        <p>&copy; Copyright 2014 - TalkAboutHealth</p>
       </div>
     </div> <!-- /container -->
     <script>

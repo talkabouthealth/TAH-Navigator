@@ -1,31 +1,18 @@
 package controllers;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-import models.CareTeamMasterDTO;
-import models.CareTeamMemberDTO;
-import models.ContactTypeDTO;
-import models.ExpertDetailDTO;
-import models.PatienCareTeamDTO;
-import models.PatientDetailDTO;
-import models.PatientMedicationDTO;
-import models.UserCertificateDTO;
-import models.UserDetailsDTO;
-import models.UserEducationDTO;
-import models.UserExpertiesDTO;
-import models.UserOtherEmailDTO;
-import nav.dao.CareTeamDAO;
-import nav.dao.ContactTypeDAO;
-import nav.dao.MedicationDAO;
-import nav.dao.ProfileDAO;
-import nav.dao.UserDAO;
-import nav.dao.UserOtherEmailDAO;
-import nav.dto.ExpertBean;
-import nav.dto.UserBean;
+import models.*;
+import nav.dao.*;
+import nav.dto.*;
 import play.mvc.Controller;
 import play.mvc.With;
-import util.CommonUtil;
+import util.*;
 
 @Check({"user","user"})
 @With( { Secure.class } )
@@ -34,7 +21,7 @@ public class Patient extends Controller {
 		UserBean user = CommonUtil.loadCachedUser(session);
 		UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());
 		PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", user.getId());
-		System.out.println(session.getId());
+		System.out.println("Session ID: " + session.getId());
         render(user,userDto,patientOtherDetails);
     }
 	
@@ -103,10 +90,19 @@ public class Patient extends Controller {
 	
 	public static void diagnosis() {
 		UserBean user = CommonUtil.loadCachedUser(session);
+		/*
 		UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());
 		System.out.println(session.getId());
 		PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", user.getId());
-        render(user,userDto,patientOtherDetails);
+		*/
+		
+		Map<String, Object> patientInfo = PatientDetailDAO.getDiagnosis(user.getId());
+		UserDetailsDTO userDto = (UserDetailsDTO) patientInfo.get("userDetails");
+		PatientDetailDTO patientOtherDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
+		BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
+		int breastCancerId = Disease.BREAST_CANCER_ID;
+		
+        render(user,breastCancerId, userDto,patientOtherDetails, breastCancerInfo);
     }
 	
 	public static void medication() {
@@ -165,6 +161,7 @@ public class Patient extends Controller {
 		UserBean user = CommonUtil.loadCachedUser(session);
 		UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());
 		PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", user.getId());
+		
 		System.out.println(session.getId());
 		render(user,userDto,patientOtherDetails);
 	}

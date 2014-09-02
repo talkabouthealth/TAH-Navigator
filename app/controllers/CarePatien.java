@@ -1,11 +1,19 @@
 package controllers;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import javax.mail.search.DateTerm;
+
+import models.BreastCancerInfoDTO;
 import models.CareTeamMasterDTO;
 import models.CareTeamMemberDTO;
+import models.DiseaseMasterDTO;
 import models.ExpertDetailDTO;
 import models.NoteDTO;
 import models.PatienCareTeamDTO;
@@ -16,8 +24,10 @@ import models.UserDetailsDTO;
 import models.UserExpertiesDTO;
 import nav.dao.BaseDAO;
 import nav.dao.CareTeamDAO;
+import nav.dao.Disease;
 import nav.dao.MedicationDAO;
 import nav.dao.NotesDAO;
+import nav.dao.PatientDetailDAO;
 import nav.dao.ProfileDAO;
 import nav.dao.UserDAO;
 import nav.dto.ExpertBean;
@@ -58,7 +68,44 @@ public class CarePatien  extends Controller {
 	}
 
 	public static void diagnosis(int patientId) {
-		render(patientId);
+		Map<String, Object> patientInfo = PatientDetailDAO.getDiagnosis(patientId);
+		UserDetailsDTO userDetails = (UserDetailsDTO) patientInfo.get("userDetails");
+		PatientDetailDTO patientDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
+		BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
+		int breastCancerId = Disease.BREAST_CANCER_ID;
+		render(patientId, breastCancerId, userDetails, patientDetails, breastCancerInfo);
+	}
+	
+	public static void diagnosisJSON(int patientId) {
+		Map<String, String> jsonData = PatientDetailDAO.getDiagnosisJSON(patientId);
+		renderJSON(jsonData);
+	}
+	
+	public static void updateDiagnosis(int patientId, Integer diseaseId, Date dateOfDiagnosis, Date dob, String phone, String supportName, String supportNumber, Map<String, String> diseaseInfo) {
+		/*
+		System.out.println("-------------------------------------");
+		System.out.println("Pateint ID: " + patientId);
+		System.out.println("Disease ID: " + diseaseId);
+		System.out.println("First Diagnosed:"  + new SimpleDateFormat("YYYY-MM-dd").format(dateOfDiagnosis));
+		System.out.println("DOB: " + new SimpleDateFormat("YYYY-MM-dd").format(dob));
+		System.out.println("Phone: " + phone);
+		System.out.println("Support Name: " + supportName);
+		System.out.println("Support Number: " + supportNumber);
+		if (diseaseId != null && diseaseId == Disease.BREAST_CANCER_ID) {
+			System.out.println("*************************************");
+			for (String key : diseaseInfo.keySet()) {
+				System.out.println(key + ": " + diseaseInfo.get(key));
+			}
+		}
+		System.out.println("-------------------------------------");
+		*/
+		PatientDetailDAO.updateDiagnosis(patientId, diseaseId, dateOfDiagnosis, dob, phone, supportName, supportNumber, diseaseInfo);
+		Map<String, Object> patientInfo = PatientDetailDAO.getDiagnosis(patientId);
+		UserDetailsDTO userDetails = (UserDetailsDTO) patientInfo.get("userDetails");
+		PatientDetailDTO patientDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
+		BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
+		int breastCancerId = Disease.BREAST_CANCER_ID;
+		renderTemplate("CarePatien/diagnosis.html", patientId, breastCancerId, userDetails, patientDetails, breastCancerInfo);
 	}
 
 	public static void medicationOperation(String operation,int patientId,String genName,String brandName,String freq,String phy,String instructions) {

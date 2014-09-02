@@ -12,8 +12,10 @@ import java.util.Date;
 import java.util.List;
 
 import models.AddressDTO;
+import models.BreastCancerStageDTO;
 import models.CareTeamMemberDTO;
 import models.DesignationMasterDTO;
+import models.DiseaseMasterDTO;
 import models.ExpertDetailDTO;
 import models.NoteDTO;
 import models.PatienCareTeamDTO;
@@ -29,6 +31,7 @@ import nav.dao.AddressDAO;
 import nav.dao.BaseDAO;
 import nav.dao.CareTeamDAO;
 import nav.dao.DesignationMasterDAO;
+import nav.dao.Disease;
 import nav.dao.DistressDAO;
 import nav.dao.ExpertDetailDAO;
 import nav.dao.NotesDAO;
@@ -100,8 +103,10 @@ public class Care extends Controller {
 		DistressBean distress = DistressDAO.getLastDistress(patientDto.getUser());
 		
 		List<NoteDTO> noteList = NotesDAO.getPatientNotesList(patientId);
-		
-        render(user,expertDetail,patientId,patientDto,patientOtherDetails,distress,noteList);
+		List<DiseaseMasterDTO> diseases = Disease.allDiseases();
+		List<BreastCancerStageDTO> stages = Disease.breastCancerStages();
+		int breastCancerId = Disease.BREAST_CANCER_ID; 
+        render(user,expertDetail,patientId,patientDto,patientOtherDetails,distress,noteList, diseases, stages, breastCancerId);
     }
 	
 	public static void setting() {

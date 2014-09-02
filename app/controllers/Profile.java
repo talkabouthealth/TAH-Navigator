@@ -1,8 +1,13 @@
 package controllers;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
+
+import org.apache.commons.lang.StringUtils;
 
 import models.AddressDTO;
 import models.PatientDetailDTO;
@@ -189,16 +194,21 @@ public class Profile extends Controller {
 		renderText(message);
 	}
 	
-	public static void updateContact(String ec1name,String ec1number,String ec2name,String ec2number,
-			String kinname,String kinnumber,String proxyname,String proxynumber) {
+	public static void updateContact(int ssnLast4,String dob, String ec1name,String ec1number,String ec2name,String ec2number,
+		String kinname,String kinnumber,String proxyname,String proxynumber) {
+		 
 		String message ="Contact information updated";
 		UserBean user = CommonUtil.loadCachedUser(session);
 		PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", user.getId());
+		
 		boolean isNew = false;
 		if(patientOtherDetails == null) {
 			isNew = true;
 			patientOtherDetails = new PatientDetailDTO();
 		}
+		patientOtherDetails.setEc1name(ec1name);
+		patientOtherDetails.setEc1number(ec1number);
+		
 		patientOtherDetails.setEc1name(ec1name);
 		patientOtherDetails.setEc1number(ec1number);
 		
@@ -218,6 +228,25 @@ public class Profile extends Controller {
 		} else {
 			PatientDetailDAO.update(patientOtherDetails);
 		}
+		System.out.println("updateContact ssnLast4: " + ssnLast4);
+		System.out.println("updateContact DOB: " + dob);
+		
+		UserDetailsDTO userdetailsDTO = UserDAO.getDetailsById(user.getId());
+			
+		SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+		
+		try {
+	 
+			Date date = formatter.parse(dob);
+			userdetailsDTO.setDob(date);
+	 
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		userdetailsDTO.setSsnLast4(ssnLast4);
+		UserDAO.updateUserDetails(userdetailsDTO);
+						
 		renderText(message);
 	}
 }

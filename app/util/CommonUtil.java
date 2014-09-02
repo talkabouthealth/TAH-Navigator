@@ -224,4 +224,36 @@ public class CommonUtil {
 		
 		return htmlText;
 	}
+	
+	public static Character getHormoneStatus(String str) {
+		Character c;
+		switch (str) {
+		case "yes":
+			c = new Character('+');
+			break;
+		case "no":
+			c = new Character('-');
+			break;
+		default:
+			c = null;
+			break;
+		}
+		return c;
+	}
+	public static String getHormoneText(Character c) {
+		String str = null;
+		if (c != null) {
+		switch (c) {
+			case '+':
+				str = "yes";
+				break;
+			case '-':
+				str = "no";
+				break;
+			default:
+				break;
+			}
+		}
+		return str;
+	}
 }

@@ -32,6 +32,7 @@ import com.google.gson.Gson;
 
 import models.ExpertDetailDTO;
 import models.PatienCareTeamDTO;
+import models.PatientDetailDTO;
 import models.SecurityQuestionDTO;
 import models.UserDTO;
 import models.UserDetailsDTO;
@@ -76,7 +77,7 @@ public class UserDAO {
 			TypedQuery<UserDTO> query = em.createQuery("SELECT c FROM UserDTO c WHERE c."+fieldName+" = :field", UserDTO.class); 
 			query.setParameter("field", value);
 			dto = query.getResultList().get(0);
-		} catch(Exception e) {
+			} catch(Exception e) {
 		} finally {
 			em.close();
 		}
@@ -253,7 +254,7 @@ public class UserDAO {
 		em.getTransaction().begin();
 		em.persist(dto);
 		em.getTransaction().commit();
-
+		
 		try {
 			UserDetailsDTO detailsDTO = new UserDetailsDTO();
 			detailsDTO.setId(dto.getId());
@@ -263,6 +264,8 @@ public class UserDAO {
 			detailsDTO.setEditdate(cl.getTime());
 			detailsDTO.setEditedBy(dto);
 			detailsDTO.setEmail(memberBean.getEmail());
+			
+			
 			
 			if(StringUtils.isNotBlank(memberBean.getDob())) {
 				detailsDTO.setDob(df.parse(memberBean.getDob()));
@@ -282,18 +285,32 @@ public class UserDAO {
 			if(StringUtils.isNotBlank(memberBean.getSea1())) {
 				detailsDTO.setSea1(memberBean.getSea1());
 			}
-			if(StringUtils.isNotBlank(memberBean.getSea2())) {
+			/*if(StringUtils.isNotBlank(memberBean.getSea2())) {
 				detailsDTO.setSea2(memberBean.getSea2());
-			}
+			}*/
+			detailsDTO.setSsnLast4(memberBean.getSsnLast4());
 			detailsDTO.setSeq1(SecurityQuestionDAO.getEntityById(memberBean.getSeq1()));
-			detailsDTO.setSeq2(SecurityQuestionDAO.getEntityById(memberBean.getSeq2()));
+			//detailsDTO.setSeq2(SecurityQuestionDAO.getEntityById(memberBean.getSeq2()));
 			detailsDTO.setTocflag(memberBean.isTosFlag());
 			detailsDTO.setTosflag(memberBean.isSmtFlag());
 			detailsDTO.setVerificationcode(UUID.randomUUID());
+						
 			em.getTransaction().begin();
 			em.persist(detailsDTO);
 			em.getTransaction().commit();
-
+			
+			PatientDetailDTO patientDetailDTO = new PatientDetailDTO();
+			patientDetailDTO.setId(dto.getId());
+			if(StringUtils.isNotBlank(memberBean.getSupportContactName())) {
+				patientDetailDTO.setEc1name(memberBean.getSupportContactName());
+			}
+			if(StringUtils.isNotBlank(memberBean.getSupportContactPhone())) {
+				patientDetailDTO.setEc1number(memberBean.getSupportContactPhone());
+			}
+			em.getTransaction().begin();
+			em.persist(patientDetailDTO);
+			em.getTransaction().commit();
+			
 			//Create care team by default if patient.
 			System.out.println(dto.getUsertypeid().getAbbravation());
 			if(dto.getUsertypeid().getAbbravation() == 'p') {
