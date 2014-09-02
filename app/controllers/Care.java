@@ -10,8 +10,10 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import models.AddressDTO;
+import models.BreastCancerInfoDTO;
 import models.BreastCancerStageDTO;
 import models.CareTeamMemberDTO;
 import models.DesignationMasterDTO;
@@ -35,6 +37,7 @@ import nav.dao.Disease;
 import nav.dao.DistressDAO;
 import nav.dao.ExpertDetailDAO;
 import nav.dao.NotesDAO;
+import nav.dao.PatientDetailDAO;
 import nav.dao.ProfileDAO;
 import nav.dao.UserDAO;
 import nav.dao.UserTypeDAO;
@@ -68,6 +71,7 @@ public class Care extends Controller {
 			PatientBean patient =null;
 			UserDetailsDTO userDetails = null;
 			PatientDetailDTO patientDetail = null;
+			
 			for (PatienCareTeamDTO patienCareTeamDTO : patientList) {
 				patient = new PatientBean();
 				userDetails = UserDAO.getDetailsById(patienCareTeamDTO.getPatienid());
@@ -75,6 +79,12 @@ public class Care extends Controller {
 	
 				patientDetail  = ProfileDAO.getPatientByField("id", patienCareTeamDTO.getPatienid());
 				patient.setPatientOtherDetails(patientDetail);
+				
+				/* need to refactor - getDiagnosis method performing unnecessary queries for this call. This method is good for the MyDiagnosis page though - Murray */
+				Map<String, Object> patientInfo = PatientDetailDAO.getDiagnosis(patienCareTeamDTO.getPatienid());
+				BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
+				int breastCancerId = Disease.BREAST_CANCER_ID;
+				patient.setBreastCancerInfo(breastCancerInfo);
 				
 				DistressBean distress = DistressDAO.getLastDistress(patienCareTeamDTO.getPatien());
 				if(distress !=null) {

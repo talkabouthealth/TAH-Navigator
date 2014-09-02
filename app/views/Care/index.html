@@ -41,16 +41,42 @@
         <td><a href="@{Care.patient(seq.userDetails.id)}">${seq.userDetails.firstName} ${seq.userDetails.lastName}</a></td>
         <td>
           #{if seq.patientOtherDetails != null}
-          #{if seq.patientOtherDetails.disease != null}
-          ${seq.patientOtherDetails.disease.name}
-          #{/if}
-          <br/>Stage ${seq.patientOtherDetails.stage}
+          	#{if seq.patientOtherDetails.disease != null}
+          		${seq.patientOtherDetails.disease.name}
+          	#{/if}
+          	#{if seq.breastCancerInfo != null}
+ 				#{if seq.breastCancerInfo.bcStage}
+ 					${seq.breastCancerInfo.bcStage.name}
+     			#{/if}
+     		#{/if} 
+     		
+     		<!-- might want to check for disease here in the future as well.-->
+     		#{if seq.breastCancerInfo != null}</br>
+			 #{if seq.breastCancerInfo.er || seq.breastCancerInfo.pr || seq.breastCancerInfo.her2}
+			       #{if seq.breastCancerInfo.er}
+			       Er${seq.breastCancerInfo.er}
+			       #{/if}
+			       #{if seq.breastCancerInfo.er && seq.breastCancerInfo.pr}
+			       , Pr${seq.breastCancerInfo.pr}
+			       #{/if}
+			       #{elseif seq.breastCancerInfo.pr}
+			       Pr${seq.breastCancerInfo.pr}
+			       #{/elseif}
+			       #{if (seq.breastCancerInfo.er || seq.breastCancerInfo.pr) && seq.breastCancerInfo.her2}
+			       , HER2${seq.breastCancerInfo.her2}
+			       #{/if}
+			       #{elseif seq.breastCancerInfo.her2}
+			       HER2${seq.breastCancerInfo.her2}
+			       #{/elseif}
+			  #{/if}
+			 #{/if}
+			     		 
           #{/if}
           #{else}-#{/else}
         </td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
+        <td>08/10/2014</td>
+        <td>1st Appointment</td>
+        <td>Jorge Freire, MD</td>
         <td>
           #{if seq.distress != null}
           ${seq.distress.curDist}
@@ -59,7 +85,7 @@
         </td>
         <td>	
           #{if seq.distress != null}
-          <span class="timeAgo" title="${seq.distress.distressDate}">${seq.distress.distressDate}</span>
+          <span class="timeAgo" title="${seq.distress.distressDate}">${seq.distress.distressDate.format('MM/dd/yyyy h:mma')}</span>
           #{/if}
           #{else}-#{/else}
         </td>
@@ -67,9 +93,9 @@
           ${seq.distress.otherdetail.printMessage()}
           #{/if}
           #{else}-#{/else}</td>
-        <td>-</td>
-        <td>-</td>
-        <td>-</td>
+        <td>Pain, headache, diarrhea, itchy skin, vomiting, nausea, problems remembering</td>
+        <td>9/10/2014 9:00AM</td>
+        <td>This is a test note. Murray is testing the note feature to see if we can figure out a way to format it better.</td>
       </tr>
       #{/list}
       #{/if}

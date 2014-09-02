@@ -28,8 +28,6 @@ public class PatientDetailDTO {
 	@JoinColumn(name = "disease", insertable=false, updatable=false)
 	private DiseaseMasterDTO disease;
 	
-	
-
 	@Column(name = "dateofdiagnosis")
 	private Date dateofdiagnosis;
 

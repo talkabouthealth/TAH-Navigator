@@ -1,5 +1,6 @@
 package nav.dto;
 
+import models.BreastCancerInfoDTO;
 import models.PatientDetailDTO;
 import models.PatientDistressDTO;
 import models.UserDetailsDTO;
@@ -9,7 +10,8 @@ public class PatientBean {
 	private UserDetailsDTO userDetails;
 	private PatientDetailDTO patientOtherDetails;
 	private DistressBean distress;
-
+	private BreastCancerInfoDTO breastCancerInfo;
+	
 	public UserDetailsDTO getUserDetails() {
 		return userDetails;
 	}
@@ -27,5 +29,11 @@ public class PatientBean {
 	}
 	public void setDistress(DistressBean distress) {
 		this.distress = distress;
+	}
+	public BreastCancerInfoDTO getBreastCancerInfo() {
+		return breastCancerInfo;
+	}
+	public void setBreastCancerInfo(BreastCancerInfoDTO breastCancerInfo) {
+		this.breastCancerInfo = breastCancerInfo;
 	}
 }
