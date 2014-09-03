@@ -55,38 +55,43 @@ var data = [
 ];
 
 (function($){
-  $(document).ready(function(){
-    var table = $('table');
+  var populateFalseData = false;
 
-    table.find('tbody tr').remove();
+  if ( populateFalseData ) {
 
-    $(data).each(function(i, d) {
-      var tr = $('<tr />');
-      var td;
-      $(d).each(function(j, el) {
-        td = $('<td><div>'+el+'</div></td>');
-        tr.append(td);
-      });
-      table.append(tr);
+    $(document).ready(function(){
+      var table = $('table');
 
-    });
+      table.find('tbody tr').remove();
 
-    var divs = table.find('div');
-
-    var maxHeight = parseInt($(divs[0]).css('maxHeight'),10);
-    var padding = parseInt($(divs[0]).css('padding'),10);
-
-    divs.each(function(){
-      var $this = $(this);
-      var height = $this.height();
-      if ( height >= maxHeight - padding*2) {
-        $this.tooltipster({
-          content: $this.html(),
-          contentAsHTML: true,
-          theme: 'tooltipster-light',
-          maxWidth: 800
+      $(data).each(function(i, d) {
+        var tr = $('<tr />');
+        var td;
+        $(d).each(function(j, el) {
+          td = $('<td><div>'+el+'</div></td>');
+          tr.append(td);
         });
-      }
+        table.append(tr);
+
+      });
+
+      var divs = table.find('div');
+
+      var maxHeight = parseInt($(divs[0]).css('maxHeight'),10);
+      var padding = parseInt($(divs[0]).css('padding'),10);
+
+      divs.each(function(){
+        var $this = $(this);
+        var height = $this.height();
+        if ( height >= maxHeight - padding*2) {
+          $this.tooltipster({
+            content: $this.html(),
+            contentAsHTML: true,
+            theme: 'tooltipster-light',
+            maxWidth: 800
+          });
+        }
+      });
     });
-  });
+  }
 })(jQuery);
