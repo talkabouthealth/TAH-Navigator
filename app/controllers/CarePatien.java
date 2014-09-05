@@ -77,7 +77,7 @@ public class CarePatien  extends Controller {
 	}
 	
 	public static void diagnosisJSON(int patientId) {
-		Map<String, String> jsonData = PatientDetailDAO.getDiagnosisJSON(patientId);
+		Map<String, Object> jsonData = PatientDetailDAO.getDiagnosisJSON(patientId);
 		renderJSON(jsonData);
 	}
 	

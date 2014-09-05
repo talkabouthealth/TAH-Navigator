@@ -1,7 +1,8 @@
-<div class="col-sm-12" style="padding-bottom: 10px;">
-   <a href="#" id="diagnosis_form_${patientId}" patient_id="${patientId}" onclick="careTeamController.evtMsgHandler('diagnosis', this);" style="padding: 3px; border: 1px solid gray;">EDIT INFO</a>
+<div class="row">
+	<div class="col-xs-12">
+	   <button type="button" class="btn btn-primary" patient_id="${patientId}" onclick="careTeamController.evtMsgHandler('diagnosis', this);">EDIT INFO</button>
+    </div>
 </div>
-
  #{if patientDetails && patientDetails.diseaseId && patientDetails.disease}
  <div class="col-sm-12">
      <div class="product_tr">

@@ -113,10 +113,7 @@ public class Care extends Controller {
 		DistressBean distress = DistressDAO.getLastDistress(patientDto.getUser());
 		
 		List<NoteDTO> noteList = NotesDAO.getPatientNotesList(patientId);
-		List<DiseaseMasterDTO> diseases = Disease.allDiseases();
-		List<BreastCancerStageDTO> stages = Disease.breastCancerStages();
-		int breastCancerId = Disease.BREAST_CANCER_ID; 
-        render(user,expertDetail,patientId,patientDto,patientOtherDetails,distress,noteList, diseases, stages, breastCancerId);
+        render(user,expertDetail,patientId,patientDto,patientOtherDetails,distress,noteList);
     }
 	
 	public static void setting() {

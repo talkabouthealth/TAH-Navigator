@@ -3,6 +3,7 @@ package nav.dao;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
@@ -13,6 +14,7 @@ import javax.sound.midi.MidiDevice.Info;
 import models.AddressDTO;
 import models.BreastCancerInfoDTO;
 import models.BreastCancerStageDTO;
+import models.DiseaseMasterDTO;
 import models.PatientDetailDTO;
 import models.UserDetailsDTO;
 import util.CommonUtil;
@@ -99,13 +101,17 @@ public class PatientDetailDAO {
 		return patientInfo;
 	}
 	
-	public static Map<String, String> getDiagnosisJSON(int patientId) {
+	public static Map<String, Object> getDiagnosisJSON(int patientId) {
 		Map<String, Object> patientInfo = getDiagnosis(patientId);
-		Map<String, String> jsonData = new HashMap<String, String>();
+		Map<String, Object> jsonData = new HashMap<String, Object>();
 		UserDetailsDTO userDetails = (UserDetailsDTO) patientInfo.get("userDetails");
 		PatientDetailDTO patientDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
 		BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
+		List<DiseaseMasterDTO> diseases = Disease.allDiseases();
+		List<BreastCancerStageDTO> bcStages = Disease.breastCancerStages();
 		
+		jsonData.put("diseases", diseases);
+		jsonData.put("bcStages", bcStages);
 		if (patientDetails != null) {
 			Integer diseaseId = patientDetails.getDiseaseId();
 			if (diseaseId != null) {
