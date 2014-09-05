@@ -2,179 +2,6 @@
 #{extends 'patientmain.html' /}
 <!--Start Content-->
 <div class="col-xs-12 col-sm-10 medications content page">
-  <div class="header">
-    <h1><i class="fa fa-clock-o"></i>My Medication Calendar</h1>
-  </div>
-  <div class="medication-calendar">
-    <div class="header">
-      <h2>Daily Medication Checklist</h2>
-    </div>
-    <div class="calendar">
-      <div class="day">
-        <div class="cell-container">
-          <div class="cell">
-            <div class="header"><h4>Monday <hr /></h4></div>
-            <div class="cell-content">
-              <img src="/public/images/pill.png" />
-              <h3>Tamoxifen</h3>
-              <p class="instructions">One <span>(1)</span> pill by mouth</p>
-
-              <div class="recommendations">
-                <label>Recommended Time</label>
-                <p>Mornings, with Water</p>
-              </div>
-              <img src="/public/images/oral.png">
-            </div><!-- cell-content -->
-          </div><!-- cell -->
-          <div class="cell">
-            <div class="header">
-              <h3>Herceptin</h3>
-              <p class="instructions">Infusion</p>
-            </div>
-            <div class="cell-content">
-
-              <div class="recommendations">
-                <label>To be administered</label>
-              </div>
-              <img src="/public/images/img51.png">
-              <div class="location">
-                <h4>Location</h4>
-                <p>Careview Center</p>
-              </div>
-            </div><!-- cell-content -->
-          </div><!-- cell -->
-        </div>
-      </div>
-      <div class="day">
-        <div class="cell-container">
-          <div class="cell">
-            <div class="header"><h4>Tuesday <hr /></h4></div>
-            <div class="cell-content">
-              <img src="/public/images/pill.png" />
-              <h3>Tamoxifen</h3>
-              <p class="instructions">One <span>(1)</span> pill by mouth</p>
-
-              <div class="recommendations">
-                <label>Recommended Time</label>
-                <p>Mornings, with Water</p>
-              </div>
-              <img src="/public/images/oral.png">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="day">
-        <div class="cell-container">
-          <div class="cell">
-            <div class="header"><h4>Wednesday <hr /></h4></div>
-            <div class="cell-content">
-              <img src="/public/images/pill.png" />
-              <h3>Tamoxifen</h3>
-              <p class="instructions">One <span>(1)</span> pill by mouth</p>
-
-              <div class="recommendations">
-                <label>Recommended Time</label>
-                <p>Mornings, with Water</p>
-              </div>
-              <img src="/public/images/oral.png">
-            </div><!-- cell-content -->
-          </div><!-- cell -->
-        </div><!-- cell-container -->
-      </div><!-- day -->
-      <div class="day">
-        <div class="cell-container">
-          <div class="cell">
-            <div class="header"><h4>Thursday <hr /></h4></div>
-            <div class="cell-content">
-              <img src="/public/images/pill.png" />
-              <h3>Tamoxifen</h3>
-              <p class="instructions">One <span>(1)</span> pill by mouth</p>
-
-              <div class="recommendations">
-                <label>Recommended Time</label>
-                <p>Mornings, with Water</p>
-              </div>
-              <img src="/public/images/oral.png">
-            </div>
-          </div>
-          <div class="cell">
-            <div class="header">
-              <h3>Herceptin</h3>
-              <p class="instructions">Infusion</p>
-            </div>
-            <div class="cell-content">
-
-              <div class="recommendations">
-                <label>To be administered</label>
-              </div>
-              <img src="/public/images/img51.png">
-              <div class="location">
-                <h4>Location</h4>
-                <p>Careview Center</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div><!-- day -->
-
-      <div class="day">
-        <div class="cell-container">
-          <div class="cell">
-            <div class="header"><h4>Friday <hr /></h4></div>
-            <div class="cell-content">
-              <img src="/public/images/pill.png" />
-              <h3>Tamoxifen</h3>
-              <p class="instructions">One <span>(1)</span> pill by mouth</p>
-
-              <div class="recommendations">
-                <label>Recommended Time</label>
-                <p>Mornings, with Water</p>
-              </div>
-              <img src="/public/images/oral.png">
-            </div><!-- cell-content -->
-          </div><!-- cell -->
-        </div><!-- cell-container -->
-      </div><!-- day -->
-
-      <div class="day">
-        <div class="cell-container">
-          <div class="cell">
-            <div class="header"><h4>Saturday <hr /></h4></div>
-            <div class="cell-content">
-              <img src="/public/images/pill.png" />
-              <h3>Tamoxifen</h3>
-              <p class="instructions">One <span>(1)</span> pill by mouth</p>
-
-              <div class="recommendations">
-                <label>Recommended Time</label>
-                <p>Mornings, with Water</p>
-              </div>
-              <img src="/public/images/oral.png">
-            </div><!-- cell-content -->
-          </div><!-- cell -->
-        </div><!-- cell-container -->
-      </div><!-- day -->
-      <div class="day">
-        <div class="cell-container">
-          <div class="cell">
-            <div class="header"><h4>Sunday <hr /></h4></div>
-            <div class="cell-content">
-              <img src="/public/images/pill.png" />
-              <h3>Tamoxifen</h3>
-              <p class="instructions">One <span>(1)</span> pill by mouth</p>
-
-              <div class="recommendations">
-                <label>Recommended Time</label>
-                <p>Mornings, with Water</p>
-              </div>
-              <img src="/public/images/oral.png">
-            </div><!-- cell-content -->
-          </div><!-- cell -->
-        </div><!-- cell-container -->
-      </div><!-- day -->
-
-    </div>
-  </div>
   <div class="row">&nbsp;</div>
   <div class="row">
     #{if medicationList != null && medicationList.size()>0}
@@ -199,7 +26,7 @@
     #{else}
     <div class="col-xs-12 col-sm-12 nav-tabs">No medication added.</div>
     #{/else}
-    <!-- 
+    <!--
         <div class="col-xs-12 col-sm-12 nav-tabs">
                 <div class="col-sm-4" style="padding-top: 10px;">
                         <h3>TAMOXIFEN</h3>
@@ -226,8 +53,8 @@
                         <p><strong>SPECIAL INSTRUCTIONS </strong>Take pill whole</p>
                         <p><strong>PRESCRIBING PYSICIAN </strong>Don Dizon, MD</p>
                 </div>
-        </div>   
-          -->        
+        </div>
+          -->
   </div>
   <div id="ajax-content"></div>
 </div>
