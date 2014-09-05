@@ -4,6 +4,10 @@
 		color: @gray;
 	}
 
+	h3 {
+		padding-bottom: @padding;
+	}
+
 	> .row{
 		border-bottom: 1px solid @section-border;
 		padding-bottom: @padding;
@@ -18,7 +22,7 @@
 
 
 .appointment {
-	padding: @padding ;
+	padding: 0 @padding @padding @padding;
 
 	span.time {
 		font-weight: bold;
@@ -40,10 +44,6 @@
 		padding: 0 @padding;
 	}
 
-	.caretaker-image {
-		float: left;
-		margin-right: @padding;
-	}
 
 	.appointment-with {
 		padding: @padding 0;
@@ -51,12 +51,18 @@
 
 }
 
+	.caretaker-image {
+		float: left;
+		margin-right: @padding;
+		max-width: 120px;
+
+		img {
+			max-width: 100%;
+		}
+	}
 .preparation-checklist {
 	max-width: 600px;
 
-	.checklist {
-		padding-top: @padding;
-	}
 
 	.item {
 		width: 50%;
@@ -67,5 +73,35 @@
 	label {
 		display: inline;
 		color: @gray;
+	}
+}
+.my-care-team {
+	ul, li {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	li {
+		margin-bottom: @padding;
+
+		&:after {
+			content: "";
+			clear: both;
+			display: block;
+		}
+	}
+
+	.caretaker-info {
+		float: left;
+	}
+
+	h4, .secondary-information {
+		float: left;
+		margin: 10px 10px 10px 0;
+	}
+
+	p.phone {
+		clear: both;
 	}
 }
