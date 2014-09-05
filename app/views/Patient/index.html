@@ -1,132 +1,168 @@
 #{set pageType = 'dashboard' /}
 #{extends 'patientmain.html' /}
-	<!--Start Content-->
-<div id="content">
+<!--Start Content-->
+<div id="content" class="index">
 
-	
-	<div class="col-xs-12 col-sm-12">
-			Preparation
-			<div><h4>
-					My Next Appointment is Schedule for:
-			</h4></div>
-	<div class="row margin_top">
-      <div class="col-sm-6">
-        <a target="_new" href="https://www.google.com/maps/preview?saddr=&daddr=1400+U.S.+Highway+441+Suite+540,The+Villages,FL,USA+-+32159">
-          <img width="100%" src="http://maps.googleapis.com/maps/api/staticmap?center=28.891861,-81.906883&maptype=roadmap&zoom=12&size=200x100&scale=false&&markers=color:red%7Csize:small%7C28.891861,-81.906883">
-        </a>
-      </div>
-      <div>
-      	Monday, October 20, 2014
-      </div>
-      <div>
-      	9:15 AM | Moffitt Cancer Center TVRH
-      </div>
-      <div>
-      	<a href="caremember?memberId=552&teamId=2"><img src="http://173.203.101.101/image/show/552"></a>
-      </div>
-      <div>
-      	MY APPOINTMENT IS WITH
-      </div>
-      <div>
-      	Dr. Jorge Freire
-      </div>
-      <div>
-      	352.751.8000
-      </div>
-      	
-	</div>
-	
-	<div>&nbsp;
-	</div>
-	<div>&nbsp;
-	</div>
-	
-	<div class="col-xs-12 col-sm-12">
+	<div class="row">
+		<div class="preparation col-xs-6">
+			<label><i class="fa fa-clock-o"></i>Preparation</label>
+			<h3>My Next Appointment is Scheduled for:</h3>
+			<div class="appointment row">
+				<div class="appointment-location col-xs-3">
+					<a target="_new" href="https://www.google.com/maps/preview?saddr=&daddr=1400+U.S.+Highway+441+Suite+540,The+Villages,FL,USA+-+32159">
+						<img width="100%" src="http://maps.googleapis.com/maps/api/staticmap?center=28.891861,-81.906883&maptype=roadmap&zoom=12&size=200x100&scale=false&&markers=color:red%7Csize:small%7C28.891861,-81.906883">
+					</a>
+				</div>
+				<div class="appointment-information col-xs-9">
+					<h1> Monday, October 20, 2014 </h1>
+					<h4><span class="time">9:15 AM |</span>Careview Health Center</h4>
+
+					<div class="appointment-with">
+						<div class="caretaker-image">
+							<a href="caremember?memberId=552&teamId=2">
+								<img src="http://173.203.101.101/image/show/552">
+							</a>
+						</div>
+						<label>My appointment is with</label>
+						<h3> Dr. Jorge Freire</h3>
+						<p> 352.751.8000 | email@email.com</p>
+					</div><!-- appointment-with -->
+				</div><!-- appointment-information -->
+			</div><!-- appointment -->
+		</div><!-- preparation -->
+		<div class="preparation-checklist col-xs-6">
+			<label><i class="fa fa-check-circle-o"></i>Preparation Checklist</label>
+			<h3> Do I have everything I need to ensure a successful visit on my next appointment? </h3>
+			<div class="checklist">
+				<div class="item">
+					<input type="radio" /><label> Pack All Medication Pill Bottles In A Ziploc Bag</label>
+				</div>
+				<div class="item">
+					<input type="radio" /> <label>Write Down All Questions To Ask My Doctor</label>
+				</div>
+				<div class="item">
+					<input type="radio" /> <label>Bring Drivers License And Insurance Card</label>
+				</div>
+				<div class="item">
+					<input type="radio" /> <label>Bring A Friend Or Family Member</label>
+				</div>
+				<div class="item">
+					<input type="radio" /> <label>Bring All Test Results, Lab Work, And Past Patient Records</label>
+				</div>
+			</div><!-- checklist -->
+
+		</div><!-- preparation checklist -->
+	</div><!-- row -->
+
+	<div class="row">
+		<div class="video-walk-through col-xs-6">
+			<label><i class="fa fa-play"></i>Video Walk-Through</label>
+		</div><!-- video walk through -->
+		<div class="my-care-team col-xs-6">
+			<label><i class="fa fa-play"></i>My Care Team</label>
+		</div><!-- my care team -->
+	</div><!-- row -->
+
+	<div class="row">
+		<div class="whats-next">
+		</div><!-- whats-next -->
+	</div><!-- row -->
+
+	<div class="row">
+		<div class="what-to-expect col-xs-6">
+		</div><!-- what to expect -->
+		<div class="expert-qa col-xs-6">
+		</div><!-- Expert Q&A -->
+	</div><!-- row -->
+
+	<div class="col-xs-12">
+
+		<div class="col-xs-12 col-sm-12">
 			Preparation Checklist
-				<div><h4>
-					Do I have everything I need to ensure a successful visit on my next appointment?
-					</h4>
-				</div>
-				<div>
-					PACK ALL MEDICATION PILL BOTTLES IN A ZIPLOC BAG
-				</div>
-				<div>
-					BRING DRIVERS LICENSE AND INSURANCE CARD
-				</div>
-				<div>
-					BRING ALL TEST RESULTS, LAB WORK, AND PAST PATIENT RECORDS
-				</div>
-				<div>
-					WRITE DOWN ALL QUESTIONS TO ASK MY DOCTOR
-				</div>
-				<div>
-					BRING A FRIEND OR FAMILY MEMBER
-				</div>
+			<div><h4>
+				Do I have everything I need to ensure a successful visit on my next appointment?
+			</h4>
+		</div>
+		<div>
+			PACK ALL MEDICATION PILL BOTTLES IN A ZIPLOC BAG
+		</div>
+		<div>
+			BRING DRIVERS LICENSE AND INSURANCE CARD
+		</div>
+		<div>
+			BRING ALL TEST RESULTS, LAB WORK, AND PAST PATIENT RECORDS
+		</div>
+		<div>
+			WRITE DOWN ALL QUESTIONS TO ASK MY DOCTOR
+		</div>
+		<div>
+			BRING A FRIEND OR FAMILY MEMBER
+		</div>
 	</div>
-	
-	
+
+
 	<div>&nbsp;
 	</div>
 	<div>&nbsp;
 	</div>
-	
+
 	<div class="col-xs-12 col-sm-12">
-			Video Walkthrough
-				<div>
-					<iframe width="560" height="315" src="//www.youtube.com/embed/u-0P5hQP02k" frameborder="0" allowfullscreen></iframe>
-				</div>
+		Video Walkthrough
+		<div>
+			<iframe width="560" height="315" src="//www.youtube.com/embed/u-0P5hQP02k" frameborder="0" allowfullscreen></iframe>
+		</div>
 	</div>
-	
+
 	<div>&nbsp;
 	</div>
 	<div>&nbsp;
 	</div>
-	
-	
+
+
 	<div class="col-xs-12 col-sm-12">
-			My Care Team
+		My Care Team
 		<div>
 			My Current Care Team has (6) Members:
 		</div>
 		<div>
 			<div>
-      			<a href="caremember?memberId=552&teamId=2"><img src="http://173.203.101.101/image/show/552"></a>
-      		</div>
-      		Dr. Jorge Freire | Moffitt Cancer Center TVRH</br>
+				<a href="caremember?memberId=552&teamId=2"><img src="http://173.203.101.101/image/show/552"></a>
+			</div>
+			Dr. Jorge Freire | Moffitt Cancer Center TVRH</br>
 			352.751.8000
 		</div>
 		<div>
 			<div>
-      			<a href="caremember?memberId=552&teamId=2"><img src="http://173.203.101.101/image/show/616"></a>
-      		</div>
+				<a href="caremember?memberId=552&teamId=2"><img src="http://173.203.101.101/image/show/616"></a>
+			</div>
 			Kristie Todd, RN, Nurse Navigator | Moffitt Cancer Center TVRH</br>
 			352.751.8000
 		</div>
 		<div>
 			<div>
-      			<a href="caremember?memberId=552&teamId=2"><img src="http://173.203.101.101/image/show/623"></a>
-      		</div>
+				<a href="caremember?memberId=552&teamId=2"><img src="http://173.203.101.101/image/show/623"></a>
+			</div>
 			Ryan Belen, Chief Radiation Therapist | Moffitt Cancer Center TVRH</br>
 			352.751.8000
 		</div>
 		<div>
 			<div>
-      			<a href="caremember?memberId=552&teamId=2"><img src="http://173.203.101.101/image/show/627"></a>
-      		</div>
+				<a href="caremember?memberId=552&teamId=2"><img src="http://173.203.101.101/image/show/627"></a>
+			</div>
 			Jessica Santiago, Support Specialist | Moffitt Cancer Center TVRH</br>
 			352.751.8000
-		</div>	
+		</div>
 	</div>
-	
+
 	<div>&nbsp;
 	</div>
 	<div>&nbsp;
 	</div>
-	
+
 	<div class="col-xs-12 col-sm-12">
-			What's Next. Where am I in the Process?
+		What's Next. Where am I in the Process?
 	</div>
-	
-	
+
+
 	<div id="ajax-content"></div>
 </div>

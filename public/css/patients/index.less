@@ -1,0 +1,71 @@
+.index {
+	h3, h4 {
+		/* I'd really like to make this a global style. Can I? - Kevin */
+		color: @gray;
+	}
+
+	> .row{
+		border-bottom: 1px solid @section-border;
+		padding-bottom: @padding;
+		margin-bottom: @padding;
+	}
+}
+
+.preparation {
+	border-right: 1px solid @section-border;
+}
+
+
+
+.appointment {
+	padding: @padding ;
+
+	span.time {
+		font-weight: bold;
+	}
+	.appointment-location {
+		padding-right: 0;
+		padding-left: 0;
+
+		border: 1px solid @section-border;
+
+		img {
+			display: block;
+		}
+
+
+	}
+
+	.appointment-information {
+		padding: 0 @padding;
+	}
+
+	.caretaker-image {
+		float: left;
+		margin-right: @padding;
+	}
+
+	.appointment-with {
+		padding: @padding 0;
+	}
+
+}
+
+.preparation-checklist {
+	max-width: 600px;
+
+	.checklist {
+		padding-top: @padding;
+	}
+
+	.item {
+		width: 50%;
+		float: left;
+		padding-bottom: @padding;
+	}
+
+	label {
+		display: inline;
+		color: @gray;
+	}
+}
