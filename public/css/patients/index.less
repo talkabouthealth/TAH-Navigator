@@ -5,7 +5,7 @@
 	}
 
 	h3 {
-		padding-bottom: @padding;
+		padding-bottom: 5px;
 	}
 
 	> .row{
@@ -26,7 +26,9 @@
 
 	span.time {
 		font-weight: bold;
+		margin-right: 5px;
 	}
+
 	.appointment-location {
 		padding-right: 0;
 		padding-left: 0;
@@ -51,17 +53,18 @@
 
 }
 
-	.caretaker-image {
-		float: left;
-		margin-right: @padding;
-		max-width: 120px;
-		max-height: 120px;
-		overflow: hidden;
+.caretaker-image {
+	@size: 70px;
+	float: left;
+	margin-right: @padding;
+	max-width: @size;
+	max-height: @size;
+	overflow: hidden;
 
-		img {
-			max-width: 100%;
-		}
+	img {
+		max-width: 100%;
 	}
+}
 .preparation-checklist {
 	max-width: 600px;
 
@@ -94,17 +97,12 @@
 		}
 	}
 
-	.caretaker-info {
-		float: left;
-	}
-
 	h4, .secondary-information {
-		float: left;
 		margin: 10px 10px 10px 0;
+		display: inline;
 	}
 
 	p.phone {
-		clear: both;
 	}
 }
 
