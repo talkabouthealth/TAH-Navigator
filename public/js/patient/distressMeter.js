@@ -1,6 +1,7 @@
 var DistressMeter = function() {
   var showDistressButton, nextPageButton;
   var distressModal, distressForm, distressAmountText, distressAmountValue;
+  var step1, step2;
   var indicator, indicatorAmount, indicatorText;
   var sliderRange;
   var labelExtreme, labelNone;
@@ -24,13 +25,13 @@ var DistressMeter = function() {
 
   var range = function(value, min, max) {
     // debugger;
-    value = parseInt(value) * (1/.92) ;
+    value = parseInt(value,10) * (1/0.92) ;
     return value * max + min;
-  }
+  };
 
   var setIndicator = function(amount) {
     // 0 - 76
-    indicator.css('bottom', range(calculateTopOps(amount), 0, .81) + '%');
+    indicator.css('bottom', range(calculateTopOps(amount), 0, 0.81) + '%');
     indicatorAmount.html(amount);
     indicatorText.html(distressRange[amount]);
 
@@ -46,7 +47,7 @@ var DistressMeter = function() {
     } else if ( !labelExtreme.is(':visible') && amount <= 8 ) {
       labelExtreme.show().animate({opacity: 1});
     }
-  }
+  };
 
 
 
@@ -75,9 +76,9 @@ var DistressMeter = function() {
   var nextPage = function() {
     amount = $( ".progress-bar" ).slider( "value" );
     if ( page === 1 ) {
-      $("#step1").hide();
-      $(".step2Distress").html(amount);
-      $("#step2").show();
+      step1.hide();
+      distressAmountValue.html(amount);
+      step2.show();
       distressAmountText.html(distressRange[amount]);
     } else if ( page === 2 ) {
       var postData = distressForm.serializeArray();
@@ -90,8 +91,7 @@ var DistressMeter = function() {
   };
 
   var calculateTopOps = function(value) {
-    var topOps = value-1;
-    var topOps = topOps  * 10;
+    var topOps = ( value - 1 ) * 10;
     if(topOps>1) {
       topOps = topOps+2;
     }
@@ -117,6 +117,9 @@ var DistressMeter = function() {
     distressAmountText = $('.distress-amount-text');
     labelExtreme = distressModal.find('label.extreme-distress');
     labelNone = distressModal.find('label.no-distress');
+
+    step1 = distressModal.find('#step1');
+    step2 = distressModal.find('#step2');
 
     showDistressButton.click(function(e){
       e.preventDefault();
