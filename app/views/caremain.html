@@ -21,6 +21,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
   <script src="/public/plugins/jquery/jquery-2.1.0.min.js"></script>
   <script src="/public/plugins/jquery-ui/jquery-ui.min.js"></script>
   <script src="/public/plugins/bootstrap/bootstrap.min.js"></script>
+  <script src="/public/plugins/typeahead/bootstrap3-typeahead.min.js"></script>
   <script src="/public/plugins/justified-gallery/jquery.justifiedgallery.min.js"></script>
   <script src="/public/plugins/tinymce/tinymce.min.js"></script>
   <script src="/public/plugins/tinymce/jquery.tinymce.min.js"></script>
@@ -30,6 +31,19 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
   <script src="/public/plugins/tooltipster-master/js/jquery.tooltipster.min.js"></script>
   <script src="/public/js/care/fixtures.js"></script>
   <script src="/public/js/careteamController.js"></script>
+  
+  <style>
+  ul.typeahead {
+    background-color: #fff !important;
+  }
+  ul.typeahead li {
+    overflow-x: hidden;
+  }
+  .form-condensed .form-group-sm {
+    margin-top: 0px;
+    margin-bottom: 5px;
+  }
+  </style>
 </head>
 
 
@@ -143,8 +157,6 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
 
 <!-- ------------------------ All Care Team Dialogs Here  [START] ------------------------------- -->
 
-
-
 <div class="modal"  id="diagnosis-edit-form" tabindex="-1" role="dialog" aria-labelledby="diagnosisEditFormTitle" init-flag="0">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -152,29 +164,23 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                 <h4 class="modal-title" id="diagnosisEditFormTitle">Edit Diagnosis Info</h4>
             </div>
             <div class="modal-body">
-                <div class="container-fluid">
-	                <div class="row">
-	                    <div class="col-xs-5">
-	                        <label class="control-label" for="disease">Disease</label>
-	                    </div>
-	                    <div class="col-xs-7">
-	                        <select class="form-control input-sm" id="disease">
-	                            <option></option>
+                <form class="form-horizontal form-condensed" role="form">
+                    <div class="form-group form-group-sm">
+                        <label for="disease" class="col-xs-5 control-label">Disease</label>
+                        <div class="col-xs-7">
+                            <select class="form-control input-sm" id="disease">
+                                <option></option>
 	                        </select>
-	                    </div>
-	                </div>
-	                <div class="row">
-	                    <div class="col-xs-5">
-	                        <label class="control-label" for="first-diagnosed">First Diagnosed</label>
-	                    </div>
-	                    <div class="col-xs-7">
-	                        <input type="date" class="form-control input-sm" id="first-diagnosed" placeholder="yyyy-mm-dd" />
-	                    </div>
-	                </div>
-	                <div class="row" id="er_div">
-                        <div class="col-xs-5">
-                            <label class="control-label" for="er">Hormone and Her2 Status</label>
                         </div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label for="first-diagnosed" class="col-xs-5 control-label">First Diagnosed</label>
+                        <div class="col-xs-7">
+                            <input type="text" class="form-control input-sm" id="first-diagnosed" placeholder="YYYY-MM-DD">
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm" id="er_div">
+                        <label for="er" class="col-xs-5 control-label">Hormone and Her2 Status</label>
                         <div class="col-xs-7">
                             <select class="form-control input-sm" id="er">
                                 <option value="na"></option>
@@ -183,7 +189,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                             </select>
                         </div>
                     </div>
-                    <div class="row" id="pr_div">
+                    <div class="form-group form-group-sm" id="pr_div">
                         <div class="col-xs-offset-5 col-xs-7">
                             <select class="form-control input-sm" id="pr">
                                 <option value="na"></option>
@@ -192,7 +198,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                             </select>
                         </div>
                     </div>
-                    <div class="row" id="her2_div">
+                    <div class="form-group form-group-sm" id="her2_div">
                         <div class="col-xs-offset-5 col-xs-7">
                             <select class="form-control input-sm" id="her2">
                                 <option value="na"></option>
@@ -201,20 +207,16 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                             </select>
                         </div>
                     </div>
-                    <div class="row" id="stage_div">
-                        <div class="col-xs-5">
-                            <label class="control-label" for="stage">Stage</label>
-                        </div>
+                    <div class="form-group form-group-sm" id="stage_div">
+                        <label for="stage" class="col-xs-5 control-label">Stage</label>
                         <div class="col-xs-7">
                             <select class="form-control input-sm" id="stage">
                                 <option></option>
                             </select>
                         </div>
                     </div>
-                    <div class="row" id="brca_div">
-                        <div class="col-xs-5">
-                            <label class="control-label" for="brca">BRCA+</label>
-                        </div>
+	                <div class="form-group form-group-sm" id="brca_div">
+                        <label for="brca" class="col-xs-5 control-label">BRCA+</label>
                         <div class="col-xs-7">
                             <select class="form-control input-sm" id="brca">
                                 <option value="na"></option>
@@ -223,42 +225,32 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
                             </select>
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-xs-5">
-                            <label class="control-label" for="dob">Date of Birth</label>
-                        </div>
+	                <div class="form-group form-group-sm">
+                        <label for="dob" class="col-xs-5 control-label">Date of Birth</label>
                         <div class="col-xs-7">
-                            <input type="text" class="form-control input-sm" id="dob" placeholder="yyyy-mm-dd" />
+                            <input type="text" class="form-control input-sm" id="dob" placeholder="YYYY-MM-DD">
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-xs-5">
-                            <label class="control-label" for="phone">Phone</label>
-                        </div>
+                    <div class="form-group form-group-sm">
+                        <label for="phone" class="col-xs-5 control-label">Phone</label>
                         <div class="col-xs-7">
-                            <input type="text" class="form-control input-sm" id="phone" />
+                            <input type="text" class="form-control input-sm" id="phone">
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-xs-5">
-                            <label class="control-label" for="ec1name">Support Contact</label>
-                        </div>
+                    <div class="form-group form-group-sm">
+                        <label for="ec1name" class="col-xs-5 control-label">Support Contact</label>
                         <div class="col-xs-7">
-                            <input type="text" class="form-control input-sm" id="ec1name" />
+                            <input type="text" class="form-control input-sm" id="ec1name">
                         </div>
                     </div>
-                    <div class="row">
-                        <div class="col-xs-5">
-                            <label class="control-label" for="ec1number">Support Contact Phone</label>
-                        </div>
+                    <div class="form-group form-group-sm">
+                        <label for="ec1number" class="col-xs-5 control-label">Support Contact Phone</label>
                         <div class="col-xs-7">
-                            <input type="text" class="form-control input-sm" id="ec1number" />
+                            <input type="text" class="form-control input-sm" id="ec1number">
                         </div>
                     </div>
-                </div> 
+                </form>    
 		    </div>
-                
-            
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-default" id="save-diagnosis-data">Save</button>
@@ -267,18 +259,201 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
     </div>
 </div>
 
-<div class="modal"  id="radiation-treatment-form" tabindex="-1" role="dialog" aria-labelledby="rtFormTitle">
+<div class="modal" id="radiation-treatment-form" tabindex="-1" role="dialog" aria-labelledby="rtFormTitle" init-flag="0">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title" id="rtFormTitle">Radiation Treatment Form</h4>
             </div>
             <div class="modal-body">
-                
+                <form class="form-horizontal form-condensed" role="form">
+                    <div class="form-group form-group-sm has-error has-feedback" id="rt_type_div">
+                        <label for="rt_type" class="col-xs-4 control-label">Type Of Radiation</label>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control input-sm" id="rt_type" placeholder="i.e. 3D-CRT (Three dimensional conformal radiation therapy)">
+                            <span class="glyphicon glyphicon-remove form-control-feedback" id="rt_type_icon"></span>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label for="rt_dose" class="col-xs-4 control-label">Dose</label>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control input-sm" id="rt_dose" placeholder="i.e. 60Gy" data-provide="typeahead">
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label for="rt_schedule" class="col-xs-4 control-label">Schedule</label>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control input-sm" id="rt_schedule" placeholder="i.e. 5x per week" data-provide="typeahead">
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label for="rt_start_date" class="col-xs-4 control-label">Dates</label>
+                        <div class="col-xs-3">
+                            <input type="text" class="form-control input-sm" id="rt_start_date" placeholder="YYYY-MM-DD">
+                        </div>
+                        <div class="col-xs-1">
+                            &mdash;
+                        </div>
+                        <div class="col-xs-3">
+                            <input type="text" class="form-control input-sm" id="rt_end_date" placeholder="YYYY-MM-DD">
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label for="rt_region" class="col-xs-4 control-label">Region Treated</label>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control input-sm" id="rt_region" placeholder="i.e. Left breast" data-provide="typeahead">
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label for="rt_side_effects" class="col-xs-4 control-label">Side Effects</label>
+                        <div class="col-xs-8" id="rt_side_effects_div"></div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <div class="col-xs-offset-4 col-xs-8">
+                            <input type="text" class="form-control input-sm" id="rt_side_effects" placeholder="i.e. Fatigue" data-provide="typeahead">
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label for="rt_notes" class="col-xs-4 control-label">Note</label>
+                        <div class="col-xs-8">
+                            <textarea rows="3" class="form-control input-sm" id="rt_notes"></textarea>
+                        </div>
+                    </div>
+                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-default">Save</button>
+                <button type="button" class="btn btn-default" id="add-radiation-treatment">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" id="chemotherapy-treatment-form" tabindex="-1" role="dialog" aria-labelledby="cttFormTitle" init-flag="0">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="cttFormTitle">Chemotherapy Treatment Form</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal form-condensed" role="form">
+                    <div class="form-group form-group-sm has-error has-feedback" id="ctt_gn_div">
+                        <label for="ctt_gn" class="col-xs-4 control-label">Generic Name</label>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control input-sm" id="ctt_gn" placeholder="i.e. Paclitaxel" data-provide="typeahead">
+                            <span class="glyphicon glyphicon-remove form-control-feedback" id="ctt_gn_icon"></span>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm has-error has-feedback" id="ctt_bn_div">
+                        <label for="ctt_bn" class="col-xs-4 control-label">Brand Name</label>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control input-sm" id="ctt_bn" placeholder="i.e. Taxotere" data-provide="typeahead">
+                            <span class="glyphicon glyphicon-remove form-control-feedback" id="ctt_bn_icon"></span>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label for="ctt_cycle" class="col-xs-4 control-label"># of Cycles</label>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control input-sm" id="ctt_cycle" placeholder="i.e. 3" data-provide="typeahead">
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label for="ctt_schedule" class="col-xs-4 control-label">Schedule</label>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control input-sm" id="ctt_schedule" placeholder="i.e. 1x per day" data-provide="typeahead">
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label for="ctt_dose" class="col-xs-4 control-label">Dose Reduction</label>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control input-sm" id="ctt_dose" placeholder="i.e. 50%" data-provide="typeahead">
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label for="ctt_start_date" class="col-xs-4 control-label">Dates</label>
+                        <div class="col-xs-3">
+                            <input type="text" class="form-control input-sm" id="ctt_start_date" placeholder="YYYY-MM-DD">
+                        </div>
+                        <div class="col-xs-1">
+                            &mdash;
+                        </div>
+                        <div class="col-xs-3">
+                            <input type="text" class="form-control input-sm" id="ctt_end_date" placeholder="YYYY-MM-DD">
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label for="ctt_side_effects" class="col-xs-4 control-label">Side Effects</label>
+                        <div class="col-xs-8" id="ctt_side_effects_div"></div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <div class="col-xs-offset-4 col-xs-8">
+                            <input type="text" class="form-control input-sm" id="ctt_side_effects" placeholder="i.e. Fatigue" data-provide="typeahead">
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label for="ctt_notes" class="col-xs-4 control-label">Note</label>
+                        <div class="col-xs-8">
+                            <textarea rows="3" class="form-control input-sm" id="ctt_notes"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-default" id="add-chemotherapy-treatment">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="surgery-treatment-form" tabindex="-1" role="dialog" aria-labelledby="stFormTitle" init-flag="0">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="stFormTitle">Surgery Treatment Form</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal form-condensed" role="form">
+                    <div class="form-group form-group-sm has-error has-feedback" id="si_st_div">
+                        <label for="si_st" class="col-xs-4 control-label">Surgery</label>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control input-sm" id="si_st" placeholder="i.e. Lumpectomy" data-provide="typeahead">
+                            <span class="glyphicon glyphicon-remove form-control-feedback" id="si_st_icon"></span>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label for="si_date" class="col-xs-4 control-label">Date</label>
+                        <div class="col-xs-3">
+                            <input type="text" class="form-control input-sm" id="si_date" placeholder="YYYY-MM-DD">
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label for="si_region" class="col-xs-4 control-label">Region Treated</label>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control input-sm" id="si_region" placeholder="i.e. Left breast" data-provide="typeahead">
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label for="si_side_effects" class="col-xs-4 control-label">Side Effects</label>
+                        <div class="col-xs-8" id="si_side_effects_div"></div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <div class="col-xs-offset-4 col-xs-8">
+                            <input type="text" class="form-control input-sm" id="si_side_effects" placeholder="i.e. Fatigue" data-provide="typeahead">
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label for="si_notes" class="col-xs-4 control-label">Note</label>
+                        <div class="col-xs-8">
+                            <textarea rows="3" class="form-control input-sm" id="si_notes"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-default" id="add-surgery-treatment">Save</button>
             </div>
         </div>
     </div>

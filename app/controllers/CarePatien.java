@@ -10,15 +10,27 @@ import java.util.Map;
 
 import javax.mail.search.DateTerm;
 
+import com.sun.org.apache.xerces.internal.impl.xpath.regex.ParseException;
+
 import models.BreastCancerInfoDTO;
 import models.CareTeamMasterDTO;
 import models.CareTeamMemberDTO;
+import models.ChemoScheduleDTO;
 import models.DiseaseMasterDTO;
 import models.ExpertDetailDTO;
+import models.MedicationDTO;
 import models.NoteDTO;
 import models.PatienCareTeamDTO;
+import models.PatientChemoTreatmentDTO;
 import models.PatientDetailDTO;
 import models.PatientMedicationDTO;
+import models.PatientRadiationTreatmentDTO;
+import models.PatientSurgeryInfoDTO;
+import models.RadiationScheduleDTO;
+import models.RadiationTypeDTO;
+import models.SideEffectDTO;
+import models.SurgeryTypeDTO;
+import models.TreatmentRegionDTO;
 import models.UserDTO;
 import models.UserDetailsDTO;
 import models.UserExpertiesDTO;
@@ -29,6 +41,7 @@ import nav.dao.MedicationDAO;
 import nav.dao.NotesDAO;
 import nav.dao.PatientDetailDAO;
 import nav.dao.ProfileDAO;
+import nav.dao.Treatment;
 import nav.dao.UserDAO;
 import nav.dto.ExpertBean;
 import nav.dto.UserBean;
@@ -58,15 +71,103 @@ public class CarePatien  extends Controller {
 		render(patientId,medicationList);
 	}
 
-	public static void treatmentPlan(int patientId) {
-		render(patientId);
+	public static void treatmentPlan(Integer patientId) {
+		List<PatientRadiationTreatmentDTO> radiationTreatments = Treatment.getPatientRadiationTreatments(patientId);
+		List<PatientChemoTreatmentDTO> chemoTreatments = Treatment.getPatientChemoTreatments(patientId);
+		List<PatientSurgeryInfoDTO> surgeryInfo = Treatment.getPatientSurgeryInfo(patientId);
+		render(patientId, radiationTreatments, chemoTreatments, surgeryInfo);
 	}
 
 	public static void followupPlan(int patientId) {
 		List<NoteDTO> noteList = NotesDAO.getPatientNotesList(patientId+"");
 		render(patientId,noteList);
 	}
-
+	public static void chemotherapyForm(Integer patientId, String formType) {
+		Map<String, Object> jsonData = new HashMap<String, Object>();
+		List<MedicationDTO> medications = Treatment.getAllMedications();
+		List<ChemoScheduleDTO> chemoSchedules = Treatment.allChemoSchedules();
+		List<SideEffectDTO> sideEffects = Treatment.allSideEffects();
+		jsonData.put("medications", medications);
+		jsonData.put("chemoSchedules", chemoSchedules);
+		jsonData.put("sideEffects", sideEffects);
+		renderJSON(jsonData);
+	}
+	public static void saveChemotherapyData(Integer patientId, Map<String, String> cttInfo, Map<Integer, Integer> sideEffect) {
+		/*
+		System.out.println("-------------------------------------");
+		System.out.println("Patient ID: " + patientId.toString());
+		for (String key: cttInfo.keySet()) {
+			System.out.println(key + ": " + cttInfo.get(key));
+		}
+		if (sideEffect != null) {
+			System.out.print("Side Effects: ");
+			for (Integer key: sideEffect.keySet()) {
+				System.out.print(sideEffect.get(key) + ", ");
+			}
+		}
+		System.out.println("\n-------------------------------------");
+		*/
+		Treatment.saveChemoTreatment(patientId, cttInfo, sideEffect);
+		treatmentPlan(patientId);
+	}
+	public static void surgeryForm(Integer patientId, String formType) {
+		Map<String, Object> jsonData = new HashMap<String, Object>();
+		List<SurgeryTypeDTO> surgeryTypes = Treatment.allSurgeryTypes();
+		List<TreatmentRegionDTO> treatmentRegions = Treatment.allTreatementRegions();
+		List<SideEffectDTO> sideEffects = Treatment.allSideEffects();
+		jsonData.put("surgeryTypes", surgeryTypes);
+		jsonData.put("treatmentRegions", treatmentRegions);
+		jsonData.put("sideEffects", sideEffects);
+		renderJSON(jsonData);
+	}
+	public static void saveSurgeryData(Integer patientId, Map<String, String> siInfo, Map<Integer, Integer> sideEffect) {
+		/*
+		System.out.println("-------------------------------------");
+		System.out.println("Patient ID: " + patientId.toString());
+		for (String key: siInfo.keySet()) {
+			System.out.println(key + ": " + siInfo.get(key));
+		}
+		if (sideEffect != null) {
+			System.out.print("Side Effects: ");
+			for (Integer key: sideEffect.keySet()) {
+				System.out.print(sideEffect.get(key) + ", ");
+			}
+		}
+		System.out.println("\n-------------------------------------");
+		*/
+		Treatment.saveSurgeryInfo(patientId, siInfo, sideEffect);
+		treatmentPlan(patientId);
+	}
+	public static void radiationForm(Integer patientId, String formType) {
+		Map<String, Object> jsonData = new HashMap<String, Object>();
+		List<RadiationTypeDTO> radiationTypes = Treatment.allRadiationTypes();
+		List<RadiationScheduleDTO> radiationSchedules = Treatment.allRadiationSchedules();
+		List<TreatmentRegionDTO> treatmentRegions = Treatment.allTreatementRegions();
+		List<SideEffectDTO> sideEffects = Treatment.allSideEffects();
+		jsonData.put("radiationTypes", radiationTypes);
+		jsonData.put("radiationSchedules", radiationSchedules);
+		jsonData.put("treatmentRegions", treatmentRegions);
+		jsonData.put("sideEffects", sideEffects);
+		renderJSON(jsonData);
+	}
+	public static void saveRadiationData(Integer patientId, Map<String, String> rtInfo, Map<Integer, Integer> sideEffect) {
+		/*
+		System.out.println("-------------------------------------");
+		System.out.println("Patient ID: " + patientId.toString());
+		for (String key: rtInfo.keySet()) {
+			System.out.println(key + ": " + rtInfo.get(key));
+		}
+		if (sideEffect != null) {
+			System.out.print("Side Effects: ");
+			for (Integer key: sideEffect.keySet()) {
+				System.out.print(sideEffect.get(key) + ", ");
+			}
+		}
+		System.out.println("\n-------------------------------------");
+		*/
+		Treatment.saveRadiationTreatment(patientId, rtInfo, sideEffect);
+		treatmentPlan(patientId);
+	}
 	public static void diagnosis(int patientId) {
 		Map<String, Object> patientInfo = PatientDetailDAO.getDiagnosis(patientId);
 		UserDetailsDTO userDetails = (UserDetailsDTO) patientInfo.get("userDetails");
