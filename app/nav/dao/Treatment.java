@@ -344,16 +344,24 @@ public class Treatment {
 		for (PatientRadiationTreatmentDTO prtDto : radiationTreatments) {
 			em.refresh(prtDto);
 			RadiationTypeDTO rtDto = prtDto.getRtDto();
-			em.refresh(rtDto);
+			if (rtDto != null) {
+				em.refresh(rtDto);
+			}
 			RadiationScheduleDTO rsDto = prtDto.getRsDto();
-			em.refresh(rsDto);
+			if (rsDto != null) {
+				em.refresh(rsDto);
+			}
 			TreatmentRegionDTO trDto = prtDto.getTrDto();
-			em.refresh(trDto);
+			if (trDto != null) {
+				em.refresh(trDto);
+			}
 			List<PatientRtSideEffectDTO> prtSeDtos = prtDto.getPrtSeDtos();
-			for (PatientRtSideEffectDTO prtSeDto : prtSeDtos) {
-				em.refresh(prtSeDto);
-				SideEffectDTO seDto = prtSeDto.getSeDto();
-				em.refresh(seDto);
+			if (prtSeDtos != null) {
+				for (PatientRtSideEffectDTO prtSeDto : prtSeDtos) {
+					em.refresh(prtSeDto);
+					SideEffectDTO seDto = prtSeDto.getSeDto();
+					em.refresh(seDto);
+				}
 			}
 		}
 		return radiationTreatments;
@@ -373,18 +381,25 @@ public class Treatment {
 		for (PatientChemoTreatmentDTO pctDto : chemoTreatments) {
 			em.refresh(pctDto);
 			MedicationDTO medDto = pctDto.getMedDto();
-			em.refresh(medDto);
-			MedicationGenNameDTO mgnDto = medDto.getMgnDto();
-			em.refresh(mgnDto);
-			MedicationBrandNameDTO mbnDto = medDto.getMbnDto();
-			em.refresh(mbnDto);
+			if (medDto != null) {
+				em.refresh(medDto);
+				MedicationGenNameDTO mgnDto = medDto.getMgnDto();
+				em.refresh(mgnDto);
+				MedicationBrandNameDTO mbnDto = medDto.getMbnDto();
+				em.refresh(mbnDto);
+			}
+			
 			ChemoScheduleDTO csDto = pctDto.getCsDto();
-			em.refresh(csDto);
+			if (csDto != null) {
+				em.refresh(csDto);
+			}
 			List<PatientCttSideEffectDTO> pctSeDtos =  pctDto.getPctSeDtos();
-			for (PatientCttSideEffectDTO pctSeDto: pctSeDtos) {
-				em.refresh(pctSeDto);
-				SideEffectDTO seDto = pctSeDto.getSeDto();
-				em.refresh(seDto);
+			if (pctSeDtos != null) {
+				for (PatientCttSideEffectDTO pctSeDto: pctSeDtos) {
+					em.refresh(pctSeDto);
+					SideEffectDTO seDto = pctSeDto.getSeDto();
+					em.refresh(seDto);
+				}
 			}
 		}
 		return chemoTreatments;
@@ -404,12 +419,16 @@ public class Treatment {
 		for (PatientSurgeryInfoDTO psiDto : surgeryInfo) {
 			em.refresh(psiDto);
 			TreatmentRegionDTO trDto = psiDto.getTrDto();
-			em.refresh(trDto);
+			if (trDto != null) {
+				em.refresh(trDto);
+			}
 			List<PatientStSideEffectDTO> pstSeDtos = psiDto.getPstSeDtos();
-			for (PatientStSideEffectDTO pstSeDto: pstSeDtos) {
-				em.refresh(pstSeDto);
-				SideEffectDTO seDto = pstSeDto.getSeDto();
-				em.refresh(seDto);
+			if (pstSeDtos != null) {
+				for (PatientStSideEffectDTO pstSeDto: pstSeDtos) {
+					em.refresh(pstSeDto);
+					SideEffectDTO seDto = pstSeDto.getSeDto();
+					em.refresh(seDto);
+				}
 			}
 		}
 		return surgeryInfo;
