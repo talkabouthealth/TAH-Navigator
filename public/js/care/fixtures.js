@@ -1,5 +1,5 @@
 (function($){
-  var populateFalseData = false;
+  var populateFalseData = true;
 
   var data = [
   [
@@ -88,7 +88,7 @@
           $this.tooltipster({
             content: $this.html(),
             contentAsHTML: true,
-            theme: 'tooltipster-light',
+            //theme: 'tooltipster-light',
             maxWidth: 800
           });
         }
