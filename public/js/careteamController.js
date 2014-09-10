@@ -345,6 +345,7 @@ var careTeamController = (function() {
     };
     var emptySurgeryForm = function() {
         $('#si_st').val('');
+        $('#si_st').keyup();
         $('#si_date').val('');
         $('#si_region').val('');
         $('#si_side_effects').val('');
@@ -356,6 +357,8 @@ var careTeamController = (function() {
     var emptyChemoTreatmentForm = function() {
         $('#ctt_gn').val('');
         $('#ctt_bn').val('');
+        $('#ctt_gn').keyup();
+        $('#ctt_bn').keyup();
         $('#ctt_cycle').val('');
         $('#ctt_schedule').val('');
         $('#ctt_dose').val('');
@@ -598,6 +601,7 @@ var careTeamController = (function() {
     
     var emptyRadiationTreatmentForm = function() {
         $('#rt_type').val('');
+        $('#rt_type').keyup();
         $('#rt_dose').val('');
         $('#rt_schedule').val('');
         $('#rt_start_date').val('');
@@ -630,8 +634,6 @@ var careTeamController = (function() {
             }
             // empty fields for new form
             emptyRadiationTreatmentForm();
-            // auto trigger for validation check
-            $('#rt_type').keyup();
         }, "json");
     };
     var removeSideEffect = function(domElement) {
