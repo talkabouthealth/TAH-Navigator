@@ -95,10 +95,12 @@ public class Image extends Controller {
 				if(imgdto != null && imgdto.getMedicine().getImage() != null)
 					renderBinary(new ByteArrayInputStream(imgdto.getMedicine().getImage()));
 				else
-					renderBinary(DEFAULT_IMAGE_MEDICINE_FILE);
+					renderText(imgdto.getMethod());
+//					renderBinary(DEFAULT_IMAGE_MEDICINE_FILE);
 			}catch ( Exception e ) {
 				e.printStackTrace();
-				renderBinary(DEFAULT_IMAGE_MEDICINE_FILE);
+//				renderBinary(DEFAULT_IMAGE_MEDICINE_FILE);
+				renderText(imgdto.getMethod());
 			}
 		}
 	}

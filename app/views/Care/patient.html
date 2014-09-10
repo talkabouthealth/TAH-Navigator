@@ -1061,4 +1061,28 @@ function DrawSparklineDashboardNew(){
 			height: 35,fillColor: false, lineWidth: 2, lineColor: '#FFF'});
 		});
 }
+function uploadDone(name) {
+	var frame = getFrameByName(name);
+	if (frame) {
+	    ret = frame.document.getElementsByTagName("body")[0].innerHTML;
+	    ret = $.trim(ret);
+	    if(ret == 'WF') {
+			$(currImage).attr('src', "/public/plugins/tinymce/skins/lightgray/img/loader.gif");
+			$("#error").dialog("option","title","Error");
+			$("#error .valuelable").html("<div style='width':200px;'>Please upload correct image file.</div>");
+			$("#error").dialog('open');
+		} else if(ret != ''){
+    		$(currImage).attr('src', "/image/showMedicine/"+esnTemp+"?t="+new Date().getTime());
+    		
+		}  
+	}
+}
+var currImage;
+var esnTemp;
+function getFrameByName(name) {
+	for (var i = 0; i < frames.length; i++)
+	    if (frames[i].name == name)
+	      return frames[i];
+	  return null;
+}
 --></script>

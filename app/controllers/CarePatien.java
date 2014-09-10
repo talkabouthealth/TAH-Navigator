@@ -333,9 +333,10 @@ public class CarePatien  extends Controller {
 		
 
 		try {
-			Date startDt = new SimpleDateFormat("mm/dd/yyyy").parse(startDate);
-			Date endDt = new SimpleDateFormat("mm/dd/yyyy").parse(endDate);
+
 			if("add".equalsIgnoreCase(operation)) {
+				Date startDt = new SimpleDateFormat("mm/dd/yyyy").parse(startDate);
+				Date endDt = new SimpleDateFormat("mm/dd/yyyy").parse(endDate);
 //				System.out.println("catlogId: " + catlogId);
 				MedicineCatlogDTO catlog = MedicationDAO.getMedicineCatloagByField("id",new Integer(catlogId));
 				MedicineMasterDTO medicineMasterDTO = new MedicineMasterDTO();
@@ -349,13 +350,18 @@ public class CarePatien  extends Controller {
 				}
 				BaseDAO.save(medicineMasterDTO);
 				PatientMedicationDTO patientMedicationDTO = new PatientMedicationDTO();
+				if(catlog != null) {
+					patientMedicationDTO.setMethod(catlog.getMethod());
+				} else {
+					patientMedicationDTO.setMethod("oral");
+				}
 				patientMedicationDTO.setActive(true);
 				patientMedicationDTO.setAdddate(new Date());
 				patientMedicationDTO.setCaremember(drUser);
 				patientMedicationDTO.setEnddate(new Date());
 				patientMedicationDTO.setFrequency(frequency);
 				patientMedicationDTO.setMedicine(medicineMasterDTO);
-				patientMedicationDTO.setMethod("oral");
+				
 				patientMedicationDTO.setPatient(patientBy);
 				patientMedicationDTO.setPatientid(patientId);
 				patientMedicationDTO.setSpecialinstruction(otherdetails);
@@ -365,6 +371,8 @@ public class CarePatien  extends Controller {
 				
 				BaseDAO.save(patientMedicationDTO);
 			} else if("edit".equalsIgnoreCase(operation)) {
+				Date startDt = new SimpleDateFormat("mm/dd/yyyy").parse(startDate);
+				Date endDt = new SimpleDateFormat("mm/dd/yyyy").parse(endDate);
 				Integer idField = new Integer(id);
 				PatientMedicationDTO  patientMedicationDTO = MedicationDAO.getMedicineByField("id", idField);
 				if(patientMedicationDTO != null) {

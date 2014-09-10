@@ -15,12 +15,13 @@
 				<div class="col-sm-4" style="padding-top: 10px;">
 					<div style="float:left;width: 50%;text-align: center;">
 				#{if seq.method != null}
-				<img src="/public/images/${seq.method}.png"/>
-				<br/>
-				<a class="removeInstruction" data-id="${seq.id}" href="#">Remove Instruction Image</a>
+				${seq.method}
+<!-- 					<img src="/public/images/${seq.method}.png"/> -->
+					<br/>
+<!-- 					<a class="removeInstruction" data-id="${seq.id}" href="#">Remove Instruction Image</a> -->
 				#{/if}
 				#{else}
-					<a href="#" class="addInstruction" data-id="${seq.id}" ><span style="font-size: 45px;">+</span><br/> Add Instruction Image</a>
+					<a href="#" class="addInstruction" data-id="${seq.id}" ><span style="font-size: 45px;"> +</span><br/> Add Instruction Image</a>
 				#{/else}
 				</div>
 				<div style="float:left;width: 50%;text-align: center;">
@@ -56,30 +57,6 @@
 <iframe id="hidden_upload" name="hidden_upload" style="display:none;width:0;height:0;border:0px solid #fff" src="" onLoad='uploadDone("hidden_upload")'></iframe>
 <script>
 <!--
-var currImage;
-var esnTemp;
-function getFrameByName(name) {
-	for (var i = 0; i < frames.length; i++)
-	    if (frames[i].name == name)
-	      return frames[i];
-	  return null;
-}
-function uploadDone(name) {
-	var frame = getFrameByName(name);
-	if (frame) {
-	    ret = frame.document.getElementsByTagName("body")[0].innerHTML;
-	    ret = $.trim(ret);
-	    if(ret == 'WF') {
-			$(currImage).attr('src', "/public/plugins/tinymce/skins/lightgray/img/loader.gif");
-			$("#error").dialog("option","title","Error");
-			$("#error .valuelable").html("<div style='width':200px;'>Please upload correct image file.</div>");
-			$("#error").dialog('open');
-		} else if(ret != ''){
-    		$(currImage).attr('src', "/image/showMedicine/"+esnTemp+"?t="+new Date().getTime());
-    		
-		}  
-	}
-}
 $(document).ready(function() {
 	$("#image_file_input").change(function() {
 		$(currImage).attr('src', "/public/plugins/tinymce/skins/lightgray/img/loader.gif");
