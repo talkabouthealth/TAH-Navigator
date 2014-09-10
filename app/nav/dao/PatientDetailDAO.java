@@ -63,9 +63,9 @@ public class PatientDetailDAO {
 		UserDetailsDTO userDetails = null;
 		BreastCancerInfoDTO breastCancerInfo = null;
 		Map<String, Object> patientInfo = new HashMap<String, Object>();
-		
+		Integer intId = new Integer(patientId);
 		TypedQuery<UserDetailsDTO> query1 = em.createQuery("SELECT c FROM UserDetailsDTO c WHERE c.id = :id", UserDetailsDTO.class); 
-		query1.setParameter("id", patientId);
+		query1.setParameter("id", intId);
 		userDetails = query1.getSingleResult();
 		
 		TypedQuery<PatientDetailDTO> query2 = em.createQuery("SELECT c FROM PatientDetailDTO c WHERE c.id = :id", PatientDetailDTO.class); 

@@ -4,9 +4,11 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Table(name = "nav.notes")
@@ -14,7 +16,8 @@ import javax.persistence.Table;
 public class NoteDTO {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy= GenerationType.SEQUENCE, generator="notes_id_seq")
+	@SequenceGenerator(allocationSize=1, schema="nav",  name="notes_id_seq", sequenceName = "nav.notes_id_seq")
 	@Column(name = "id")
 	private int id;
 

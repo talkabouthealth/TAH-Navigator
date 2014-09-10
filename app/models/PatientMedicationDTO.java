@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Table(name = "nav.patientmedication")
@@ -16,11 +17,11 @@ import javax.persistence.Table;
 public class PatientMedicationDTO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy= GenerationType.SEQUENCE, generator="patientmedication_id_seq")
+	@SequenceGenerator(allocationSize=1, schema="nav",  name="patientmedication_id_seq", sequenceName = "nav.patientmedication_id_seq")
 	@Column(name = "id")
 	private int id;
 
-//	@Insert(insert="false" update="false")
 	@Column(name = "patientid", insertable = false, updatable = false)
 	private int patientid;
 	

@@ -13,8 +13,10 @@ import java.io.InputStream;
 
 import javax.imageio.ImageIO;
 
+import nav.dao.MedicationDAO;
 import nav.dao.UserImageDAO;
 
+import models.PatientMedicationDTO;
 import models.UserImageDTO;
 
 import play.Play;
@@ -25,6 +27,7 @@ public class Image extends Controller {
 	
 	public static final File DEFAULT_IMAGE_FILE = Play.getFile("/public/images/top-p.png");
 	public static final File DEFAULT_SOCIAL_IMAGE_FILE = Play.getFile("public/images/tahfblike.jpg");
+	public static final File DEFAULT_IMAGE_MEDICINE_FILE = Play.getFile("/public/images/pill.png");
 //	private static final int IMG_WIDTH = 202;
 //	private static final int IMG_HEIGHT = 202;
 
@@ -78,6 +81,28 @@ public class Image extends Controller {
 		}
 		
 	}
+	
+	public static void showMedicine(String medId) {
+		String contentType = "image/png";
+		Integer idField = new Integer(medId);
+		PatientMedicationDTO imgdto =  MedicationDAO.getMedicineByField("id",idField);
+		response.setHeader("Content-Type", contentType);
+		response.setHeader("Cache-Control", "no-cache");
+		if (imgdto != null && imgdto.getMedicine().getImage()  == null) {
+			renderBinary(DEFAULT_IMAGE_MEDICINE_FILE);
+		} else {
+			try{
+				if(imgdto != null && imgdto.getMedicine().getImage() != null)
+					renderBinary(new ByteArrayInputStream(imgdto.getMedicine().getImage()));
+				else
+					renderBinary(DEFAULT_IMAGE_MEDICINE_FILE);
+			}catch ( Exception e ) {
+				e.printStackTrace();
+				renderBinary(DEFAULT_IMAGE_MEDICINE_FILE);
+			}
+		}
+	}
+	
   /*
 	 private static byte[] resizeImageWithHint(byte[] imageArray) {
 		 try {

@@ -29,8 +29,19 @@ public class Patient extends Controller {
 		UserBean user = CommonUtil.loadCachedUser(session);
 		UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());
 		PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", user.getId());
-		System.out.println(session.getId());
-        render(user,userDto,patientOtherDetails);
+		List<AppointmentDTO> listOther = AppointmentDAO.getAppointmentListByField("patientid.id",userDto.getId());
+		List<AppointmentDTO> list = new ArrayList<AppointmentDTO>();
+		UserDetailsDTO userDetails = null;
+		if(listOther != null) {
+			for (AppointmentDTO appointmentDTO : listOther) {
+				userDetails = UserDAO.getDetailsById(appointmentDTO.getCaremember().getId());
+				appointmentDTO.setExpertMobile(userDetails.getMobile());
+				list.add(appointmentDTO);
+			}
+		} else {
+			list = null;
+		}
+        render(user,userDto,patientOtherDetails,list);
     }
 
 	public static void careteam() {
