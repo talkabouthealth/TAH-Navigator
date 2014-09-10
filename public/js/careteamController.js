@@ -240,7 +240,6 @@ var careTeamController = (function() {
             'siInfo.notes': notes
         };
         if (typeof sideEffectIds != "undefined") {
-            console.log("here i am");
             for (var i = 0; i < sideEffectIds.length; i++) {
                 params['sideEffect.' + i] = sideEffectIds[i];
             }
