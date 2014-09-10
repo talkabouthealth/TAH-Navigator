@@ -2,6 +2,9 @@
     background: #0F7970 url('/public/img/devoops_pattern_b10.png') 0 0 repeat !important;
 }
 
+table.table>tbody>tr>td {
+    padding: 0;
+}
 .table{
 	font-size: @body-font;
 
@@ -13,6 +16,10 @@
 		padding: 0;
 
 	}
+
+    td {
+        padding: 0;
+    }
 
 	tr:nth-child(2n) {
 		td {
@@ -34,7 +41,7 @@ td {
   div {
     max-height: @table-cell-max-height;
     overflow: hidden;
-    padding: @table-cell-padding;
+    padding: 10px;
 
     &.tooltipstered {
     	cursor: pointer;
