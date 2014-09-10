@@ -1,11 +1,13 @@
 .index {
+	padding: 20px;
+
 	h3, h4 {
 		/* I'd really like to make this a global style. Can I? - Kevin */
 		color: @gray;
 	}
 
 	h3 {
-		padding-bottom: 5px;
+		padding-bottom: 18px;
 	}
 
 	> .row{
@@ -13,7 +15,14 @@
 		padding-bottom: @padding;
 		margin-bottom: @padding;
 	}
-}
+
+	.col-xs-6 {
+		padding-top: 15px;
+	}
+
+	.preparation-checklist {
+		padding-left: 25px;
+	}
 
 .preparation {
 	border-right: 1px solid @section-border;
@@ -49,6 +58,10 @@
 
 	.appointment-with {
 		padding: @padding 0;
+
+		h3 {
+			padding: 0;
+		}
 	}
 
 }
@@ -75,12 +88,19 @@
 		padding-bottom: @padding;
 	}
 
-	label {
+	.checklist {
+		padding-top: 10px;
+	}
+
+	.checklist label {
 		display: inline;
 		color: @gray;
 	}
 }
 .my-care-team {
+	padding-bottom: 15px;
+	padding-left: 25px;
+
 	ul, li {
 		list-style: none;
 		margin: 0;
@@ -125,4 +145,14 @@
 .view-all-members {
 	text-transform: uppercase;
 	text-align: center;
+}
+
+.bullet {
+	color: @blue;
+	font-size: 300%;
+	line-height: 33px;
+	float: left;
+	display: block;
+	padding: 5px 10px 5px 0;
+}
 }
