@@ -26,11 +26,6 @@ div.green-title{cursor: pointer;}
 					
 					</div>
 					<div class="show-div-list" style="display: none;">
-					
-					
-					
-					
-					
 					  <div class="row">
               <div class="col-sm-6">
                 
@@ -78,30 +73,80 @@ div.green-title{cursor: pointer;}
 				 </ul>
 			#{/if}
 			#{else}
-				<div class="col-xs-12 col-sm-12 nav-tabs">No appointment added.</div>
+				<div class="col-xs-12 col-sm-12 nav-tabs">No new appointment.</div>
 			#{/else}
-            <!-- 
+			<br/><br/>
+			
+			<h2 style="float:left;padding-top:30px;">Past Appointment</h2>
+			
+			#{if listOld != null && listOld.size()>0}
             <ul class="expend-list">
-              <li>
-                <div class="green-title"> <span class="toggle-info border-r"> Lorem Ipsum is <strong>Lorem Ipsum is</strong> </span> <span class="toggle-info "> <strong> Lorem Ipsum is</strong> <strong>Lorem Ipsum is</strong> </span> <span class="expend-div">DETAILS</span> <span class="collapse-div">collapse</span>
-                  <div class="clearfix"></div>
+				#{list listOld, as:'seq'}
+				<li>
+				<div class="green-title">
+					<div class="col-xs-12 col-sm-12 nopadding">
+						<div class="col-sm-5" style="padding-top: 10px;border-right: 1px solid #CCC">
+						<p>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}<br/> <!-- THURSDAY MAY 10TH 2014 -->
+						${seq.appointmenttime} <a href="javaScript:void(0);">${seq.purpose}</a></p>
+						</div>
+						<div class="col-sm-6" style="padding-top: 10px;">
+						<p>#{userName userName: seq.caremember.name, userId:seq.caremember.id /}<br/> ${seq.appointmentcenter}</p>
+						</div>
+						<div class="col-sm-1"><span class="ui-accordion-header-icon ui-icon ui-accordion-header-icon1 ui-icon-triangle-1-e"></span> </div>
+					</div>
+					
+					</div>
+					<div class="show-div-list" style="display: none;">
+					  <div class="row">
+              <div class="col-sm-6">
+                
+                <div class="secont-l-p-f text-center">
+                  <p class="large-f"><span>Appointment is Scheduled for:</span></p>
+                  <h1 class="g-mmm">${seq.appointmentdate.format('EEEE MMMM dd yyyy')}</h1>
+                  <p class="large-f"><span>${seq.appointmenttime} </span></p>
                 </div>
-                <div class="show-div-list" style="display: none;"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem </div>
-              </li>
-              <li>
-                <div class="green-title"> <span class="toggle-info border-r"> Lorem Ipsum is <strong>Lorem Ipsum is</strong> </span> <span class="toggle-info "> <strong> Lorem Ipsum is</strong> <strong>Lorem Ipsum is</strong> </span> <span class="expend-div">DETAILS</span> <span class="collapse-div">collapse</span>
-                  <div class="clearfix"></div>
+              </div>
+              <div class="col-sm-6 line-right">
+                <p class="green-title"><i class="fa fa-map-marker"></i> APPOINTMENT LOCATION/SPECIFICS </p>
+                <div class="row">
+                  <div class="col-sm-4"> 
+                  <img width="100%" src="http://maps.googleapis.com/maps/api/staticmap?center=${seq.addressid.line1}+${seq.addressid.line2},${seq.addressid.city},${seq.addressid.state},${seq.addressid.country} - ${seq.addressid.zip}&maptype=roadmap&zoom=12&size=200x100&scale=false&&markers=color:red%7Csize:small%7C${seq.addressid.lat},${seq.addressid.lang}"> 
+                  </div>
+                  <div class="col-sm-8 map-div">
+                    <div class="secont-l-p-f">
+                      <p class="large-f">
+                      ${seq.addressid.line1} ${seq.addressid.line2}</p>
+        				<p>${seq.addressid.city}, ${seq.addressid.state}, ${seq.addressid.zip}</p>
+                      
+                      <p style="margin:5px 0 0 0"> 
+                      	<a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${seq.addressid.line1}+${seq.addressid.line2},${seq.addressid.city},${seq.addressid.state},${seq.addressid.country} - ${seq.addressid.zip}" class="btn btn-default-small">GET DIRECTIONS</a> 
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <div class="show-div-list" style="display: none;"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem </div>
-              </li>
-              <li>
-                <div class="green-title"> <span class="toggle-info border-r"> Lorem Ipsum is <strong>Lorem Ipsum is</strong> </span> <span class="toggle-info "> <strong> Lorem Ipsum is</strong> <strong>Lorem Ipsum is</strong> </span> <span class="expend-div">DETAILS</span> <span class="collapse-div">collapse</span>
-                  <div class="clearfix"></div>
+                <div class="media"> <a class="pull-left" href="#"> <img src="@{Image.show(seq.caremember.id)}" class=""> </a>
+                  <div class="media-body main-l-p">
+                    <p>MY APPOINTMENT IS WITH</p>
+                    <div class="secont-l-p-f">
+                      <p class="large-f"><span>#{userName userName: seq.caremember.name, userId:seq.caremember.id /} </span></p>
+						<p> ${seq.expertMobile} 
+						 &nbsp; |&nbsp; ${seq.caremember.email}</p>
+                    </div>
+                  </div>
                 </div>
-                <div class="show-div-list" style="display:none"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem </div>
-              </li>
-            </ul>
-           -->
+              </div>
+            </div>
+            <div class="line-h"></div>
+            <h3 class="title-2">Purpose of appointment: <span>${seq.purpose}</span></h3>
+					</div>
+					</li>
+				#{/list}
+				 </ul>
+			#{/if}
+			#{else}
+				<div class="col-xs-12 col-sm-12 nav-tabs">No appointment.</div>
+			#{/else}
+			
 	</div>
 </div>
 <script type="text/javascript">
@@ -111,6 +156,7 @@ $(document).ready(function() {
 		$(this).next('div.show-div-list').slideToggle();
 		$(this).find(".ui-icon-triangle-1-e").toggleClass('ui-icon-triangle-1-s');
 	});
+	$('div.green-title:first').trigger( "click" );
 });
 -->
 </script>

@@ -18,7 +18,7 @@
           <th>NAME</th>
           <th>DIAGNOSIS</th>
           <th>LAST VISIT</th>
-          <th>LAST VISIT PURPOSE</th>
+						<th>LAST VISIT INFO</th>
           <th>LAST MD</th>
           <th>LAST DISTRESS LEVEL</th>
           <th>LAST DISTRESS CHECK-IN</th>
@@ -66,41 +66,41 @@
 			 #{/if}
 			     		 
           #{/if}
-          #{else}-#{/else}
-        </td>
-        <td>08/10/2014</td>
-        <td>1st Appointment</td>
-        <td>Jorge Freire, MD</td>
-        <td>
-          #{if seq.distress != null}
-          ${seq.distress.curDist}
-          #{/if}
-          #{else}-#{/else}
-        </td>
-        <td>
-          #{if seq.distress != null}
-          <span class="timeAgo" title="${seq.distress.distressDate}">${seq.distress.distressDate.format('MM/dd/yyyy h:mma')}</span>
-          #{/if}
-          #{else}-#{/else}
-        </td>
-        <td>#{if seq.distress != null}
-          ${seq.distress.otherdetail.printMessage()}
-          #{/if}
-          #{else}-#{/else}</td>
-        <td>Pain, headache, diarrhea, itchy skin, vomiting, nausea, problems remembering</td>
-        <td>9/10/2014 9:00AM</td>
-        <td>This is a test note. Murray is testing the note feature to see if we can figure out a way to format it better.</td>
-      </tr>
-      #{/list}
-      #{/if}
-      #{else}
-      <tr>
-        <td colspan="11" align="center">No record found</td>
-      </tr>
-      #{/else}
-      </tbody>
-      <tbody>
-      </tbody>
-    </table>
-  </div>
-</div>
+									#{else}-#{/else}
+									</td>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+								<td>
+									#{if seq.distress != null}
+									${seq.distress.curDist}
+									#{/if}
+									#{else}-#{/else}
+								</td>
+								<td>	
+									#{if seq.distress != null}
+									<span class="timeAgo" title="${seq.distress.distressDate}">${seq.distress.distressDate}</span>
+									#{/if}
+									#{else}-#{/else}
+								</td>
+								<td>#{if seq.distress != null}
+									${seq.distress.otherdetail.printMessage()}
+									#{/if}
+									#{else}-#{/else}</td>
+								<td>-</td>
+								<td>-</td>
+								<td>-</td>
+				  			</tr>
+		  				#{/list}
+		  			#{/if}
+		  			#{else}
+		  				<tr>
+		  					<td colspan="11" align="center">No record found</td>
+		  				</tr>
+		  			#{/else}
+		  			</tbody>
+		  			<tbody>
+		  			</tbody>
+		  			</table>
+		  			</div>
+	</div>
