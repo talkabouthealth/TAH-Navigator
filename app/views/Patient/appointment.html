@@ -13,17 +13,20 @@ div.green-title{cursor: pointer;}
 				#{list list, as:'seq'}
 				<li>
 				<div class="green-title">
-					<div class="col-xs-12 col-sm-12 nopadding">
-						<div class="col-sm-5" style="padding-top: 10px;border-right: 1px solid #CCC">
+					<div class="col-xs-11 col-sm-11 nopadding" style="display:block;">
+						<div class="col-sm-6 checkDiv" style="padding-top: 10px;border-right: 1px solid #CCC">
 						<p>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}<br/> <!-- THURSDAY MAY 10TH 2014 -->
 						${seq.appointmenttime} <a href="javaScript:void(0);">${seq.purpose}</a></p>
 						</div>
 						<div class="col-sm-6" style="padding-top: 10px;">
 						<p>#{userName userName: seq.caremember.name, userId:seq.caremember.id /}<br/> ${seq.appointmentcenter}</p>
 						</div>
-						<div class="col-sm-1"><span class="ui-accordion-header-icon ui-icon ui-accordion-header-icon1 ui-icon-triangle-1-e"></span> </div>
 					</div>
-					
+					<div class="col-xs-1 col-sm-1 nopadding">
+						<div style="width: 67px;">
+						<span class="toggleText">Expand</span> <span style="float:right;" class="ui-accordion-header-icon ui-icon ui-accordion-header-icon1 ui-icon-triangle-1-e"></span>
+						</div>
+					</div>
 					</div>
 					<div class="show-div-list" style="display: none;">
 					  <div class="row">
@@ -76,25 +79,26 @@ div.green-title{cursor: pointer;}
 				<div class="col-xs-12 col-sm-12 nav-tabs">No new appointment.</div>
 			#{/else}
 			<br/><br/>
-			
 			<h2 style="float:left;padding-top:30px;">Past Appointment</h2>
-			
 			#{if listOld != null && listOld.size()>0}
             <ul class="expend-list">
 				#{list listOld, as:'seq'}
 				<li>
 				<div class="green-title">
-					<div class="col-xs-12 col-sm-12 nopadding">
-						<div class="col-sm-5" style="padding-top: 10px;border-right: 1px solid #CCC">
+					<div class="col-xs-11 col-sm-11 nopadding">
+						<div class="col-sm-6 checkDiv" style="padding-top: 10px;border-right: 1px solid #CCC">
 						<p>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}<br/> <!-- THURSDAY MAY 10TH 2014 -->
 						${seq.appointmenttime} <a href="javaScript:void(0);">${seq.purpose}</a></p>
 						</div>
 						<div class="col-sm-6" style="padding-top: 10px;">
 						<p>#{userName userName: seq.caremember.name, userId:seq.caremember.id /}<br/> ${seq.appointmentcenter}</p>
 						</div>
-						<div class="col-sm-1"><span class="ui-accordion-header-icon ui-icon ui-accordion-header-icon1 ui-icon-triangle-1-e"></span> </div>
 					</div>
-					
+					<div class="col-xs-1 col-sm-1 nopadding">
+						<div style="width: 67px;">
+						<span class="toggleText">Expand</span> <span style="float:right;" class="ui-accordion-header-icon ui-icon ui-accordion-header-icon1 ui-icon-triangle-1-e"></span>
+						</div>
+					</div>
 					</div>
 					<div class="show-div-list" style="display: none;">
 					  <div class="row">
@@ -153,8 +157,11 @@ div.green-title{cursor: pointer;}
 <!--
 $(document).ready(function() {
 	$('.green-title').click(function() {	
+		$(this).find(".col-sm-6").toggle();
 		$(this).next('div.show-div-list').slideToggle();
 		$(this).find(".ui-icon-triangle-1-e").toggleClass('ui-icon-triangle-1-s');
+		var txt = $(this).find(".checkDiv").is(':visible') ? 'Expand' : 'Collapse';
+		$(this).find(".toggleText").text(txt);
 	});
 	$('div.green-title:first').trigger( "click" );
 });
