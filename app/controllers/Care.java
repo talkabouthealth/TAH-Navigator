@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import models.AddressDTO;
+import models.AppointmentDTO;
 import models.BreastCancerInfoDTO;
 import models.BreastCancerStageDTO;
 import models.CareTeamMemberDTO;
@@ -30,6 +31,7 @@ import models.UserEducationDTO;
 import models.UserExpertiesDTO;
 import models.UserTypeDTO;
 import nav.dao.AddressDAO;
+import nav.dao.AppointmentDAO;
 import nav.dao.BaseDAO;
 import nav.dao.CareTeamDAO;
 import nav.dao.DesignationMasterDAO;
@@ -89,6 +91,15 @@ public class Care extends Controller {
 				DistressBean distress = DistressDAO.getLastDistress(patienCareTeamDTO.getPatien());
 				if(distress !=null) {
 					patient.setDistress(distress);
+				}
+				AppointmentDTO appointment=AppointmentDAO.getLastAppointment(patienCareTeamDTO.getPatien(),new Date());
+				if(appointment !=null) {
+					patient.setAppointmentInfo(appointment);
+				}
+				
+				NoteDTO noteFor = NotesDAO.getLastNoteFor(patienCareTeamDTO.getPatien());
+				if(noteFor!=null){
+					patient.setNote(noteFor);
 				}
 				patients.add(patient);
 			}

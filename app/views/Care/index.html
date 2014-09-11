@@ -18,13 +18,11 @@
           <th>NAME</th>
           <th>DIAGNOSIS</th>
           <th>LAST VISIT</th>
-						<th>LAST VISIT INFO</th>
+		  <th>LAST VISIT INFO</th>
           <th>LAST MD</th>
           <th>LAST DISTRESS LEVEL</th>
           <th>LAST DISTRESS CHECK-IN</th>
           <th>PROBLEM LIST</th>
-          <th>SYMPTOMS</th>
-          <th>LAST SYMPTOM CHECK-IN</th>
           <th>LAST NOTE</th>
         </tr>
       </thead>
@@ -64,33 +62,42 @@
 			       #{/elseif}
 			  #{/if}
 			 #{/if}
-			     		 
           #{/if}
-									#{else}-#{/else}
-									</td>
-								<td>-</td>
-								<td>-</td>
-								<td>-</td>
-								<td>
+		  #{else}-#{/else}
+		</td>
+		#{if seq.appointmentInfo != null} 
+			<td>${seq.appointmentInfo.appointmentdate.format("dd/MM/yyyy")}</td> 
+			<td>${seq.appointmentInfo.purpose}</td>
+			<td>#{userName userName: seq.appointmentInfo.caremember.name, userId:seq.appointmentInfo.caremember.id /}</td>
+		#{/if}
+		#{else}
+		<td>-</td>
+		<td>-</td>
+		<td>-</td>
+		#{/else}
+		<td>
+			#{if seq.distress != null}
+			${seq.distress.curDist}
+			#{/if}
+			#{else}-#{/else}
+		</td>
+		<td>	
 									#{if seq.distress != null}
-									${seq.distress.curDist}
-									#{/if}
-									#{else}-#{/else}
-								</td>
-								<td>	
-									#{if seq.distress != null}
-									<span class="timeAgo" title="${seq.distress.distressDate}">${seq.distress.distressDate}</span>
+									<span class="timeAgo" title="${seq.distress.distressDate}">${seq.distress.distressDate.format("dd/MM/yyyy")}</span>
 									#{/if}
 									#{else}-#{/else}
 								</td>
 								<td>#{if seq.distress != null}
 									${seq.distress.otherdetail.printMessage()}
 									#{/if}
-									#{else}-#{/else}</td>
-								<td>-</td>
-								<td>-</td>
-								<td>-</td>
-				  			</tr>
+									#{else}N/A#{/else}</td>
+		<td>
+			#{if seq.note != null}
+				${seq.note.noteTitle}
+			#{/if}
+			#{else}None#{/else}
+		</td> <!-- Last Note -->
+	</tr>
 		  				#{/list}
 		  			#{/if}
 		  			#{else}
@@ -98,9 +105,9 @@
 		  					<td colspan="11" align="center">No record found</td>
 		  				</tr>
 		  			#{/else}
-		  			</tbody>
-		  			<tbody>
-		  			</tbody>
-		  			</table>
+ 			</tbody>
+ 			<tbody>
+ 			</tbody>
+ 			</table>
 		  			</div>
 	</div>

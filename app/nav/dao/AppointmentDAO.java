@@ -11,6 +11,7 @@ import util.JPAUtil;
 import models.AppointmentDTO;
 import models.NoteDTO;
 import models.PatientMedicationDTO;
+import models.UserDTO;
 
 
 public class AppointmentDAO {
@@ -57,6 +58,29 @@ public class AppointmentDAO {
 			dto = query.getSingleResult();
 		} catch(Exception e) {
 			e.printStackTrace();
+		} finally {
+			em.close();
+		}
+		return dto;
+	}
+	/**
+	 * get last appointment info of patient
+	 * @param fieldName
+	 * @param param
+	 * @return
+	 */
+	public static AppointmentDTO getLastAppointment(UserDTO patient,Date date) {
+		AppointmentDTO dto = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		Integer in = new Integer(patient.getId());
+		try {
+			TypedQuery<AppointmentDTO> query = em.createQuery("SELECT c FROM AppointmentDTO c WHERE c.patientid.id = :field and  c.appointmentdate < :date ORDER BY appointmentdate  desc, appointmenttime DESC ", AppointmentDTO.class);
+			query.setMaxResults(1);
+			query.setParameter("field",in);
+			query.setParameter("date",date);
+			dto = query.getSingleResult();
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
 		} finally {
 			em.close();
 		}
