@@ -36,7 +36,7 @@ public class AppointmentDAO {
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
 			TypedQuery<AppointmentDTO> query = em.createQuery("SELECT c FROM AppointmentDTO c " +
-					" WHERE c."+fieldName+" = :field and deleteflag = false and c.appointmentdate "+(status.equalsIgnoreCase("past")?"<":" >=")+" :date order by appointmentdate asc", AppointmentDTO.class); 
+					" WHERE c."+fieldName+" = :field and deleteflag = false and c.appointmentdate "+(status.equalsIgnoreCase("past")?"<":" >=")+" :date and deleteflag = false order by appointmentdate asc", AppointmentDTO.class); 
 			query.setParameter("field", param);
 			query.setParameter("date", date);
 			dtoList = query.getResultList();
@@ -74,7 +74,7 @@ public class AppointmentDAO {
 		EntityManager em = JPAUtil.getEntityManager();
 		Integer in = new Integer(patient.getId());
 		try {
-			TypedQuery<AppointmentDTO> query = em.createQuery("SELECT c FROM AppointmentDTO c WHERE c.patientid.id = :field and  c.appointmentdate < :date ORDER BY appointmentdate  desc, appointmenttime DESC ", AppointmentDTO.class);
+			TypedQuery<AppointmentDTO> query = em.createQuery("SELECT c FROM AppointmentDTO c WHERE c.patientid.id = :field and  c.appointmentdate < :date and deleteflag = false ORDER BY appointmentdate  desc, appointmenttime DESC ", AppointmentDTO.class);
 			query.setMaxResults(1);
 			query.setParameter("field",in);
 			query.setParameter("date",date);
