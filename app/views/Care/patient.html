@@ -38,17 +38,18 @@ p {
 
 <div id="content" class="col-xs-12 col-sm-10">
 	<div class="col-xs-12 col-sm-12">
-		<div id="tabs">
-			<ul>
-				<li><a href="#tabs-1">SUMMARY</a></li>
-				<li><a href="@{CarePatien.appointment(patientId)}">APPOINTMENT</a></li>
-				<li><a href="@{CarePatien.careteam(patientId)}">CARE TEAM</a></li>
-				<li><a href="@{CarePatien.medication(patientId)}">MEDICATIONS</a></li>
-				<li><a href="@{CarePatien.treatmentPlan(patientId)}">TREATMENT PLAN</a></li>
-				<li><a href="@{CarePatien.followupPlan(patientId)}">FOLLOW-UP CARE PLAN</a></li>
-				<li><a href="@{CarePatien.diagnosis(patientId)}">DIAGNOSIS</a></li>
+		<div>
+			<ul id="tabs" class="nav nav-tabs">
+				<li class="active"><a href="#summery">SUMMARY</a></li>
+				<li><a href="#appointment" data-url="@{CarePatien.appointment(patientId)}">APPOINTMENT</a></li>
+				<li><a href="#careteam" data-url="@{CarePatien.careteam(patientId)}">CARE TEAM</a></li>
+				<li><a href="#medication" data-url="@{CarePatien.medication(patientId)}">MEDICATIONS</a></li>
+				<li><a href="#treatmentplan" data-url="@{CarePatien.treatmentPlan(patientId)}">TREATMENT PLAN</a></li>
+				<li><a href="#followupplan" data-url="@{CarePatien.followupPlan(patientId)}">FOLLOW-UP CARE PLAN</a></li>
+				<li><a href="#diagnosis" data-url="@{CarePatien.diagnosis(patientId)}">DIAGNOSIS</a></li>
 			</ul>
-			<div id="tabs-1">
+			<div class="tab-content">
+			<div id="summery" class="tab-pane active" >
 				<div class="col-xs-12 col-sm-12 nopadding">
 					<div class="col-xs-4 col-sm-4 nopadding" style="border-right: 1px solid #CCC">
 					<!-- patient area -->
@@ -214,6 +215,13 @@ p {
 					</table>
 				#{/if}
 				</div>
+			</div>
+			<div class="tab-pane" id="appointment"></div>
+			<div class="tab-pane" id="careteam"></div>
+			<div class="tab-pane" id="medication"></div>
+			<div class="tab-pane" id="treatmentplan"></div>
+			<div class="tab-pane" id="followupplan"></div>
+			<div class="tab-pane" id="diagnosis"></div>
 			</div>
 		</div>
 	</div>
@@ -783,13 +791,34 @@ var timeArray = ["8 AM","8.15 AM","8.30 AM","8.45 AM","9 AM","9.15 AM","9.30 AM"
 				"12.45 PM","1 PM","1.15 PM","1.30 PM","1.45 PM","2 PM","2.15 PM","2.30 PM","2.45 PM","3 PM","3.15 PM","3.30 PM","3.45 PM","4 PM","5.15 PM","5.30 PM","5.45 PM","6 PM"];
 $(document).ready(function() {
 	
-	$("#tabs").tabs({
-	      beforeLoad: function( event, ui ) {
-	        ui.jqXHR.error(function() {
-	          ui.panel.html("Couldn't load this tab. We'll try to fix this as soon as possible." );
-	        });
-	      }
+	$('#tabs a').click(function (e) {
+		e.preventDefault();
+		var url = $(this).attr("data-url");
+	  	var href = this.hash;
+	  	var pane = $(this);
+		if(href=="#summery") {
+			pane.tab('show');
+		} else {
+			// ajax load from data-url
+			$(href).load(url,function(result){      
+			    pane.tab('show');
+			});
+		}
 	});
+	
+	// load first tab content
+// 	$('#tabs').load($('.active a').attr("data-url"),function(result){
+// 	  $('.active a').tab('show');
+// 	});
+
+	
+// 	$("#tabs").tabs({
+// 	      beforeLoad: function( event, ui ) {
+// 	        ui.jqXHR.error(function() {
+// 	          ui.panel.html("Couldn't load this tab. We'll try to fix this as soon as possible." );
+// 	        });
+// 	      }
+// 	});
 	
 	$("#addEditmedication input[name='genericname']").autocomplete({source:  "/carePatien/autoCompleteMedic", minLength: 1,select: function( event, ui ) {
 // 		if($("#addEditmedication input[name='operation']").val() == 'add') {
