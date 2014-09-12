@@ -2,90 +2,90 @@
 #{extends 'patientmain.html' /}
 <!--Start Content-->
 <div id="content" class="col-xs-12 col-sm-10">
-  <div class="row">&nbsp;</div>
-  <div class="row">
-    <div class="col-sm-8">
-      <p><a href="@{Patient.careteam()}" class="back-arrow"><i class="fa fa-arrow-circle-o-left"></i> ${careteam.name} CARE TEAM</a></p>
-      <div class="media">
-        <a class="pull-left" href="#">
-          <img src="@{Image.show(expertDetails.id)}" width="74" height="70" class="img-responsive"> </a>
-        <div class="media-body main-l-p">
-          <h1>${expertDetails.firstName} ${expertDetails.lastName}</h1>
-        </div>
-        #{if expdetails.practiceAddr != null}
-        <div class="secont-l-p-f">
-          #{if expertDetails != null}
-          <p class="large-f">${expertDetails.mobile}</p>
-          #{/if}
-        <p class="hours"><label>Office Hours:</label> Mon-Thurs 8am-5pm, Sunday 8am-1pm</p>
-        </div>
-        #{/if}
-      </div>
-      <div class="line-h"></div>
-      <p class="green-title"><i class="fa fa-bookmark"></i>  EDUCATION / BACKGROUND </p>
+            <div class="row">&nbsp;</div>
+	 <div class="row">
+            	<div class="col-sm-8">
+                	<p><a href="@{Patient.careteam()}" class="back-arrow"><i class="fa fa-arrow-circle-o-left"></i> ${careteam.name} CARE TEAM</a></p>
+                    <div class="media">
+      <a class="pull-left" href="#"> 
+        <img src="@{Image.show(expertDetails.id)}" width="74" height="70" class="img-responsive"> </a>
+      <div class="media-body main-l-p">
+      <h1>${expertDetails.firstName} ${expertDetails.lastName}</h1>
+    </div>
+                	#{if expdetails.practiceAddr != null}
+                	<div class="secont-l-p-f">
+                		<p class="large-f">${expdetails.practiceAddr.printAddress()}</p>
+                		#{if expertDetails != null}
+                    	<p class="large-f">${expertDetails.mobile}</p>
+                    	#{/if}
+                    </div>
+                    #{/if}
+                    </div>
+                    <div class="line-h"></div>
+                    <p class="green-title"><i class="fa fa-bookmark"></i>  EDUCATION / BACKGROUND </p>
       <div class="row education">
-        #{list education, as:'seq'}
+                    		#{list education, as:'seq'}
         <div class="col-sm-6 school">
-          <div class="media margin-education">
-            <a class="pull-left" href="#">
-              <img src="${seq.logopath}" width="57" height="51"> </a>
-            <div class="media-body new-education">
-              <p class="green-text">${seq.school}</p>
-              <h4 class="media-heading">${seq.dgree}</h4>
-              <p>${seq.year}</p>
-            </div>
-          </div>
-        </div>
-        #{/list}
-      </div>
-      <div class="line-h"></div>
-      #{if expdetails.statement != null}
-      <p class="green-title"><i class="fa fa-folder"></i> PROFESSIONAL STATEMENT </p>
-      <div class="row">
-        <div class="col-sm-12">
-          <p>${expdetails.statement.printMessage()}</p>
-        </div>
-      </div>
-      #{/if}
-    </div>
-    <div class="col-sm-4 line-right">
-      <p class="green-title"> <i class="fa fa-map-marker"></i> ${careteam.name} CARE TEAM / OFFICE LOCATION </p>
-      <div class="row">
-        <div class="col-sm-6">
-          <a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${careteam.address.line1}+${careteam.address.line2},${careteam.address.city},${careteam.address.state},${careteam.address.country} - ${careteam.address.zip}">
-            <img width="100%" src="http://maps.googleapis.com/maps/api/staticmap?center=${careteam.address.lat},${careteam.address.lang}&zoom=13&size=200x200&sensor=false&&markers=color:blue%7Clabel:S%7C${careteam.address.lat},${careteam.address.lang}" width="100%" >
-          </a>
-        </div>
-        <div class="col-sm-6 map-div">
-          <p style="font-size:16px;">${careteam.address.line1}</p>
-          <p>${careteam.address.line2} </p>
-          <p>${careteam.address.city}, ${careteam.address.state} </p>
-          <p>${careteam.address.country}, ${careteam.address.zip} </p>
-        </div>
-      </div>
-      <p>&nbsp;</p>
-      <p class="text-center"><a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${careteam.address.line1}+${careteam.address.line2},${careteam.address.city},${careteam.address.state},${careteam.address.country} - ${careteam.address.zip}" class="btn btn-default-small">GET DIRECTIONS</a></p>
-      <div class="line-h"></div>
-      #{if certificats != null && certificats.size()>0}
-      <div class="row">
-        <div class="col-sm-12">
-          <p class="green-title"><i class="fa fa-certificate"></i> </span> CERTIFICATIONS </p>
-        <ul class="list-right">
-          #{list certificats, as:'seq'}
-          <li>
-          <p><strong>${seq.name}</strong></p>
-          #{if seq.description != null}
-          <p>${seq.description.printMessage()}</p>
-          #{/if}
-          </li>
-          #{/list}
-        </ul>
-      </div>
-    </div>
-    #{/if}
-    #{if experties != null && experties.size()>0}
-    <div class="row">
-      <div class="col-sm-12">
+                        	<div class="media margin-education">
+                              <a class="pull-left" href="#">
+                              <img src="${seq.logopath}" width="57" height="51"> </a>
+                              <div class="media-body new-education">
+                              	<p class="green-text">${seq.school}</p>
+                                <h4 class="media-heading">${seq.dgree}</h4>
+                               <p>${seq.year}</p>
+                              </div>
+                        </div>
+                      </div>
+				    	#{/list}
+                    </div>
+                     <div class="line-h"></div>
+                     #{if expdetails.statement != null}
+                    <p class="green-title"><i class="fa fa-folder"></i> PROFESSIONAL STATEMENT </p>
+                    <div class="row">
+                    	<div class="col-sm-12">
+                        	<p>${expdetails.statement.printMessage()}</p>
+                        </div>
+                    </div>
+                    #{/if}
+                </div>
+                <div class="col-sm-4 line-right">
+                	 <p class="green-title"> <i class="fa fa-map-marker"></i> ${careteam.name} CARE TEAM / OFFICE LOCATION </p>
+                     <div class="row">
+                     	<div class="col-sm-6">
+                     	<a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${careteam.address.line1}+${careteam.address.line2},${careteam.address.city},${careteam.address.state},${careteam.address.country} - ${careteam.address.zip}">
+                   	    	<img width="100%" src="http://maps.googleapis.com/maps/api/staticmap?center=${careteam.address.lat},${careteam.address.lang}&zoom=13&size=200x200&sensor=false&&markers=color:blue%7Clabel:S%7C${careteam.address.lat},${careteam.address.lang}" width="100%" >
+                   	    	</a>
+                   	    	 </div>
+                        <div class="col-sm-6 map-div">
+                        	<p style="font-size:16px;">${careteam.address.line1}</p>
+                            <p>${careteam.address.line2} </p>
+                            <p>${careteam.address.city}, ${careteam.address.state} </p>
+                            <p>${careteam.address.country}, ${careteam.address.zip} </p>
+                        </div>
+                     </div>
+                     <p>&nbsp;</p>
+                     <p class="text-center"><a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${careteam.address.line1}+${careteam.address.line2},${careteam.address.city},${careteam.address.state},${careteam.address.country} - ${careteam.address.zip}" class="btn btn-default-small">GET DIRECTIONS</a></p>
+                     <div class="line-h"></div>
+                     #{if certificats != null && certificats.size()>0}
+                     <div class="row">
+                     	<div class="col-sm-12">
+                        	<p class="green-title"><i class="fa fa-certificate"></i> </span> CERTIFICATIONS </p>
+                            <ul class="list-right">
+                            #{list certificats, as:'seq'}
+                            	<li>
+                                	<p><strong>${seq.name}</strong></p>
+                                	#{if seq.description != null}
+                                    <p>${seq.description.printMessage()}</p>
+                                    #{/if}
+                                </li>
+                            #{/list}
+                           </ul>
+                        </div>
+                     </div>
+                     #{/if}
+                     #{if experties != null && experties.size()>0}
+                     <div class="row">
+                     	<div class="col-sm-12">
         <p class="green-title"><i class="fa fa-search"></i>&nbsp; EXPERTISE & INTERESTS </p>
         <ul class="list-right">
           #{list experties, as:'seq'}

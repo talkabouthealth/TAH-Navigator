@@ -9,6 +9,8 @@ GET		/api/*									API.index
 
 # Refresh Image URL
 GET		/image/show/{userId}								Image.show
+GET		/image/showMedicine/{medId}								Image.showMedicine
+
 
 #Login Pages
 GET     /login                                  Login.index

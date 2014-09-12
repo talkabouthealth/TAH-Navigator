@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -29,8 +30,33 @@ public class Patient extends Controller {
 		UserBean user = CommonUtil.loadCachedUser(session);
 		UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());
 		PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", user.getId());
-		System.out.println(session.getId());
-        render(user,userDto,patientOtherDetails);
+		List<AppointmentDTO> list = new ArrayList<AppointmentDTO>();
+		UserDetailsDTO userDetails = null;
+		Date curreDate = new Date();
+		List<AppointmentDTO> listOther = AppointmentDAO.getAppointmentListByField("patientid.id", userDto.getId(), curreDate, "upcomming" );
+		if(listOther != null) {
+			for (AppointmentDTO appointmentDTO : listOther) {
+				userDetails = UserDAO.getDetailsById(appointmentDTO.getCaremember().getId());
+				appointmentDTO.setExpertMobile(userDetails.getMobile());
+				list.add(appointmentDTO);
+			}
+		} else {
+			list = null;
+		}
+
+		List<AppointmentDTO> expListOther = AppointmentDAO.getAppointmentListByField("patientid.id" , userDto.getId(), curreDate, "past" );
+		List<AppointmentDTO> listOld = new ArrayList<AppointmentDTO>();
+		if(expListOther != null) {
+			for (AppointmentDTO appointmentDTO : expListOther) {
+				userDetails = UserDAO.getDetailsById(appointmentDTO.getCaremember().getId());
+				appointmentDTO.setExpertMobile(userDetails.getMobile());
+				listOld.add(appointmentDTO);
+			}
+		} else {
+			listOld = null;
+		}
+
+        render(user,userDto,patientOtherDetails,list,listOld);
     }
 
 	public static void careteam() {

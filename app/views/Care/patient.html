@@ -13,8 +13,8 @@
 p {
     margin: 0;
 }
-.td-symp,.td-graph{   
-background: linear-gradient(180deg, #ff4488 50%, #ff0000 50%);
+.td-symp,.td-graph {
+	background: linear-gradient(180deg, #ff4488 50%, #ff0000 50%);
     float: left;
     height: 45px;
     margin-left: 20px;
@@ -23,22 +23,33 @@ background: linear-gradient(180deg, #ff4488 50%, #ff0000 50%);
     color: #00509b;
     font-size: 20px;
 }
-
+.ui-autocomplete {
+    margin-top: 5px;
+    max-height: 144px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+.ui-autocomplete {
+    box-shadow: 1px 9px 10px #aaaaaa;
+    z-index: 2011;
+}
 -->
 </style>
+
 <div id="content" class="col-xs-12 col-sm-10">
 	<div class="col-xs-12 col-sm-12">
-		<div id="tabs">
-			<ul>
-				<li><a href="#tabs-1">SUMMARY</a></li>
-				<li><a href="@{CarePatien.appointment(patientId)}">APPOINTMENT</a></li>
-				<li><a href="@{CarePatien.careteam(patientId)}">CARE TEAM</a></li>
-				<li><a href="@{CarePatien.medication(patientId)}">MEDICATIONS</a></li>
-				<li><a href="@{CarePatien.treatmentPlan(patientId)}">TREATMENT PLAN</a></li>
-				<li><a href="@{CarePatien.followupPlan(patientId)}">FOLLOW-UP CARE PLAN</a></li>
-				<li><a href="@{CarePatien.diagnosis(patientId)}">DIAGNOSIS</a></li>
+		<div>
+			<ul id="tabs" class="nav nav-tabs">
+				<li class="active"><a href="#summery">SUMMARY</a></li>
+				<li><a href="#appointment" data-url="@{CarePatien.appointment(patientId)}">APPOINTMENT</a></li>
+				<li><a href="#careteam" data-url="@{CarePatien.careteam(patientId)}">CARE TEAM</a></li>
+				<li><a href="#medication" data-url="@{CarePatien.medication(patientId)}">MEDICATIONS</a></li>
+				<li><a href="#treatmentplan" data-url="@{CarePatien.treatmentPlan(patientId)}">TREATMENT PLAN</a></li>
+				<li><a href="#followupplan" data-url="@{CarePatien.followupPlan(patientId)}">FOLLOW-UP CARE PLAN</a></li>
+				<li><a href="#diagnosis" data-url="@{CarePatien.diagnosis(patientId)}">DIAGNOSIS</a></li>
 			</ul>
-			<div id="tabs-1">
+			<div class="tab-content">
+			<div id="summery" class="tab-pane active" >
 				<div class="col-xs-12 col-sm-12 nopadding">
 					<div class="col-xs-4 col-sm-4 nopadding" style="border-right: 1px solid #CCC">
 					<!-- patient area -->
@@ -205,126 +216,101 @@ background: linear-gradient(180deg, #ff4488 50%, #ff0000 50%);
 				#{/if}
 				</div>
 			</div>
+			<div class="tab-pane" id="appointment"></div>
+			<div class="tab-pane" id="careteam"></div>
+			<div class="tab-pane" id="medication"></div>
+			<div class="tab-pane" id="treatmentplan"></div>
+			<div class="tab-pane" id="followupplan"></div>
+			<div class="tab-pane" id="diagnosis"></div>
+			</div>
 		</div>
 	</div>
 	<div id="ajax-content"></div>
 </div>
 
-<div class="modal fade" id="addEditmedication" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title" id="myModalLabel">ADD NEW MEDICATION</h4>
-			</div>
-			<div class="modal-body">
-				<table>
-					<tr><td colspan="2">NEW MEDICATION INFORMATION</td></tr>
-					<tr>
-						<td>Generic Name</td>
-						<td><input type="text" class="form-control"/></td>
-					</tr>
-					<tr>
-						<td>Brand Name</td>
-						<td><input type="text" class="form-control"/></td>
-					</tr>
-					<tr>
-						<td>Frequency</td>
-						<td>
-							<select class="form-control">
-								<option>3 Pill's daily</option>
-								<option>2 Pill's daily</option>
-								<option>1 Pill daily</option>
-								<option>1 Pill weekly</option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td>Prescribing Physician</td>
-						<td>
-							<select class="form-control">
-								<option>Dr. A</option>
-								<option>Dr. B</option>
-								<option>Dr. C</option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td>Special Intrsuctions</td>
-						<td><textarea class="otherDetails" style=" height: 60px;min-width: 385px;max-width: 385px;width: 385px;"></textarea></td>
-					</tr>
-				</table>
-      		</div>
-      		<div class="modal-footer">
-        		<button type="button" class="btn btn-default" data-dismiss="modal">Save</button>
-      		</div>
-		</div>
-	</div>
-</div>
-
-<div class="modal fade" id="addEditAppointment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="addEditAppointment" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				<h4 class="modal-title" id="myModalLabel">ADD NEW APPOINTMENT</h4>
 			</div>
-			<div class="modal-body">
-				<p class="editNote"><span class="btn btn-default-small">CURRENT DATA:</span> <span style="font-size: 20px;">Thursday May 10th 2014 9AM - LUPECTOMY |</span> IF THIS IS NOT CORRECT, COMPLETE THE FORM BELOW</p>
+			#{form @CarePatien.appointmentOperation() , id:'appointmentForm' }
+			<input type="hidden" name="operation" />
+      		<input type="hidden" name="patientId" value="${patientId}"/>
+      		<input type="hidden" name="id" />
+			<div class="modal-body" style="overflow:hidden;">
+				<p class="editNote"><span class="btn btn-default-small">CURRENT DATA:</span> <span class="editNoteDet" style="font-weight: bold;">Thursday May 10th 2014 9AM - LUPECTOMY</span> | IF THIS IS NOT CORRECT, COMPLETE THE FORM BELOW</p>
 				<table style="width: 100%">
 					<tr><td colspan="2">APPOINTMENT INFORMATION</td></tr>
 					<tr>
 						<td nowrap="nowrap">Purpose of Appointment</td>
-						<td><select class="form-control">
-								<option>Invasive Ductal Carcinoma</option>
-							</select></td>
+						<td><select id="appointmentFormPurpose" name="purpose">
+								<option value="1st Appointment With Radiation Oncologist">1st Appointment With Radiation Oncologist</option>
+								<option value="1st Appointment With Surgeon">1st Appointment With Surgeon</option>
+								<option value="1st Appointment With Oncologist">1st Appointment With Oncologist</option>
+								<option value="Make Treatment Decision">Make Treatment Decision</option>
+								<option value="1st Radiation Treatment">1st Radiation Treatment</option>
+								<option value="Surgery">Surgery</option>
+								<option value="Surgery Follow-up Appointment">Surgery Follow-up Appointment</option>
+								<option value="1st Oncology Treatment With New Medication">1st Oncology Treatment With New Medication</option>
+								<option value="Ongoing Radiation Treatment">Ongoing Radiation Treatment</option>
+								<option value="Treatment Progress Check-in">Treatment Progress Check-in</option>
+								<option value="Ongoing Treatment Follow-up">Ongoing Treatment Follow-up</option> 
+							</select>
+						</td>
 					</tr>
 					<tr>
 						<td>Time</td>
-						<td><select class="form-control">
-								<option>9 AM</option><option>10 AM</option><option>11 AM</option><option>12 Noon</option><option>1 PM</option><option>2 PM</option>
-								<option>3 PM</option><option>4 PM</option><option>5 PM</option><option>6 PM</option>
-							</select></td>
+						<td><input type="text" class="form-control timeField" name="time" /></td>
 					</tr>
 					<tr>
 						<td>Date</td>
-						<td><input type="text" class="form-control"/></td>
+						<td><input type="text" class="form-control" id="hasDatepicker" name="schDate"/></td>
 					</tr>
 					<tr>
 						<td>Center</td>
-						<td><input type="text" class="form-control"/></td>
+						<td><input type="text" class="form-control" value="Moffitt Cancer Center TVRH" name="center"/></td>
 					</tr>
 					<tr>
 						<td>Physician/Nurse</td>
-						<td><select class="form-control">
-								<option>Dr. A</option>
-								<option>Dr. B</option>
-								<option>Dr. C</option>
-							</select></td>
+						<td>#{if noteList != null}
+								<select class="memberselect" name="memberid">
+								#{list drList, as:'seq'}
+									<option value="${seq.id}"> ${seq.name.usreNameNew(seq.id)} </option>
+								#{/list}
+								</select>
+							#{/if}
+							#{else}
+								No expert assigned
+							#{/else}
+						</td>
 					</tr>
 					<tr>
 						<td>Address1</td>
-						<td><input type="text" class="form-control"/></td>
+						<td><input type="text" class="form-control" value="1400 US Highway 441, Suite 540" name="address1"/></td>
 					</tr>
 					<tr>
-						<td>Address2</td>
-						<td><input type="text" class="form-control"/></td>
-					</tr>					
-					<tr>
 						<td>City</td>
-						<td><input type="text" class="form-control"/></td>
+						<td><input type="text" class="form-control" value="The Villages" name="city"/></td>
 					</tr>							
 					<tr>
 						<td>State</td>
-						<td><select class="form-control">
-								<option>New York</option>
-							</select></td>
+						<td><input type="text" class="form-control" value="FL" name="state"/></td>
+					</tr>
+					<tr>
+						<td>Zip Code</td>
+						<td><input type="text" class="form-control" value="32159" name="zip"/></td>
 					</tr>
 				</table>
       		</div>
       		<div class="modal-footer">
-        		<button type="button" class="btn btn-default" data-dismiss="modal">SAVE</button>
+      		
+      			<input name="deleteAP" type="button" class="btn btn-default" value = "DELETE"></input>
+        	
+        		<button type="submit" class="btn btn-default">SAVE</button>
       		</div>
+      		#{/form}
 		</div>
 	</div>
 </div>
@@ -422,6 +408,69 @@ background: linear-gradient(180deg, #ff4488 50%, #ff0000 50%);
 	</div>
 </div>
 
+<div class="modal fade" id="addEditmedication" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title" id="myModalLabel">ADD NEW MEDICATION</h4>
+			</div>
+			#{form @CarePatien.medicationOperation() , id:'medicationForm' }
+			<div class="modal-body">
+				<input type="hidden" name="operation" />
+      			<input type="hidden" name="id" />
+   				<input type="hidden" name="patientId" value="${patientId}"/>
+   				<input type="hidden" name="catlogId" />
+				<table>
+					<tr><td colspan="2">NEW MEDICATION INFORMATION</td></tr>
+					<tr>
+						<td>Generic Name</td>
+						<td><input type="text" class="form-control" name="genericname"/></td>
+					</tr>
+					<tr>
+						<td>Brand Name</td>
+						<td><input type="text" class="form-control" name="brandname"/></td>
+					</tr>
+					<tr>
+						<td>Frequency</td>
+						<td><input type="text" class="form-control" name="frequency"/></td>
+					</tr>
+					<tr>
+						<td>Prescribing Physician</td>
+						<td>
+							#{if drList != null}
+								<select class="memberselect" name="memberid">
+								#{list drList, as:'seq'}
+									<option value="${seq.id}"> ${seq.name.usreNameNew(seq.id)} </option>
+								#{/list}
+								</select>
+							#{/if}
+							#{else}
+								No expert assigned
+							#{/else}
+						</td>
+					</tr>
+					<tr>
+						<td>Dates</td>
+						<td><input type="text" class="form-control" id="medstartDate" name="startDate" style="width:115px;float:left;"/>
+						<span style="margin-top: 10px;float:left;">&nbsp;-&nbsp;</span>
+						<input type="text" class="form-control" id="medendDate" name="endDate" style="width:115px;float:left;"/></td>
+					</tr>
+					<tr>
+						<td>Special Intrsuctions</td>
+						<td><textarea class="otherDetails" style="height: 60px;min-width: 385px;max-width: 385px;width: 385px;" name="otherdetails"></textarea></td>
+					</tr>
+				</table>
+	      		</div>
+				<div class="modal-footer">
+					<input name="deleteMD" type="button" class="btn btn-default" value="DELETE"></input>
+	        		<button type="submit" class="btn btn-default">SAVE</button>
+	      		</div>
+      		#{/form}
+		</div>
+	</div>
+</div>
+
 <div class="modal fade" id="addEditNote" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-m">
    <div class="modal-content col-xs-12 col-sm-12">
@@ -466,8 +515,7 @@ background: linear-gradient(180deg, #ff4488 50%, #ff0000 50%);
 </div>
 
 
-
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" id="addRadiationTreatment">
+<div class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" id="addRadiationTreatment">
 	<div class="modal-dialog modal-lg">
 	 <div class="modal-content col-xs-12 col-sm-12 panel-info">
 			  			<div class="modal-header">
@@ -540,7 +588,7 @@ background: linear-gradient(180deg, #ff4488 50%, #ff0000 50%);
 </div>
  
    
-<div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" id="addChemoTreatment">
+<div class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" id="addChemoTreatment">
 	<div class="modal-dialog modal-lg">
 	 <div class="modal-content col-xs-12 col-sm-12 panel-info">
 			  			<div class="modal-header">
@@ -739,14 +787,63 @@ background: linear-gradient(180deg, #ff4488 50%, #ff0000 50%);
 
 
 <script><!--
+var timeArray = ["8 AM","8.15 AM","8.30 AM","8.45 AM","9 AM","9.15 AM","9.30 AM","9.45 AM","10 AM","10.15 AM","10.30 AM","10.45 AM","11 AM","11.15 AM","11.30 AM","11.45 AM","12 noon","12.15 PM","12.30 PM",
+				"12.45 PM","1 PM","1.15 PM","1.30 PM","1.45 PM","2 PM","2.15 PM","2.30 PM","2.45 PM","3 PM","3.15 PM","3.30 PM","3.45 PM","4 PM","5.15 PM","5.30 PM","5.45 PM","6 PM"];
 $(document).ready(function() {
-	$("#tabs").tabs({
-	      beforeLoad: function( event, ui ) {
-	        ui.jqXHR.error(function() {
-	          ui.panel.html("Couldn't load this tab. We'll try to fix this as soon as possible." );
-	        });
-	      }
+	
+	$('#tabs a').click(function (e) {
+		e.preventDefault();
+		var url = $(this).attr("data-url");
+	  	var href = this.hash;
+	  	var pane = $(this);
+		if(href=="#summery") {
+			pane.tab('show');
+		} else {
+			// ajax load from data-url
+			$(href).load(url,function(result){      
+			    pane.tab('show');
+			});
+		}
 	});
+	
+	// load first tab content
+// 	$('#tabs').load($('.active a').attr("data-url"),function(result){
+// 	  $('.active a').tab('show');
+// 	});
+
+	
+// 	$("#tabs").tabs({
+// 	      beforeLoad: function( event, ui ) {
+// 	        ui.jqXHR.error(function() {
+// 	          ui.panel.html("Couldn't load this tab. We'll try to fix this as soon as possible." );
+// 	        });
+// 	      }
+// 	});
+	
+	$("#addEditmedication input[name='genericname']").autocomplete({source:  "/carePatien/autoCompleteMedic", minLength: 1,select: function( event, ui ) {
+// 		if($("#addEditmedication input[name='operation']").val() == 'add') {
+	      	$("#addEditmedication input[name='brandname']").val(ui.item.brandname);
+    	  	$("#addEditmedication input[name='frequency']").val(ui.item.frequency);
+			$("#addEditmedication textarea[name='otherdetails']").val(ui.item.specialinstruction);
+			$("#addEditmedication input[name='catlogId']").val(ui.item.id);
+// 			}
+    	}
+	});
+	
+	$("input.timeField").autocomplete({source: timeArray,minLenght:1 });
+	$('#hasDatepicker').datepicker({defaultDate: +1 ,minDate:"+1d"});
+
+	$('#medstartDate').datepicker({ defaultDate: +1 ,minDate:"+1d",
+		onSelect: function(selected) {
+			$("#medendDate").datepicker("option","minDate", selected)
+		}
+	});
+	$('#medendDate').datepicker({ defaultDate: +1 ,minDate:"+1d",
+		onSelect: function(selected) {
+			$("#medstartDate").datepicker("option","maxDate", selected)
+		}
+	});
+
 	$('body').on('click', 'button.medicationBtn', function() {
 		operationMedication('add');
 	});
@@ -762,22 +859,114 @@ $(document).ready(function() {
 		operationCareTeam('add');
 	});
 	
-	/* $('body').on('click', 'button.careTeamMemberBtn', function(event) {
-		 event.stopPropagation(); // this is
-		    event.preventDefault(); // the magic
-		operationCareTeamMember('add');
-	}); */
+	$('body').on('click', 'img.medicineImg', function() {
+    	$("#image_file_input").trigger( "click" );
+    	currImage = this;
+    	esnTemp = $(this).data("id");
+    	$("#uploadId").val(esnTemp);
+	});
+	$('body').on('click', 'a.removeInstruction', function() {
+    	var idTemp = $(this).data("id");
+    	var formURL = "/carePatien/medicationOperation";
+		var postData = {operation:"removeMethod",'id':idTemp};
+		$.post(formURL, postData, function( data ) {
+			var current_index = $("#tabs").tabs('option', 'active');
+			$("#tabs").tabs('load',current_index);
+		});
+	});
+	
+	$('body').on('click', 'a.addInstruction', function() {
+    	var idTemp = $(this).data("id");
+    	var formURL = "/carePatien/medicationOperation";
+		var postData = {operation:"addMethod",'id':idTemp};
+		$.post(formURL, postData, function( data ) {
+			var current_index = $("#tabs").tabs('option', 'active');
+			$("#tabs").tabs('load',current_index);
+		});
+	});
+	
+
+	$('#medicationForm').submit(function(event) {
+		var postData = $("#medicationForm").serializeArray();
+		var formURL = $("#medicationForm").attr("action");
+		$.post(formURL, postData, function( data ) {
+			$('#addEditmedication').modal('hide');
+			var current_index = $("#tabs").tabs('option', 'active');
+			$("#tabs").tabs('load',current_index);
+		});
+ 		event.preventDefault();
+	});
+	
+	
+	$('#appointmentForm').submit(function(event) {
+		var postData = $("#appointmentForm").serializeArray();
+		var formURL = $("#appointmentForm").attr("action");
+		$.post(formURL, postData, function( data ) {
+			$('#addEditAppointment').modal('hide');
+			var current_index = $("#tabs").tabs('option', 'active');
+			$("#tabs").tabs('load',current_index);
+		});
+ 		event.preventDefault();
+	});
+	
 	
 	// Load Sparkline plugin and run callback for draw Sparkline charts for dashboard(top of dashboard + plot in tables)
 	LoadSparkLineScript(DrawSparklineDashboardNew);
+	
+	LoadSelect2Script(selectExpert);
+	
 });
-operationMedication = function(operation) {
+selectExpert = function() {
+	$('.memberselect').select2();
+	$("#appointmentFormPurpose").select2();
+}
+operationMedication = function(operation,id) {
 	if(operation == 'edit') {
-		$('#addEditmedication').modal();
+		var formURL = "/carePatien/patientMedication";
+		var postData = {'id':id};
+		$.post(formURL, postData, function( data ) {
+			if(data != '.') {
+				$("#myModalLabel").html("EDIT MEDICATION");
+				$("#addEditmedication input[name='operation']").val("edit");
+				$("#addEditmedication input[name='id']").val(data.id);
+				$("#addEditmedication input[name='genericname']").val(data.medicine.genericname);
+				$("#addEditmedication input[name='brandname']").val(data.medicine.brandname);
+				$("#addEditmedication input[name='frequency']").val(data.frequency);
+				$("#addEditmedication input[name='deleteMD']").show();
+				$("#addEditmedication input[name='deleteMD']").click(function() {
+					operationMedication('delete',data.id);
+				});
+				
+				$("#addEditmedication textarea[name='otherdetails']").val(data.specialinstruction);
+				$("#addEditmedication select[name='memberid']").val(data.caremember.id);
+				
+				
+				$('#addEditmedication').appendTo("body").modal();
+			} else {
+				alert('Internal server error');
+			}
+		});
 	} else if(operation == 'delete') {
-		
+		$("#addEditmedication input[name='operation']").val("delete");
+		$("#addEditmedication input[name='id']").val(id);
+		var postData = $("#medicationForm").serializeArray();
+		var formURL = $("#medicationForm").attr("action");
+		$.post(formURL, postData, function( data ) {
+			$('#addEditmedication').modal('hide');
+			var current_index = $("#tabs").tabs('option', 'active');
+			$("#tabs").tabs('load',current_index);
+		});
 	} else {
-		$('#addEditmedication').modal();
+		$("#myModalLabel").html("ADD NEW MEDICATION");
+		$("#addEditmedication input[name='operation']").val("add");
+		$("#addEditmedication input[name='id']").val("0");
+		$("#addEditmedication input[name='genericname']").val("");
+		$("#addEditmedication input[name='brandname']").val("");
+		$("#addEditmedication input[name='frequency']").val("");
+		$("#addEditmedication textarea[name='otherdetails']").val("");
+		$("#addEditmedication input[name='catlogId']").val("0");
+		$("#addEditmedication input[name='deleteMD']").hide();
+		$('#addEditmedication').appendTo("body").modal();
 	}
 }
 operationNote = function(operation,id,title,desc) {
@@ -787,7 +976,7 @@ operationNote = function(operation,id,title,desc) {
 		$("#noteForm input[name='id']").val(id);
 		$("#noteForm input[name='title']").val(title);
 		$("#noteForm textarea[name='description']").val(desc);
-		$('#addEditNote').modal();
+		$('#addEditNote').appendTo("body").modal();
 	} else if(operation == 'delete') {
 		if(confirm('Do you want to delete the note')) {
 			$("#noteForm input[name='operation']").val("delete");
@@ -800,39 +989,83 @@ operationNote = function(operation,id,title,desc) {
 		$("#noteForm input[name='id']").val("0");
 		$("#noteForm input[name='title']").val("");
 		$("#noteForm textarea[name='description']").val("");
-		$('#addEditNote').modal();
+		$('#addEditNote').appendTo("body").modal();
 	}
 }
 operationAppointment = function(operation, id) {
 	if(operation == 'edit') {
-		$('#addEditAppointment .editNote').show();
-		$('#addEditAppointment').modal();
+		var formURL = "/carePatien/patientAppointment";
+		var postData = {'id':id};
+		$.post(formURL, postData, function( data ) {
+			if(data != '.') {
+				$("#myModalLabel").html("EDIT APPOINTMENT");
+				$("#appointmentForm input[name='operation']").val("edit");
+				$("#appointmentForm input[name='id']").val(data.id);
+				$("#appointmentFormPurpose").select2("val", data.purpose);
+				$("#appointmentForm input[name='time']").val(data.appointmenttime);
+				$("#appointmentForm input[name='schDate']").val($.datepicker.formatDate('mm/dd/yy', new Date(data.appointmentdate)));
+				$("#appointmentForm input[name='center']").val(data.appointmentcenter);
+				$("#appointmentForm select[name='memberid']").val(data.caremember.id);
+				$("#appointmentForm select[name='memberid']").select2();
+				$("#appointmentForm input[name='address1']").val(data.addressid.line1);
+				$("#appointmentForm input[name='city']").val(data.addressid.city);
+				$("#appointmentForm input[name='state']").val(data.addressid.state);
+				$("#appointmentForm input[name='zip']").val(data.addressid.zip);
+				$("#appointmentForm input[name='deleteAP']").show();
+				$("#appointmentForm input[name='deleteAP']").click(function() {
+					operationAppointment('delete',data.id);
+				});
+ 				$('#addEditAppointment .editNote span.editNoteDet').html($.datepicker.formatDate('DD M dd yy', new Date(data.appointmentdate)) + " " + data.appointmenttime + " - " + data.purpose);
+				$('#addEditAppointment .editNote').show();
+				$('#addEditAppointment').appendTo("body").modal();
+			} else {
+				alert('Internal server error');
+			}
+		});
 	} else if(operation == 'delete') {
 		if(confirm('Do you want to delete the note')) {
-			alert('deleting the appointment');			
+			$("#appointmentForm input[name='operation']").val("delete");
+			$("#appointmentForm input[name='id']").val(id);
+			$("#appointmentForm").submit();
 		}
 	} else {
+		$("#myModalLabel").html("ADD APPOINTMENT");
+		$("#appointmentForm input[name='operation']").val("add");
+		$("#appointmentForm input[name='id']").val("0");
+
+		$("#appointmentFormPurpose").select2("val", "1st Appointment With Radiation Oncologist");
+		$("#appointmentForm input[name='time']").val("");
+		$("#appointmentForm input[name='schDate']").val("");
+		$("#appointmentForm input[name='center']").val("Moffitt Cancer Center TVRH");
+		$("#appointmentForm select[name='memberid']").val("");
+		$("#appointmentForm select[name='memberid']").select2();
+		$("#appointmentForm input[name='address1']").val("1400 U.S. Highway 441");
+		$("#appointmentForm input[name='city']").val("The Villages");
+		$("#appointmentForm input[name='state']").val("FL");
+		$("#appointmentForm input[name='zip']").val("32159");
 		$('#addEditAppointment .editNote').hide();
-		$('#addEditAppointment').modal();
+		
+		$("#appointmentForm input[name='deleteAP']").hide();
+		$('#addEditAppointment').appendTo("body").modal();
 	}
 }
 operationCareTeam = function(operation, id) {
-	$('#addEditCareTeam').modal();
+	$('#addEditCareTeam').appendTo("body").modal();
 }
 
 operationCareTeamMember = function(operation, id) {
-// 	$('#addEditCareTeam').modal();
-	$('#addEditCareMemberTeam').modal();
+// 	$('#addEditCareTeam').appendTo("body").modal();
+	$('#addEditCareMemberTeam').appendTo("body").modal();
 }
 operationRadiationTreatment = function(operation, id) {
-	$('#addRadiationTreatment').modal();
+	$('#addRadiationTreatment').appendTo("body").modal();
 }
 operationChemoTreatment = function(operation, id) {
-	$('#addChemoTreatment').modal();
+	$('#addChemoTreatment').appendTo("body").modal();
 }
 
 operationCancer = function(operation, id) {
-	$('#addEditCaner').modal();
+	$('#addEditCaner').appendTo("body").modal();
 }
 
 
@@ -856,5 +1089,29 @@ function DrawSparklineDashboardNew(){
 			{defaultPixelsPerValue: 13, minSpotColor: null, maxSpotColor: null, spotColor: null,
 			height: 35,fillColor: false, lineWidth: 2, lineColor: '#FFF'});
 		});
+}
+function uploadDone(name) {
+	var frame = getFrameByName(name);
+	if (frame) {
+	    ret = frame.document.getElementsByTagName("body")[0].innerHTML;
+	    ret = $.trim(ret);
+	    if(ret == 'WF') {
+			$(currImage).attr('src', "/public/plugins/tinymce/skins/lightgray/img/loader.gif");
+			$("#error").dialog("option","title","Error");
+			$("#error .valuelable").html("<div style='width':200px;'>Please upload correct image file.</div>");
+			$("#error").dialog('open');
+		} else if(ret != ''){
+    		$(currImage).attr('src', "/image/showMedicine/"+esnTemp+"?t="+new Date().getTime());
+    		
+		}  
+	}
+}
+var currImage;
+var esnTemp;
+function getFrameByName(name) {
+	for (var i = 0; i < frames.length; i++)
+	    if (frames[i].name == name)
+	      return frames[i];
+	  return null;
 }
 --></script>

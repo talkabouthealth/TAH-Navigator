@@ -1,158 +1,169 @@
 #{set pageType = 'appointment' /}
 #{extends 'patientmain.html' /}
+<style>
+.expend-list li {float:left;width:100%;}
+div.green-title{cursor: pointer;}
+</style>
 	<!--Start Content-->
 <div id="content" class="col-xs-12 col-sm-10">
-	  <!-- 
-	  <div class="grey-box">
-
-            	<div class="row">
-            		<div class="col-sm-12">
-            			<span style="background-color: #FFFFFF;border: 5px solid #FFFFFF;border-radius: 5px;color: #01AF58;font-size: 10px;font-weight: bold;margin-left: -15px;">PATIENT</span>
-            			<span class="text-muted" style="margin-left: 5px;font-size:10px;">LAST UPDATED ${userDto.editdate.format("M/d/yyyy")}</span>
-            		</div>
-                	<div class="col-sm-6">
-                    	<div class="row">
-                        	<div class="col-sm-6">
-                    			<h3>${userDto.firstName} ${userDto.lastName}</h3>
-                                <p><strong>DOB:</strong> #{if userDto.dob != null}${userDto.dob.format("M/d/yyyy")}#{/if}</p>
-                                <p><strong>Phone: </strong> ${userDto.homePhone}</p>
-                    		</div>
-                    		<div class="col-sm-6 border_01">
-                    			<h3>&nbsp;</h3>
-                                <p><strong>Phone(2):</strong> ${userDto.mobile}</p>
-                                <p><strong>Email: </strong> ${userDto.email}</p>
-                   			 </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                    	<div class="row">
-                        	<div class="col-sm-6">
-		                    	<p><strong>Support Contact:</strong>support@email.com</p>
-		                        <p><strong>Contact Phone:</strong>: 352.751.8000</p>
-		                        <p><strong>Contact Email:</strong> test@gmail.com</p>
-                    		</div>
-                    		<div class="col-sm-6 border_02">
-                    	   	#{if patientOtherDetails != null}
-                    			#{if patientOtherDetails.disease != null}
-                    	   			<p><strong>Diagnosis:</strong> ${patientOtherDetails.disease.name}</p>
-                    	   		#{/if}
-                    	   		#{if patientOtherDetails.dateofdiagnosis != null}
-                        		<p><strong>Date of Diagnosis:</strong> ${patientOtherDetails.dateofdiagnosis.format('dd.MM.yyyy')}</p>
-                        		#{/if}
-								<p><strong>Stage:</strong> ${patientOtherDetails.stage}</p>
-							#{/if}
-							#{else}
-                    	   		<p><strong>Diagnosis:</strong> -</p>
-                        		<p><strong>Date of Diagnosis:</strong> -</p>
-								<p><strong>Stage:</strong> -</p>
-							#{/else}
-                   			</div>
-                        </div>
-                    </div>
-                </div>
-               
-            </div>
-              -->
             <div class="col-xs-12 col-sm-12">
-
-
-
-
-        
-           <div class="row">
+            <br/><br/>
+           #{if list != null && list.size()>0}
+            <ul class="expend-list">
+				#{list list, as:'seq'}
+				<li>
+				<div class="green-title">
+					<div class="col-xs-11 col-sm-11 nopadding" style="display:block;">
+						<div class="col-sm-6 checkDiv" style="padding-top: 10px;border-right: 1px solid #CCC">
+						<p>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}<br/> <!-- THURSDAY MAY 10TH 2014 -->
+						${seq.appointmenttime} <a href="javaScript:void(0);">${seq.purpose}</a></p>
+						</div>
+						<div class="col-sm-6" style="padding-top: 10px;">
+						<p>#{userName userName: seq.caremember.name, userId:seq.caremember.id /}<br/> ${seq.appointmentcenter}</p>
+						</div>
+					</div>
+					<div class="col-xs-1 col-sm-1 nopadding">
+						<div style="width: 67px;">
+						<span class="toggleText">Expand</span> <span style="float:right;" class="ui-accordion-header-icon ui-icon ui-accordion-header-icon1 ui-icon-triangle-1-e"></span>
+						</div>
+					</div>
+					</div>
+					<div class="show-div-list" style="display: none;">
+					  <div class="row">
               <div class="col-sm-6">
-                <p class="green-title"><i class="fa fa-clock-o"></i> MY NEXT APPOINTMENT </p>
+                
                 <div class="secont-l-p-f text-center">
-                  <p class="large-f"><span>My Next Appointment is Scheduled for:</span></p>
-                  <h1 class="g-mmm">Monday May 5th 2014</h1>
-                  <p class="large-f"><span>9:15 AM </span>| simply dummy text of the <br>
-                    simply dummy text of the | 212.55.55</p>
-                  <p>
-                  <a href="#" class="btn btn-default">EDIT APPOINTMENT</a>&nbsp;&nbsp;&nbsp;
-                  <a href="#" class="btn btn-default">CONFIRM APPOINTMENT</a>
-                  </p>
+                  <p class="large-f"><span>Appointment is Scheduled for:</span></p>
+                  <h1 class="g-mmm">${seq.appointmentdate.format('EEEE MMMM dd yyyy')}</h1>
+                  <p class="large-f"><span>${seq.appointmenttime} </span></p>
                 </div>
               </div>
               <div class="col-sm-6 line-right">
                 <p class="green-title"><i class="fa fa-map-marker"></i> APPOINTMENT LOCATION/SPECIFICS </p>
                 <div class="row">
-                  <div class="col-sm-4"> <img src="/public/images/map.png" height="100px" width="230px"> </div>
+                  <div class="col-sm-4"> 
+                  <img width="100%" src="http://maps.googleapis.com/maps/api/staticmap?center=${seq.addressid.line1}+${seq.addressid.line2},${seq.addressid.city},${seq.addressid.state},${seq.addressid.country} - ${seq.addressid.zip}&maptype=roadmap&zoom=12&size=200x100&scale=false&&markers=color:red%7Csize:small%7C${seq.addressid.lat},${seq.addressid.lang}"> 
+                  </div>
                   <div class="col-sm-8 map-div">
                     <div class="secont-l-p-f">
-                      <p class="large-f"><span>Lorem Ipsum is simply dummy </span>text of the printing and typesetting industry. Lorem &nbsp; |&nbsp;  Test@gmail.com</p>
-                      <p style="margin:5px 0 0 0"> <a href="#" class="btn btn-default">Get Directions</a> </p>
+                      <p class="large-f">
+                      ${seq.addressid.line1} ${seq.addressid.line2}</p>
+        				<p>${seq.addressid.city}, ${seq.addressid.state}, ${seq.addressid.zip}</p>
+                      
+                      <p style="margin:5px 0 0 0"> 
+                      	<a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${seq.addressid.line1}+${seq.addressid.line2},${seq.addressid.city},${seq.addressid.state},${seq.addressid.country} - ${seq.addressid.zip}" class="btn btn-default-small">GET DIRECTIONS</a> 
+                      </p>
                     </div>
                   </div>
                 </div>
-                <div class="media"> <a class="pull-left" href="#"> <img src="/public/images/user-p.png" width="74" height="70" class="img-circle"> </a>
+                <div class="media"> <a class="pull-left" href="#"> <img src="@{Image.show(seq.caremember.id)}" class=""> </a>
                   <div class="media-body main-l-p">
-                    <p>Lorem Ipsum</p>
+                    <p>MY APPOINTMENT IS WITH</p>
                     <div class="secont-l-p-f">
-                      <p class="large-f"><span>Lorem Ipsum is simply dummy </span>text of the printing and typesetting industry. Lorem &nbsp; |&nbsp;  Test@gmail.com</p>
+                      <p class="large-f"><span>#{userName userName: seq.caremember.name, userId:seq.caremember.id /} </span></p>
+						<p> ${seq.expertMobile} 
+						 &nbsp; |&nbsp; ${seq.caremember.email}</p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
             <div class="line-h"></div>
-            <h3 class="title-2">Lorem Ipsum is simply: <span>dummy text of the / printing and type</span></h3>
-             <div class="line-h"></div>
-            
-             <div class="box-border-tb">
-              <!--   
-              <div class="btn-3">
-                <div class="btn-group" style="margin: 0 25px;">
-                  <button type="button" class="btn btn-default" style="font-weight: bolder;">ASK A QUESTION
-                  <i class="fa fa-chevron-right" style="padding-left: 10px;border-left:1px solid skyblue;line-height: 25px;margin-left: 10px"></i>
-                  </button>
-                  
-                </div>
-                <div class="btn-group" style="margin: 0 25px;">
-                  <button type="button" class="btn btn-default" style="font-weight: bolder;">WHAT TO EXPECT
-                  <i class="fa fa-chevron-right" style="padding-left: 10px;border-left:1px solid skyblue;line-height: 25px;margin-left: 10px"></i>
-                  </button>
-                  
-                </div>
-                <div class="btn-group" style="margin: 0 25px;">
-                  <button type="button" class="btn btn-default" style="font-weight: bolder;">APPT. CHECKLIST
-                  <i class="fa fa-chevron-right" style="padding-left: 10px;border-left:1px solid skyblue;line-height: 25px;margin-left: 10px"></i>
-                  </button>
-                  
+            <h3 class="title-2">Purpose of appointment: <span>${seq.purpose}</span></h3>
+					</div>
+					</li>
+				#{/list}
+				 </ul>
+			#{/if}
+			#{else}
+				<div class="col-xs-12 col-sm-12 nopadding">No new appointment.</div>
+			#{/else}
+			<br/><br/>
+			<h2 style="float:left;padding-top:30px;">Past Appointment</h2>
+			#{if listOld != null && listOld.size()>0}
+            <ul class="expend-list">
+				#{list listOld, as:'seq'}
+				<li>
+				<div class="green-title">
+					<div class="col-xs-11 col-sm-11 nopadding">
+						<div class="col-sm-6 checkDiv" style="padding-top: 10px;border-right: 1px solid #CCC">
+						<p>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}<br/> <!-- THURSDAY MAY 10TH 2014 -->
+						${seq.appointmenttime} <a href="javaScript:void(0);">${seq.purpose}</a></p>
+						</div>
+						<div class="col-sm-6" style="padding-top: 10px;">
+						<p>#{userName userName: seq.caremember.name, userId:seq.caremember.id /}<br/> ${seq.appointmentcenter}</p>
+						</div>
+					</div>
+					<div class="col-xs-1 col-sm-1 nopadding">
+						<div style="width: 67px;">
+						<span class="toggleText">Expand</span> <span style="float:right;" class="ui-accordion-header-icon ui-icon ui-accordion-header-icon1 ui-icon-triangle-1-e"></span>
+						</div>
+					</div>
+					</div>
+					<div class="show-div-list" style="display: none;">
+					  <div class="row">
+              <div class="col-sm-6">
+                
+                <div class="secont-l-p-f text-center">
+                  <p class="large-f"><span>Appointment is Scheduled for:</span></p>
+                  <h1 class="g-mmm">${seq.appointmentdate.format('EEEE MMMM dd yyyy')}</h1>
+                  <p class="large-f"><span>${seq.appointmenttime} </span></p>
                 </div>
               </div>
-                -->
+              <div class="col-sm-6 line-right">
+                <p class="green-title"><i class="fa fa-map-marker"></i> APPOINTMENT LOCATION/SPECIFICS </p>
+                <div class="row">
+                  <div class="col-sm-4"> 
+                  <img width="100%" src="http://maps.googleapis.com/maps/api/staticmap?center=${seq.addressid.line1}+${seq.addressid.line2},${seq.addressid.city},${seq.addressid.state},${seq.addressid.country} - ${seq.addressid.zip}&maptype=roadmap&zoom=12&size=200x100&scale=false&&markers=color:red%7Csize:small%7C${seq.addressid.lat},${seq.addressid.lang}"> 
+                  </div>
+                  <div class="col-sm-8 map-div">
+                    <div class="secont-l-p-f">
+                      <p class="large-f">
+                      ${seq.addressid.line1} ${seq.addressid.line2}</p>
+        				<p>${seq.addressid.city}, ${seq.addressid.state}, ${seq.addressid.zip}</p>
+                      
+                      <p style="margin:5px 0 0 0"> 
+                      	<a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${seq.addressid.line1}+${seq.addressid.line2},${seq.addressid.city},${seq.addressid.state},${seq.addressid.country} - ${seq.addressid.zip}" class="btn btn-default-small">GET DIRECTIONS</a> 
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="media"> <a class="pull-left" href="#"> <img src="@{Image.show(seq.caremember.id)}" class=""> </a>
+                  <div class="media-body main-l-p">
+                    <p>MY APPOINTMENT IS WITH</p>
+                    <div class="secont-l-p-f">
+                      <p class="large-f"><span>#{userName userName: seq.caremember.name, userId:seq.caremember.id /} </span></p>
+						<p> ${seq.expertMobile} 
+						 &nbsp; |&nbsp; ${seq.caremember.email}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-         
-            <ul class="expend-list">
-              <li>
-                <div class="green-title"> <span class="toggle-info border-r"> Lorem Ipsum is <strong>Lorem Ipsum is</strong> </span> <span class="toggle-info "> <strong> Lorem Ipsum is</strong> <strong>Lorem Ipsum is</strong> </span> <span class="expend-div">DETAILS</span> <span class="collapse-div">collapse</span>
-                  <div class="clearfix"></div>
-                </div>
-                <div class="show-div-list" style="display: none;"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem </div>
-              </li>
-              <li>
-                <div class="green-title"> <span class="toggle-info border-r"> Lorem Ipsum is <strong>Lorem Ipsum is</strong> </span> <span class="toggle-info "> <strong> Lorem Ipsum is</strong> <strong>Lorem Ipsum is</strong> </span> <span class="expend-div">DETAILS</span> <span class="collapse-div">collapse</span>
-                  <div class="clearfix"></div>
-                </div>
-                <div class="show-div-list" style="display: none;"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem </div>
-              </li>
-              <li>
-                <div class="green-title"> <span class="toggle-info border-r"> Lorem Ipsum is <strong>Lorem Ipsum is</strong> </span> <span class="toggle-info "> <strong> Lorem Ipsum is</strong> <strong>Lorem Ipsum is</strong> </span> <span class="expend-div">DETAILS</span> <span class="collapse-div">collapse</span>
-                  <div class="clearfix"></div>
-                </div>
-                <div class="show-div-list" style="display:none"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem </div>
-              </li>
-            </ul>
-          
+            <div class="line-h"></div>
+            <h3 class="title-2">Purpose of appointment: <span>${seq.purpose}</span></h3>
+					</div>
+					</li>
+				#{/list}
+				 </ul>
+			#{/if}
+			#{else}
+				<div class="col-xs-12 col-sm-12 nopadding">No appointment.</div>
+			#{/else}
+			
 	</div>
 </div>
 <script type="text/javascript">
 <!--
 $(document).ready(function() {
 	$('.green-title').click(function() {	
+		$(this).find(".col-sm-6").toggle();
 		$(this).next('div.show-div-list').slideToggle();
-		$(this).toggleClass('ex-coll');
+		$(this).find(".ui-icon-triangle-1-e").toggleClass('ui-icon-triangle-1-s');
+		var txt = $(this).find(".checkDiv").is(':visible') ? 'Expand' : 'Collapse';
+		$(this).find(".toggleText").text(txt);
 	});
+	$('div.green-title:first').trigger( "click" );
 });
 -->
 </script>

@@ -148,7 +148,7 @@ top: -55px; right:5px;}
 }
 
 .nopadding {
-   padding: 0 !important;
+   padding: 10px 0 !important;
    margin: 0 !important;
 }
 .headding{float: left; width: 100%; border-bottom: 1px solid #FFF; padding-bottom: 2px; margin: 10px 0 5px 0;}

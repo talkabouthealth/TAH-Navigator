@@ -135,3 +135,48 @@ CREATE TABLE nav.notes
       REFERENCES nav."user" (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
 )
+
+-- Date 6 Aug 2014
+
+CREATE TABLE nav.medicinecatlog (
+  id serial NOT NULL,
+  genericname character varying(250),
+  brandname character varying(250),
+  method character varying(250),
+  frequency character varying(250),
+  specialinstruction text,
+  image bytea,
+  CONSTRAINT "catlog_ID" PRIMARY KEY (id)
+)
+
+-- Date 12 Aug 2014
+
+CREATE TABLE nav.appointment
+(
+  id serial NOT NULL,
+  purpose character varying(500),
+  appointmenttime character varying(20),
+  appointmentdate date,
+  appointmentcenter character varying(500),
+  caremember integer,
+  addedby integer,
+  addressid integer,
+  addedon timestamp with time zone,
+  patientid integer,
+  CONSTRAINT appointment_pk PRIMARY KEY (id),
+  CONSTRAINT "appointment_addedby_FK" FOREIGN KEY (addedby)
+      REFERENCES nav."user" (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT "appointment_address_FK" FOREIGN KEY (addressid)
+      REFERENCES nav.useraddress (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT "appointment_caremember_FK" FOREIGN KEY (caremember)
+      REFERENCES nav."user" (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT "appointment_patient_FK" FOREIGN KEY (patientid)
+      REFERENCES nav."user" (id) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION
+)
+
+-- Date 13 Aug 2014
+ALTER TABLE nav.appointment ADD COLUMN deleteflag boolean;

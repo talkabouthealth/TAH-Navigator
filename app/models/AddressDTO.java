@@ -2,7 +2,9 @@ package models;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Table(name = "nav.useraddress")
@@ -10,8 +12,10 @@ import javax.persistence.Table;
 public class AddressDTO {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy= GenerationType.SEQUENCE, generator="useraddress_id_seq")
+	@SequenceGenerator(allocationSize=1, schema="nav",  name="useraddress_id_seq", sequenceName = "nav.useraddress_id_seq")
 	@Column(name = "id")
+	
 	private int id;
 	
 	@Column(name = "line1")

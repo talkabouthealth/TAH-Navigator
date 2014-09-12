@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 import models.AddressDTO;
+import models.AppointmentDTO;
 import models.BreastCancerInfoDTO;
 import models.BreastCancerStageDTO;
 import models.CareTeamMemberDTO;
@@ -30,6 +31,7 @@ import models.UserEducationDTO;
 import models.UserExpertiesDTO;
 import models.UserTypeDTO;
 import nav.dao.AddressDAO;
+import nav.dao.AppointmentDAO;
 import nav.dao.BaseDAO;
 import nav.dao.CareTeamDAO;
 import nav.dao.DesignationMasterDAO;
@@ -90,6 +92,15 @@ public class Care extends Controller {
 				if(distress !=null) {
 					patient.setDistress(distress);
 				}
+				AppointmentDTO appointment=AppointmentDAO.getLastAppointment(patienCareTeamDTO.getPatien(),new Date());
+				if(appointment !=null) {
+					patient.setAppointmentInfo(appointment);
+				}
+				
+				NoteDTO noteFor = NotesDAO.getLastNoteFor(patienCareTeamDTO.getPatien());
+				if(noteFor!=null){
+					patient.setNote(noteFor);
+				}
 				patients.add(patient);
 			}
 		}
@@ -113,7 +124,11 @@ public class Care extends Controller {
 		DistressBean distress = DistressDAO.getLastDistress(patientDto.getUser());
 		
 		List<NoteDTO> noteList = NotesDAO.getPatientNotesList(patientId);
-        render(user,expertDetail,patientId,patientDto,patientOtherDetails,distress,noteList);
+		List<DiseaseMasterDTO> diseases = Disease.allDiseases();
+		List<BreastCancerStageDTO> stages = Disease.breastCancerStages();
+		int breastCancerId = Disease.BREAST_CANCER_ID; 
+		List<UserDTO> drList = UserDAO.getAll("5","");
+        render(user,expertDetail,patientId,patientDto,patientOtherDetails,distress,noteList, diseases, stages, breastCancerId,drList);
     }
 	
 	public static void setting() {

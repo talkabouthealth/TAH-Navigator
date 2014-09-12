@@ -23,7 +23,6 @@ public class TemplateExtensions extends JavaExtensions {
 	 * 
 	 */
 	public static String usreName(String userId,Integer id) {
-		System.out.println(userId + " : " + id);
 		String name="";
 		UserDetailsDTO details = UserDAO.getDetailsById(id);
 		if(StringUtils.isBlank(details.getFirstName()) && StringUtils.isBlank(details.getLastName())) {
@@ -45,7 +44,33 @@ public class TemplateExtensions extends JavaExtensions {
 //			}
 			name = details.getFirstName() ;
 		}
-		return name;
+		if(StringUtils.isNotBlank(name))
+			return name;
+		else
+			return userId;
+	}
+	
+	public static Object usreNameNew(String userId,Integer id) {
+		String name="";
+		UserDetailsDTO details = UserDAO.getDetailsById(id);
+		if(StringUtils.isBlank(details.getFirstName()) && StringUtils.isBlank(details.getLastName())) {
+			name = details.getUser().getName();
+		} else {
+			if(StringUtils.isBlank(details.getFirstName()) && !StringUtils.isBlank(details.getLastName()))
+				name = details.getLastName();
+			else if(!StringUtils.isBlank(details.getFirstName()) && StringUtils.isBlank(details.getLastName()))
+				name = details.getFirstName();
+			else {
+				name = details.getFirstName() + " " + details.getLastName();
+			}
+		}
+		if(details.getUser().getUserType() == 'c') {
+			name = details.getFirstName() ;
+		}
+		if(StringUtils.isBlank(name)) {
+			name = userId;
+		}
+		return JavaExtensions.raw(name);
 	}
 	
 	public static Object printMessage(String msg) {

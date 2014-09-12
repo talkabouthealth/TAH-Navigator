@@ -18,13 +18,11 @@
           <th>NAME</th>
           <th>DIAGNOSIS</th>
           <th>LAST VISIT</th>
-          <th>LAST VISIT PURPOSE</th>
+		  <th>LAST VISIT INFO</th>
           <th>LAST MD</th>
           <th>LAST DISTRESS LEVEL</th>
           <th>LAST DISTRESS CHECK-IN</th>
           <th>PROBLEM LIST</th>
-          <th>SYMPTOMS</th>
-          <th>LAST SYMPTOM CHECK-IN</th>
           <th>LAST NOTE</th>
         </tr>
       </thead>
@@ -64,41 +62,52 @@
 			       #{/elseif}
 			  #{/if}
 			 #{/if}
-
           #{/if}
-          #{else}-#{/else}
-        </div></td>
-        <td><div>08/10/2014</div></td>
-        <td><div>1st Appointment</div></td>
-        <td><div>Jorge Freire, MD</div></td>
-        <td><div>
-          #{if seq.distress != null}
-          ${seq.distress.curDist}
-          #{/if}
-          #{else}-#{/else}
-        </div></td>
-        <td><div>
-          #{if seq.distress != null}
-          <span class="timeAgo" title="${seq.distress.distressDate}">${seq.distress.distressDate.format('MM/dd/yyyy h:mma')}</span>
-          #{/if}
-          #{else}-#{/else}
-        </div></td>
-        <td><div>#{if seq.distress != null}
-          ${seq.distress.otherdetail.printMessage()}
-          #{/if}
-          #{else}-#{/else}</div></td>
-        <td><div>Pain, headache, diarrhea, itchy skin, vomiting, nausea, problems remembering</div></td>
-        <td><div>9/10/2014 9:00AM</div></td>
-        <td><div>This is a test note. Murray is testing the note feature to see if we can figure out a way to format it better.</div></td>
-      </tr>
-      #{/list}
-      #{/if}
-      #{else}
-      <tr>
-        <td colspan="11" align="center">No record found</td>
-      </tr>
-      #{/else}
-      </tbody>
-    </table>
-  </div>
-</div>
+		  #{else}-#{/else}
+		</div></td>
+		#{if seq.appointmentInfo != null}
+			<td><div>${seq.appointmentInfo.appointmentdate.format("dd/MM/yyyy")}</div></td>
+			<td><div>${seq.appointmentInfo.purpose}</div></td>
+			<td><div>#{userName userName: seq.appointmentInfo.caremember.name, userId:seq.appointmentInfo.caremember.id /}</div></td>
+		#{/if}
+		#{else}
+		<td><div>-</div></td>
+		<td><div>-</div></td>
+		<td><div>-</div></td>
+		#{/else}
+		<td><div>
+			#{if seq.distress != null}
+			${seq.distress.curDist}
+			#{/if}
+			#{else}-#{/else}
+		</div></td>
+		<td><div>
+									#{if seq.distress != null}
+									<span class="timeAgo" title="${seq.distress.distressDate}">${seq.distress.distressDate.format("dd/MM/yyyy")}</span>
+									#{/if}
+									#{else}-#{/else}
+								</div></td>
+								<td><div>#{if seq.distress != null}
+									${seq.distress.otherdetail.printMessage()}
+									#{/if}
+									#{else}N/A#{/else}</div></td>
+		<td><div>
+			#{if seq.note != null}
+				${seq.note.noteTitle}
+			#{/if}
+			#{else}None#{/else}
+		</div></td> <!-- Last Note -->
+	</tr>
+		  				#{/list}
+		  			#{/if}
+		  			#{else}
+		  				<tr>
+		  					<td colspan="11" align="center">No record found</td>
+		  				</tr>
+		  			#{/else}
+ 			</tbody>
+ 			<tbody>
+ 			</tbody>
+ 			</table>
+		  			</div>
+	</div>

@@ -1,0 +1,9 @@
+secure.title=
+secure.username=Username:
+secure.password=Password:
+secure.remember=Remember me
+secure.signin=Sign in
+secure.error=Oops, unknown username or password.
+secure.logout=You have been logged out.
+secure.verify=Please verify your email address to be able to log in to the Moffitt - TVRH Navigator.
+secure.verified=Thank you for verification. Please login using your login credentials.
