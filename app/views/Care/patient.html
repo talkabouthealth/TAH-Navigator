@@ -452,9 +452,18 @@ p {
 					</tr>
 					<tr>
 						<td>Dates</td>
-						<td><input type="text" class="form-control" id="medstartDate" name="startDate" style="width:115px;float:left;"/>
-						<span style="margin-top: 10px;float:left;">&nbsp;-&nbsp;</span>
-						<input type="text" class="form-control" id="medendDate" name="endDate" style="width:115px;float:left;"/></td>
+						<td>
+						<!-- 
+							<input type="text" class="form-control" id="medstartDate" name="startDate" style="width:115px;float:left;"/>
+							<span style="margin-top: 10px;float:left;">&nbsp;-&nbsp;</span>
+							<input type="text" class="form-control" id="medendDate" name="endDate" style="width:115px;float:left;"/>
+							 -->
+							<div class="input-daterange" id="datepickerRange" >
+			                    <input type="text" class="form-control" id="medstartDate" name="startDate" style="width: 115px;float:left"/>
+			                    <span class="add-on">to</span>
+			                    <input type="text" class="form-control" id="medendDate" name="endDate" style="width: 115px;float:left"/>
+			                </div>
+						</td>
 					</tr>
 					<tr>
 						<td>Special Intrsuctions</td>
@@ -833,16 +842,23 @@ $(document).ready(function() {
 	$("input.timeField").autocomplete({source: timeArray,minLenght:1 });
 	$('#hasDatepicker').datepicker({defaultDate: +1 ,minDate:"+1d"});
 
-	$('#medstartDate').datepicker({ defaultDate: +1 ,minDate:"+1d",
-		onSelect: function(selected) {
-			$("#medendDate").datepicker("option","minDate", selected)
-		}
-	});
-	$('#medendDate').datepicker({ defaultDate: +1 ,minDate:"+1d",
-		onSelect: function(selected) {
-			$("#medstartDate").datepicker("option","maxDate", selected)
-		}
-	});
+// 	$('#medstartDate').datepicker({ defaultDate: +1 ,minDate:"+1d",
+// 		onSelect: function(selected) {
+// 			$("#medendDate").datepicker("option","minDate", selected)
+// 		}
+// 	});
+// 	$('#medendDate').datepicker({ defaultDate: +1 ,minDate:"+1d",
+// 		onSelect: function(selected) {
+// 			$("#medstartDate").datepicker("option","maxDate", selected)
+// 		}
+// 	});
+	
+	$('#datepickerRange').datepicker({
+		defaultDate: +1 ,minDate:"+1d",
+//           todayBtn: "linked",
+          startDate: "today",
+//           forceParse: true
+    });
 
 	$('body').on('click', 'button.medicationBtn', function() {
 		operationMedication('add');
@@ -870,8 +886,9 @@ $(document).ready(function() {
     	var formURL = "/carePatien/medicationOperation";
 		var postData = {operation:"removeMethod",'id':idTemp};
 		$.post(formURL, postData, function( data ) {
-			var current_index = $("#tabs").tabs('option', 'active');
-			$("#tabs").tabs('load',current_index);
+// 			var current_index = $("#tabs").tabs('option', 'active');
+// 			$("#tabs").tabs('load',current_index);
+			$('#tabs li.active a').click();
 		});
 	});
 	
@@ -880,8 +897,9 @@ $(document).ready(function() {
     	var formURL = "/carePatien/medicationOperation";
 		var postData = {operation:"addMethod",'id':idTemp};
 		$.post(formURL, postData, function( data ) {
-			var current_index = $("#tabs").tabs('option', 'active');
-			$("#tabs").tabs('load',current_index);
+// 			var current_index = $("#tabs").tabs('option', 'active');
+// 			$("#tabs").tabs('load',current_index);
+			$('#tabs li.active a').click();
 		});
 	});
 	
@@ -891,8 +909,9 @@ $(document).ready(function() {
 		var formURL = $("#medicationForm").attr("action");
 		$.post(formURL, postData, function( data ) {
 			$('#addEditmedication').modal('hide');
-			var current_index = $("#tabs").tabs('option', 'active');
-			$("#tabs").tabs('load',current_index);
+// 			var current_index = $("#tabs").tabs('option', 'active');
+// 			$("#tabs").tabs('load',current_index);
+			$('#tabs li.active a').click();
 		});
  		event.preventDefault();
 	});
@@ -903,8 +922,9 @@ $(document).ready(function() {
 		var formURL = $("#appointmentForm").attr("action");
 		$.post(formURL, postData, function( data ) {
 			$('#addEditAppointment').modal('hide');
-			var current_index = $("#tabs").tabs('option', 'active');
-			$("#tabs").tabs('load',current_index);
+// 			var current_index = $("#tabs").tabs('option', 'active');
+// 			$("#tabs").tabs('load',current_index);
+			$('#tabs li.active a').click();
 		});
  		event.preventDefault();
 	});
@@ -953,8 +973,7 @@ operationMedication = function(operation,id) {
 		var formURL = $("#medicationForm").attr("action");
 		$.post(formURL, postData, function( data ) {
 			$('#addEditmedication').modal('hide');
-			var current_index = $("#tabs").tabs('option', 'active');
-			$("#tabs").tabs('load',current_index);
+			$('#tabs li.active a').click();
 		});
 	} else {
 		$("#myModalLabel").html("ADD NEW MEDICATION");
@@ -1023,7 +1042,7 @@ operationAppointment = function(operation, id) {
 			}
 		});
 	} else if(operation == 'delete') {
-		if(confirm('Do you want to delete the note')) {
+		if(confirm('Do you want to delete the scheduled appointment.')) {
 			$("#appointmentForm input[name='operation']").val("delete");
 			$("#appointmentForm input[name='id']").val(id);
 			$("#appointmentForm").submit();
