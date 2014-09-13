@@ -7,16 +7,16 @@
 	<div class="col-xs-12 col-sm-12">
 		<div>
 			<ul id="tabs" class="nav nav-tabs">
-				<li class="active"><a href="#summery">SUMMARY</a></li>
-				<li><a href="#appointment" data-url="@{CarePatien.appointment(patientId)}">APPOINTMENT</a></li>
-				<li><a href="#careteam" data-url="@{CarePatien.careteam(patientId)}">CARE TEAM</a></li>
-				<li><a href="#medication" data-url="@{CarePatien.medication(patientId)}">MEDICATIONS</a></li>
-				<li><a href="#treatmentplan" data-url="@{CarePatien.treatmentPlan(patientId)}">TREATMENT PLAN</a></li>
-				<li><a href="#followupplan" data-url="@{CarePatien.followupPlan(patientId)}">FOLLOW-UP CARE PLAN</a></li>
-				<li><a href="#diagnosis" data-url="@{CarePatien.diagnosis(patientId)}">DIAGNOSIS</a></li>
+				<li class="active"><a href="#summary">SUMMARY</a></li>
+				<li><a class="appointment" href="#appointment" data-url="@{CarePatien.appointment(patientId)}">APPOINTMENT</a></li>
+				<li><a class="careteam" href="#careteam" data-url="@{CarePatien.careteam(patientId)}">CARE TEAM</a></li>
+				<li><a class="medication" href="#medication" data-url="@{CarePatien.medication(patientId)}">MEDICATIONS</a></li>
+				<li><a class="treatmentplan" href="#treatmentplan" data-url="@{CarePatien.treatmentPlan(patientId)}">TREATMENT PLAN</a></li>
+				<li><a class="followupplan" href="#followupplan" data-url="@{CarePatien.followupPlan(patientId)}">FOLLOW-UP CARE PLAN</a></li>
+				<li><a class="diagnosis" href="#diagnosis" data-url="@{CarePatien.diagnosis(patientId)}">DIAGNOSIS</a></li>
 			</ul>
 			<div class="tab-content">
-			<div id="summery" class="tab-pane active" >
+			<div id="summary" class="tab-pane active" >
 				<div class="col-xs-12 col-sm-12 nopadding">
 					<div class="col-xs-4 col-sm-4 nopadding" style="border-right: 1px solid #CCC">
 					<!-- patient area -->
@@ -767,12 +767,12 @@ var timeArray = ["8 AM","8.15 AM","8.30 AM","8.45 AM","9 AM","9.15 AM","9.30 AM"
 				"12.45 PM","1 PM","1.15 PM","1.30 PM","1.45 PM","2 PM","2.15 PM","2.30 PM","2.45 PM","3 PM","3.15 PM","3.30 PM","3.45 PM","4 PM","5.15 PM","5.30 PM","5.45 PM","6 PM"];
 $(document).ready(function() {
 
-	$('#tabs a').click(function (e) {
-		e.preventDefault();
+	var loadTabContent = function(e) {
 		var url = $(this).attr("data-url");
-	  	var href = this.hash;
-	  	var pane = $(this);
-		if(href=="#summery") {
+  	var href = this.hash; // our target url
+  	var pane = $(this);
+
+		if(href=="#summary") {
 			pane.tab('show');
 		} else {
 			// ajax load from data-url
@@ -780,7 +780,15 @@ $(document).ready(function() {
 			    pane.tab('show');
 			});
 		}
-	});
+	}
+
+	$('#tabs a').click(loadTabContent);
+
+
+	if ( window.location.hash && $('#tabs li a.'+window.location.hash.substring(1)).length ) {
+		$('#tabs li a.'+window.location.hash.substring(1)).click();
+	}
+
 
 	// load first tab content
 // 	$('#tabs').load($('.active a').attr("data-url"),function(result){
