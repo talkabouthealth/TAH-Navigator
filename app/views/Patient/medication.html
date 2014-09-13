@@ -1,11 +1,11 @@
 #{set pageType = 'medication' /}
 #{extends 'patientmain.html' /}
 <!--Start Content-->
-<div class="col-xs-12 col-sm-10 medications content page">
+<div class="col-xs-12 col-sm-10 medications page">
   <div class="header">
     <h1><i class="fa fa-clock-o"></i>My Medication Calendar</h1>
   </div>
-  <!-- 
+  <!--
   <div class="medication-calendar">
     <div class="header">
       <h2>Daily Medication Checklist</h2>
@@ -176,7 +176,7 @@
   </div>
   -->
   <div class="row">&nbsp;</div>
-  
+
   <div class="row">
     #{if medicationList != null && medicationList.size()>0}
     #{list medicationList, as:'seq'}
