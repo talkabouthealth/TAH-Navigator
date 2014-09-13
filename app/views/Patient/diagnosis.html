@@ -3,12 +3,12 @@
     <!--Start Content-->
 
 
-<div id="content" class="col-xs-12 col-sm-10">
+<div id="content" class="diagnosis page">
     #{if patientOtherDetails && patientOtherDetails.diseaseId && patientOtherDetails.disease}
  <div class="col-sm-12">
      <div class="product_tr">
        <p><i class="fa fa-file-text-o"></i> Diagnosis</p>
-         <div>${patientOtherDetails.disease.name} 
+         <div>${patientOtherDetails.disease.name}
          #{if patientOtherDetails.dateofdiagnosis}
           | First Diagnosed: ${patientOtherDetails.dateofdiagnosis.format('MM/dd/yyyy')}
          #{/if}
@@ -17,7 +17,7 @@
  <div class="bottom_hr"></div>
  </div>
  #{/if}
- 
+
  #{if patientOtherDetails != null && breastCancerInfo != null && patientOtherDetails.diseaseId == breastCancerId}
  #{if breastCancerInfo.er || breastCancerInfo.pr || breastCancerInfo.her2}
  <div class="col-sm-12">
@@ -39,15 +39,15 @@
        #{elseif breastCancerInfo.her2}
        HER2${breastCancerInfo.her2}
        #{/elseif}
-       
-       
-       
+
+
+
        </div>
      </div>
      <div class="bottom_hr"></div>
  </div>
- #{/if}  
- 
+ #{/if}
+
  #{if breastCancerInfo.bcStage}
  <div class="col-sm-12">
      <div class="product_tr">
@@ -56,8 +56,8 @@
      </div>
      <div class="bottom_hr"></div>
  </div>
- #{/if}  
- 
+ #{/if}
+
  #{if breastCancerInfo.brca}
  <div class="col-sm-12">
      <div class="product_tr">
@@ -67,10 +67,10 @@
      <div class="bottom_hr"></div>
  </div>
  #{/if}
- 
+
  #{/if}
- 
- 
+
+
  #{if (patientOtherDetails && (patientOtherDetails.dateofdiagnosis || patientOtherDetails.ec1name || patientOtherDetails.ec1number)) || (userDto && (userDto.dob || userDto.homePhone))}
  <div class="col-sm-12">
     <div class="product_tr">
@@ -81,7 +81,7 @@
         #{if patientOtherDetails && (patientOtherDetails.ec1name || patientOtherDetails.ec1number)}
         <div>Support Contact:
         #{if patientOtherDetails.ec1name && patientOtherDetails.ec1number}
-        ${patientOtherDetails.ec1name} - ${patientOtherDetails.ec1number} 
+        ${patientOtherDetails.ec1name} - ${patientOtherDetails.ec1number}
         #{/if}
         #{elseif patientOtherDetails.ec1name}
         ${patientOtherDetails.ec1name}
@@ -100,5 +100,5 @@
     </div>
 </div>
 #{/if}
-      
+
 </div>
