@@ -7,7 +7,7 @@
  <div class="col-sm-12">
      <div class="product_tr">
        <p><i class="fa fa-file-text-o"></i> Diagnosis</p>
-         <div>${patientDetails.disease.name} 
+         <div>${patientDetails.disease.name}
          #{if patientDetails.dateofdiagnosis}
           | First Diagnosed: ${patientDetails.dateofdiagnosis.format('MM/dd/yyyy')}
          #{/if}
@@ -16,7 +16,7 @@
  <div class="bottom_hr"></div>
  </div>
  #{/if}
- 
+
  #{if patientDetails != null && breastCancerInfo != null && patientDetails.diseaseId == breastCancerId}
  #{if breastCancerInfo.er || breastCancerInfo.pr || breastCancerInfo.her2}
  <div class="col-sm-12">
@@ -38,15 +38,15 @@
        #{elseif breastCancerInfo.her2}
        HER2${breastCancerInfo.her2}
        #{/elseif}
-       
-       
-       
+
+
+
        </div>
      </div>
      <div class="bottom_hr"></div>
  </div>
- #{/if}  
- 
+ #{/if}
+
  #{if breastCancerInfo.bcStage}
  <div class="col-sm-12">
      <div class="product_tr">
@@ -55,8 +55,8 @@
      </div>
      <div class="bottom_hr"></div>
  </div>
- #{/if}  
- 
+ #{/if}
+
  #{if breastCancerInfo.brca}
  <div class="col-sm-12">
      <div class="product_tr">
@@ -66,10 +66,10 @@
      <div class="bottom_hr"></div>
  </div>
  #{/if}
- 
+
  #{/if}
- 
- 
+
+
  #{if (patientDetails && (patientDetails.dateofdiagnosis || patientDetails.ec1name || patientDetails.ec1number)) || (userDetails && (userDetails.dob || userDetails.homePhone))}
  <div class="col-sm-12">
     <div class="product_tr">
@@ -80,7 +80,7 @@
         #{if patientDetails && (patientDetails.ec1name || patientDetails.ec1number)}
         <div>Support Contact:
         #{if patientDetails.ec1name && patientDetails.ec1number}
-        ${patientDetails.ec1name} - ${patientDetails.ec1number} 
+        ${patientDetails.ec1name} - ${patientDetails.ec1number}
         #{/if}
         #{elseif patientDetails.ec1name}
         ${patientDetails.ec1name}
@@ -99,4 +99,3 @@
     </div>
 </div>
 #{/if}
- 
