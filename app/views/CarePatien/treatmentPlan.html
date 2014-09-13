@@ -1,16 +1,16 @@
 <div class="container-fluid">
     <!-- Raidation Treatment -->
     <div class="row">
-        <div class="col-xs-6">
+        <div class="col-lg-6">
             <h3>Radiation Treatement</h3>
         </div>
-        <div class="col-xs-6">
-            <button type="button" class="btn btn-primary" patient_id="${patientId}" onclick="careTeamController.evtMsgHandler('radiation_treatment_form', this);">+ Add Radiation Treatment</button>
+        <div class="col-lg-6">
+            <button type="button" class="btn btn-primary" patient_id="${patientId}" form_type="new" onclick="careTeamController.evtMsgHandler('radiation_treatment_form', this);">+ Add Radiation Treatment</button>
         </div>
     </div>
     #{if radiationTreatments}
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-lg-12">
             <table class="table table-bordered table-striped table-condensed table-hover"> 
                 <tr>
                     <th>Type</th>
@@ -23,7 +23,7 @@
                 </tr>
                 #{list items:radiationTreatments, as:'rt'}
                 <tr>
-                    <td>#{if rt.rtDto} ${rt.rtDto.name} #{/if}</td>
+                    <td><button type="button" class="btn btn-link" form_type="edit" patient_id="${rt.userId}" treatment_id="${rt.id}" onclick="careTeamController.evtMsgHandler('radiation_treatment_form', this);">${rt.rtDto.name}</button></td>
                     <td>#{if rt.dose} ${rt.dose} #{/if}</td>
                     <td>#{if rt.rsDto} ${rt.rsDto.timePeriod} #{/if}</td>
                     <td>#{if rt.startDate} ${rt.startDate.format('MM/dd/yyyy')} #{/if}
@@ -51,16 +51,16 @@
     #{/if}
     <!-- Chemotherapy Treatment -->
     <div class="row">
-        <div class="col-xs-6">
+        <div class="col-lg-6">
             <h3>Chemotherapy</h3>
         </div>
         <div class="col-xs-6">
-            <button type="button" class="btn btn-primary" patient_id="${patientId}" onclick="careTeamController.evtMsgHandler('chemotherapy_treatment_form', this);">+ Add New Chemotherapy Treatment</button>
+            <button type="button" class="btn btn-primary" patient_id="${patientId}" form_type="new" onclick="careTeamController.evtMsgHandler('chemotherapy_treatment_form', this);">+ Add New Chemotherapy Treatment</button>
         </div>
     </div>
     #{if chemoTreatments}
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-lg-12">
             <table class="table table-bordered table-striped table-condensed table-hover"> 
                 <tr>
                     <th></th>
@@ -73,7 +73,7 @@
                 </tr>
                 #{list items:chemoTreatments, as:'ct'}
                 <tr>
-                    <td>#{if ct.medDto} ${ct.medDto.mgnDto.name} (${ct.medDto.mbnDto.name}) #{/if}</td>
+                    <td><button type="button" class="btn btn-link" form_type="edit" patient_id="${ct.userId}" treatment_id="${ct.id}" onclick="careTeamController.evtMsgHandler('chemotherapy_treatment_form', this);">${ct.genericName} (${ct.brandName})</button></td>
                     <td>#{if ct.cycleNo} ${ct.cycleNo} #{/if}</td>
                     <td>#{if ct.csDto} ${ct.csDto.timePeriod} #{/if}</td>
                     <td>#{if ct.doseReduction} ${ct.doseReduction}% #{/if}</td>
@@ -102,16 +102,16 @@
     
     <!-- Surgery -->
     <div class="row">
-        <div class="col-xs-6">
+        <div class="col-lg-6">
             <h3>Surgery</h3>
         </div>
-        <div class="col-xs-6">
-            <button type="button" class="btn btn-primary" patient_id="${patientId}" onclick="careTeamController.evtMsgHandler('surgery_form', this);">+ Add New Surgery</button>
+        <div class="col-lg-6">
+            <button type="button" class="btn btn-primary" patient_id="${patientId}" form_type="new" onclick="careTeamController.evtMsgHandler('surgery_form', this);">+ Add New Surgery</button>
         </div>
     </div>
     #{if surgeryInfo}
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-lg-12">
             <table class="table table-bordered table-striped table-condensed table-hover"> 
                 <tr>
                     <th></th>
@@ -122,7 +122,7 @@
                 </tr>
                 #{list items:surgeryInfo, as:'si'}
                 <tr>
-                    <td>#{if si.stDto} ${si.stDto.name} #{/if}</td>
+                    <td><button type="button" class="btn btn-link" form_type="edit" patient_id="${si.userId}" treatment_id="${si.id}" onclick="careTeamController.evtMsgHandler('surgery_form', this);">${si.stDto.name}</button></td>
                     <td>#{if si.surgeryDate} ${si.surgeryDate.format('MM/dd/yyyy')} #{/if}</td>
                     <td>#{if si.trDto} ${si.trDto.region} #{/if}</td>
                     <td>

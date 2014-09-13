@@ -1,8 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-xmlns:og="http://ogp.me/ns#"
-xmlns:fb="http://www.facebook.com/2008/fbml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml">
 <head>
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
@@ -39,6 +36,12 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
   }
   ul.typeahead li {
     overflow-x: hidden;
+  }
+  ul.typeahead {
+    margin-top: auto !important;
+  }
+  ul.typeahead li a {
+    color: #000 !important;
   }
   .form-condensed .form-group-sm {
     margin-top: 0px;
@@ -255,7 +258,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
     </div>
 </div>
 
-<div class="modal" id="radiation-treatment-form" tabindex="-1" role="dialog" aria-labelledby="rtFormTitle" init-flag="0">
+<div class="modal" id="radiation-treatment-form" tabindex="-1" role="dialog" aria-labelledby="rtFormTitle" init_flag="0">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -320,13 +323,14 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-default" id="add-radiation-treatment">Save</button>
+                <button type="button" class="btn btn-default" id="remove-radiation-treatment">Delete</button>
             </div>
         </div>
     </div>
 </div>
 
 
-<div class="modal" id="chemotherapy-treatment-form" tabindex="-1" role="dialog" aria-labelledby="cttFormTitle" init-flag="0">
+<div class="modal" id="chemotherapy-treatment-form" tabindex="-1" role="dialog" aria-labelledby="cttFormTitle" init_flag="0">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -398,12 +402,13 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-default" id="add-chemotherapy-treatment">Save</button>
+                <button type="button" class="btn btn-default" id="remove-chemotherapy-treatment">Delete</button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="modal" id="surgery-treatment-form" tabindex="-1" role="dialog" aria-labelledby="stFormTitle" init-flag="0">
+<div class="modal" id="surgery-treatment-form" tabindex="-1" role="dialog" aria-labelledby="stFormTitle" init_flag="0">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -450,6 +455,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                 <button type="button" class="btn btn-default" id="add-surgery-treatment">Save</button>
+                <button type="button" class="btn btn-default" id="remove-surgery-treatment">Delete</button>
             </div>
         </div>
     </div>

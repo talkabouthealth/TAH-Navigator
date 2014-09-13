@@ -1,3 +1,25 @@
+DROP TABLE IF EXISTS nav.patientrtse;
+DROP TABLE IF EXISTS nav.patientcttse;
+DROP TABLE IF EXISTS nav.patientses;
+DROP TABLE IF EXISTS nav.patientrt;
+DROP TABLE IF EXISTS nav.patientctt;
+DROP TABLE IF EXISTS nav.patientsi;
+
+
+DROP TABLE IF EXISTS nav.treatment_region;
+DROP TABLE IF EXISTS nav.side_effect;
+DROP TABLE IF EXISTS nav.radiation_schedule;
+DROP TABLE IF EXISTS nav.chemo_schedule;
+DROP TABLE IF EXISTS nav.radiation_type;
+DROP TABLE IF EXISTS nav.surgery_type;
+
+
+DROP TABLE IF EXISTS nav.mgn_delivery;
+DROP TABLE IF EXISTS nav.medication;
+DROP TABLE IF EXISTS nav.medication_delivery;
+DROP TABLE IF EXISTS nav.medication_bn;
+DROP TABLE IF EXISTS nav.medication_gn;
+
 ------------------------ run sequentially
 CREATE TABLE nav.treatment_region (
     tr_id SERIAL PRIMARY KEY,  
@@ -164,95 +186,13 @@ CREATE TABLE nav.patientrt (
 
 COMMENT ON TABLE nav.patientrt IS '[PATIENT] [R]adiation [T]reatment';
 
------------------------- run sequentially
-CREATE TABLE nav.medication_gn (
-    mgn_id SERIAL PRIMARY KEY,
-    name character varying(100)
-);
-
-COMMENT ON TABLE nav.medication_gn IS '[MEDICATION] [G]eneric [N]ame';
-
-INSERT INTO nav.medication_gn (mgn_id, name) VALUES 
-(1, 'Ado-Trastuzumab emtansine'),
-(2, 'Anastrozole'),
-(3, 'Capecitabine'),
-(4, 'Carboplatin'),
-(5, 'Cisplatin'),
-(6, 'Paclitaxel'),
-(7, 'Docetaxel');
-
------------------------- run sequentially
-CREATE TABLE nav.medication_bn (
-    mbn_id SERIAL PRIMARY KEY,
-    name character varying(100)
-);
-
-COMMENT ON TABLE nav.medication_bn IS '[MEDICATION] [B]rand [N]ame';
-
-INSERT INTO nav.medication_bn (mbn_id, name) VALUES 
-(1, 'Platinol and Platinol-AQ'),
-(2, 'Paraplatin'),
-(3, 'Xeloda'),
-(4, 'Arimidex'),
-(5, 'Kadcyla'),
-(6, 'Taxol'),
-(7, 'Taxotere');
-
------------------------- run sequentially
-CREATE TABLE nav.medication_delivery (
-    md_id SERIAL PRIMARY KEY,
-    delivery character varying(100)
-);
-
-COMMENT ON TABLE nav.medication_delivery IS '[MEDICATION] [DELIVERY]';
-
-INSERT INTO nav.medication_delivery (md_id, delivery) VALUES 
-(1, 'IV'),
-(2, 'By mouth'),
-(3, 'Subcutaneous'),
-(4, 'Subcutaneous inj'),
-(5, 'IM/Subcutaneous inj');
-
------------------------- run sequentially
-CREATE TABLE nav.mgn_delivery (
-    mgn_id integer NOT NULL REFERENCES nav.medication_gn (mgn_id),
-    md_id integer NOT NULL REFERENCES nav.medication_delivery (md_id),
-    PRIMARY KEY (mgn_id, md_id)
-);
-
-COMMENT ON TABLE nav.mgn_delivery IS 'Relation Between [M]edication [G]eneric [N]ame and [DELIVERY]';
-
-INSERT INTO nav.mgn_delivery (mgn_id, md_id) VALUES 
-(1, 1),
-(2, 2),
-(3, 2),
-(4, 1),
-(5, 1),
-(6, 1),
-(7, 1);
-
------------------------- run sequentially
-CREATE TABLE nav.medication (
-    medication_id SERIAL PRIMARY KEY,
-    mgn_id integer NOT NULL REFERENCES nav.medication_gn (mgn_id),
-    mbn_id integer NOT NULL REFERENCES nav.medication_bn (mbn_id),
-    disease_id integer NOT NULL REFERENCES nav.diseasemaster(id)
-);
-
-INSERT INTO nav.medication (mgn_id, mbn_id, disease_id) VALUES 
-(1, 5, 1),
-(2, 4, 1),
-(3, 3, 1),
-(4, 2, 1),
-(5, 1, 1),
-(6, 6, 1),
-(7, 7, 1);
 
 ------------------------ run sequentially
 CREATE TABLE nav.patientctt (
     pct_id SERIAL PRIMARY KEY,
     user_id integer NOT NULL REFERENCES nav.user (id), 
-    medication_id integer NOT NULL REFERENCES nav.medication (medication_id),
+    mgn character varying(250) NOT NULL,
+    mbn character varying(250) NOT NULL,
     cycle_no integer DEFAULT NULL,
     cs_id integer DEFAULT NULL REFERENCES nav.chemo_schedule (cs_id),
     dose_reduction integer,

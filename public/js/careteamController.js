@@ -4,10 +4,13 @@ var careTeamController = (function() {
 		'ctp_diagnosis_update': '/carepatien/updateDiagnosis',
 		'ctpt_radiation_form': '/carepatien/radiationForm',
         'ctpt_save_radiation_data': '/carepatien/saveRadiationData',
+        'ctpt_remove_radiation_data': '/carepatien/removeRadiationData',
         'ctpt_chemotherapy_form': '/carepatien/chemotherapyForm',
         'ctpt_save_chemotherapy_data': '/carepatien/saveChemotherapyData',
+        'ctpt_remove_chemotherapy_data': '/carepatien/removeChemotherapyData',
         'ctpt_surgery_form': '/carepatien/surgeryForm',
         'ctpt_save_surgery_data': '/carepatien/saveSurgeryData',
+        'ctpt_remove_surgery_data': '/carepatien/removeSurgeryData',
 		'default': '#'    // nothing 
 	};
     var BREAST_CANCER_ID = 1;
@@ -25,10 +28,12 @@ var careTeamController = (function() {
         			$('#disease').append('<option value="' + diseases[i].id + '">' + diseases[i].name + '</option>');
         		}
         		$('#first-diagnosed').datepicker({
-        			dateFormat: "yy-mm-dd"
+                    format: 'yyyy-mm-dd',
+                    autoclose: true
         		});
         		$('#dob').datepicker({
-        			dateFormat: "yy-mm-dd"
+        			format: 'yyyy-mm-dd',
+                    autoclose: true
         		});
         		var bcStages = data.bcStages;
         		length = bcStages.length;
@@ -148,12 +153,48 @@ var careTeamController = (function() {
         }
         $('#ui-tabs-6').html()
         $.post(actions['ctp_diagnosis_update'], params, function(htmlText) {
-            $('#ui-tabs-6').html(htmlText);
+            $('#diagnosis').html(htmlText);
         }, "html");
     };
     
-    var addRadiationTreatmentData = function() {
-    	var patientId = $('#radiation-treatment-form').attr('patient_id');
+    var removeRadiationTreatmentData = function() {
+        var patientId = $('#radiation-treatment-form').attr('patient_id'); 
+        var treatmentId = $('#remove-radiation-treatment').attr("treatment_id");
+        var params = {
+            'patientId': patientId,
+            'treatmentId': treatmentId
+        };
+        
+        $.post(actions['ctpt_remove_radiation_data'], params, function(htmlText) {
+            $('#treatmentplan').html(htmlText);
+        }, "html");
+    };
+    var removeChemotherapyData = function() {
+        var patientId = $('#chemotherapy-treatment-form').attr('patient_id'); 
+        var treatmentId = $('#remove-chemotherapy-treatment').attr("treatment_id");
+        var params = {
+            'patientId': patientId,
+            'treatmentId': treatmentId
+        };
+        
+        $.post(actions['ctpt_remove_chemotherapy_data'], params, function(htmlText) {
+            $('#treatmentplan').html(htmlText);
+        }, "html");
+    };
+    var removeSurgeryTreatmentData = function() {
+        var patientId = $('#surgery-treatment-form').attr('patient_id'); 
+        var treatmentId = $('#remove-surgery-treatment').attr("treatment_id");
+        var params = {
+            'patientId': patientId,
+            'treatmentId': treatmentId
+        };
+        
+        $.post(actions['ctpt_remove_surgery_data'], params, function(htmlText) {
+            $('#treatmentplan').html(htmlText);
+        }, "html");
+    };
+    var saveRadiationTreatmentData = function() {
+    	var patientId = $('#radiation-treatment-form').attr('patient_id'); 
     	var radiationType = $('#rt_type').val();
         if (!radiationType) {
     		return false;
@@ -163,7 +204,7 @@ var careTeamController = (function() {
     	var startDate = $('#rt_start_date').val();
     	var endDate = $('#rt_end_date').val();
     	var region = $('#rt_region').val();
-        var sideEffectIds = $('#rt_side_effects_div').data('rt-see-ids');
+        var sideEffects = $('#rt_side_effects_div').data('rt-see');
     	var notes = $('#rt_notes').val();
     	
         var params = {
@@ -177,152 +218,137 @@ var careTeamController = (function() {
             'rtInfo.notes': notes
         };
         
-        if (typeof sideEffectIds != "undefined") {
-            for (var i = 0; i < sideEffectIds.length; i++) {
-                params['sideEffect.' + i] = sideEffectIds[i];
+        if (typeof sideEffects != "undefined") {
+            for (var i = 0; i < sideEffects.length; i++) {
+                params['sideEffects.' + i] = sideEffects[i];
             }
         }
+        
+        if ($('#remove-radiation-treatment').is(":visible")) {
+            var treatmentId = $('#remove-radiation-treatment').attr("treatment_id");
+            params['treatmentId'] = treatmentId;
+        }
         $.post(actions['ctpt_save_radiation_data'], params, function(htmlText) {
-            $('#ui-tabs-4').html(htmlText);
+            $('#treatmentplan').html(htmlText);
         }, "html");
         return true;
-    	
     };
     
-    var addChemoTreatmentData = function() {
+    var saveChemoTreatmentData = function() {
         var patientId = $('#chemotherapy-treatment-form').attr('patient_id');
-        var medicationId = $('#ctt_gn').attr("medication-id");
-        if (!medicationId) {
+        var genericName = $('#ctt_gn').val();
+        var brandName = $('#ctt_bn').val();
+        if (!genericName && !brandName) {
             return false;
         }
         var cycleNo = $('#ctt_cycle').val();
-        var csId = $('#ctt_schedule').attr("cs-id");
-        var doseReduction = $('#ctt_dose').attr("dose");
+        var schedule = $('#ctt_schedule').val();
+        var doseReduction = $('#ctt_dose').val();
         var startDate = $('#ctt_start_date').val();
         var endDate = $('#ctt_end_date').val();
-        var sideEffectIds = $('#ctt_side_effects_div').data('ctt-see-ids');
+        var sideEffects = $('#ctt_side_effects_div').data('ctt-see');
         var notes = $('#ctt_notes').val();
         var params = {
             'patientId': patientId,
-            'cttInfo.medicationId': medicationId,
-            'cttInfo.cycleNo': cycleNo,
-            'cttInfo.csId': csId,
-            'cttInfo.doseReduction': doseReduction,
-            'cttInfo.startDate': startDate,
-            'cttInfo.endDate': endDate,
-            'cttInfo.notes': notes
+            'ctInfo.genericName': genericName,
+            'ctInfo.brandName': brandName,
+            'ctInfo.cycleNo': cycleNo,
+            'ctInfo.schedule': schedule,
+            'ctInfo.doseReduction': parseInt(doseReduction),
+            'ctInfo.startDate': startDate,
+            'ctInfo.endDate': endDate,
+            'ctInfo.notes': notes
         };
-        if (typeof sideEffectIds != "undefined") {
-            for (var i = 0; i < sideEffectIds.length; i++) {
-                params['sideEffect.' + i] = sideEffectIds[i];
+        if (typeof sideEffects != "undefined") {
+            for (var i = 0; i < sideEffects.length; i++) {
+                params['sideEffects.' + i] = sideEffects[i];
             }
         }
+        
+        if ($('#remove-chemotherapy-treatment').is(":visible")) {
+            var treatmentId = $('#remove-chemotherapy-treatment').attr("treatment_id");
+            params['treatmentId'] = treatmentId;
+        }
+        
         $.post(actions['ctpt_save_chemotherapy_data'], params, function(htmlText) {
-            $('#ui-tabs-4').html(htmlText);
+            $('#treatmentplan').html(htmlText);
         }, "html");
         return true;
     }
-    var addSurgeryData = function() {
+    var saveSurgeryData = function() {
         var patientId = $('#surgery-treatment-form').attr('patient_id');
-        var stId = $('#si_st').attr("st-id");
-        if (!stId) {
-            return false;
-        }
+        var surgeryType = $('#si_st').val();
+        if (!surgeryType) {
+    		return false;
+    	}
         var surgeryDate = $('#si_date').val();
-        var trId = $('#si_region').attr("tr-id");
-        var sideEffectIds = $('#si_side_effects_div').data('si-see-ids');
+        var region = $('#si_region').val();
+        var sideEffects = $('#si_side_effects_div').data('si-see');
         var notes = $('#si_notes').val();
         var params = {
             'patientId': patientId,
-            'siInfo.stId': stId,
+            'siInfo.surgeryType': surgeryType,
             'siInfo.surgeryDate': surgeryDate,
-            'siInfo.trId': trId,
+            'siInfo.region': region,
             'siInfo.notes': notes
         };
-        if (typeof sideEffectIds != "undefined") {
-            for (var i = 0; i < sideEffectIds.length; i++) {
-                params['sideEffect.' + i] = sideEffectIds[i];
+        if (typeof sideEffects != "undefined") {
+            for (var i = 0; i < sideEffects.length; i++) {
+                params['sideEffects.' + i] = sideEffects[i];
             }
         }
+        if ($('#remove-surgery-treatment').is(":visible")) {
+            var treatmentId = $('#remove-surgery-treatment').attr("treatment_id");
+            params['treatmentId'] = treatmentId;
+        }
+        
         $.post(actions['ctpt_save_surgery_data'], params, function(htmlText) {
-            $('#ui-tabs-4').html(htmlText);
+            $('#treatmentplan').html(htmlText);
         }, "html");
         return true;
     }
     var initializeSurgeryForm = function(data) {
-        $('#surgery-treatment-form').attr('init-flag', '1');
+        $('#surgery-treatment-form').attr('init_flag', '1');
         var surgeryTypes = data.surgeryTypes;
         var length = surgeryTypes.length;
         var tmp = [];
         for (var i = 0; i < length; i++) {
             tmp[i] = surgeryTypes[i].name;
         }
-        $('#si_st').data("surgeryTypes", surgeryTypes);
         $('#si_st').typeahead({
-            source: tmp,
-            updater: function(item) {
-                var surgeryTypes = $('#si_st').data("surgeryTypes");
-                var index = -1;
-                for (var i = 0; i < surgeryTypes.length; i++) {
-                    if (item == surgeryTypes[i].name) {
-                        index = i;
-                        break;
-                    }
-                }
-                if (index != -1) {
-                    $('#si_st').attr("st-id", surgeryTypes[index].id);
-                    $('#si_st_div').addClass("has-success");
-                    $('#si_st_icon').addClass("glyphicon-ok");
-                    $('#si_st_div').removeClass("has-error");
-                    $('#si_st_icon').removeClass("glyphicon-remove");
-                }
-                else {
-                    $('#si_st_div').addClass("has-error");
-                    $('#si_st_icon').addClass("glyphicon-remove");
-                    $('#si_st_div').removeClass("has-success");
-                    $('#si_st_icon').removeClass("glyphicon-ok");
-                }
-                return item;
-            }
+            source: tmp
         });
         $('#si_st').keyup(function() {
             var str = $(this).val();
-            if (!str) {
+            if (str) {
+                $('#si_st_div').addClass("has-success");
+                $('#si_st_icon').addClass("glyphicon-ok");
+                $('#si_st_div').removeClass("has-error");
+                $('#si_st_icon').removeClass("glyphicon-remove");
+            }
+            else {
                 $('#si_st_div').addClass("has-error");
                 $('#si_st_icon').addClass("glyphicon-remove");
                 $('#si_st_div').removeClass("has-success");
                 $('#si_st_icon').removeClass("glyphicon-ok");
-                $('#si_st').attr("st-id", '');
             }
         });
         $('#si_date').datepicker({
-            dateFormat: "yy-mm-dd"
+            format: 'yyyy-mm-dd',
+            autoclose: true
         });
-        
         var treatmentRegions = data.treatmentRegions;
         length = treatmentRegions.length;
         tmp = [];
         for (var i = 0; i < length; i++) {
             tmp[i] = treatmentRegions[i].region;
         }
-        $('#si_region').data("treatmentRegions", treatmentRegions);
+        
         $('#si_region').typeahead({
-            source: tmp,
-            updater: function(item) {
-                var treatmentRegions = $('#si_region').data("treatmentRegions");
-                var index = -1;
-                for (var i = 0; i < treatmentRegions.length; i++) {
-                    if (item == treatmentRegions[i].region) {
-                        index = i;
-                        break;
-                    }
-                }
-                if (index != -1) {
-                    $('#si_region').attr("tr-id", treatmentRegions[index].id); 
-                }
-                return item;
-            }
+            source: tmp
         });
+        
+        
         var sideEffects = data.sideEffects;
         length = sideEffects.length;
         tmp = [];
@@ -336,29 +362,36 @@ var careTeamController = (function() {
                 return item;
             }
         });
-        $('#si_side_effects_div').data("sideEffects", sideEffects);
+        $('#si_side_effects').keyup(function(e) {
+            if (e.keyCode == 13) {
+                var item = $('#si_side_effects').val();
+                updateSideEffects('si_side_effects_div', 'si-see', item, 'add');
+                e.stopPropagation();
+                e.preventDefault();
+            }
+        });
         $('#add-surgery-treatment').click(function() {
-            if (addSurgeryData()) {
+            if (saveSurgeryData()) {
                 $('#surgery-treatment-form').modal("hide");
             }
+        });
+        $('#remove-surgery-treatment').click(function() {
+            removeSurgeryTreatmentData();
+            $('#surgery-treatment-form').modal('hide');
         });
     };
     var emptySurgeryForm = function() {
         $('#si_st').val('');
-        $('#si_st').keyup();
         $('#si_date').val('');
         $('#si_region').val('');
         $('#si_side_effects').val('');
         $('#si_side_effects_div').empty();
         $('#si_side_effects_div').data('si-see', []);
-        $('#si_side_effects_div').data('si-see-ids', []);
         $('#si_notes').val('');
     };
     var emptyChemoTreatmentForm = function() {
         $('#ctt_gn').val('');
         $('#ctt_bn').val('');
-        $('#ctt_gn').keyup();
-        $('#ctt_bn').keyup();
         $('#ctt_cycle').val('');
         $('#ctt_schedule').val('');
         $('#ctt_dose').val('');
@@ -367,77 +400,103 @@ var careTeamController = (function() {
         $('#ctt_side_effects').val('');
         $('#ctt_side_effects_div').empty();
         $('#ctt_side_effects_div').data('ctt-see', []);
-        $('#ctt_side_effects_div').data('ctt-see-ids', []);
         $('#ctt_notes').val('');
     };
+    var addChemotherapyToForm = function(pctDto) {
+        $('#ctt_gn').val(pctDto.genericName);
+        $('#ctt_bn').val(pctDto.brandName);
+        if (pctDto.cycleNo) {
+            $('#ctt_cycle').val(pctDto.cycleNo);
+        }
+        if ('csDto' in pctDto) {
+            $('#ctt_schedule').val(pctDto.csDto.timePeriod);
+        }
+        if (pctDto.doseReduction) {
+            $('#ctt_dose').val(pctDto.doseReduction + '%');
+        }
+        if (pctDto.startDate) {
+            $('#ctt_start_date').val(dateToStr(new Date(pctDto.startDate), '-'));
+        }
+        if (pctDto.endDate) {
+            $('#ctt_end_date').val(dateToStr(new Date(pctDto.endDate), '-'));
+        }
+        if ('pctSeDtos' in pctDto) {
+            var pctSeDtos = pctDto.pctSeDtos;
+            var length = pctSeDtos.length;
+            var htmlText = '';
+            var elmId = 'ctt_side_effects_div';
+            var key = 'ctt-see';
+            var arr = [];
+            for (var i = 0; i < length; i++) {
+                var seDto = pctSeDtos[i].seDto;
+                var item = seDto.description;
+                arr[i] = item;
+                htmlText += '<div class="row"><div class="col-xs-12"><span class="glyphicon glyphicon-remove" elmId="'+ elmId +'" key="' + key + '" item="' + item + '" onclick="careTeamController.evtMsgHandler(\'remove_side_effect\', this);"><a href="#">' + item + '</a></span></div></div>';
+            }
+            $('#' + elmId).html(htmlText);
+            $('#' + elmId).data(key, arr);
+        }
+        if (pctDto.notes) {
+            $('#ctt_notes').val(pctDto.notes);
+        }
+    };
     var initializeChemoTreatmentForm = function(data) {
-        $('#chemotherapy-treatment-form').attr('init-flag', '1');
+        $('#chemotherapy-treatment-form').attr('init_flag', '1');
         var medications = data.medications;
         var length = medications.length;
         var tmp = [];
         for (var i = 0; i < length; i++) {
-            var name = medications[i].mgnDto.name + " (" + medications[i].mbnDto.name + ")";
-            tmp[i] = name;
-            medications[i].combinedName = name;
+            var label = medications[i].label;
+            var brandname = medications[i].brandname;
+            var arr = brandname.split(",");
+            for (var j = 0; j < arr.length; j++) {
+                tmp[tmp.length] = label + " (" + arr[j].trim() + ")";
+            }
         }
         $('#ctt_gn').typeahead({
             source: tmp,
             updater: function(item) {
-                var index = findMedication(item);
-                if (index != -1) {
-                    var medications = $('#ctt_gn').data("medications");
-                    item = medications[index].mgnDto.name;
-                    $('#ctt_bn').val(medications[index].mbnDto.name);
-                    $('#ctt_gn').attr("medication-id", medications[index].id);
-                    
-                    $('#ctt_gn_div, #ctt_bn_div').addClass("has-success");
-                    $('#ctt_gn_icon, #ctt_bn_icon').addClass("glyphicon-ok");
-                    $('#ctt_gn_div, #ctt_bn_div').removeClass("has-error");
-                    $('#ctt_gn_icon, #ctt_bn_icon').removeClass("glyphicon-remove");
-                }
-                else {
-                    $('#ctt_gn_div, #ctt_bn_div').addClass("has-error");
-                    $('#ctt_gn_icon, #ctt_bn_icon').addClass("glyphicon-remove");
-                    $('#ctt_gn_div, #ctt_bn_div').removeClass("has-success");
-                    $('#ctt_gn_icon, #ctt_bn_icon').removeClass("glyphicon-ok");
-                }
-                return item;
+                var indexA = item.lastIndexOf("(");
+                var indexB = item.lastIndexOf(")");
+                var mgn = item.substring(0, indexA - 1);
+                var mbn = item.substring(indexA + 1, indexB);
+                $('#ctt_bn').val(mbn);
+                $('#ctt_gn_div, #ctt_bn_div').addClass("has-success");
+                $('#ctt_gn_icon, #ctt_bn_icon').addClass("glyphicon-ok");
+                $('#ctt_gn_div, #ctt_bn_div').removeClass("has-error");
+                $('#ctt_gn_icon, #ctt_bn_icon').removeClass("glyphicon-remove");
+                return mgn;
             }
         });
         $('#ctt_bn').typeahead({
             source: tmp,
             updater: function(item) {
-                var index = findMedication(item);
-                if (index != -1) {
-                    var medications = $('#ctt_gn').data("medications");
-                    item = medications[index].mbnDto.name;
-                    $('#ctt_gn').val(medications[index].mgnDto.name);
-                    $('#ctt_gn').attr("medication-id", medications[index].id);
-                    
-                    $('#ctt_gn_div, #ctt_bn_div').addClass("has-success");
-                    $('#ctt_gn_icon, #ctt_bn_icon').addClass("glyphicon-ok");
-                    $('#ctt_gn_div, #ctt_bn_div').removeClass("has-error");
-                    $('#ctt_gn_icon, #ctt_bn_icon').removeClass("glyphicon-remove");
-                }
-                else {
-                    $('#ctt_gn_div, #ctt_bn_div').addClass("has-error");
-                    $('#ctt_gn_icon, #ctt_bn_icon').addClass("glyphicon-remove");
-                    $('#ctt_gn_div, #ctt_bn_div').removeClass("has-success");
-                    $('#ctt_gn_icon, #ctt_bn_icon').removeClass("glyphicon-ok");
-                }
-                return item;
+                var indexA = item.lastIndexOf("(");
+                var indexB = item.lastIndexOf(")");
+                var mgn = item.substring(0, indexA - 1);
+                var mbn = item.substring(indexA + 1, indexB);
+                $('#ctt_gn').val(mgn);
+                $('#ctt_gn_div, #ctt_bn_div').addClass("has-success");
+                $('#ctt_gn_icon, #ctt_bn_icon').addClass("glyphicon-ok");
+                $('#ctt_gn_div, #ctt_bn_div').removeClass("has-error");
+                $('#ctt_gn_icon, #ctt_bn_icon').removeClass("glyphicon-remove");
+                return mbn;
             }
         });
-        $('#ctt_gn').data("medications", medications);
         $('#ctt_gn, #ctt_bn').keyup(function() {
             var str = $(this).val();
-            if (!str) {
-                var domId = $(this).attr("id");
+            var domId = $(this).attr("id");
+            if (str) {
+                $('#' + domId + "_div").addClass("has-success");
+                $('#' + domId + "_icon").addClass("glyphicon-ok");
+                $('#' + domId + "_div").removeClass("has-error");
+                $('#' + domId + "_icon").removeClass("glyphicon-remove");
+            }
+            else {
                 $('#' + domId + "_div").addClass("has-error");
                 $('#' + domId + "_icon").addClass("glyphicon-remove");
                 $('#' + domId + "_div").removeClass("has-success");
                 $('#' + domId + "_icon").removeClass("glyphicon-ok");
-                $('#ctt_gn').attr("medication-id", '');
             }
         });
         tmp = [];
@@ -455,36 +514,22 @@ var careTeamController = (function() {
             tmp[i] = chemoSchedules[i].timePeriod;
         }
         $('#ctt_schedule').typeahead({
-            source: tmp,
-            updater: function(item) {
-                var arr = $('#ctt_schedule').data('chemoSchedules');
-                for (var i = 0; i < arr.length; i++) {
-                    if (item == arr[i].timePeriod) {
-                        $('#ctt_schedule').attr("cs-id", arr[i].id);
-                        break;
-                    }
-                }
-                return item;
-            }
+            source: tmp
         });
-        $('#ctt_schedule').data('chemoSchedules', chemoSchedules);
         tmp = [];
         for (var i = 0; i < 100; i++) {
             tmp[i] = '' + (i + 1) + '%';
         }
         $('#ctt_dose').typeahead({
-            source: tmp,
-            updater: function(item) {
-                var dose = parseInt(item);
-                $('#ctt_dose').attr("dose", dose);
-                return item;
-            }
+            source: tmp
         });
         $('#ctt_start_date').datepicker({
-            dateFormat: "yy-mm-dd"
+            format: 'yyyy-mm-dd',
+            autoclose: true
         });
         $('#ctt_end_date').datepicker({
-            dateFormat: "yy-mm-dd"
+            format: 'yyyy-mm-dd',
+            autoclose: true
         });
         
         var sideEffects = data.sideEffects;
@@ -500,12 +545,23 @@ var careTeamController = (function() {
                 return item;
             }
         });
-        $('#ctt_side_effects_div').data("sideEffects", sideEffects);
+        $('#ctt_side_effects').keyup(function(e) {
+            if (e.keyCode == 13) {
+                var item = $('#ctt_side_effects').val();
+                updateSideEffects('ctt_side_effects_div', 'ctt-see', item, 'add');
+                e.stopPropagation();
+                e.preventDefault();
+            }
+        });
         
         $('#add-chemotherapy-treatment').click(function() {
-            if (addChemoTreatmentData()) {
+            if (saveChemoTreatmentData()) {
                 $('#chemotherapy-treatment-form').modal("hide");
             }
+        });
+        $('#remove-chemotherapy-treatment').click(function() {
+            removeChemotherapyData();
+            $('#chemotherapy-treatment-form').modal('hide');
         });
     };
     var findMedication = function(name) {
@@ -520,7 +576,7 @@ var careTeamController = (function() {
     };
     
     var initializeRadiationTreatmentForm = function(data) {
-        $('#radiation-treatment-form').attr('init-flag', '1');
+        $('#radiation-treatment-form').attr('init_flag', '1');
         var radiationTypes = data.radiationTypes;
         var length = radiationTypes.length;
         var tmp = [];
@@ -563,10 +619,12 @@ var careTeamController = (function() {
             source: tmp
         });
         $('#rt_start_date').datepicker({
-            dateFormat: "yy-mm-dd"
+            format: 'yyyy-mm-dd',
+            autoclose: true
         });
         $('#rt_end_date').datepicker({
-            dateFormat: "yy-mm-dd"
+            format: 'yyyy-mm-dd',
+            autoclose: true
         });
         var treatmentRegions = data.treatmentRegions;
         length = treatmentRegions.length;
@@ -591,17 +649,27 @@ var careTeamController = (function() {
                 return item;
             }
         });
-        $('#rt_side_effects_div').data("sideEffects", sideEffects);
+        $('#rt_side_effects').keyup(function(e) {
+            if (e.keyCode == 13) {
+                var item = $('#rt_side_effects').val();
+                updateSideEffects('rt_side_effects_div', 'rt-see', item, 'add');
+                e.stopPropagation();
+                e.preventDefault();
+            }
+        });
         $('#add-radiation-treatment').click(function() {
-            if (addRadiationTreatmentData()) {
+            if (saveRadiationTreatmentData()) {
                 $('#radiation-treatment-form').modal('hide');
             }
+        });
+        $('#remove-radiation-treatment').click(function() {
+            removeRadiationTreatmentData();
+            $('#radiation-treatment-form').modal('hide');
         });
     };
     
     var emptyRadiationTreatmentForm = function() {
         $('#rt_type').val('');
-        $('#rt_type').keyup();
         $('#rt_dose').val('');
         $('#rt_schedule').val('');
         $('#rt_start_date').val('');
@@ -609,19 +677,150 @@ var careTeamController = (function() {
         $('#rt_region').val('');
         $('#rt_side_effects_div').empty();
         $('#rt_side_effects_div').data('rt-see', []);
-        $('#rt_side_effects_div').data('rt-see-ids', []);
         $('#rt_side_effects').val('');
         $('#rt_notes').val('');
     };
-    
+    var addSurgeryInfoToForm = function(psiDto) {
+        $('#si_st').val(psiDto.stDto.name);
+        if (psiDto.surgeryDate) {
+            $('#si_date').val(dateToStr(new Date(psiDto.surgeryDate), '-'));
+        }
+        if ('trDto' in psiDto) {
+            $('#si_region').val(psiDto.trDto.region);
+        }
+        
+        if ('pstSeDtos' in psiDto) {
+            var pstSeDtos = psiDto.pstSeDtos;
+            var length = pstSeDtos.length;
+            var htmlText = '';
+            var elmId = 'si_side_effects_div';
+            var key = 'si-see';
+            var arr = [];
+            for (var i = 0; i < length; i++) {
+                var seDto = pstSeDtos[i].seDto;
+                var item = seDto.description;
+                arr[i] = item;
+                htmlText += '<div class="row"><div class="col-xs-12"><span class="glyphicon glyphicon-remove" elmId="'+ elmId +'" key="' + key + '" item="' + item + '" onclick="careTeamController.evtMsgHandler(\'remove_side_effect\', this);"><a href="#">' + item + '</a></span></div></div>';
+            }
+            $('#' + elmId).html(htmlText);
+            $('#' + elmId).data(key, arr);
+        }
+        if (psiDto.notes) {
+            $('#si_notes').val(psiDto.notes);
+        }
+    };
+    var addRadiationTreatmentToForm = function(prtDto) {
+        $('#rt_type').val(prtDto.rtDto.name);
+        $('#rt_dose').val(prtDto.dose);
+        if ('rsDto' in prtDto) {
+            $('#rt_schedule').val(prtDto.rsDto.timePeriod);
+        }
+        if (prtDto.startDate) {
+            $('#rt_start_date').val(dateToStr(new Date(prtDto.startDate), '-'));
+        }
+        if (prtDto.endDate) {
+            $('#rt_end_date').val(dateToStr(new Date(prtDto.endDate), '-'));
+        }
+        if ('trDto' in prtDto) {
+            $('#rt_region').val(prtDto.trDto.region);
+        }
+        if ('prtSeDtos' in prtDto) {
+            var prtSeDtos = prtDto.prtSeDtos;
+            var length = prtSeDtos.length;
+            var htmlText = '';
+            var elmId = 'rt_side_effects_div';
+            var key = 'rt-see';
+            var arr = [];
+            for (var i = 0; i < length; i++) {
+                var seDto = prtSeDtos[i].seDto;
+                var item = seDto.description;
+                arr[i] = item;
+                htmlText += '<div class="row"><div class="col-xs-12"><span class="glyphicon glyphicon-remove" elmId="'+ elmId +'" key="' + key + '" item="' + item + '" onclick="careTeamController.evtMsgHandler(\'remove_side_effect\', this);"><a href="#">' + item + '</a></span></div></div>';
+            }
+            $('#' + elmId).html(htmlText);
+            $('#' + elmId).data(key, arr);
+        }
+        $('#rt_notes').val(prtDto.notes);
+    };
+    var triggerRadiationFormEvents = function() {
+        var str = $('#rt_type').val();
+        if (str) {
+            $('#rt_type_div').addClass('has-success');
+            $('#rt_type_icon').addClass('glyphicon-ok');
+            $('#rt_type_div').removeClass('has-error');
+            $('#rt_type_icon').removeClass('glyphicon-remove');
+        }
+        else {
+            $('#rt_type_div').addClass('has-error');
+            $('#rt_type_icon').addClass('glyphicon-remove');
+            $('#rt_type_div').removeClass('has-success');
+            $('#rt_type_icon').removeClass('glyphicon-ok');
+        }
+        
+    };
+    var triggerSurgeryFormEvents = function() {
+        var str = $('#si_st').val();
+        if (str) {
+            $('#si_st_div').addClass("has-success");
+            $('#si_st_icon').addClass("glyphicon-ok");
+            $('#si_st_div').removeClass("has-error");
+            $('#si_st_icon').removeClass("glyphicon-remove");
+        }
+        else {
+            $('#si_st_div').addClass("has-error");
+            $('#si_st_icon').addClass("glyphicon-remove");
+            $('#si_st_div').removeClass("has-success");
+            $('#si_st_icon').removeClass("glyphicon-ok");
+        }
+    };
+    var triggerChemotherapyFormEvents = function() {
+        var genericName = $('#ctt_gn').val();
+        var brandName = $('#ctt_bn').val();
+        if (genericName) {
+            $('#ctt_gn_div').addClass("has-success");
+            $('#ctt_gn_icon').addClass("glyphicon-ok");
+            $('#ctt_gn_div').removeClass("has-error");
+            $('#ctt_gn_icon').removeClass("glyphicon-remove");
+        }
+        else {
+            $('#ctt_gn_div').addClass("has-error");
+            $('#ctt_gn_icon').addClass("glyphicon-remove");
+            $('#ctt_gn_div').removeClass("has-success");
+            $('#ctt_gn_icon').removeClass("glyphicon-ok");
+        }
+        if (brandName) {
+            $('#ctt_bn_div').addClass("has-success");
+            $('#ctt_bn_icon').addClass("glyphicon-ok");
+            $('#ctt_bn_div').removeClass("has-error");
+            $('#ctt_bn_icon').removeClass("glyphicon-remove");
+        }
+        else {
+            $('#ctt_bn_div').addClass("has-error");
+            $('#ctt_bn_icon').addClass("glyphicon-remove");
+            $('#ctt_bn_div').removeClass("has-success");
+            $('#ctt_bn_icon').removeClass("glyphicon-ok");
+        }
+    };
     var radiationTreatmentForm = function(domElement) {
+        var initFlag = $('#radiation-treatment-form').attr('init_flag');
         var patientId = $(domElement).attr("patient_id");
-        var initFlag = $('#radiation-treatment-form').attr('init-flag');
-        $('#radiation-treatment-form').attr('patient_id', patientId);
-        $.post(actions['ctpt_radiation_form'], {
+        var formType = $(domElement).attr("form_type");
+        var params = {
             patientId: patientId,
-            formType: 'new'
-        }, function(data) {   
+            formType: formType,
+            initFlag: initFlag
+        };
+        if (formType == 'new') {
+            $('#remove-radiation-treatment').hide();
+        }
+        else {
+            $('#remove-radiation-treatment').show();
+            var treatmentId = $(domElement).attr('treatment_id');
+            $('#remove-radiation-treatment').attr("treatment_id", treatmentId); 
+            params['treatmentId'] = treatmentId;
+        }
+        $('#radiation-treatment-form').attr('patient_id', patientId);
+        $.post(actions['ctpt_radiation_form'], params, function(data) {   
             if (initFlag == '0') {
                 $('#radiation-treatment-form').modal({
                     keyboard: false,
@@ -632,9 +831,24 @@ var careTeamController = (function() {
             else {
                 $('#radiation-treatment-form').modal('show');
             }
-            // empty fields for new form
             emptyRadiationTreatmentForm();
+            if (formType == 'edit') {
+                addRadiationTreatmentToForm(data.prtDto);
+            }
+            triggerRadiationFormEvents();
         }, "json");
+    };
+    var dateToStr = function(date, separator) {
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+        if (day < 10) {
+            day = '0' + day;
+        }
+        if (month < 10) {
+            month = '0' + month;
+        }
+        return year + separator + month + separator + day;
     };
     var removeSideEffect = function(domElement) {
     	var elmId = $(domElement).attr('elmId');
@@ -660,70 +874,89 @@ var careTeamController = (function() {
     			arr.splice(index, 1);
     		}
     	}
-    	$('#' + elmId).data(key, arr);
     	length = arr.length;
     	var htmlText = '';
     	for (var i = 0; i < length; i++) {
     		htmlText += '<div class="row"><div class="col-xs-12"><span class="glyphicon glyphicon-remove" elmId="'+ elmId +'" key="' + key + '" item="' + arr[i] + '" onclick="careTeamController.evtMsgHandler(\'remove_side_effect\', this);"><a href="#">' + arr[i] + '</a></span></div></div>';
     	}
     	$('#' + elmId).html(htmlText);
-        
-        var sideEffects = $('#' + elmId).data("sideEffects");
-        var keyIds = key + "-ids";
-        var tmpArr = [];
-        for (var i = 0; i < arr.length; i++) {
-            for (var j = 0; j < sideEffects.length; j++) {
-                if (arr[i] == sideEffects[j].description) {
-                    tmpArr[i] = sideEffects[j].id;
-                    break;
-                }
-            }
-        }
-        $('#' + elmId).data(keyIds, tmpArr);
+        $('#' + elmId).data(key, arr);
     };
     
     var chemoTreatmentForm = function(domElement) {
+        var initFlag = $('#chemotherapy-treatment-form').attr('init_flag');
         var patientId = $(domElement).attr("patient_id");
-        var initFlag = $('#chemotherapy-treatment-form').attr('init-flag');
+        var formType = $(domElement).attr("form_type");
+        var params = {
+            patientId: patientId,
+            formType: formType,
+            initFlag: initFlag
+        };
+        if (formType == 'new') {
+            $('#remove-chemotherapy-treatment').hide();
+        }
+        else {
+            $('#remove-chemotherapy-treatment').show();
+            var treatmentId = $(domElement).attr('treatment_id');
+            $('#remove-chemotherapy-treatment').attr("treatment_id", treatmentId); 
+            params['treatmentId'] = treatmentId;
+        }
         $('#chemotherapy-treatment-form').attr('patient_id', patientId);
-        $.post(actions['ctpt_chemotherapy_form'], {
-            formType: 'new',
-            patientId: patientId
-        }, function(data) {
-        	if (initFlag == '0') {
+        
+        $.post(actions['ctpt_chemotherapy_form'], params, function(data) {
+            if (initFlag == '0') {
                 $('#chemotherapy-treatment-form').modal({
                     keyboard: false,
-                    backdrop: "static"
+                    backdrop: 'static'
                 });
                 initializeChemoTreatmentForm(data);
             }
             else {
-                $('#chemotherapy-treatment-form').modal("show");
+                $('#chemotherapy-treatment-form').modal('show');
             }
             emptyChemoTreatmentForm();
+            if (formType == 'edit') {
+                addChemotherapyToForm(data.pctDto);
+            }
+            triggerChemotherapyFormEvents();
         }, "json");
-        
     };
 
     var surgeryForm = function(domElement) {
+        var initFlag = $('#surgery-treatment-form').attr('init_flag');
         var patientId = $(domElement).attr("patient_id");
-        var initFlag = $('#surgery-treatment-form').attr('init-flag');
+        var formType = $(domElement).attr("form_type");
+        var params = {
+            patientId: patientId,
+            formType: formType,
+            initFlag: initFlag
+        };
+        if (formType == 'new') {
+            $('#remove-surgery-treatment').hide();
+        }
+        else {
+            $('#remove-surgery-treatment').show();
+            var treatmentId = $(domElement).attr('treatment_id');
+            $('#remove-surgery-treatment').attr("treatment_id", treatmentId); 
+            params['treatmentId'] = treatmentId;
+        }
         $('#surgery-treatment-form').attr('patient_id', patientId);
-        $.post(actions['ctpt_surgery_form'], {
-            formType: 'new',
-            patientId: patientId
-        }, function(data) {
-        	if (initFlag == '0') {
+        $.post(actions['ctpt_surgery_form'], params, function(data) {   
+            if (initFlag == '0') {
                 $('#surgery-treatment-form').modal({
                     keyboard: false,
-                    backdrop: "static"
+                    backdrop: 'static'
                 });
                 initializeSurgeryForm(data);
             }
             else {
-                $('#surgery-treatment-form').modal("show");
+                $('#surgery-treatment-form').modal('show');
             }
             emptySurgeryForm();
+            if (formType == 'edit') {
+                addSurgeryInfoToForm(data.psiDto);
+            }
+            triggerSurgeryFormEvents();
         }, "json");
     };
     

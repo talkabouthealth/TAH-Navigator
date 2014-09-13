@@ -16,8 +16,11 @@ public class PatientChemoTreatmentDTO {
 	@Column(name="user_id")
 	private Integer userId;
 	
-	@Column(name="medication_id")
-	private Integer medicationId;
+	@Column(name="mgn")
+	private String genericName;
+	
+	@Column(name="mbn")
+	private String brandName;
 	
 	@Column(name="cycle_no")
 	private Integer cycleNo;
@@ -36,11 +39,6 @@ public class PatientChemoTreatmentDTO {
 	
 	@Column(name="notes")
 	private String notes;
-	
-	
-	@OneToOne
-	@JoinColumn(name="medication_id", insertable=false, updatable=false)
-	private MedicationDTO medDto;
 	
 	@OneToOne
 	@JoinColumn(name="cs_id", insertable=false, updatable=false)
@@ -64,14 +62,6 @@ public class PatientChemoTreatmentDTO {
 
 	public void setUserId(Integer userId) {
 		this.userId = userId;
-	}
-
-	public Integer getMedicationId() {
-		return medicationId;
-	}
-
-	public void setMedicationId(Integer medicationId) {
-		this.medicationId = medicationId;
 	}
 
 	public Integer getCycleNo() {
@@ -122,14 +112,6 @@ public class PatientChemoTreatmentDTO {
 		this.notes = notes;
 	}
 
-	public MedicationDTO getMedDto() {
-		return medDto;
-	}
-
-	public void setMedDto(MedicationDTO medDto) {
-		this.medDto = medDto;
-	}
-
 	public ChemoScheduleDTO getCsDto() {
 		return csDto;
 	}
@@ -144,5 +126,21 @@ public class PatientChemoTreatmentDTO {
 
 	public void setPctSeDtos(List<PatientCttSideEffectDTO> pctSeDtos) {
 		this.pctSeDtos = pctSeDtos;
+	}
+
+	public String getGenericName() {
+		return genericName;
+	}
+
+	public void setGenericName(String genericName) {
+		this.genericName = genericName;
+	}
+
+	public String getBrandName() {
+		return brandName;
+	}
+
+	public void setBrandName(String brandName) {
+		this.brandName = brandName;
 	}
 }

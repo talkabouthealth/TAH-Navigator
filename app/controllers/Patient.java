@@ -152,8 +152,12 @@ public class Patient extends Controller {
 		UserBean user = CommonUtil.loadCachedUser(session);
 		UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());
 		PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", user.getId());
-		System.out.println(session.getId());
-        render(user,userDto,patientOtherDetails);
+		//System.out.println(session.getId());
+		Integer patientId = user.getId();
+		List<PatientRadiationTreatmentDTO> radiationTreatments = Treatment.getPatientRadiationTreatments(patientId);
+		List<PatientChemoTreatmentDTO> chemoTreatments = Treatment.getPatientChemoTreatments(patientId);
+		List<PatientSurgeryInfoDTO> surgeryInfo = Treatment.getPatientSurgeryInfo(patientId);		
+        render(user,userDto,patientOtherDetails, patientId, radiationTreatments, chemoTreatments, surgeryInfo);
     }
 
 	public static void setting() {

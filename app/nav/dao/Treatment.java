@@ -108,11 +108,11 @@ public class Treatment {
 		return sideEffects;
 	}
 	
-	public static List<MedicationDTO> getAllMedications() {
-		List<MedicationDTO> medications = null;
+	public static List<MedicineCatlogDTO> getAllMedications() {
+		List<MedicineCatlogDTO> medications = null;
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
-			TypedQuery<MedicationDTO> query = em.createQuery("FROM MedicationDTO", MedicationDTO.class); 
+			TypedQuery<MedicineCatlogDTO> query = em.createQuery("FROM MedicineCatlogDTO", MedicineCatlogDTO.class); 
 			medications = query.getResultList();
 		} 
 		catch(Exception e) {
@@ -123,19 +123,69 @@ public class Treatment {
 		}
 		return medications;
 	}
-	public static void saveSurgeryInfo(Integer patientId, Map<String, String> siInfo, Map<Integer, Integer> sideEffect) {
+	public static void saveSurgeryInfo(Integer patientId, Integer treatmentId, Map<String, String> siInfo, Map<Integer, String> sideEffects) {
 		EntityManager em = JPAUtil.getEntityManager();
-		String stId = siInfo.get("stId");
+		String surgeryType = siInfo.get("surgeryType");
 		String surgeryDate = siInfo.get("surgeryDate");
-		String trId = siInfo.get("trId");
+		String region = siInfo.get("region");
 		String notes = siInfo.get("notes");
+		Integer stId = null;
+		Integer trId = null;
+		PatientSurgeryInfoDTO psiDto = null;
 		
-		PatientSurgeryInfoDTO psiDto = new PatientSurgeryInfoDTO();
-		psiDto.setUserId(patientId);
-		
-		if (stId != null && !stId.isEmpty()) {
-			psiDto.setStId(Integer.valueOf(stId));
+		if (treatmentId != null) {
+			Query deleteQuery = em.createQuery("DELETE FROM PatientStSideEffectDTO p WHERE p.psiId = :psiId");
+			deleteQuery.setParameter("psiId", treatmentId);
+			em.getTransaction().begin();
+			deleteQuery.executeUpdate();
+			em.getTransaction().commit();
 		}
+		
+		TypedQuery<TreatmentRegionDTO> trQuery = em.createQuery("SELECT c FROM TreatmentRegionDTO c WHERE c.region = :region", TreatmentRegionDTO.class); 
+		trQuery.setParameter("region", region);
+		try {
+			TreatmentRegionDTO trDto = trQuery.getSingleResult();
+			trId = trDto.getId();
+		} catch (NoResultException e) {
+			TreatmentRegionDTO trDto = new TreatmentRegionDTO();
+			trDto.setRegion(region);
+			em.getTransaction().begin();
+			em.persist(trDto);
+			em.getTransaction().commit();
+			trId = trDto.getId();
+		}
+		
+		TypedQuery<SurgeryTypeDTO> stQuery = em.createQuery("SELECT s FROM SurgeryTypeDTO s WHERE s.name = :name", SurgeryTypeDTO.class); 
+		stQuery.setParameter("name", surgeryType);
+		try {
+			SurgeryTypeDTO stDto = stQuery.getSingleResult();
+			stId = stDto.getId();
+		} catch (NoResultException e) {
+			SurgeryTypeDTO stDto = new SurgeryTypeDTO();
+			stDto.setName(surgeryType);
+			em.getTransaction().begin();
+			em.persist(stDto);
+			em.getTransaction().commit();
+			stId = stDto.getId();
+		}
+		
+		if (treatmentId != null) {
+			TypedQuery<PatientSurgeryInfoDTO> psiQuery = em.createQuery("SELECT p FROM PatientSurgeryInfoDTO p WHERE p.id = :id", PatientSurgeryInfoDTO.class); 
+			psiQuery.setParameter("id", treatmentId);
+			try {
+				psiDto = psiQuery.getSingleResult();
+			} catch (NoResultException e) {
+				
+			}
+		}
+		else {
+			psiDto = new PatientSurgeryInfoDTO();
+		}
+		
+		psiDto.setUserId(patientId);
+		psiDto.setStId(stId);
+		psiDto.setTrId(trId);
+		
 		if (surgeryDate != null && !surgeryDate.isEmpty()) {
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			try {
@@ -143,74 +193,135 @@ public class Treatment {
 				psiDto.setSurgeryDate(date);
 			} catch (ParseException e) {
 				
-			}
-			
+			}	
 		}
-		if (trId != null && !trId.isEmpty()) {
-			psiDto.setTrId(Integer.valueOf(trId));
-		}
+		
 		if (notes != null && !notes.isEmpty()) {
 			psiDto.setNotes(notes);
 		}
 		em.getTransaction().begin();
 		em.persist(psiDto);
 		em.getTransaction().commit();
-		
 		Integer psiId = psiDto.getId();
-		if (psiId != null && sideEffect != null) {
-			PatientStSideEffectDTO pstSeDto;
-			for (Integer i: sideEffect.keySet()) {
-				Integer id = sideEffect.get(i);
+		
+		if (psiId != null && sideEffects != null) {
+			TypedQuery<SideEffectDTO> query = em.createQuery("SELECT c FROM  SideEffectDTO c WHERE c.description = :description", SideEffectDTO.class); 
+			PatientStSideEffectDTO pstSeDto = null;
+			SideEffectDTO seDto = null;
+			Integer seId = null;
+			for (Integer i: sideEffects.keySet()) {
+				String description = sideEffects.get(i);
+				query.setParameter("description", description);
+				try {
+					seDto = query.getSingleResult();
+					seId = seDto.getId();
+				} catch (NoResultException e) {
+					seDto = new SideEffectDTO();
+					seDto.setDescription(description);
+					em.getTransaction().begin();
+					em.persist(seDto);
+					em.getTransaction().commit();
+					seId = seDto.getId();
+				}
 				pstSeDto = new PatientStSideEffectDTO();
 				pstSeDto.setPsiId(psiId);
-				pstSeDto.setSeId(id);
+				pstSeDto.setSeId(seId);
 				em.getTransaction().begin();
 				em.persist(pstSeDto);
 				em.getTransaction().commit();
 			}
 		}
 	}
-	public static void saveChemoTreatment(Integer patientId, Map<String, String> cttInfo, Map<Integer, Integer> sideEffect) {
+	public static void saveChemoTreatment(Integer patientId, Integer treatmentId, Map<String, String> ctInfo, Map<Integer, String> sideEffects) {
 		EntityManager em = JPAUtil.getEntityManager();
-		String medicationId = cttInfo.get("medicationId");
-		String cycleNo = cttInfo.get("cycleNo");
-		String csId = cttInfo.get("csId");
-		String doseReduction = cttInfo.get("doseReduction");
-		String startDate = cttInfo.get("startDate");
-		String endDate = cttInfo.get("endDate");
-		String notes = cttInfo.get("notes");
+		String genericName = ctInfo.get("genericName");
+		String brandName = ctInfo.get("brandName");
+		String cycleNo = ctInfo.get("cycleNo");
+		String schedule = ctInfo.get("schedule");
+		String doseReduction = ctInfo.get("doseReduction");
+		String startDate = ctInfo.get("startDate");
+		String endDate = ctInfo.get("endDate");
+		String notes = ctInfo.get("notes");
 		
-		PatientChemoTreatmentDTO pctDto = new PatientChemoTreatmentDTO();
-		pctDto.setUserId(patientId);
+		Integer csId = null;
+		PatientChemoTreatmentDTO pctDto = null;
 		
-		if (medicationId != null && !medicationId.isEmpty()) {
-			pctDto.setMedicationId(Integer.valueOf(medicationId));
+		if (treatmentId != null) {
+			Query deleteQuery = em.createQuery("DELETE FROM PatientCttSideEffectDTO p WHERE p.pctId = :pctId");
+			deleteQuery.setParameter("pctId", treatmentId);
+			em.getTransaction().begin();
+			deleteQuery.executeUpdate();
+			em.getTransaction().commit();
+			
+			TypedQuery<PatientChemoTreatmentDTO> pctQuery = em.createQuery("SELECT p FROM PatientChemoTreatmentDTO p WHERE p.id = :id", PatientChemoTreatmentDTO.class); 
+			pctQuery.setParameter("id", treatmentId);
+			try {
+				pctDto = pctQuery.getSingleResult();
+			} catch (NoResultException e) {
+				
+			}
 		}
+		else {
+			pctDto = new PatientChemoTreatmentDTO();
+		}
+		
+		
+		TypedQuery<MedicineCatlogDTO> mQuery = em.createQuery("SELECT m FROM MedicineCatlogDTO m WHERE m.label = :label AND m.brandname LIKE :brandname", MedicineCatlogDTO.class); 
+		mQuery.setParameter("label", genericName);
+		mQuery.setParameter("brandname", "%" + brandName + "%");
+		try {
+			MedicineCatlogDTO mDto = mQuery.getSingleResult();
+		} catch (NoResultException e) {
+			MedicineCatlogDTO mDto = new MedicineCatlogDTO();
+			mDto.setLabel(genericName);
+			mDto.setBrandname(brandName);
+			em.getTransaction().begin();
+			em.persist(mDto);
+			em.getTransaction().commit();
+		}
+		
+		pctDto.setUserId(patientId);
+		pctDto.setGenericName(genericName);
+		pctDto.setBrandName(brandName);
 		if (cycleNo != null && !cycleNo.isEmpty()) {
 			pctDto.setCycleNo(Integer.valueOf(cycleNo));
 		}
-		if (csId != null && !csId.isEmpty()) {
-			pctDto.setCsId(Integer.valueOf(csId));
+		if (schedule != null && !schedule.isEmpty()) {
+			TypedQuery<ChemoScheduleDTO> csQuery = em.createQuery("SELECT c FROM ChemoScheduleDTO c WHERE c.timePeriod = :timePeriod", ChemoScheduleDTO.class); 
+			csQuery.setParameter("timePeriod", schedule);
+			try {
+				ChemoScheduleDTO csDto = csQuery.getSingleResult();
+				csId = csDto.getId();
+			} catch (NoResultException e) {
+				ChemoScheduleDTO csDto = new ChemoScheduleDTO();
+				csDto.setTimePeriod(schedule);
+				em.getTransaction().begin();
+				em.persist(csDto);
+				em.getTransaction().commit();
+				csId = csDto.getId();
+			}
+			pctDto.setCsId(csId);
 		}
 		if (doseReduction != null && !doseReduction.isEmpty()) {
 			pctDto.setDoseReduction(Integer.valueOf(doseReduction));
 		}
-		SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 		if (startDate != null && !startDate.isEmpty()) {
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			try {
 				Date date = df.parse(startDate);
 				pctDto.setStartDate(date);
 			} catch (ParseException e) {
 				
-			}
+			}	
 		}
 		if (endDate != null && !endDate.isEmpty()) {
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 			try {
 				Date date = df.parse(endDate);
 				pctDto.setEndDate(date);
 			} catch (ParseException e) {
 				
-			}
+			}	
 		}
 		if (notes != null && !notes.isEmpty()) {
 			pctDto.setNotes(notes);
@@ -218,23 +329,76 @@ public class Treatment {
 		em.getTransaction().begin();
 		em.persist(pctDto);
 		em.getTransaction().commit();
-		
 		Integer pctId = pctDto.getId();
 		
-		if (pctId != null && sideEffect != null) {
-			PatientCttSideEffectDTO pctSeDto;
-			for (Integer i: sideEffect.keySet()) {
-				Integer id = sideEffect.get(i);
+		if (pctId != null && sideEffects != null) {
+			TypedQuery<SideEffectDTO> query = em.createQuery("SELECT c FROM  SideEffectDTO c WHERE c.description = :description", SideEffectDTO.class); 
+			PatientCttSideEffectDTO pctSeDto = null;
+			SideEffectDTO seDto = null;
+			Integer seId = null;
+			for (Integer i: sideEffects.keySet()) {
+				String description = sideEffects.get(i);
+				query.setParameter("description", description);
+				try {
+					seDto = query.getSingleResult();
+					seId = seDto.getId();
+				} catch (NoResultException e) {
+					seDto = new SideEffectDTO();
+					seDto.setDescription(description);
+					em.getTransaction().begin();
+					em.persist(seDto);
+					em.getTransaction().commit();
+					seId = seDto.getId();
+				}
 				pctSeDto = new PatientCttSideEffectDTO();
 				pctSeDto.setPctId(pctId);
-				pctSeDto.setSeId(id);
+				pctSeDto.setSeId(seId);
 				em.getTransaction().begin();
 				em.persist(pctSeDto);
 				em.getTransaction().commit();
 			}
 		}
 	}
-	public static void saveRadiationTreatment(Integer patientId, Map<String, String> rtInfo, Map<Integer, Integer> sideEffect) {
+	public static void removeRadiationData(Integer treatmentId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		if (treatmentId != null) {
+			Query deleteSideEffects = em.createQuery("DELETE FROM PatientRtSideEffectDTO p WHERE p.prtId = :prtId");
+			deleteSideEffects.setParameter("prtId", treatmentId);
+			Query deleteRadiation = em.createQuery("DELETE FROM PatientRadiationTreatmentDTO p WHERE p.id = :id");
+			deleteRadiation.setParameter("id", treatmentId);
+			em.getTransaction().begin();
+			deleteSideEffects.executeUpdate();
+			deleteRadiation.executeUpdate();
+			em.getTransaction().commit();
+		}
+	}
+	public static void removeSurgeryData(Integer treatmentId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		if (treatmentId != null) {
+			Query deleteSideEffects = em.createQuery("DELETE FROM PatientStSideEffectDTO p WHERE p.psiId = :psiId");
+			deleteSideEffects.setParameter("psiId", treatmentId);
+			Query deleteSurgery = em.createQuery("DELETE FROM PatientSurgeryInfoDTO p WHERE p.id = :id");
+			deleteSurgery.setParameter("id", treatmentId);
+			em.getTransaction().begin();
+			deleteSideEffects.executeUpdate();
+			deleteSurgery.executeUpdate();
+			em.getTransaction().commit();
+		}
+	}
+	public static void removeChemotherapyData(Integer treatmentId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		if (treatmentId != null) {
+			Query deleteSideEffects = em.createQuery("DELETE FROM PatientCttSideEffectDTO p WHERE p.pctId = :pctId");
+			deleteSideEffects.setParameter("pctId", treatmentId);
+			Query deleteSurgery = em.createQuery("DELETE FROM PatientChemoTreatmentDTO p WHERE p.id = :id");
+			deleteSurgery.setParameter("id", treatmentId);
+			em.getTransaction().begin();
+			deleteSideEffects.executeUpdate();
+			deleteSurgery.executeUpdate();
+			em.getTransaction().commit();
+		}
+	}
+	public static void saveRadiationTreatment(Integer patientId, Integer treatmentId, Map<String, String> rtInfo, Map<Integer, String> sideEffects) {
 		EntityManager em = JPAUtil.getEntityManager();
 		String radiationType = rtInfo.get("radiationType");
 		String dose = rtInfo.get("dose");
@@ -260,28 +424,56 @@ public class Treatment {
 			rtDto = query1.getSingleResult();
 			rtId = rtDto.getId();
 		} catch (NoResultException e) {
-			
+			rtDto = new RadiationTypeDTO();
+			rtDto.setName(radiationType);
+			em.getTransaction().begin();
+			em.persist(rtDto);
+			em.getTransaction().commit();
+			rtId = rtDto.getId();
 		}
 		
-		TypedQuery<RadiationScheduleDTO> query2 = em.createQuery("SELECT c FROM RadiationScheduleDTO c WHERE c.timePeriod = :timePeriod", RadiationScheduleDTO.class); 
-		query2.setParameter("timePeriod", schedule);
-		try {
-			rsDto = query2.getSingleResult();
-			rsId = rsDto.getId();
-		} catch (NoResultException e) {
-			
+		if (schedule != null && !schedule.isEmpty()) {
+			TypedQuery<RadiationScheduleDTO> query2 = em.createQuery("SELECT c FROM RadiationScheduleDTO c WHERE c.timePeriod = :timePeriod", RadiationScheduleDTO.class); 
+			query2.setParameter("timePeriod", schedule);
+			try {
+				rsDto = query2.getSingleResult();
+				rsId = rsDto.getId();
+			} catch (NoResultException e) {
+				rsDto = new RadiationScheduleDTO();
+				rsDto.setTimePeriod(schedule);
+				em.getTransaction().begin();
+				em.persist(rsDto);
+				em.getTransaction().commit();
+				rsId = rsDto.getId();
+			}
 		}
 		
-		TypedQuery<TreatmentRegionDTO> query3 = em.createQuery("SELECT c FROM TreatmentRegionDTO c WHERE c.region = :region", TreatmentRegionDTO.class); 
-		query3.setParameter("region", region);
-		try {
-			trDto = query3.getSingleResult();
-			trId = trDto.getId();
-		} catch (NoResultException e) {
-			
+		if (region != null && !region.isEmpty()) {
+			TypedQuery<TreatmentRegionDTO> query3 = em.createQuery("SELECT c FROM TreatmentRegionDTO c WHERE c.region = :region", TreatmentRegionDTO.class); 
+			query3.setParameter("region", region);
+			try {
+				trDto = query3.getSingleResult();
+				trId = trDto.getId();
+			} catch (NoResultException e) {
+				trDto = new TreatmentRegionDTO();
+				trDto.setRegion(region);
+				em.getTransaction().begin();
+				em.persist(trDto);
+				em.getTransaction().commit();
+				trId = trDto.getId();
+			}
 		}
-		
-		prtDto = new PatientRadiationTreatmentDTO();
+		if (treatmentId != null) {
+			TypedQuery<PatientRadiationTreatmentDTO> prtQuery = em.createQuery("SELECT c FROM PatientRadiationTreatmentDTO c WHERE c.id = :id", PatientRadiationTreatmentDTO.class); 
+			prtQuery.setParameter("id", treatmentId);
+			try {
+				prtDto = prtQuery.getSingleResult();
+			} catch (NoResultException e) {
+			}
+		}
+		else {
+			prtDto = new PatientRadiationTreatmentDTO();
+		}
 		prtDto.setUserId(patientId);
 		prtDto.setRtId(rtId);
 		prtDto.setRsId(rsId);
@@ -312,36 +504,48 @@ public class Treatment {
 		em.getTransaction().begin();
 		em.persist(prtDto);
 		em.getTransaction().commit();
-		
 		prtId = prtDto.getId();
+		if (treatmentId != null) {
+			Query deleteQuery = em.createQuery("DELETE FROM PatientRtSideEffectDTO p WHERE p.prtId = :prtId");
+			deleteQuery.setParameter("prtId", treatmentId);
+			em.getTransaction().begin();
+			deleteQuery.executeUpdate();
+			em.getTransaction().commit();
+		}
 		
-		if (prtId != null && sideEffect != null) {
-			PatientRtSideEffectDTO prtSeDto;
-			for (Integer i: sideEffect.keySet()) {
-				Integer id = sideEffect.get(i);
+		if (prtId != null && sideEffects != null) {
+			TypedQuery<SideEffectDTO> query = em.createQuery("SELECT c FROM  SideEffectDTO c WHERE c.description = :description", SideEffectDTO.class); 
+			PatientRtSideEffectDTO prtSeDto = null;
+			SideEffectDTO seDto = null;
+			Integer seId = null;
+			for (Integer i: sideEffects.keySet()) {
+				String description = sideEffects.get(i);
+				query.setParameter("description", description);
+				try {
+					seDto = query.getSingleResult();
+					seId = seDto.getId();
+				} catch (NoResultException e) {
+					seDto = new SideEffectDTO();
+					seDto.setDescription(description);
+					em.getTransaction().begin();
+					em.persist(seDto);
+					em.getTransaction().commit();
+					seId = seDto.getId();
+				}
 				prtSeDto = new PatientRtSideEffectDTO();
 				prtSeDto.setPrtId(prtId);
-				prtSeDto.setSeId(id);
+				prtSeDto.setSeId(seId);
 				em.getTransaction().begin();
 				em.persist(prtSeDto);
 				em.getTransaction().commit();
 			}
 		}
 		
+		
 	}
-
-	public static List<PatientRadiationTreatmentDTO> getPatientRadiationTreatments(Integer patientId) {
+	public static void refreshRadiationTreatment(PatientRadiationTreatmentDTO prtDto) {
 		EntityManager em = JPAUtil.getEntityManager();
-		List<PatientRadiationTreatmentDTO> radiationTreatments = null;
-		try {
-			TypedQuery<PatientRadiationTreatmentDTO> query = em.createQuery("FROM PatientRadiationTreatmentDTO c WHERE c.userId = :userId", PatientRadiationTreatmentDTO.class);
-			query.setParameter("userId", patientId);
-			radiationTreatments = query.getResultList();
-		} 
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		for (PatientRadiationTreatmentDTO prtDto : radiationTreatments) {
+		if (prtDto != null) {
 			em.refresh(prtDto);
 			RadiationTypeDTO rtDto = prtDto.getRtDto();
 			if (rtDto != null) {
@@ -364,31 +568,11 @@ public class Treatment {
 				}
 			}
 		}
-		return radiationTreatments;
 	}
-	
-	public static List<PatientChemoTreatmentDTO> getPatientChemoTreatments(Integer patientId) {
+	public static void refreshChemotherapy(PatientChemoTreatmentDTO pctDto) {
 		EntityManager em = JPAUtil.getEntityManager();
-		List<PatientChemoTreatmentDTO> chemoTreatments = null;
-		try {
-			TypedQuery<PatientChemoTreatmentDTO> query = em.createQuery("FROM PatientChemoTreatmentDTO c WHERE c.userId = :userId", PatientChemoTreatmentDTO.class);
-			query.setParameter("userId", patientId);
-			chemoTreatments = query.getResultList();
-		} 
-		catch(Exception e) {
-			e.printStackTrace();
-		}
-		for (PatientChemoTreatmentDTO pctDto : chemoTreatments) {
+		if (pctDto != null) {
 			em.refresh(pctDto);
-			MedicationDTO medDto = pctDto.getMedDto();
-			if (medDto != null) {
-				em.refresh(medDto);
-				MedicationGenNameDTO mgnDto = medDto.getMgnDto();
-				em.refresh(mgnDto);
-				MedicationBrandNameDTO mbnDto = medDto.getMbnDto();
-				em.refresh(mbnDto);
-			}
-			
 			ChemoScheduleDTO csDto = pctDto.getCsDto();
 			if (csDto != null) {
 				em.refresh(csDto);
@@ -401,6 +585,99 @@ public class Treatment {
 					em.refresh(seDto);
 				}
 			}
+		}
+	}
+	public static void refreshSurgeryInfo(PatientSurgeryInfoDTO psiDto) {
+		EntityManager em = JPAUtil.getEntityManager();
+		if (psiDto != null) {
+			em.refresh(psiDto);
+			TreatmentRegionDTO trDto = psiDto.getTrDto();
+			if (trDto != null) {
+				em.refresh(trDto);
+			}
+			List<PatientStSideEffectDTO> pstSeDtos = psiDto.getPstSeDtos();
+			if (pstSeDtos != null) {
+				for (PatientStSideEffectDTO pstSeDto: pstSeDtos) {
+					em.refresh(pstSeDto);
+					SideEffectDTO seDto = pstSeDto.getSeDto();
+					em.refresh(seDto);
+				}
+			}
+		}
+	}
+	public static List<PatientRadiationTreatmentDTO> getPatientRadiationTreatments(Integer patientId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		List<PatientRadiationTreatmentDTO> radiationTreatments = null;
+		try {
+			TypedQuery<PatientRadiationTreatmentDTO> query = em.createQuery("FROM PatientRadiationTreatmentDTO c WHERE c.userId = :userId", PatientRadiationTreatmentDTO.class);
+			query.setParameter("userId", patientId);
+			radiationTreatments = query.getResultList();
+		} 
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		for (PatientRadiationTreatmentDTO prtDto : radiationTreatments) {
+			refreshRadiationTreatment(prtDto);
+		}
+		return radiationTreatments;
+	}
+	
+	public static PatientRadiationTreatmentDTO getRadiationTreatment(Integer treatmentId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		PatientRadiationTreatmentDTO prtDto = null;
+		try {
+			TypedQuery<PatientRadiationTreatmentDTO> query = em.createQuery("FROM PatientRadiationTreatmentDTO c WHERE c.id = :id", PatientRadiationTreatmentDTO.class);
+			query.setParameter("id", treatmentId);
+			prtDto = query.getSingleResult();
+			refreshRadiationTreatment(prtDto);
+		} 
+		catch(Exception e) {
+			//e.printStackTrace();
+		}
+		return prtDto;
+	}
+	
+	public static PatientSurgeryInfoDTO getSurgeryInfo(Integer treatmentId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		PatientSurgeryInfoDTO psiDto = null;
+		try {
+			TypedQuery<PatientSurgeryInfoDTO> query = em.createQuery("FROM PatientSurgeryInfoDTO c WHERE c.id = :id", PatientSurgeryInfoDTO.class);
+			query.setParameter("id", treatmentId);
+			psiDto = query.getSingleResult();
+			refreshSurgeryInfo(psiDto);
+		} 
+		catch(Exception e) {
+			//e.printStackTrace();
+		}
+		return psiDto;
+	}
+	public static PatientChemoTreatmentDTO getChemotherapy(Integer treatmentId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		PatientChemoTreatmentDTO pctDto = null;
+		try {
+			TypedQuery<PatientChemoTreatmentDTO> query = em.createQuery("FROM PatientChemoTreatmentDTO p WHERE p.id = :id", PatientChemoTreatmentDTO.class);
+			query.setParameter("id", treatmentId);
+			pctDto = query.getSingleResult();
+			refreshChemotherapy(pctDto);
+		} 
+		catch(Exception e) {
+					
+		}
+		return pctDto;
+	}
+	public static List<PatientChemoTreatmentDTO> getPatientChemoTreatments(Integer patientId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		List<PatientChemoTreatmentDTO> chemoTreatments = null;
+		try {
+			TypedQuery<PatientChemoTreatmentDTO> query = em.createQuery("FROM PatientChemoTreatmentDTO c WHERE c.userId = :userId", PatientChemoTreatmentDTO.class);
+			query.setParameter("userId", patientId);
+			chemoTreatments = query.getResultList();
+		} 
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		for (PatientChemoTreatmentDTO pctDto : chemoTreatments) {
+			refreshChemotherapy(pctDto);
 		}
 		return chemoTreatments;
 	}
@@ -417,19 +694,7 @@ public class Treatment {
 			e.printStackTrace();
 		}
 		for (PatientSurgeryInfoDTO psiDto : surgeryInfo) {
-			em.refresh(psiDto);
-			TreatmentRegionDTO trDto = psiDto.getTrDto();
-			if (trDto != null) {
-				em.refresh(trDto);
-			}
-			List<PatientStSideEffectDTO> pstSeDtos = psiDto.getPstSeDtos();
-			if (pstSeDtos != null) {
-				for (PatientStSideEffectDTO pstSeDto: pstSeDtos) {
-					em.refresh(pstSeDto);
-					SideEffectDTO seDto = pstSeDto.getSeDto();
-					em.refresh(seDto);
-				}
-			}
+			refreshSurgeryInfo(psiDto);
 		}
 		return surgeryInfo;
 	}
