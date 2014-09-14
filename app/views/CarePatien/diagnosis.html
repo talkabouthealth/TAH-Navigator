@@ -1,21 +1,32 @@
-<div class="row">
-	<div class="col-xs-12">
-	   <button type="button" class="btn btn-primary" patient_id="${patientId}" onclick="careTeamController.evtMsgHandler('diagnosis', this);">EDIT INFO</button>
+#{extends 'CarePatien/patientSummary.html' /}
+    <div class="row">
+        <div class="col-xs-8">
+            <div class="product_tr">
+                <p><i class="fa fa-file-text-o"></i> Diagnosis</p>
+            </div>
+        </div>
+        <div class="col-xs-4">
+            <button type="button" class="btn btn-primary" patient_id="${patientId}" onclick="careTeamController.evtMsgHandler('diagnosis', this);">EDIT INFO</button>
+        </div>
     </div>
-</div>
- #{if patientDetails && patientDetails.diseaseId && patientDetails.disease}
- <div class="col-sm-12">
-     <div class="product_tr">
-       <p><i class="fa fa-file-text-o"></i> Diagnosis</p>
-         <div>${patientDetails.disease.name}
-         #{if patientDetails.dateofdiagnosis}
-          | First Diagnosed: ${patientDetails.dateofdiagnosis.format('MM/dd/yyyy')}
-         #{/if}
-         </div>
-     </div>
- <div class="bottom_hr"></div>
- </div>
- #{/if}
+	 #{if patientDetails && patientDetails.diseaseId && patientDetails.disease}
+	 <div class="row">  
+		 <div class="col-xs-12">
+		     <div class="product_tr">
+		         <div>${patientDetails.disease.name}
+		         #{if patientDetails.dateofdiagnosis}
+		          | First Diagnosed: ${patientDetails.dateofdiagnosis.format('MM/dd/yyyy')}
+		         #{/if}
+		         </div>
+		     </div>
+		 </div>
+	 </div>
+	 <div class="row">
+	    <div class="col-xs-12">
+	        <div class="bottom_hr"></div>
+	    </div>
+	 </div>
+	 #{/if}
 
  #{if patientDetails != null && breastCancerInfo != null && patientDetails.diseaseId == breastCancerId}
  #{if breastCancerInfo.er || breastCancerInfo.pr || breastCancerInfo.her2}

@@ -128,7 +128,8 @@ public class Care extends Controller {
 		List<BreastCancerStageDTO> stages = Disease.breastCancerStages();
 		int breastCancerId = Disease.BREAST_CANCER_ID; 
 		List<UserDTO> drList = UserDAO.getAll("5","");
-        render(user,expertDetail,patientId,patientDto,patientOtherDetails,distress,noteList, diseases, stages, breastCancerId,drList);
+		Map <String, Object> ps = PatientDetailDAO.patientSummary(Integer.valueOf(patientId));
+        render(user,expertDetail,patientId,patientDto,patientOtherDetails,distress,noteList, diseases, stages, breastCancerId,drList, ps);
     }
 	
 	public static void setting() {

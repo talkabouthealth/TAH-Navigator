@@ -12,10 +12,12 @@ import javax.persistence.TypedQuery;
 import javax.sound.midi.MidiDevice.Info;
 
 import models.AddressDTO;
+import models.AppointmentDTO;
 import models.BreastCancerInfoDTO;
 import models.BreastCancerStageDTO;
 import models.DiseaseMasterDTO;
 import models.PatientDetailDTO;
+import models.UserDTO;
 import models.UserDetailsDTO;
 import util.CommonUtil;
 import util.JPAUtil;
@@ -55,6 +57,148 @@ public class PatientDetailDAO {
 		em.persist(dto);
 		em.getTransaction().commit();
 		return dto;
+	}
+	
+	public static Map<String, Object> patientSummary(Integer patientId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		Map<String, Object> ps = new HashMap<String, Object>();
+		String firstName = null;
+		String lastName = null;
+		String userId = null;
+		boolean isVerified = false;
+		String disease = null;
+		String stage = null;
+		String er = null;
+		String pr = null;
+		String her2 = null;
+		String brca = null;
+		Date dob = null;
+		String phone = null;
+		Date dateOfDiagnosis = null;
+		String ec1Name = null;
+		String ec1Number = null;
+		Date nextAppointment = null;
+		Date lastAppointment = null;
+		String nextPurpose = null;
+		String lastPurpose = null;
+		
+		TypedQuery<UserDTO> userQuery = em.createQuery("SELECT c FROM UserDTO c WHERE c.id = :id", UserDTO.class); 
+		userQuery.setParameter("id", patientId.intValue());
+		UserDTO userDto = userQuery.getSingleResult();
+		em.refresh(userDto);
+		TypedQuery<UserDetailsDTO> userDetailsQuery = em.createQuery("SELECT c FROM UserDetailsDTO c WHERE c.id = :id", UserDetailsDTO.class);
+		userDetailsQuery.setParameter("id", patientId.intValue());
+		UserDetailsDTO userDetailsDto = userDetailsQuery.getSingleResult();
+		
+		TypedQuery<PatientDetailDTO> patientDetailsQuery = em.createQuery("SELECT c FROM PatientDetailDTO c WHERE c.id = :id", PatientDetailDTO.class);
+		patientDetailsQuery.setParameter("id", patientId.intValue());
+		try {
+			PatientDetailDTO patientDetailsDto = patientDetailsQuery.getSingleResult();
+			em.refresh(patientDetailsDto);
+			dateOfDiagnosis = patientDetailsDto.getDateofdiagnosis();
+			ec1Name = patientDetailsDto.getEc1name();
+			ec1Number = patientDetailsDto.getEc1number();
+			DiseaseMasterDTO dmDto = patientDetailsDto.getDisease();
+			if (dmDto != null) {
+				em.refresh(dmDto);
+				disease = dmDto.getName();
+				if (dmDto.getId() == Disease.BREAST_CANCER_ID) {
+					TypedQuery<BreastCancerInfoDTO> bcQuery = em.createQuery("SELECT c FROM BreastCancerInfoDTO c WHERE c.id = :id", BreastCancerInfoDTO.class);
+					bcQuery.setParameter("id", patientId);
+					BreastCancerInfoDTO bcDto = bcQuery.getSingleResult();
+					if (bcDto.getEr() != null) {
+						er = bcDto.getEr().toString();
+					}
+					if (bcDto.getPr() != null) {
+						pr = bcDto.getPr().toString();
+					}
+					if (bcDto.getHer2() != null) {
+						her2 = bcDto.getHer2().toString();
+					}
+					if (bcDto.getBrca() != null) {
+						brca = bcDto.getBrca().toString();
+					}
+					
+					BreastCancerStageDTO stageDto = bcDto.getBcStage();
+					if (stageDto != null) {
+						em.refresh(stageDto);
+						stage = stageDto.getName();
+					}
+				}
+			}
+		} catch (NoResultException e) {
+			
+		}
+		
+		TypedQuery<AppointmentDTO> nextQuery = em.createQuery("SELECT c FROM AppointmentDTO c WHERE c.patientid.id = :id AND c.deleteflag = false AND c.appointmentdate >= :appointmentdate order by c.appointmentdate asc", AppointmentDTO.class);
+		nextQuery.setParameter("id", patientId);
+		nextQuery.setParameter("appointmentdate", new Date());
+		
+		try {
+			List<AppointmentDTO> nextDtos = nextQuery.getResultList();
+			if (nextDtos != null && nextDtos.size() > 0) {
+				AppointmentDTO nextDto = nextDtos.get(0);
+				nextAppointment = nextDto.getAppointmentdate();
+				nextPurpose = nextDto.getPurpose();
+			}
+		} catch (NoResultException e) {
+			
+		}
+		
+		TypedQuery<AppointmentDTO> lastQuery = em.createQuery("SELECT c FROM AppointmentDTO c WHERE c.patientid.id = :id AND c.deleteflag = false AND c.appointmentdate < :appointmentdate order by c.appointmentdate desc", AppointmentDTO.class);
+		lastQuery.setParameter("id", patientId);
+		lastQuery.setParameter("appointmentdate", new Date());
+		try {
+			List<AppointmentDTO> lastDtos = lastQuery.getResultList();
+			if (lastDtos != null && lastDtos.size() > 0) {
+				AppointmentDTO lastDto = lastDtos.get(0);
+				lastAppointment = lastDto.getAppointmentdate();
+				lastPurpose = lastDto.getPurpose();
+			}
+		} catch (NoResultException e) {
+			
+		}
+		
+		userId = String.valueOf(userDto.getId());
+		firstName = userDetailsDto.getFirstName();
+		lastName = userDetailsDto.getLastName();
+		dob = userDetailsDto.getDob();
+		isVerified = userDto.isIsverified();
+		phone = userDetailsDto.getHomePhone();
+		
+		
+		
+		ps.put("userId", userId);
+		ps.put("firstName", firstName);
+		ps.put("lastName", lastName);
+		ps.put("isVerified", isVerified);
+		ps.put("disease", disease);
+		ps.put("stage", stage);
+		ps.put("er", er);
+		ps.put("pr", pr);
+		ps.put("her2", her2);
+		ps.put("brca", brca);
+		ps.put("dob", dob);
+		ps.put("phone", phone);
+		ps.put("dateOfDiagnosis", dateOfDiagnosis);
+		ps.put("ec1Name", ec1Name);
+		ps.put("ec1Number", ec1Number);
+		ps.put("nextAppointment", nextAppointment);
+		ps.put("nextPurpose", nextPurpose);
+		ps.put("lastAppointment", lastAppointment);
+		ps.put("lastPurpose", lastPurpose);
+		return ps;
+	}
+	
+	public static void patientVerify(Integer patientId, boolean isVerified) {
+		EntityManager em = JPAUtil.getEntityManager();
+		TypedQuery<UserDTO> userQuery = em.createQuery("SELECT c FROM UserDTO c WHERE c.id = :id", UserDTO.class); 
+		userQuery.setParameter("id", patientId.intValue());
+		UserDTO userDto = userQuery.getSingleResult();
+		userDto.setIsverified(isVerified);
+		em.getTransaction().begin();
+		em.persist(userDto);
+		em.getTransaction().commit();
 	}
 	
 	public static Map<String, Object> getDiagnosis(int patientId) {
