@@ -244,6 +244,7 @@ var careTeamController = (function() {
         var cycleNo = $('#ctt_cycle').val();
         var schedule = $('#ctt_schedule').val();
         var doseReduction = $('#ctt_dose').val();
+        
         var startDate = $('#ctt_start_date').val();
         var endDate = $('#ctt_end_date').val();
         var sideEffects = $('#ctt_side_effects_div').data('ctt-see');
@@ -254,11 +255,13 @@ var careTeamController = (function() {
             'ctInfo.brandName': brandName,
             'ctInfo.cycleNo': cycleNo,
             'ctInfo.schedule': schedule,
-            'ctInfo.doseReduction': parseInt(doseReduction),
             'ctInfo.startDate': startDate,
             'ctInfo.endDate': endDate,
             'ctInfo.notes': notes
         };
+        if (parseInt(doseReduction)) {
+            params['ctInfo.doseReduction'] = parseInt(doseReduction);
+        }
         if (typeof sideEffects != "undefined") {
             for (var i = 0; i < sideEffects.length; i++) {
                 params['sideEffects.' + i] = sideEffects[i];
