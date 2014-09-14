@@ -3,10 +3,6 @@ ALTER TABLE "nav"."medicinecatlog"
 ADD COLUMN "diseaseid" int4,
 ADD CONSTRAINT "diseaseid" FOREIGN KEY (diseaseid) REFERENCES "nav"."diseasemaster" ("id") ON DELETE RESTRICT ON UPDATE NO ACTION;
 
-INSERT INTO diseasemaster(name) VALUES  ('Prostate Cancer');
-INSERT INTO diseasemaster(name) VALUES  ('Lung Cancer');
-INSERT INTO diseasemaster(name) VALUES  ('Colon Cancer');
-INSERT INTO diseasemaster(name) VALUES  ('Rectal Cancer');
 
 INSERT INTO medicinecatlog   (genericname,  brandname ,method ,diseaseid) VALUES  ('Methotrexate','Abitrexate','IV','1');
 INSERT INTO medicinecatlog   (genericname,  brandname ,method ,diseaseid) VALUES  ('Ado-Trastuzumab emtansine','Kadcyla','IV','1');

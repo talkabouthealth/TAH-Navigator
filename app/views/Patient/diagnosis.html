@@ -74,6 +74,17 @@
   #{if patientOtherDetails && patientOtherDetails.dateofdiagnosis}
     <p><span>Date of Diagnosis:</span> ${patientOtherDetails.dateofdiagnosis.format('MM/dd/yyyy')}</p>
   #{/if}
+  </p>
+  #{/if}
+  #{if userDto.dob}
+    <p><span>DOB:</span> ${userDto.dob.format('MM/dd/yyyy')}</p>
+  #{/if}
+  #{if userDto.homePhone}
+    <p><span>Home Phone:</span> ${userDto.homePhone}</p>
+  #{/if}
+  #{if userDto.mobile}
+    <p><span>Mobile Phone:</span> ${userDto.mobile}</p>
+  #{/if}
   #{if patientOtherDetails && (patientOtherDetails.ec1name || patientOtherDetails.ec1number)}
   <p><span>Support Contact:</span>
     #{if patientOtherDetails.ec1name && patientOtherDetails.ec1number}
@@ -85,14 +96,7 @@
     #{else}
     ${patientOtherDetails.ec1number}
     #{/else}
-  </p>
-  #{/if}
-  #{if userDto.dob}
-    <p><span>DOB:</span> ${userDto.dob.format('MM/dd/yyyy')}</p>
-  #{/if}
-  #{if userDto.homePhone}
-    <p><span>Phone:</span> ${userDto.homePhone}</p>
-  #{/if}
+  
 </div>
 </div><!-- row -->
 #{/if}

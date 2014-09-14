@@ -56,7 +56,7 @@
             <div class="account-data">
               <p class="today-date">Thusday 4/24/2014</p>
               <h3>#{userName userName: user.name, userId:user.id /}</h3>
-              <p class="last-login">Last Login: <span id="time-ago">${session.get("lastLoginTime")}</span></p>
+              <p class="last-login">Last Login: <span id="time-ago">${session.get("lastLoginTime").format('MM/dd/yyyy - h:mm a')}</span></p>
             </div>
           </div><!-- account-info -->
 

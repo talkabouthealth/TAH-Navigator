@@ -141,6 +141,8 @@ CREATE TABLE nav.notes
 CREATE TABLE nav.medicinecatlog (
   id serial NOT NULL,
   genericname character varying(250),
+
+
   brandname character varying(250),
   method character varying(250),
   frequency character varying(250),
