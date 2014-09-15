@@ -105,7 +105,8 @@ table.table-condensed {
 		    	<div class="form-group for-patient">
 				    <label for="exampleInputEmail1">Date of birth (mm/dd/yyyy)</label>
 				    <div class="input-group">
-					    <input type="text" class="form-control datepicker" name="member.dob" value="${flash['member.dob']}" placeholder="Enter date of birth" data-date-format="mm/dd/yyyy" data-date-viewmode="day" data-date-minviewmode="day">
+					    <input type="text" class="form-control" name="member.dob" value="${flash['member.dob']}" placeholder="Enter date of birth" data-date-format="mm/dd/yyyy" data-date-viewmode="day" data-date-minviewmode="day">
+						<!--<input type="text" class="form-control datepicker" name="member.dob" value="${flash['member.dob']}" placeholder="Enter date of birth" data-date-format="mm/dd/yyyy" data-date-viewmode="day" data-date-minviewmode="day">-->
 						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 			  		</div>
 				</div>
@@ -130,16 +131,6 @@ table.table-condensed {
 
 		<div class="col-md-12">
 			<div class="headding"><h4>Contact Information</h4></div>
-		  	<div class="form-group for-patient">
-			    <p>Select your preferred method of receiving reminders and notifications</p>
-			    <select class="form-control" name="member.contactMethod">
-				    	#{if contactTypes != null}
-				    		#{list contactTypes, as:'seq'}
-				    			<option #{if flash['member.contactMethod'].equals(seq.id.toString()) }  selected #{/if}  value="${seq.id}">${seq.name}</option>
-				    		#{/list}
-				    	#{/if}
-				</select>
-			</div>			  
 	 		<div class="form-group">
 			    <label for="exampleInputEmail1">Email</label>
 			    <div class="input-group">
@@ -156,6 +147,16 @@ table.table-condensed {
 				    </div>
 			    <div class="help-block with-errors"></div>
 			</div>
+		  	<div class="form-group for-patient">
+			    <label for="exampleInputEmail1">Select your preferred method of receiving reminders and notifications</label>
+			    <select class="form-control" name="member.contactMethod">
+				    	#{if contactTypes != null}
+				    		#{list contactTypes, as:'seq'}
+				    			<option #{if flash['member.contactMethod'].equals(seq.id.toString()) }  selected #{/if}  value="${seq.id}">${seq.name}</option>
+				    		#{/list}
+				    	#{/if}
+				</select>
+			</div>			  
 	    	<div class="form-group for-patient">
 			    <label for="exampleInputEmail1">Mobile Phone (i.e. 352.750.1234)</label>
 			    <input type="text" class="form-control" name="member.mobile" value="${flash['member.mobile']}" placeholder="Enter mobile number">
