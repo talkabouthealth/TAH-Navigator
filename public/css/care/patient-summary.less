@@ -1,6 +1,55 @@
-.row.patient-summary {
-	background: #efefef;
-	margin-left: 0;
-	margin-right: 0;
-	padding: @padding 0;
+.patient-summary {
+	@line-height: 15px; /* The patient summary has a tighter line height than normal. */
+	background: @patient-summary-gray;
+	padding: @padding;
+	margin-bottom: @padding;
+
+	.row {
+		margin: 0;
+		padding: 0;
+		max-width: 1024px;
+	}
+
+	.patient-image {
+		@size: 105px;
+		max-height: @size;
+		max-width: @size;
+		margin-right: @padding;
+		float: left;
+
+		img {
+			max-width: 100%;
+		}
+	}
+
+	h3 {
+		margin: 0 0 10px 0;
+	}
+
+	p {
+		margin: 0;
+		line-height: @line-height;
+
+		span {
+			font-weight: bold;
+			text-transform: uppercase;
+		}
+	}
+
+	.disease {
+		text-transform: uppercase;
+		color: @dark-gray;
+		padding-top: 5px;
+
+	}
+
+	.primary-information, .next-appointment {
+		margin-bottom: @padding;
+	}
+
+	.appointments {
+		p span {
+			text-transform: none;
+		}
+	}
 }
