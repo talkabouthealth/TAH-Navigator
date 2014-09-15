@@ -62,7 +62,7 @@
               #{/if}
               <h2>
                 <a href="@{Patient.careMember(expertBean.expertDetail.id,careteam.id)}">
-                  ${expertBean.userDetails.firstName} ${expertBean.userDetails.lastName} 
+                 #{userName userName: expertBean.userDetails.user.name, userId: expertBean.userDetails.user.id /} 
                 </a>
               </h2>
               <p class="contact">

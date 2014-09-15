@@ -4,7 +4,7 @@
 			<div><img src="@{Image.show(expertBeanHead.expertDetail.id)}" class="user_img img-responsive"></div>
 			<div class="user_name">
 				<p>
-					<a href="#">${expertBeanHead.userDetails.firstName} ${expertBeanHead.userDetails.lastName}</a>
+					<a href="#"> #{userName userName: expertBeanHead.userDetails.user.name, userId:expertBeanHead.userDetails.user.id /} </a>
 					<a href="javaScript:void('edit')" class="btn btn-danger-small">Edit</a>
 					<a href="javaScript:void('delete')" class="btn btn-danger-small">Delete</a>
 				</p>
@@ -55,7 +55,8 @@
 						#{/if}
 						<p>
 							<a href="#">
-							${expertBean.userDetails.firstName} ${expertBean.userDetails.lastName} 
+							*{ ${expertBean.userDetails.firstName} ${expertBean.userDetails.lastName} }* 
+							 #{userName userName: expertBean.userDetails.user.name, userId: expertBean.userDetails.user.id /} 
 							</a>
 						<br/><b><span class="large-f">${expertBean.userDetails.mobile}
 						*{ &nbsp;|&nbsp;${expertBean.userDetails.email} }*
