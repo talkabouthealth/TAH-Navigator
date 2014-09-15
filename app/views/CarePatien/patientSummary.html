@@ -1,7 +1,7 @@
 <div class="container-fluid">
     <!-- patient summary -->
-   
-	    <div class="row">
+
+	    <div class="row patient-summary">
 	        <div class="col-xs-1">
 	            <img class="profilePic" src="@{Image.show(ps.userId)}"  height="50">
 	        </div>
@@ -12,7 +12,7 @@
 	           <button type="button" class="btn validate_btn" verified="yes" patient_id="${ps.userId}" onclick="careTeamController.evtMsgHandler('toggle_validate', this);">Validated</button>
 	           #{/if}
 	           #{else}
-	           <button type="button" class="btn validate_btn" verified="no" patient_id="${ps.userId}" onclick="careTeamController.evtMsgHandler('toggle_validate', this);">Validate Now</button>   
+	           <button type="button" class="btn validate_btn" verified="no" patient_id="${ps.userId}" onclick="careTeamController.evtMsgHandler('toggle_validate', this);">Validate Now</button>
 	           #{/else}
 	           </div>
 	           #{if ps.disease}
@@ -43,7 +43,7 @@
 	           #{if ps.phone}
                <div><strong>PHONE:</strong> ${ps.phone}</div>
                #{/if}
-               
+
                #{if ps.dateOfDiagnosis}
                <div><strong>DATE OF DIAGNOSIS:</strong> ${ps.dateOfDiagnosis.format('MM/dd/yyyy')}</div>
                #{/if}
@@ -54,16 +54,16 @@
 	        <div class="col-xs-4">
 	             #{if ps.nextAppointment}
                 <div><p><strong>Next Appointment:</strong> ${ps.nextAppointment.format('MM/dd/yyyy')}
-                #{if ps.nextPurpose} (${ps.nextPurpose}) #{/if} 
+                #{if ps.nextPurpose} (${ps.nextPurpose}) #{/if}
                 </p></div>
                 #{/if}
                 #{if ps.lastAppointment}
                 <div><p><strong>Last Appointment:</strong> ${ps.lastAppointment.format('MM/dd/yyyy')}
-                #{if ps.lastPurpose} (${ps.lastPurpose}) #{/if} 
+                #{if ps.lastPurpose} (${ps.lastPurpose}) #{/if}
                 </p></div>
                 #{/if}
 	        </div>
 	    </div>
-   
+
     #{doLayout /}
 </div>
