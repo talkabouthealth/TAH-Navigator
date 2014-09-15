@@ -35,7 +35,7 @@ body {
 .forget a{ font-size:15px; color:#caf4f4; float:right;}
 .log_p{ color:#caf4f4;   font-size: 15px;
     font-weight: bold; padding:10px 0 20px; text-align:center; margin: 0 -60px;  }
-.form-control{font-size:40px; height:65px;}
+/* .form-control{font-size:40px; height:65px;} */
 
 .myform .input-group{margin-bottom:10px;}
 .my-btn{font-size:18px; height:40px; padding:0 20px;}
@@ -148,7 +148,10 @@ top: -55px; right:5px;}
 }
 
 .nopadding {
-   padding: 10px 0 !important;
+   padding: 0 !important;
+   margin: 0 !important;
+}
+.nomargin {
    margin: 0 !important;
 }
 .headding{float: left; width: 100%; border-bottom: 1px solid #FFF; padding-bottom: 2px; margin: 10px 0 5px 0;}

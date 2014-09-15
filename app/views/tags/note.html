@@ -1,0 +1,19 @@
+#{if noteList != null}
+		<table class="col-xs-12 col-sm-12">
+			#{list noteList, as:'seq'}
+					<tr><td style="color: #686d73;">
+						<p class="last">#{userName userName: seq.noteBy.name, userId:seq.noteBy.id /}, ${seq.noteDate.format('MM/dd/yyyy - hh:mm a')}</p>
+						<p style="font-weight:bold;font-size: 15px;"> 
+							<a  href="javaScript:operationNote('edit','${seq.id}','${seq.noteTitle}','${seq.noteDesc}')">
+							${seq.noteTitle}
+							</a>
+						</p>
+						${seq.noteDesc}
+						</td>
+						<td nowrap="nowrap" style="float: right;padding-left:20px;">
+						</td>
+						</tr>
+						<tr><td style="border-top:1px solid #CCC;" colspan="2"></td></tr>
+			#{/list}
+		</table>
+#{/if}

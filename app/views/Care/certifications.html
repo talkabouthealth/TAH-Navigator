@@ -1,4 +1,4 @@
-#{set pageType = 'dashboard' /}
+#{set pageType = 'profile' /}
 #{extends 'caremain.html' /}
 <style>
 <!--
@@ -107,7 +107,7 @@ addNew = function() {
 	$("#distressForm input[name='id']").val("0");
 	$("#distressForm input[name='name']").val("");
 	$("#distressForm textarea[name='description']").val("");
-	$("#dialog").modal({ keyboard: false });
+	$("#dialog").appendTo("body").modal({ keyboard: false });
 }
 editThis = function(id,name,desc) {
 	$("#myModalLabel").html("Edit Certification");
@@ -115,7 +115,7 @@ editThis = function(id,name,desc) {
 	$("#distressForm input[name='id']").val(id);
 	$("#distressForm input[name='name']").val(name);
 	$("#distressForm textarea[name='description']").val(desc);
-	$("#dialog").modal({ keyboard: false });
+	$("#dialog").appendTo("body").modal({ keyboard: false });
 }
 removeThis = function(id) {
 // 	alert('Remove: ' + id);

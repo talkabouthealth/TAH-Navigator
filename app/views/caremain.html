@@ -27,27 +27,23 @@
   <script src="/public/js/validator.min.js"></script>
   <script src="/public/js/devoops.js"></script>
   <script src="/public/plugins/tooltipster-master/js/jquery.tooltipster.min.js"></script>
+  <script src="/public/plugins//moment/moment.min.js"></script>
   <script src="/public/js/care/dashboard.js"></script>
   <script src="/public/js/careteamController.js"></script>
   
   <style>
+  .ui-autocomplete{z-index: 1051 !important;}
     .modal-vertical-centered {
   transform: translate(0, 50%) !important;
   -ms-transform: translate(0, 50%) !important; /* IE 9 */
   -webkit-transform: translate(0, 50%) !important; /* Safari and Chrome */
 }
+.modal-body .control-label {
+    text-align: right;
+}
   </style>
 
 </head>
-
-
-
-
-
-
-
-
-
 <body class="care">
 
   <div class="wrapper">
@@ -64,7 +60,7 @@
             <div class="account-data">
               <p class="today-date">Thusday 4/24/2014</p>
               <h3>#{userName userName: user.name, userId:user.id /}</h3>
-              <p class="last-login">Last Login: <span id="time-ago">${session.get("lastLoginTime").format('MM/dd/yyyy - h:mm a')}</span></p>
+              <p class="last-login">Last Login: <span id="time-ago">${session.get("lastLoginTime")}</span></p>
             </div>
           </div><!-- account-info -->
 
@@ -497,10 +493,14 @@
   var lastLogin;
   $(document).ready(function(){
     todayDate = $('.today-date');
-    lastLogin = $('.last-login span');
+    lastLogin = $('#time-ago');
 
     todayDate.html($.datepicker.formatDate('DD mm/dd/yy', new Date()));
-    lastLogin.timeago();
+//     lastLogin.html($.datepicker.formatDate('m/d/yy h:m a', new Date()));
+//     lastLogin.timeago();
+
+	var d = moment(lastLogin.html(), 'YYYY-MM-DD h:m:s A');
+    lastLogin.html(d.format('M/D/YYYY h:m A'));
   });
 })(jQuery);
 

@@ -6,7 +6,7 @@
         <a href="@{Patient.careMember(expertBeanHead.expertDetail.id,careteam.id)}"><img src="@{Image.show(expertBeanHead.expertDetail.id)}" class=""></a>
       </div>
       <h2><a href="@{Patient.careMember(expertBeanHead.expertDetail.id,careteam.id)}">
-          ${expertBeanHead.expertDetail.designation.abbr}.  ${expertBeanHead.userDetails.firstName} ${expertBeanHead.userDetails.lastName}
+      	 #{userName userName: expertBeanHead.userDetails.user.name, userId:expertBeanHead.userDetails.user.id /} 
       </a></h2>
         <p class="contact">
           <span class="phone"></span>

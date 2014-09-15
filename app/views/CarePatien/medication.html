@@ -9,15 +9,15 @@
 					<h3><a href="javaScript:operationMedication('edit','${seq.id}')">${seq.medicine.genericname}</a></h3>
 					<p><strong>BRAND NAME: </strong>${seq.medicine.brandname}</p>
 					<p><strong>FREQUENCY: </strong>${seq.frequency}</p>
-					<p><strong>DATES: </strong>${seq.startdate.format('mm/dd/yyyy')} - ${seq.enddate.format('mm/dd/yyyy')}</p>
+					<p><strong>DATES: </strong>${seq.startdate.format('MM/dd/yyyy')} - ${seq.enddate.format('MM/dd/yyyy')}</p>
 					<p><strong>SPECIAL INSTRUCTIONS: </strong>${seq.specialinstruction}</p>
 					<p><strong>PRESCRIBING PYSICIAN: </strong>#{userName userName: seq.caremember.name, userId:seq.caremember.id /}</p>
 				</div>
 				<div class="col-sm-4" style="padding-top: 10px;">
 					<div style="float:left;width: 50%;text-align: center;">
 				#{if seq.method != null}
-<!--				${seq.method}
- 					<img src="/public/images/${seq.method}.png"/> -->
+				${seq.method}
+<!-- 					<img src="/public/images/${seq.method}.png"/> -->
 					<br/>
 <!-- 					<a class="removeInstruction" data-id="${seq.id}" href="#">Remove Instruction Image</a> -->
 				#{/if}
@@ -26,7 +26,6 @@
 				#{/else}
 				</div>
 				<div style="float:left;width: 50%;text-align: center;">
-<!--				
 				#{if seq.medicine.image != null}
 					<a href="#">
 						<img class="medicineImg" src="/image/showMedicine/${seq.id}" data-id="${seq.id}" style="height: 65px;"/>
@@ -40,7 +39,6 @@
 						<br/> Add Medication Image
 					</a>
 				#{/else}
-				-->
 				</div>
 				</div>
 <!-- 				<div class="col-sm-4" style="padding-top: 10px;text-align: center;"> -->

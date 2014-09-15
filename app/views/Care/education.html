@@ -1,4 +1,4 @@
-#{set pageType = 'dashboard' /}
+#{set pageType = 'profile' /}
 #{extends 'caremain.html' /}
 <style>
 <!--
@@ -69,7 +69,7 @@ Other -->
 		  			</div>
 	</div>
 </div>
-<div class="modal fade" id="dialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="dialog"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
    <div class="modal-dialog" style="width: 620px;">
    <form action="/care/saveEducation"  id='distressForm'  enctype="multipart/form-data" method="post">
 		<input type="hidden" name="operation" />
@@ -137,7 +137,7 @@ addNew = function() {
 	$("#distressForm input[name='year']").val("");
 	$("#distressForm textarea[name='description']").val("");
 	$("#logoPath").attr('src',"/public/images/blankseal.jpg");
-	$("#dialog").modal({ keyboard: false });
+	$("#dialog").appendTo("body").modal({ keyboard: false });
 }
 editThis = function(id,degree,school,year,logoPath) {
 	$("#distressForm input[name='operation']").val("edit");
@@ -148,7 +148,7 @@ editThis = function(id,degree,school,year,logoPath) {
 	$("#myModalLabel").html("Edit education");
 	$("#distressForm input[name='year']").val(year);
 	$("#logoPath").attr('src',logoPath);
-	$("#dialog").modal({ keyboard: false });
+	$("#dialog").appendTo("body").modal({ keyboard: false });
 }
 removeThis = function(id) {
 	$("#distressForm input[name='operation']").val("remove");

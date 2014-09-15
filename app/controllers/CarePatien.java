@@ -389,8 +389,8 @@ public class CarePatien  extends Controller {
 		try {
 
 			if("add".equalsIgnoreCase(operation)) {
-				Date startDt = new SimpleDateFormat("mm/dd/yyyy").parse(startDate);
-				Date endDt = new SimpleDateFormat("mm/dd/yyyy").parse(endDate);
+				Date startDt = new SimpleDateFormat("MM/dd/yyyy").parse(startDate);
+				Date endDt = new SimpleDateFormat("MM/dd/yyyy").parse(endDate);
 //				System.out.println("catlogId: " + catlogId);
 				MedicineCatlogDTO catlog = MedicationDAO.getMedicineCatloagByField("id",new Integer(catlogId));
 				MedicineMasterDTO medicineMasterDTO = new MedicineMasterDTO();
@@ -425,8 +425,8 @@ public class CarePatien  extends Controller {
 				
 				BaseDAO.save(patientMedicationDTO);
 			} else if("edit".equalsIgnoreCase(operation)) {
-				Date startDt = new SimpleDateFormat("mm/dd/yyyy").parse(startDate);
-				Date endDt = new SimpleDateFormat("mm/dd/yyyy").parse(endDate);
+				Date startDt = new SimpleDateFormat("MM/dd/yyyy").parse(startDate);
+				Date endDt = new SimpleDateFormat("MM/dd/yyyy").parse(endDate);
 				Integer idField = new Integer(id);
 				PatientMedicationDTO  patientMedicationDTO = MedicationDAO.getMedicineByField("id", idField);
 				if(patientMedicationDTO != null) {

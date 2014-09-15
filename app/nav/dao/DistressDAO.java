@@ -6,6 +6,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import com.google.gson.JsonObject;
+
 import nav.dto.DistressBean;
 
 import util.GlobalConstant;
@@ -58,13 +60,13 @@ public class DistressDAO {
 		return true;
 	}
 	
-	public static DistressBean getLastDistress(UserDTO patientId) {
+	public static DistressBean getLastDistress(UserDTO patientId,int offset) {
 		EntityManager em = JPAUtil.getEntityManager();
 		DistressBean bean = null;
 		try {
 			Integer in = new Integer(patientId.getId());
 			TypedQuery<PatientDistressDTO> query = em.createQuery("SELECT c FROM PatientDistressDTO c WHERE c.user.id = :field order by daterecrded desc", PatientDistressDTO.class);
-			
+			query.setFirstResult(offset);
 			query.setMaxResults(1);
 			query.setParameter("field", in);
 			PatientDistressDTO dto = query.getSingleResult();
@@ -75,9 +77,13 @@ public class DistressDAO {
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 		} finally {
+			em.close();
 		}
-		
 		return bean;
+	}
+	
+	public static DistressBean getLastDistress(UserDTO patientId) {
+		return getLastDistress(patientId,0);
 	}
 	
 	public static String getDistressList(int distressId) {
@@ -103,5 +109,28 @@ public class DistressDAO {
 			rep = rep.substring(0,rep.lastIndexOf(",<br/>"));
 		}
 		return rep;
+	}
+	
+	public static JsonObject getLastDistressData(String patientId) {
+		
+		EntityManager em = JPAUtil.getEntityManager();
+		JsonObject json = new JsonObject();
+		try {
+			Integer in = new Integer(patientId);
+			TypedQuery<Integer> query = em.createQuery("SELECT c.distressvalue FROM PatientDistressDTO c WHERE c.user.id = :field order by daterecrded desc",
+					Integer.class);
+			query.setMaxResults(10);
+			query.setParameter("field", in);
+			int index = 10;
+			List<Integer> list = query.getResultList();
+			for (Integer val : list) {
+				json.addProperty(""+(index--), val);
+			}
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+		} finally {
+			em.close();
+		}
+		return  json;
 	}
 }

@@ -49,6 +49,8 @@ import nav.dto.UserBean;
 
 import org.apache.commons.io.IOUtils;
 
+import com.google.gson.JsonObject;
+
 import play.mvc.Controller;
 import play.mvc.With;
 import util.CommonUtil;
@@ -123,13 +125,15 @@ public class Care extends Controller {
 		
 		DistressBean distress = DistressDAO.getLastDistress(patientDto.getUser());
 		
+		DistressBean lastDistress = DistressDAO.getLastDistress(patientDto.getUser(),1);
+		
 		List<NoteDTO> noteList = NotesDAO.getPatientNotesList(patientId);
 		List<DiseaseMasterDTO> diseases = Disease.allDiseases();
 		List<BreastCancerStageDTO> stages = Disease.breastCancerStages();
 		int breastCancerId = Disease.BREAST_CANCER_ID; 
 		List<UserDTO> drList = UserDAO.getAll("5","");
 		Map <String, Object> ps = PatientDetailDAO.patientSummary(Integer.valueOf(patientId));
-        render(user,expertDetail,patientId,patientDto,patientOtherDetails,distress,noteList, diseases, stages, breastCancerId,drList, ps);
+        render(user,expertDetail,patientId,patientDto,patientOtherDetails,distress,noteList, diseases, stages, breastCancerId,drList, ps,lastDistress);
     }
 	
 	public static void setting() {
@@ -393,6 +397,11 @@ public class Care extends Controller {
 			e.printStackTrace();
 		}
 		certifications();
+	}
+	
+	public static void distressData(String patientId) {
+			JsonObject json = DistressDAO.getLastDistressData(patientId);
+			renderJSON(json.toString());
 	}
 	
 	public static void removeEducation(int id) {

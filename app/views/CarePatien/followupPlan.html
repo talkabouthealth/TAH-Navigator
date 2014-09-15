@@ -142,26 +142,10 @@
                         </div>
                     </div>
                     
-                    <div class="col-xs-12 col-sm-12 nopadding" style="border-top: 1px solid #CCC;margin-top: 20px;padding-top: 20px;">
+                    <div class="col-xs-12 col-sm-12" style="border-top: 1px solid #CCC;margin-top: 20px;padding-top: 20px;">
 				<div style="padding-bottom:20px;">
 				<span class="title" style="vertical-align: middle;">NOTES</span>&nbsp;&nbsp;<button class="btn btn-default btn-sm noteBtn" style="font-weight:bold;">+ NEW NOTE</button>
 				</div>
-				#{if noteList != null}
-				<table class="col-xs-12 col-sm-12">
-					#{list noteList, as:'seq'}
-					<tr><td style="color: #686d73;">
-						<p class="last">#{userName userName: seq.noteBy.name, userId:seq.noteBy.id /}, ${seq.noteDate.format('MM/dd/yyyy - hh:mm a')}</p>
-						<p style="font-weight:bold;font-size: 15px;">${seq.noteTitle}</p>
-						${seq.noteDesc}
-						</td>
-						<td nowrap="nowrap" style="float: right;padding-left:20px;">
-							<a class="btn btn-danger-small" href="javaScript:operationNote('edit','${seq.id}','${seq.noteTitle}','${seq.noteDesc}')">Edit</a>
-							<a class="btn btn-danger-small" href="javaScript:operationNote('delete','${seq.id}')">Delete</a>
-						</td>
-						</tr>
-						<tr><td style="border-top:1px solid #CCC;" colspan="2"></td></tr>
-					#{/list}
-					</table>
-				#{/if}
+				#{include '/tags/note.html' /}
 				</div>
 </div>
