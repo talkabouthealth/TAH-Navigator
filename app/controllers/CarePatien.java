@@ -67,7 +67,8 @@ public class CarePatien  extends Controller {
 		Date curreDate = new Date();
 		List<AppointmentDTO> list = AppointmentDAO.getAppointmentListByField("patientid.id", idField, curreDate, "upcomming" );
 		List<AppointmentDTO> expList = AppointmentDAO.getAppointmentListByField("patientid.id" , idField, curreDate, "past" );
-		render(patientId,list,expList);
+		Map <String, Object> ps = PatientDetailDAO.patientSummary(patientId);
+		render(patientId,list,expList, ps);
 	}
 
 	public static void careteam(int patientId) {
@@ -81,19 +82,28 @@ public class CarePatien  extends Controller {
 	public static void medication(int patientId) {
 		UserDetailsDTO userDto = UserDAO.getDetailsById(patientId);
 		List<PatientMedicationDTO> medicationList = MedicationDAO.getMedicine("patientid", userDto.getId());
-		render(patientId,medicationList);
+		Map <String, Object> ps = PatientDetailDAO.patientSummary(patientId);
+		render(patientId,medicationList, ps);
+	}
+	public static void verify(Integer patientId, boolean isVerified) {
+		PatientDetailDAO.patientVerify(patientId, isVerified);
+		Map<String, String> jsonData = new HashMap<String, String>();
+		jsonData.put("status", "success");
+;		renderJSON(jsonData);
 	}
 
 	public static void treatmentPlan(Integer patientId) {
 		List<PatientRadiationTreatmentDTO> radiationTreatments = Treatment.getPatientRadiationTreatments(patientId);
 		List<PatientChemoTreatmentDTO> chemoTreatments = Treatment.getPatientChemoTreatments(patientId);
 		List<PatientSurgeryInfoDTO> surgeryInfo = Treatment.getPatientSurgeryInfo(patientId);
-		render(patientId, radiationTreatments, chemoTreatments, surgeryInfo);
+		Map <String, Object> ps = PatientDetailDAO.patientSummary(patientId);
+		render(patientId, radiationTreatments, chemoTreatments, surgeryInfo, ps);
 	}
 
 	public static void followupPlan(int patientId) {
 		List<NoteDTO> noteList = NotesDAO.getPatientNotesList(patientId+"");
-		render(patientId,noteList);
+		Map <String, Object> ps = PatientDetailDAO.patientSummary(patientId);
+		render(patientId,noteList, ps);
 	}
 	public static void chemotherapyForm(Integer patientId, Integer treatmentId, Integer initFlag, String formType) {
 		Map<String, Object> jsonData = new HashMap<String, Object>();
@@ -230,7 +240,8 @@ public class CarePatien  extends Controller {
 		PatientDetailDTO patientDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
 		BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
 		int breastCancerId = Disease.BREAST_CANCER_ID;
-		render(patientId, breastCancerId, userDetails, patientDetails, breastCancerInfo);
+		Map <String, Object> ps = PatientDetailDAO.patientSummary(patientId);
+		render(patientId, breastCancerId, userDetails, patientDetails, breastCancerInfo, ps);
 	}
 	
 	public static void diagnosisJSON(int patientId) {
@@ -262,7 +273,8 @@ public class CarePatien  extends Controller {
 		PatientDetailDTO patientDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
 		BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
 		int breastCancerId = Disease.BREAST_CANCER_ID;
-		renderTemplate("CarePatien/diagnosis.html", patientId, breastCancerId, userDetails, patientDetails, breastCancerInfo);
+		Map <String, Object> ps = PatientDetailDAO.patientSummary(patientId);
+		renderTemplate("CarePatien/diagnosis.html", patientId, breastCancerId, userDetails, patientDetails, breastCancerInfo, ps);
 	}
 
 	

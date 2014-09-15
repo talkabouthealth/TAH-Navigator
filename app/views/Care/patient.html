@@ -9,7 +9,7 @@
 			<ul id="tabs" class="nav nav-tabs">
 				<li class="active"><a href="#summary">SUMMARY</a></li>
 				<li><a class="appointment" href="#appointment" data-url="@{CarePatien.appointment(patientId)}">APPOINTMENT</a></li>
-				<li><a class="careteam" href="#careteam" data-url="@{CarePatien.careteam(patientId)}">CARE TEAM</a></li>
+				<!--<li><a class="careteam" href="#careteam" data-url="@{CarePatien.careteam(patientId)}">CARE TEAM</a></li>-->
 				<li><a class="medication" href="#medication" data-url="@{CarePatien.medication(patientId)}">MEDICATIONS</a></li>
 				<li><a class="treatmentplan" href="#treatmentplan" data-url="@{CarePatien.treatmentPlan(patientId)}">TREATMENT PLAN</a></li>
 				<li><a class="followupplan" href="#followupplan" data-url="@{CarePatien.followupPlan(patientId)}">FOLLOW-UP CARE PLAN</a></li>
@@ -17,56 +17,81 @@
 			</ul>
 			<div class="tab-content">
 			<div id="summary" class="tab-pane active" >
+		<!--------  Patient Summary sTart ----------->	
+			
+        <div class="row">
+            <div class="col-xs-1">
+                <img class="profilePic" src="@{Image.show(ps.userId)}"  height="50">
+            </div>
+            <div class="col-xs-2">
+               <div> ${ps.firstName} ${ps.lastName}</div>
+               <div>
+               #{if ps.isVerified}
+               <button type="button" class="btn validate_btn" verified="yes" patient_id="${ps.userId}" onclick="careTeamController.evtMsgHandler('toggle_validate', this);">Validated</button>
+               #{/if}
+               #{else}
+               <button type="button" class="btn validate_btn" verified="no" patient_id="${ps.userId}" onclick="careTeamController.evtMsgHandler('toggle_validate', this);">Validate Now</button>   
+               #{/else}
+               </div>
+               #{if ps.disease}
+               <div>${ps.disease}</div>
+               #{/if}
+               <div>
+               #{if ps.stage}
+               ${ps.stage}
+               #{/if}
+               #{if ps.er}
+               , ER${ps.er}
+               #{/if}
+               #{if ps.pr}
+               , PR${ps.pr}
+               #{/if}
+               #{if ps.her2}
+               , HER2${ps.her2}
+               #{/if}
+               #{if ps.brca}
+               , BRCA${ps.brca}
+               #{/if}
+               </div>
+            </div>
+            <div class="col-xs-4">
+               #{if ps.dob}
+               <div><strong>DOB:</strong> ${ps.dob.format('MM/dd/yyyy')}</div>
+               #{/if}
+               #{if ps.phone}
+               <div><strong>PHONE:</strong> ${ps.phone}</div>
+               #{/if}
+               
+               #{if ps.dateOfDiagnosis}
+               <div><strong>DATE OF DIAGNOSIS:</strong> ${ps.dateOfDiagnosis.format('MM/dd/yyyy')}</div>
+               #{/if}
+               #{if ps.ec1Name || ps.ec1Number}
+               <div><strong>SUPPORT CONTACT:</strong> ${ps.ec1Name} ${ps.ec1Number}</div>
+               #{/if}
+            </div>
+            <div class="col-xs-4">
+                 #{if ps.nextAppointment}
+                <div><p><strong>Next Appointment:</strong> ${ps.nextAppointment.format('MM/dd/yyyy')}
+                #{if ps.nextPurpose} (${ps.nextPurpose}) #{/if} 
+                </p></div>
+                #{/if}
+                #{if ps.lastAppointment}
+                <div><p><strong>Last Appointment:</strong> ${ps.lastAppointment.format('MM/dd/yyyy')}
+                #{if ps.lastPurpose} (${ps.lastPurpose}) #{/if} 
+                </p></div>
+                #{/if}
+            </div>
+        </div>
+    
+	<!--------  Patient Summary ----------->		
+			
+			
 				<div class="col-xs-12 col-sm-12 nopadding">
 					<div class="col-xs-4 col-sm-4 nopadding" style="border-right: 1px solid #CCC">
 					<!-- patient area -->
 					<table>
-						<tr>
-						<td>
-							<img class="profilePic" src="@{Image.show(patientDto.id)}"  height="50">
-						</td>
-						<td>
-							<h3>#{userName userName: patientDto.user.name, userId:patientDto.id /}</h3>
-							<p class="initialism">
-                        	#{if patientOtherDetails != null && patientOtherDetails.disease != null}
-                        		${patientOtherDetails.disease.name}, STAGE ${patientOtherDetails.stage}
-                        	#{/if}
-                        	#{else}Not Added
-                        	#{/else}
-                        	</p>
-						</td>
-<!-- 						</tr><tr><td colspan="2">&nbsp;</td></tr> -->
-						<tr><td colspan="2">
-							<p><strong>DOB:</strong> #{if patientDto.dob != null}${patientDto.dob.format("M/d/yyyy")}#{/if}</p>
-							<p><strong>Phone: </strong> ${patientDto.homePhone}</p>
-						</td>
-						</tr>
-<!-- 						<tr><td colspan="2">&nbsp;</td></tr> -->
-						<tr><td colspan="2">
-							#{if patientOtherDetails != null}
-                    	   		#{if patientOtherDetails.dateofdiagnosis != null}
-                        		<p><strong>Date of Diagnosis:</strong> ${patientOtherDetails.dateofdiagnosis.format('dd.MM.yyyy')}</p>
-                        		#{/if}
-                        		<p><strong>Support Contact:</strong>support@email.com</p>
-							#{/if}
-							#{else}
-                        		<p><strong>Date of Diagnosis:</strong> -</p>
-                        		<p><strong>Support Contact:</strong>support@email.com</p>
-							#{/else}
-						</td>
-						</tr>
-<!-- 						<tr><td colspan="2">&nbsp;</td></tr> -->
-						<tr><td colspan="2">
-							<p><strong>Next Appointment:</strong> -</p>
-							<p><strong>Last Appointment: </strong> -</p>
-						</td>
-						</tr>
-<!-- 						<tr><td colspan="2">&nbsp;</td></tr> -->
-						<tr><td colspan="2">
-							<p><strong>DOCTOR:</strong> -</p>
-							<p><strong>LEAD NURSE: </strong> -</p>
-						</td>
-						</tr>
+						
+
 					</table>
 					</div>
 					<div class="col-xs-4 col-sm-4" style="border-right: 1px solid #CCC">
@@ -168,7 +193,7 @@
 				<table class="col-xs-12 col-sm-12">
 					#{list noteList, as:'seq'}
 					<tr><td style="color: #686d73;">
-						<p class="last">#{userName userName: seq.noteBy.name, userId:seq.noteBy.id /}, ${seq.noteDate.format('MM/dd/yyyy - hh:mm a')}</p>
+						<p class="last">#{userName userName: seq.noteBy.name, userId:seq.noteBy.id /}, ${seq.noteDate.format('MM/dd/yyyy - h:mm a')}</p>
 						<p style="font-weight:bold;font-size: 15px;">${seq.noteTitle}</p>
 						${seq.noteDesc}
 						</td>
@@ -282,6 +307,8 @@
 	</div>
 </div>
 
+
+
 <div class="modal fade" id="addEditCareTeam" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -374,6 +401,7 @@
 		</div>
 	</div>
 </div>
+
 
 <div class="modal fade" id="addEditmedication" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">

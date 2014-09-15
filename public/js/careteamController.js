@@ -11,6 +11,7 @@ var careTeamController = (function() {
         'ctpt_surgery_form': '/carepatien/surgeryForm',
         'ctpt_save_surgery_data': '/carepatien/saveSurgeryData',
         'ctpt_remove_surgery_data': '/carepatien/removeSurgeryData',
+        'verify': '/carepatien/verify',
 		'default': '#'    // nothing 
 	};
     var BREAST_CANCER_ID = 1;
@@ -244,6 +245,7 @@ var careTeamController = (function() {
         var cycleNo = $('#ctt_cycle').val();
         var schedule = $('#ctt_schedule').val();
         var doseReduction = $('#ctt_dose').val();
+        
         var startDate = $('#ctt_start_date').val();
         var endDate = $('#ctt_end_date').val();
         var sideEffects = $('#ctt_side_effects_div').data('ctt-see');
@@ -254,11 +256,13 @@ var careTeamController = (function() {
             'ctInfo.brandName': brandName,
             'ctInfo.cycleNo': cycleNo,
             'ctInfo.schedule': schedule,
-            'ctInfo.doseReduction': parseInt(doseReduction),
             'ctInfo.startDate': startDate,
             'ctInfo.endDate': endDate,
             'ctInfo.notes': notes
         };
+        if (parseInt(doseReduction)) {
+            params['ctInfo.doseReduction'] = parseInt(doseReduction);
+        }
         if (typeof sideEffects != "undefined") {
             for (var i = 0; i < sideEffects.length; i++) {
                 params['sideEffects.' + i] = sideEffects[i];
@@ -960,7 +964,62 @@ var careTeamController = (function() {
         }, "json");
     };
     
-    
+    var toggleValidate = function(domElement) {
+        var verified = $(domElement).attr('verified');
+        if (verified == 'yes') {
+            var initFlag = $('#invalidate_dialog').attr('init_flag');
+            if (initFlag == '0') {
+                $('#invalidate_dialog').attr('init_flag', '1');
+                $('#invalidate_yes').click(function() {
+                    var $btn = $('.validate_btn');
+                    var $visibleBtn = $('.validate_btn:visible');
+                    var patientId = $visibleBtn.attr('patient_id');
+                    $.post(actions['verify'], {
+                        patientId: patientId,
+                        isVerified: false
+                    }, function(data) {
+                        $btn.attr("verified", "no");
+                        $btn.text("Validate Now");
+                    }, "json");
+                    $('#invalidate_dialog').modal('hide');
+                });
+                
+                $('#invalidate_dialog').modal({
+                    keyboard: false,
+                    backdrop: 'static'
+                });
+            }
+            else {
+                $('#invalidate_dialog').modal('show');
+            }
+        }
+        else {
+            var initFlag = $('#validate_dialog').attr('init_flag');
+            $('#validate_yes').click(function() {
+                var $btn = $('.validate_btn');
+                var $visibleBtn = $('.validate_btn:visible');
+                var patientId = $visibleBtn.attr('patient_id');
+                $.post(actions['verify'], {
+                    patientId: patientId,
+                    isVerified: true
+                }, function(data) {
+                    $btn.attr("verified", "yes");
+                    $btn.text("Validated");
+                }, "json");
+                $('#validate_dialog').modal('hide');
+            });
+            if (initFlag == '0') {
+                $('#validate_dialog').attr('init_flag', '1');
+                $('#validate_dialog').modal({
+                    keyboard: false,
+                    backdrop: 'static'
+                });
+            }
+            else {
+                $('#validate_dialog').modal('show');
+            }
+        }
+    };
     
     $(function() {});
     
@@ -969,7 +1028,8 @@ var careTeamController = (function() {
         'radiation_treatment_form': radiationTreatmentForm,
         'chemotherapy_treatment_form': chemoTreatmentForm,
         'surgery_form': surgeryForm,
-        'remove_side_effect': removeSideEffect
+        'remove_side_effect': removeSideEffect,
+        'toggle_validate': toggleValidate
     };
     function evtMsgHandler(msg, domElement, params) {
         var func = msgMap[msg];

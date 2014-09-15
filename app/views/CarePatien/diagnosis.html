@@ -1,3 +1,5 @@
+#{extends 'CarePatien/patientSummary.html' /}
+
 <div class="diagnosis">
   <button type="button" class="btn btn-primary edit-info" patient_id="${patientId}" onclick="careTeamController.evtMsgHandler('diagnosis', this);">EDIT INFO</button>
 
@@ -63,9 +65,11 @@
 #{/if}
 
 
+
 #{if (patientDetails && (patientDetails.dateofdiagnosis || patientDetails.ec1name || patientDetails.ec1number)) || (userDetails && (userDetails.dob || userDetails.homePhone))}
 <div class="row">
   <div class="col-sm-12 patient-information">
+
     <label><i class="fa fa-file-text-o"></i> Patient Information</label>
     #{if patientDetails && patientDetails.dateofdiagnosis}
     <p><span>Date of Diagnosis:</span> ${patientDetails.dateofdiagnosis.format('MM/dd/yyyy')}</p>
@@ -92,4 +96,3 @@
   </div>
 </div><!-- row -->
 #{/if}
-</div>

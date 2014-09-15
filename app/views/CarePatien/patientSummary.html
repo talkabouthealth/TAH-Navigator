@@ -1,0 +1,69 @@
+<div class="container-fluid">
+    <!-- patient summary -->
+   
+	    <div class="row">
+	        <div class="col-xs-1">
+	            <img class="profilePic" src="@{Image.show(ps.userId)}"  height="50">
+	        </div>
+	        <div class="col-xs-2">
+	           <div> ${ps.firstName} ${ps.lastName}</div>
+	           <div>
+	           #{if ps.isVerified}
+	           <button type="button" class="btn validate_btn" verified="yes" patient_id="${ps.userId}" onclick="careTeamController.evtMsgHandler('toggle_validate', this);">Validated</button>
+	           #{/if}
+	           #{else}
+	           <button type="button" class="btn validate_btn" verified="no" patient_id="${ps.userId}" onclick="careTeamController.evtMsgHandler('toggle_validate', this);">Validate Now</button>   
+	           #{/else}
+	           </div>
+	           #{if ps.disease}
+	           <div>${ps.disease}</div>
+	           #{/if}
+	           <div>
+	           #{if ps.stage}
+               ${ps.stage}
+               #{/if}
+               #{if ps.er}
+               , ER${ps.er}
+               #{/if}
+               #{if ps.pr}
+               , PR${ps.pr}
+               #{/if}
+               #{if ps.her2}
+               , HER2${ps.her2}
+               #{/if}
+               #{if ps.brca}
+               , BRCA${ps.brca}
+               #{/if}
+               </div>
+	        </div>
+	        <div class="col-xs-4">
+	           #{if ps.dob}
+	           <div><strong>DOB:</strong> ${ps.dob.format('MM/dd/yyyy')}</div>
+	           #{/if}
+	           #{if ps.phone}
+               <div><strong>PHONE:</strong> ${ps.phone}</div>
+               #{/if}
+               
+               #{if ps.dateOfDiagnosis}
+               <div><strong>DATE OF DIAGNOSIS:</strong> ${ps.dateOfDiagnosis.format('MM/dd/yyyy')}</div>
+               #{/if}
+               #{if ps.ec1Name || ps.ec1Number}
+               <div><strong>SUPPORT CONTACT:</strong> ${ps.ec1Name} ${ps.ec1Number}</div>
+               #{/if}
+	        </div>
+	        <div class="col-xs-4">
+	             #{if ps.nextAppointment}
+                <div><p><strong>Next Appointment:</strong> ${ps.nextAppointment.format('MM/dd/yyyy')}
+                #{if ps.nextPurpose} (${ps.nextPurpose}) #{/if} 
+                </p></div>
+                #{/if}
+                #{if ps.lastAppointment}
+                <div><p><strong>Last Appointment:</strong> ${ps.lastAppointment.format('MM/dd/yyyy')}
+                #{if ps.lastPurpose} (${ps.lastPurpose}) #{/if} 
+                </p></div>
+                #{/if}
+	        </div>
+	    </div>
+   
+    #{doLayout /}
+</div>

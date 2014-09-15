@@ -29,6 +29,14 @@
   <script src="/public/plugins/tooltipster-master/js/jquery.tooltipster.min.js"></script>
   <script src="/public/js/care/dashboard.js"></script>
   <script src="/public/js/careteamController.js"></script>
+  
+  <style>
+    .modal-vertical-centered {
+  transform: translate(0, 50%) !important;
+  -ms-transform: translate(0, 50%) !important; /* IE 9 */
+  -webkit-transform: translate(0, 50%) !important; /* Safari and Chrome */
+}
+  </style>
 
 </head>
 
@@ -56,7 +64,7 @@
             <div class="account-data">
               <p class="today-date">Thusday 4/24/2014</p>
               <h3>#{userName userName: user.name, userId:user.id /}</h3>
-              <p class="last-login">Last Login: <span id="time-ago">${session.get("lastLoginTime")}</span></p>
+              <p class="last-login">Last Login: <span id="time-ago">${session.get("lastLoginTime").format('MM/dd/yyyy - h:mm a')}</span></p>
             </div>
           </div><!-- account-info -->
 
@@ -443,6 +451,42 @@
     </div>
 </div>
 
+
+<div class="modal" id="validate_dialog" tabindex="-1" role="dialog" init_flag="0">
+    <div class="modal-dialog modal-vertical-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <p class="text-center">Are you sure you want to validate this user?</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="validate_yes">Yes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+            </div>
+        </div>
+   </div>
+</div>
+
+<div class="modal" id="invalidate_dialog" tabindex="-1" role="dialog" init_flag="0">
+    <div class="modal-dialog modal-vertical-centered">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <p class="text-center">Are you sure you want to unvalidate this user?</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" id="invalidate_yes">Yes</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+            </div>
+        </div>
+   </div>
+</div>
 <!-- ------------------------ All Care Team Dialogs Here  [END] ------------------------------- -->
 
 

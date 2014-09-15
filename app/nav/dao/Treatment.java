@@ -266,11 +266,11 @@ public class Treatment {
 		}
 		
 		
-		TypedQuery<MedicineCatlogDTO> mQuery = em.createQuery("SELECT m FROM MedicineCatlogDTO m WHERE m.label = :label AND m.brandname LIKE :brandname", MedicineCatlogDTO.class); 
+		TypedQuery<MedicineCatlogDTO> mQuery = em.createQuery("FROM MedicineCatlogDTO m WHERE m.label = :label AND m.brandname LIKE :brandname", MedicineCatlogDTO.class); 
 		mQuery.setParameter("label", genericName);
 		mQuery.setParameter("brandname", "%" + brandName + "%");
 		try {
-			MedicineCatlogDTO mDto = mQuery.getSingleResult();
+			List<MedicineCatlogDTO> mDtos = mQuery.getResultList();
 		} catch (NoResultException e) {
 			MedicineCatlogDTO mDto = new MedicineCatlogDTO();
 			mDto.setLabel(genericName);
