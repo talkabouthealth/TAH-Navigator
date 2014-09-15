@@ -19,6 +19,20 @@
 
 .page {
   padding: 20px;
+
+  .row{
+    border-bottom: 1px solid @section-border;
+    padding-bottom: @padding;
+    margin-bottom: @padding;
+
+    h1 {
+      margin: 0;
+    }
+  }
+
+  label {
+    padding-bottom: @label-bottom-padding;
+  }
 }
 
 // header style definition lives in application/header.less

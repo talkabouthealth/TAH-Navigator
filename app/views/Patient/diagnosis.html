@@ -8,9 +8,8 @@
     #{if patientOtherDetails && patientOtherDetails.diseaseId && patientOtherDetails.disease}
     <div class="col-sm-12">
       <label><i class="fa fa-file-text-o"></i> Diagnosis</label>
-      <h1>${patientOtherDetails.disease.name}
-        #{if patientOtherDetails.dateofdiagnosis} |
-      </h1>
+      <h1>${patientOtherDetails.disease.name} |</h1>
+      #{if patientOtherDetails.dateofdiagnosis}
       <p class="first-diagnosed">First Diagnosed: ${patientOtherDetails.dateofdiagnosis.format('MM/dd/yyyy')}</p>
       #{/if}
     </h1>

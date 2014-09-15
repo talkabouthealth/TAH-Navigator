@@ -1,101 +1,95 @@
-<div class="row">
-	<div class="col-xs-12">
-	   <button type="button" class="btn btn-primary" patient_id="${patientId}" onclick="careTeamController.evtMsgHandler('diagnosis', this);">EDIT INFO</button>
-    </div>
-</div>
- #{if patientDetails && patientDetails.diseaseId && patientDetails.disease}
- <div class="col-sm-12">
-     <div class="product_tr">
-       <p><i class="fa fa-file-text-o"></i> Diagnosis</p>
-         <div>${patientDetails.disease.name}
-         #{if patientDetails.dateofdiagnosis}
-          | First Diagnosed: ${patientDetails.dateofdiagnosis.format('MM/dd/yyyy')}
-         #{/if}
-         </div>
-     </div>
- <div class="bottom_hr"></div>
- </div>
+<div class="diagnosis">
+  <button type="button" class="btn btn-primary edit-info" patient_id="${patientId}" onclick="careTeamController.evtMsgHandler('diagnosis', this);">EDIT INFO</button>
+
+  #{if patientDetails && patientDetails.diseaseId && patientDetails.disease}
+  <div class="row">
+    <div class="col-sm-12">
+     <label><i class="fa fa-file-text-o"></i> Diagnosis</label>
+
+
+     <h1>${patientDetails.disease.name} |</h1>
+     #{if patientDetails.dateofdiagnosis}
+     <p class="first-diagnosed">First Diagnosed: ${patientDetails.dateofdiagnosis.format('MM/dd/yyyy')}</p>
+     #{/if}
+   </div>
+ </div><!-- row -->
  #{/if}
 
  #{if patientDetails != null && breastCancerInfo != null && patientDetails.diseaseId == breastCancerId}
  #{if breastCancerInfo.er || breastCancerInfo.pr || breastCancerInfo.her2}
- <div class="col-sm-12">
-     <div class="product_tr">
-       <p><i class="fa fa-file-text-o"></i> Cancer Type Information</p>
-       <div>
-       #{if breastCancerInfo.er}
-       Er${breastCancerInfo.er}
-       #{/if}
-       #{if breastCancerInfo.er && breastCancerInfo.pr}
-       , Pr${breastCancerInfo.pr}
-       #{/if}
-       #{elseif breastCancerInfo.pr}
-       Pr${breastCancerInfo.pr}
-       #{/elseif}
-       #{if (breastCancerInfo.er || breastCancerInfo.pr) && breastCancerInfo.her2}
-       , HER2${breastCancerInfo.her2}
-       #{/if}
-       #{elseif breastCancerInfo.her2}
-       HER2${breastCancerInfo.her2}
-       #{/elseif}
+ <div class="row">
+  <div class="col-sm-12">
+   <label><i class="fa fa-file-text-o"></i> Cancer Type Information</label>
+   <h1>
+     #{if breastCancerInfo.er}
+     Er${breastCancerInfo.er}
+     #{/if}
+     #{if breastCancerInfo.er && breastCancerInfo.pr}
+     , Pr${breastCancerInfo.pr}
+     #{/if}
+     #{elseif breastCancerInfo.pr}
+     Pr${breastCancerInfo.pr}
+     #{/elseif}
+     #{if (breastCancerInfo.er || breastCancerInfo.pr) && breastCancerInfo.her2}
+     , HER2${breastCancerInfo.her2}
+     #{/if}
+     #{elseif breastCancerInfo.her2}
+     HER2${breastCancerInfo.her2}
+     #{/elseif}
 
-
-
-       </div>
-     </div>
-     <div class="bottom_hr"></div>
+   </h1>
  </div>
- #{/if}
-
- #{if breastCancerInfo.bcStage}
- <div class="col-sm-12">
-     <div class="product_tr">
-       <p><i class="fa fa-file-text-o"></i> Stage Information</p>
-       <div>${breastCancerInfo.bcStage.name}</div>
-     </div>
-     <div class="bottom_hr"></div>
- </div>
- #{/if}
-
- #{if breastCancerInfo.brca}
- <div class="col-sm-12">
-     <div class="product_tr">
-       <p><i class="fa fa-file-text-o"></i> Family History & Genetics</p>
-       <div>BRCA${breastCancerInfo.brca}</div>
-     </div>
-     <div class="bottom_hr"></div>
- </div>
- #{/if}
-
- #{/if}
-
-
- #{if (patientDetails && (patientDetails.dateofdiagnosis || patientDetails.ec1name || patientDetails.ec1number)) || (userDetails && (userDetails.dob || userDetails.homePhone))}
- <div class="col-sm-12">
-    <div class="product_tr">
-        <p><i class="fa fa-file-text-o"></i> Patient Information</p>
-        #{if patientDetails && patientDetails.dateofdiagnosis}
-        <div>Date of Diagnosis: ${patientDetails.dateofdiagnosis.format('MM/dd/yyyy')}</div>
-        #{/if}
-        #{if patientDetails && (patientDetails.ec1name || patientDetails.ec1number)}
-        <div>Support Contact:
-        #{if patientDetails.ec1name && patientDetails.ec1number}
-        ${patientDetails.ec1name} - ${patientDetails.ec1number}
-        #{/if}
-        #{elseif patientDetails.ec1name}
-        ${patientDetails.ec1name}
-        #{/elseif}
-        #{else}
-        ${patientDetails.ec1number}
-        #{/else}
-        </div>
-        #{/if}
-        #{if userDetails.dob}
-        <div>DOB: ${userDetails.dob.format('MM/dd/yyyy')}</div>
-        #{/if}
-        #{if userDetails.homePhone}
-        <div>Phone: ${userDetails.homePhone}</div>
-        #{/if}
-    </div>
-</div>
+</div><!-- row -->
 #{/if}
+
+#{if breastCancerInfo.bcStage}
+<div class="row">
+  <div class="col-sm-12">
+   <label><i class="fa fa-file-text-o"></i> Stage Information</label>
+   <h1>${breastCancerInfo.bcStage.name}</h1>
+ </div>
+</div><!-- row -->
+#{/if}
+
+#{if breastCancerInfo.brca}
+<div class="row">
+  <div class="col-sm-12">
+   <label><i class="fa fa-file-text-o"></i> Family History & Genetics</label>
+   <h1>BRCA${breastCancerInfo.brca}</h1>
+ </div>
+</div><!-- row -->
+#{/if}
+
+#{/if}
+
+
+#{if (patientDetails && (patientDetails.dateofdiagnosis || patientDetails.ec1name || patientDetails.ec1number)) || (userDetails && (userDetails.dob || userDetails.homePhone))}
+<div class="row">
+  <div class="col-sm-12 patient-information">
+    <label><i class="fa fa-file-text-o"></i> Patient Information</label>
+    #{if patientDetails && patientDetails.dateofdiagnosis}
+    <p><span>Date of Diagnosis:</span> ${patientDetails.dateofdiagnosis.format('MM/dd/yyyy')}</p>
+    #{/if}
+    #{if patientDetails && (patientDetails.ec1name || patientDetails.ec1number)}
+    <p><span>Support Contact:</span>
+      #{if patientDetails.ec1name && patientDetails.ec1number}
+      ${patientDetails.ec1name} - ${patientDetails.ec1number}
+      #{/if}
+      #{elseif patientDetails.ec1name}
+      ${patientDetails.ec1name}
+      #{/elseif}
+      #{else}
+      ${patientDetails.ec1number}
+      #{/else}
+    </p>
+    #{/if}
+    #{if userDetails.dob}
+    <p><span>DOB:</span> ${userDetails.dob.format('MM/dd/yyyy')}</p>
+    #{/if}
+    #{if userDetails.homePhone}
+    <p><span>Phone:</span> ${userDetails.homePhone}</p>
+    #{/if}
+  </div>
+</div><!-- row -->
+#{/if}
+</div>
