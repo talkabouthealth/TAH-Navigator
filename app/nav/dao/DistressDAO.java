@@ -19,10 +19,10 @@ import models.UserDTO;
 
 public class DistressDAO {
 
-	public static PatientDistressDTO savePatientDistress(int distressValue,UserDTO user,String otherDetail) {
+	public static PatientDistressDTO savePatientDistress(int distressValue,UserDTO user,String otherDetail,Date daterecrded) {
 
 		PatientDistressDTO distressDTO = new PatientDistressDTO();
-		distressDTO.setDaterecrded(new Date());
+		distressDTO.setDaterecrded(daterecrded);
 		distressDTO.setDistressvalue(distressValue);
 		distressDTO.setThrough(GlobalConstant.DISTRESS_MODE_WEB);
 		distressDTO.setUser(user);

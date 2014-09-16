@@ -81,6 +81,8 @@ var DistressMeter = function() {
       step2.show();
       distressAmountText.html(distressRange[amount]);
     } else if ( page === 2 ) {
+      var d = moment(new Date());
+      document.forms.distressForm.daterecrded.value = d.format('M/D/YYYY h:m A');
       var postData = distressForm.serializeArray();
       var formURL = distressForm.attr("action");
       $.post(formURL, postData, function( data ) {

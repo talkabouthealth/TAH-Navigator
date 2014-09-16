@@ -22,6 +22,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
   <script src="/public/plugins/tinymce/tinymce.min.js"></script>
   <script src="/public/plugins/tinymce/jquery.tinymce.min.js"></script>
   <script src="/public/plugins/timeago/jquery.timeago.js"></script>
+  <script src="/public/plugins//moment/moment.min.js"></script>
   <script src="/public/js/validator.min.js"></script>
   <script src="/public/js/devoops.js"></script>
 </head>
@@ -227,6 +228,8 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
       </div>
       #{form @Distress.save() , id:'distressForm' }
       <input type="hidden" name="curDist" value="1"/>
+      <input type="hidden" name="daterecrded" value=""/>
+      
       <div id="step1" class="step1 modal-body" style="float:left;display:block;  padding-top: 50px;">
         <div class="col-xs-12 col-sm-12">
           <div class="col-xs-6 col-sm-6">

@@ -10,7 +10,9 @@
       <a class="pull-left" href="#"> 
         <img src="@{Image.show(expertDetails.id)}" width="74" height="70" class="img-responsive"> </a>
       <div class="media-body main-l-p">
-      <h1>${expertDetails.firstName} ${expertDetails.lastName}</h1>
+      <h1>
+      	#{userName userName: expertDetails.user.name, userId: expertDetails.user.id /}
+      </h1>
     </div>
                 	#{if expdetails.practiceAddr != null}
                 	<div class="secont-l-p-f">
