@@ -452,6 +452,8 @@
 }
 .input-daterange input {
   text-align: center;
+  width: 110px;
+  float:left;
 }
 .input-daterange input:first-child {
   -webkit-border-radius: 3px 0 0 3px;
@@ -467,7 +469,7 @@
   display: inline-block;
   width: auto;
   min-width: 16px;
-  height: 34px;
+  height: 30px;
   padding: 4px 5px;
   font-weight: normal;
   line-height: 20px;

@@ -273,6 +273,12 @@
                     </div>
                     <div class="form-group form-group-sm">
                         <label for="rt_start_date" class="col-xs-4 control-label">Dates</label>
+                        <div class="col-xs-7 input-daterange" id="datepickerRangeRadForm" >
+			                    <input type="text" class="form-control input-sm" id="rt_start_date" placeholder="YYYY-MM-DD">
+			                    <span class="add-on">to</span>
+			                    <input type="text" class="form-control input-sm" id="rt_end_date" placeholder="YYYY-MM-DD">
+			            </div>
+			            <!-- 
                         <div class="col-xs-3">
                             <input type="text" class="form-control input-sm" id="rt_start_date" placeholder="YYYY-MM-DD">
                         </div>
@@ -282,6 +288,7 @@
                         <div class="col-xs-3">
                             <input type="text" class="form-control input-sm" id="rt_end_date" placeholder="YYYY-MM-DD">
                         </div>
+                         -->
                     </div>
                     <div class="form-group form-group-sm">
                         <label for="rt_region" class="col-xs-4 control-label">Region Treated</label>
@@ -291,13 +298,21 @@
                     </div>
                     <div class="form-group form-group-sm">
                         <label for="rt_side_effects" class="col-xs-4 control-label">Side Effects</label>
-                        <div class="col-xs-8" id="rt_side_effects_div"></div>
+                        <div class="col-xs-8">
+                        	<div class="col-xs-12 nopadding" id="rt_side_effects_div"></div>
+                        	<div class="col-xs-12 nopadding">
+                            	<input type="text" class="form-control input-sm" id="rt_side_effects" placeholder="i.e. Fatigue" data-provide="typeahead">
+                        	</div>
+                        </div>
                     </div>
+                    <!-- 
                     <div class="form-group form-group-sm">
-                        <div class="col-xs-offset-4 col-xs-8">
+                     	<label for="rt_side_effects" class="col-xs-4 control-label"></label>
+                        <div class="col-xs-8">
                             <input type="text" class="form-control input-sm" id="rt_side_effects" placeholder="i.e. Fatigue" data-provide="typeahead">
                         </div>
                     </div>
+                     -->
                     <div class="form-group form-group-sm">
                         <label for="rt_notes" class="col-xs-4 control-label">Note</label>
                         <div class="col-xs-8">

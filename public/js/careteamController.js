@@ -622,6 +622,13 @@ var careTeamController = (function() {
         $('#rt_schedule').typeahead({
             source: tmp
         });
+        
+        $('#datepickerRangeRadForm').datepicker({
+    		defaultDate: +1 ,minDate:"+1d",
+              startDate: "today",
+              format: "yyyy-mm-dd"
+        });
+        /*
         $('#rt_start_date').datepicker({
             format: 'yyyy-mm-dd',
             autoclose: true
@@ -630,6 +637,7 @@ var careTeamController = (function() {
             format: 'yyyy-mm-dd',
             autoclose: true
         });
+        */
         var treatmentRegions = data.treatmentRegions;
         length = treatmentRegions.length;
         tmp = [];
@@ -725,6 +733,7 @@ var careTeamController = (function() {
         if (prtDto.endDate) {
             $('#rt_end_date').val(dateToStr(new Date(prtDto.endDate), '-'));
         }
+        $('#datepickerRangeRadForm').datepicker({ startDate: prtDto.startDate, endDate: prtDto.endDate});
         if ('trDto' in prtDto) {
             $('#rt_region').val(prtDto.trDto.region);
         }

@@ -644,7 +644,10 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
           lastLogin = $('.last-login span');
 
           todayDate.html($.datepicker.formatDate('DD mm/dd/yy', new Date()));
-          lastLogin.timeago();
+//           lastLogin.timeago();
+          
+          var d = moment(lastLogin.html(), 'YYYY-MM-DD h:m:s A');
+          lastLogin.html(d.format('M/D/YYYY h:m A'));
         });
       })(jQuery);
 
