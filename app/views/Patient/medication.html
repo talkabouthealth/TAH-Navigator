@@ -1,10 +1,11 @@
 #{set pageType = 'medication' /}
 #{extends 'patientmain.html' /}
 <!--Start Content-->
-<div class="col-xs-12 col-sm-10 medications page">
-  <div class="header">
+<div class="medications page">
+
+  <!-- <div class="header">
     <h1><i class="fa fa-clock-o"></i>My Medication Calendar</h1>
-  </div>
+  </div> -->
   <!--
   <div class="medication-calendar">
     <div class="header">
@@ -175,34 +176,29 @@
     </div>
   </div>
   -->
-  <div class="row">&nbsp;</div>
 
-  <div class="row">
     #{if medicationList != null && medicationList.size()>0}
     #{list medicationList, as:'seq'}
-    <div class="col-xs-12 col-sm-12 nav-tabs">
-      <div class="col-sm-6" style="padding-top: 10px;">
+    <div class="medication">
         <h3>${seq.medicine.genericname}</h3>
         <p><strong>BRAND NAME: </strong>${seq.medicine.brandname}</p>
         <p><strong>FREQUENCY: </strong>${seq.frequency}</p>
         <p><strong>DATES: </strong>${seq.startdate.format('MM/dd/yyyy')} - ${seq.enddate.format('MM/dd/yyyy')}</p>
         <p><strong>SPECIAL INSTRUCTIONS: </strong>${seq.specialinstruction}</p>
         <p><strong>PRESCRIBING PYSICIAN: </strong>#{userName userName: seq.caremember.name, userId:seq.caremember.id /}</p>
-      </div>
-      <div class="col-sm-6" style="padding-top: 10px;">
+
       	#{if seq.method}
-<!--        	 <img src="/public/images/${seq.method}.png"/> 
+<!--        	 <img src="/public/images/${seq.method}.png"/>
 		${seq.method}-->
         #{/if}
        #{if seq.medicine.image}
         <img src="/image/showMedicine/${seq.id}"/>
         #{/if}
-      </div>
-    </div>
+    </div><!-- medication -->
     #{/list}
     #{/if}
     #{else}
-    <div class="col-xs-12 col-sm-12 nav-tabs">No medication added.</div>
+    <div>No medication added.</div>
     #{/else}
   </div>
   <div id="ajax-content"></div>
