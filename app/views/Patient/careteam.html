@@ -1,0 +1,23 @@
+#{set pageType = 'careteam' /} #{extends 'patientmain.html' /}
+<!--Start Content-->
+<div id="content" class="col-xs-12">
+  <div class="row">&nbsp;</div>
+  #{if careTeams != null && careTeams.size()>0}
+  <div class="row col-xs-12" id="careTeamList">
+    #{list careTeams, as:'seq'}
+    <h3 class="user_first" data-teamid="${seq.careteamid}" ><i class="fa fa-table"></i> ${seq.careteam.name} CARE TEAM</h3>
+    <div class="careteam-container">
+      Loading...
+    </div>
+    #{/list}
+  </div>
+  #{/if}
+  #{else}
+  <div class="row">
+    <div class="col-sm-8">
+      No Data found
+    </div>
+  </div>
+  #{/else}
+</div>
+<script type="text/javascript" src="/public/js/patient/careteam.js"></script>
