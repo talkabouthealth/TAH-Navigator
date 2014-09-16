@@ -25,3 +25,20 @@ h2 {
 		color: @gray;
 	}
 }
+
+table.simple {
+
+		td {
+			border: 1px solid #CCC;
+			padding: @padding;
+
+			&:first-child {
+				border-left: none;
+				padding-left: 0;
+			}
+
+			&:last-child {
+				border-right: none;
+			}
+		}
+	}

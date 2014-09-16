@@ -1,39 +1,49 @@
 #{extends 'CarePatien/patientSummary.html' /}
-<div class="col-xs-12 col-sm-12 nopadding">
-	<button class="btn btn-default btn-sm appointmentBtn" style="font-weight:bold;">+ New Appointment</button>
-	<br/><br/>
+<div class="appointments">
+	<button class="btn btn-default btn-sm appointmentBtn">+ New Appointment</button>
+
 	#{if list != null && list.size()>0}
-		#{list list, as:'seq'}
-			<div class="col-xs-12 col-sm-12 nopadding nav-tabs">
-				<div class="col-sm-5" style="padding-top: 10px;border-right: 1px solid #CCC">
-				<p>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}<br/> <!-- THURSDAY MAY 10TH 2014 -->
-				${seq.appointmenttime} <a href="javaScript:operationAppointment('edit','${seq.id}')">${seq.purpose}</a></p>
-				</div>
-				<div class="col-sm-5" style="padding-top: 10px;">
-				<p>#{userName userName: seq.caremember.name, userId:seq.caremember.id /}<br/>
-				${seq.appointmentcenter}</p>
-				</div>
-			</div>
-		#{/list}
+	<table class="simple">
+		<tbody>
+			#{list list, as:'seq'}
+			<tr>
+				<td>
+					<label>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}</label>
+					<p>${seq.appointmenttime} - <a href="javaScript:operationAppointment('edit','${seq.id}')">${seq.purpose}</a></p>
+				</td>
+				<td>
+					<p>#{userName userName: seq.caremember.name, userId:seq.caremember.id /}</p>
+					<p>${seq.appointmentcenter}</p>
+				</td>
+			</tr>
+			#{/list}
+		</tbody>
+	</table>
 	#{/if}
 	#{else}
-		<div class="col-xs-12 col-sm-12 nav-tabs">No appointment added.</div>
+	<div class="col-xs-12 col-sm-12 nav-tabs">No appointment added.</div>
 	#{/else}
-</div>
-<div class="col-xs-12 col-sm-12"  style="padding:30px 0px 0px 0px">
+
+
 	#{if expList != null && expList.size()>0}
-	<h2>Past Appointments</h2>
-	#{list expList, as:'seq'}
-			<div class="col-xs-12 col-sm-12 nopadding nav-tabs">
-				<div class="col-sm-5" style="padding-top: 10px;border-right: 1px solid #CCC">
-				<p>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}<br/> <!-- THURSDAY MAY 10TH 2014 -->
-				${seq.appointmenttime} <a href="javaScript:operationAppointment('edit','${seq.id}')">${seq.purpose}</a></p>
-				</div>
-				<div class="col-sm-5" style="padding-top: 10px;">
-				<p>#{userName userName: seq.caremember.name, userId:seq.caremember.id /}<br/>
-				${seq.appointmentcenter}</p>
-				</div>
-			</div>
-		#{/list}
+	<div class="past-appointments">
+		<h3>Past Appointments</h3>
+		<table class="simple">
+			<tbody>
+				#{list expList, as:'seq'}
+				<tr>
+					<td>
+						<label>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}</label>
+						<p>${seq.appointmenttime} - <a href="javaScript:operationAppointment('edit','${seq.id}')">${seq.purpose}</a></p>
+					</td>
+					<td>
+						<p>#{userName userName: seq.caremember.name, userId:seq.caremember.id /}</p>
+						<p>${seq.appointmentcenter}</p>
+					</td>
+				</tr>
+				#{/list}
+				</tbody>
+		</table>
+	</div><!-- past-appointments -->
 	#{/if}
-</div>
+</div><!-- appointments -->
