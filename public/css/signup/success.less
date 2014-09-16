@@ -1,0 +1,40 @@
+@container-size: 800px;
+
+a {
+	color: white;
+	.transition-duration(.2s);
+
+	&:hover {
+		color: white;
+	}
+}
+
+.footer {
+	margin-top: 40px;
+
+	p {
+		color: @medium-gray;
+	}
+}
+
+/* Overrule static.css */
+
+@media (min-width: 768px) {
+  .container {
+    max-width: @container-size;
+  }
+}
+
+h2 {
+	font-size: @large-font;
+	margin: @padding*2 0;
+	line-height: 1.6;
+}
+
+p {
+	color: @medium-gray;
+
+	&.problems {
+		margin-bottom: @padding*2;
+	}
+}
