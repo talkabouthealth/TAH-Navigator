@@ -108,55 +108,57 @@
 					</div>
 					 -->
 					<div class="col-xs-4 col-sm-4" style="border-right: 1px solid #CCC">
-						<p class="title"><h3>DISTRESS</h3></p>
-						#{if distress != null }
-						<table>
-							<tr><td colspan="2"> <p class="last">Last Updated <span id="timeAgo">${distress.distressDate.format('dd.MM.yyyy')}</span></p></td></tr>
-							<tr>
-								<td>
-									<div style=" background-color: #efefef;float: left;padding: 5px 10px;">
-										<span style="  background-color: #fff;float:left;color:darkred;border: 5px solid darkred;border-radius: 40px;font-size: 25px;font-weight: 700;padding: 0px 10px;">${distress.curDist}</span>
-										<span style="float:left;color:darkred;font-weight: bold;padding-left: 10px;">
-										#{if distress.curDist < 5}
-											MILD<br/> DISTRESS
-										#{/if}
-										#{if distress.curDist == 5}
-											MEDIUM<br/> DISTRESS
-										#{/if}
-										#{if distress.curDist > 5}
-											SEVERE<br/> DISTRESS
-										#{/if}
-										</span>
-										<span class="td-graph"></span>
-									</div>
-								</td>
-							</tr>
-<!-- 							<tr><td colspan="2">&nbsp;</td></tr> -->
-							<tr>
-								<td><p><strong>CURRENT PROBLEM LIST</strong>
-								<br/>
-									${distress.otherdetail.printMessage()}
-								</p>
-								</td>
-							</tr>
-<!-- 							<tr><td colspan="2">&nbsp;</td></tr> -->
+						<div class="distress">
+							<h3>Distress</h3>
+							#{if distress != null }
+							<table>
+								<tr><td colspan="2"> <p class="last">Last Updated <span id="timeAgo">${distress.distressDate.format('dd.MM.yyyy')}</span></p></td></tr>
+								<tr>
+									<td>
+										<div style=" background-color: #efefef;float: left;padding: 5px 10px;">
+											<span style="  background-color: #fff;float:left;color:darkred;border: 5px solid darkred;border-radius: 40px;font-size: 25px;font-weight: 700;padding: 0px 10px;">${distress.curDist}</span>
+											<span style="float:left;color:darkred;font-weight: bold;padding-left: 10px;">
+											#{if distress.curDist < 5}
+												MILD<br/> DISTRESS
+											#{/if}
+											#{if distress.curDist == 5}
+												MEDIUM<br/> DISTRESS
+											#{/if}
+											#{if distress.curDist > 5}
+												SEVERE<br/> DISTRESS
+											#{/if}
+											</span>
+											<span class="td-graph"></span>
+										</div>
+									</td>
+								</tr>
+	<!-- 							<tr><td colspan="2">&nbsp;</td></tr> -->
+								<tr>
+									<td><p><strong>CURRENT PROBLEM LIST</strong>
+									<br/>
+										${distress.otherdetail.printMessage()}
+									</p>
+									</td>
+								</tr>
+	<!-- 							<tr><td colspan="2">&nbsp;</td></tr> -->
 
-						</table>
-						#{/if}
-						#{else}
-							No Data available
-						#{/else}
-						#{if lastDistress != null}
-						<table>
-							<tr>
-								<td><p><strong>PAST PROBLEM LIST</strong>
-								<br/>
-									${lastDistress.otherdetail.printMessage()}
-								</p>
-								</td>
-							</tr>
-						</table>
-						#{/if}
+							</table>
+							#{/if}
+							#{else}
+								No Data available
+							#{/else}
+							#{if lastDistress != null}
+							<table>
+								<tr>
+									<td><p><strong>PAST PROBLEM LIST</strong>
+									<br/>
+										${lastDistress.otherdetail.printMessage()}
+									</p>
+									</td>
+								</tr>
+							</table>
+							#{/if}
+						</div><!-- distress -->
 					</div>
 					<!--
 					<div class="col-xs-4 col-sm-4"><p class="title">SYMPTOMS</p>
@@ -203,7 +205,7 @@
 					-->
 				</div>
 				<div class="col-xs-12 col-sm-12" style="border-top: 1px solid #CCC;margin-top: 20px;padding-top: 20px;">
-				<div style="padding-bottom:20px;">
+				<div>
 				<span class="title" style="vertical-align: middle;">NOTES</span>&nbsp;&nbsp;<button class="btn btn-default btn-sm noteBtn" style="font-weight:bold;">+ NEW NOTE</button>
 				</div>
 				#{include '/tags/note.html' /}

@@ -33,3 +33,50 @@ p {
     z-index: 2011;
 }
 */
+
+.distress {
+  h3 {
+    text-transform: uppercase;
+  }
+
+  .last {
+    font-style: italic;
+  }
+}
+
+.notes {
+  margin-top: @padding;
+
+  h3 {
+    font-size: @large-font;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-style: normal;
+    margin: 5px 0 0 0;
+
+    a {
+      color: @dark-gray;
+    }
+  }
+
+  p {
+    color: @gray;
+    font-style: normal;
+    line-height: 1.4;
+    margin: 0;
+
+    &.last {
+      margin: 0;
+    }
+  }
+
+  .note {
+    border-bottom: 1px solid @light-gray;
+    padding-bottom: @padding;
+    margin-bottom: @padding;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
