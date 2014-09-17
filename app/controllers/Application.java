@@ -1,7 +1,10 @@
 package controllers;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import models.ContactTypeDTO;
@@ -147,7 +150,7 @@ public class Application extends Controller {
     		render(userId);
     	}
     }
-    public static void distressSave(String userId,String curDist,String [] distressType,String fromPage,String otherDetail) {
+    public static void distressSave(String userId,String curDist,String [] distressType,String fromPage,String otherDetail,String daterecrded) {
     	
     	
     	System.out.println("userId : " + userId);
@@ -158,7 +161,13 @@ public class Application extends Controller {
 //		UserBean user = CommonUtil.loadCachedUser(session);
 		UserDetailsDTO userDto = UserDAO.getDetailsById(userId);
 		int distInt = Integer.parseInt(curDist);
-		PatientDistressDTO dto = DistressDAO.savePatientDistress(distInt,userDto.getUser(),otherDetail);
+		Date dtCreated = new Date();
+		try {
+			dtCreated = new SimpleDateFormat("M/d/yyyy h:m a").parse(daterecrded);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		PatientDistressDTO dto = DistressDAO.savePatientDistress(distInt,userDto.getUser(),otherDetail,dtCreated);
 
 		if(distressType != null) {
 			for (String string : distressType) {

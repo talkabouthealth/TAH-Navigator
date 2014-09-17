@@ -18,7 +18,9 @@
 			<div class="tab-content">
 			<div id="summary" class="tab-pane active" >
 		<!--------  Patient Summary Start ----------->
-
+		*{ #{extends 'CarePatien/patientSummary.html' /} }*
+		#{include '/tags/patientSummary.html' /}
+		<!-- 
         <div class="patient-summary">
             <div class="patient-image">
                 <img class="profilePic" src="@{Image.show(ps.userId)}" >
@@ -33,7 +35,7 @@
           #{else}
           <button type="button" class="btn validate_btn" verified="no" patient_id="${ps.userId}" onclick="careTeamController.evtMsgHandler('toggle_validate', this);">Validate Now</button>
           #{/else}
-        </div><!-- validate -->
+        </div><!-- validate -- >
 
         <div class="disease">
         	#{if ps.disease}
@@ -56,8 +58,8 @@
         		, BRCA${ps.brca}
         		#{/if}
         	</p>
-        </div><!-- disease -->
-      </div><!-- col -->
+        </div><!-- disease -- >
+      </div><!-- col -- >
       <div class="col">
       	<div class="primary-information">
       		#{if ps.dob}
@@ -76,7 +78,7 @@
       		<p><span>Support Contact:</span> ${ps.ec1Name} ${ps.ec1Number}</p>
       		#{/if}
       	</div>
-      </div><!-- col -->
+      </div><!-- col -- >
       <div class="col appointments">
 
 
@@ -93,9 +95,10 @@
       	#{/if}
 
 
-      </div><!-- appointments -->
-    </div><!-- row -->
+      </div><!-- appointments -- >
+    </div><!-- row -- >
   </div>
+  -->
 
 	<!--------  Patient Summary ----------->
 

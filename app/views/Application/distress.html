@@ -1,12 +1,14 @@
 #{extends 'outermain.html' /}
 
+<link rel="stylesheet" media="screen" href="@{'/public/plugins/bootstrap/bootstrap.css'}">
+<style>@import "/public/css/patients/distress-meter.less";</style>
 
 <!-- <link rel="stylesheet" media="screen" href="@{'/public/plugins/datepicker/css/datepicker.css'}"> -->
 
 <!-- <script src="@{'/public/plugins/datepicker/js/bootstrap-datepicker.js'}"></script> -->
 
-HELLO
-<div class="container">
+<!-- HELLO -->
+<div class="container modal-content">
   <!--  <div class="header">
         <h3 class="text-muted">MOFFITT - Navigator</h3>
       </div>
@@ -17,6 +19,7 @@ HELLO
       #{form @Application.distressSave() , id:'distressForm' }
       <input type="hidden" name="fromPage" value="${fromPage}"/>
       <input type="hidden" name="userId" value="${userId}"/>
+      <input type="hidden" name="daterecrded" value=""/>
       <input type="hidden" name="curDist" value="1"/>
       <div id="step1" class="modal-body" style="float:left;display:block;  padding-top: 50px;">
         <div class="col-xs-12 col-sm-12">
@@ -457,6 +460,8 @@ $("#distress button").click(function(){
     $(".step2Distress").html(selection);
     $("#step2").show();
     } else if($(this).data('next') == 3) {
+    	 var d = moment(new Date());
+    	document.forms.distressForm.daterecrded.value = d.format('M/D/YYYY h:m A');
     $("#distressForm").submit();
     /*
        var postData = $("#distressForm").serializeArray();

@@ -1,6 +1,6 @@
 #{extends 'outermain.html' /}
-<link rel="stylesheet" media="screen" href="@{'/public/plugins/datepicker/css/datepicker.css'}">
-<script src="@{'/public/plugins/datepicker/js/bootstrap-datepicker.js'}"></script>
+<!-- <link rel="stylesheet" media="screen" href="@{'/public/plugins/datepicker/css/datepicker.css'}"> -->
+<!-- <script src="@{'/public/plugins/datepicker/js/bootstrap-datepicker.js'}"></script> -->
 <style>
 li, blockquote{color:#333;}
 
@@ -105,7 +105,7 @@ table.table-condensed {
 		    	<div class="form-group for-patient">
 				    <label for="exampleInputEmail1">Date of birth (mm/dd/yyyy)</label>
 				    <div class="input-group">
-					    <input type="text" class="form-control" name="member.dob" value="${flash['member.dob']}" placeholder="Enter date of birth" data-date-format="mm/dd/yyyy" data-date-viewmode="day" data-date-minviewmode="day">
+					    <input type="text" class="form-control" id="hasDatepicker" name="member.dob" value="${flash['member.dob']}" placeholder="Enter date of birth" data-date-format="mm/dd/yyyy" data-date-viewmode="day" data-date-minviewmode="day">
 						<!--<input type="text" class="form-control datepicker" name="member.dob" value="${flash['member.dob']}" placeholder="Enter date of birth" data-date-format="mm/dd/yyyy" data-date-viewmode="day" data-date-minviewmode="day">-->
 						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 			  		</div>
@@ -263,9 +263,8 @@ table.table-condensed {
     <script>
 <!--
 $(document).ready(function() {
-	$('.datepicker').datepicker({onRender: function(date) {
-	    return date.valueOf() >= new Date().valueOf() ? 'disabled' : '';
-	  }});
+// 	$('.datepicker').datepicker();
+	$('#hasDatepicker').datepicker();
 	$('#signup').validator();
 	var userType = $("#userType").val();
 	if(userType == '5' || userType == '4') {

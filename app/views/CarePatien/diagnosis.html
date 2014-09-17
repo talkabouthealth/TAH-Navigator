@@ -1,4 +1,4 @@
-#{extends 'CarePatien/patientSummary.html' /}
+#{include '/tags/patientSummary.html' /}
 
 <div class="diagnosis">
   <button type="button" class="btn btn-primary edit-info" patient_id="${patientId}" onclick="careTeamController.evtMsgHandler('diagnosis', this);">EDIT INFO</button>

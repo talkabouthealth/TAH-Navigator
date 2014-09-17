@@ -75,8 +75,8 @@ public class CarePatien  extends Controller {
 		UserDetailsDTO userDto = UserDAO.getDetailsById(patientId);
 		PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", userDto.getId());
 		List<PatienCareTeamDTO> careTeams = CareTeamDAO.getPatienCareTeamByField("patienid", userDto.getId());
-		
-		render(patientId,userDto,patientOtherDetails,careTeams);
+		Map <String, Object> ps = PatientDetailDAO.patientSummary(patientId);
+		render(patientId,userDto,patientOtherDetails,careTeams,ps);
 	}
 
 	public static void medication(int patientId) {
