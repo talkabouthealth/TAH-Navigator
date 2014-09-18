@@ -30,7 +30,9 @@
       #{if patients != null}
       #{list patients, as:'seq'}
       <tr>
-        <td><div><a href="@{Care.patient(seq.userDetails.id)}">${seq.userDetails.firstName} ${seq.userDetails.lastName}</a></div></td>
+        <td><div><a href="@{Care.patient(seq.userDetails.id)}">${seq.userDetails.firstName.usreNameNew(seq.userDetails.id)}</a></div>
+        *{  ${seq.userDetails.firstName} ${seq.userDetails.lastName} }*
+        </td>
         <td><div>
           #{if seq.patientOtherDetails != null}
           	#{if seq.patientOtherDetails.disease != null}
@@ -83,7 +85,7 @@
 		</div></td>
 		<td><div>
 									#{if seq.distress != null}
-									<span class="timeAgo" title="${seq.distress.distressDate}">${seq.distress.distressDate.format("dd/MM/yyyy")}</span>
+									<span class="timeAgo" title="${seq.distress.distressDate}">${seq.distress.distressDate.format("M/dd/yyyy")}</span>
 									#{/if}
 									#{else}-#{/else}
 								</div></td>

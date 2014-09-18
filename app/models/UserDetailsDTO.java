@@ -110,7 +110,7 @@ public class UserDetailsDTO {
 		return lastName;
 	}
 
-	public void setLastName(String ssn) {
+	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 	
