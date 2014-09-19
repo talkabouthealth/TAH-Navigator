@@ -2,7 +2,7 @@
 <div class="notes">
 	#{list noteList, as:'seq'}
 	<div class="note">
-		<p class="last">#{userName userName: seq.noteBy.name, userId:seq.noteBy.id /}, ${seq.noteDate.format('MM/dd/yyyy - hh:mm a')}</p>
+		<p class="last">#{userName userName: seq.noteBy.name, userId:seq.noteBy.id /}, ${seq.noteDate.format('M/dd/yyyy h:m a')}</p>
 		<h3>
 			<a href="javaScript:operationNote('edit','${seq.id}','${seq.noteTitle}','${seq.noteDesc}')">
 				${seq.noteTitle}

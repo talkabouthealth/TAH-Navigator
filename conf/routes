@@ -22,6 +22,7 @@ GET		/verify/{verifyCode}					Application.verifyEmail
 #Dashboard Pages
 GET     /index                                  Application.index
 GET     /create/?                               Application.create
+GET     /createOther/?                               Application.createOther
 POST    /register/?	                            Application.register
 # Home page
 GET     /                                       Application.index

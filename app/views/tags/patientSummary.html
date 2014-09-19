@@ -44,7 +44,7 @@
       <div class="col">
         <div class="primary-information">
          #{if ps.dob}
-         <p><span>DOB:</span> ${ps.dob.format('MM/dd/yyyy')}</p>
+         <p><span>DOB:</span> ${ps.dob.format('M/dd/yyyy')}</p>
          #{/if}
          #{if ps.phone}
          <p><span>Phone:</span> ${ps.phone}</p>
@@ -53,7 +53,7 @@
        <div class="secondary-information">
 
          #{if ps.dateOfDiagnosis}
-         <p><span>Date of Diagnosis:</span> ${ps.dateOfDiagnosis.format('MM/dd/yyyy')}</p>
+         <p><span>Date of Diagnosis:</span> ${ps.dateOfDiagnosis.format('M/dd/yyyy')}</p>
          #{/if}
          #{if ps.ec1Name || ps.ec1Number}
          <p><span>Support Contact:</span> ${ps.ec1Name} ${ps.ec1Number}</p>
@@ -63,13 +63,13 @@
       <div class="col appointments">
         <!-- <p class="next-appointment"><span>Next Appointment:</span> 06/06/05</p> -->
         #{if ps.nextAppointment}
-        <p class="next-appointment"><span>Next Appointment:</span> ${ps.nextAppointment.format('MM/dd/yyyy')}
+        <p class="next-appointment"><span>Next Appointment:</span> ${ps.nextAppointment.format('M/dd/yyyy')}
           #{if ps.nextPurpose} (${ps.nextPurpose}) #{/if}
         </p>
         #{/if}
 
         #{if ps.lastAppointment}
-        <p class="last-appointment"><span>Last Appointment:</span> ${ps.lastAppointment.format('MM/dd/yyyy')}
+        <p class="last-appointment"><span>Last Appointment:</span> ${ps.lastAppointment.format('M/dd/yyyy')}
           #{if ps.lastPurpose} (${ps.lastPurpose}) #{/if}
         </p>
         #{/if}

@@ -510,11 +510,11 @@
     todayDate = $('.today-date');
     lastLogin = $('#time-ago');
 
-    todayDate.html($.datepicker.formatDate('DD mm/dd/yy', new Date()));
+    todayDate.html($.datepicker.formatDate('DD m/d/yy', new Date()));
 //     lastLogin.html($.datepicker.formatDate('m/d/yy h:m a', new Date()));
 //     lastLogin.timeago();
 
-	var d = moment(lastLogin.html(), 'YYYY-MM-DD h:m:s A');
+	var d = moment(lastLogin.html(), 'YYYY-MM-DD h:m A');
     lastLogin.html(d.format('M/D/YYYY h:m A'));
   });
 })(jQuery);

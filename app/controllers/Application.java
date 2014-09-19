@@ -111,6 +111,13 @@ public class Application extends Controller {
     	render(securityQuestionList,userTypelist,contactTypes);
     }
     
+    public static void createOther() {
+    	List<SecurityQuestionDTO> securityQuestionList =  SecurityQuestionDAO.getSecurityQuestions();
+    	List<UserTypeDTO> userTypelist = UserTypeDAO.getUserTypeList();
+    	List<ContactTypeDTO> contactTypes =  ContactTypeDAO.getContactTypeList();
+    	render(securityQuestionList,userTypelist,contactTypes);
+    }
+    
     public static void register(@Valid SignUpMemberBean member) throws Throwable {
     	 validateMember(member);
     	 System.out.println(validation.hasErrors());
