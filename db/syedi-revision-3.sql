@@ -135,7 +135,7 @@ CREATE TABLE nav.surgery_type (
 );
 
 INSERT INTO nav.surgery_type (name, days) VALUES 
-('Breast Biopsy', 3), ('Lumpectomy', 14), ('Mastecomy', 28), 
+('Breast Biopsy', 3), ('Lumpectomy', 14), ('Mastectomy', 28), 
 ('Double mastectomy', 28), ('Axial node dissection', 42), 
 ('Sentinel lymph node dissection', 14), 
 ('Tissue flap breast reconstruction', 49), 

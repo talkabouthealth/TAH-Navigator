@@ -363,13 +363,17 @@ var careTeamController = (function() {
             source: tmp,
             updater: function(item) {
                 updateSideEffects('si_side_effects_div', 'si-see', item, 'add');
+                item  = '';
                 return item;
             }
         });
         $('#si_side_effects').keyup(function(e) {
             if (e.keyCode == 13) {
                 var item = $('#si_side_effects').val();
-                updateSideEffects('si_side_effects_div', 'si-see', item, 'add');
+                if (item) {
+                    updateSideEffects('si_side_effects_div', 'si-see', item, 'add');
+                    $('#si_side_effects').val('');
+                }
                 e.stopPropagation();
                 e.preventDefault();
             }
@@ -546,13 +550,17 @@ var careTeamController = (function() {
             source: tmp,
             updater: function(item) {
                 updateSideEffects('ctt_side_effects_div', 'ctt-see', item, 'add');
+                item = '';
                 return item;
             }
         });
         $('#ctt_side_effects').keyup(function(e) {
             if (e.keyCode == 13) {
                 var item = $('#ctt_side_effects').val();
-                updateSideEffects('ctt_side_effects_div', 'ctt-see', item, 'add');
+                if (item) {
+                    updateSideEffects('ctt_side_effects_div', 'ctt-see', item, 'add');
+                    $('#ctt_side_effects').val('');
+                }
                 e.stopPropagation();
                 e.preventDefault();
             }
@@ -658,13 +666,17 @@ var careTeamController = (function() {
             source: tmp,
             updater: function(item) {
                 updateSideEffects('rt_side_effects_div', 'rt-see', item, 'add');
+                item = '';
                 return item;
             }
         });
         $('#rt_side_effects').keyup(function(e) {
             if (e.keyCode == 13) {
                 var item = $('#rt_side_effects').val();
-                updateSideEffects('rt_side_effects_div', 'rt-see', item, 'add');
+                if (item) {
+                    updateSideEffects('rt_side_effects_div', 'rt-see', item, 'add');
+                    $('#rt_side_effects').val('');
+                }
                 e.stopPropagation();
                 e.preventDefault();
             }
