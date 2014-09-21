@@ -68,7 +68,7 @@ public class Security extends Secure.Security {
 
 	    //saveLogin(String loginFrom,boolean rememberChecked,String sessionid)
 	    LoginHistoryDTO historyDTO = LoginHistoryDAO.getLastLoginByUserId(sessionUser);
-	    SimpleDateFormat smf = new SimpleDateFormat("MM/dd/yyyy H:mm");
+	    SimpleDateFormat smf = new SimpleDateFormat("M/dd/yyyy h:mm a");
 	    //2008-07-17T09:24:17Z
 	    String lastLoginTime = smf.format(historyDTO.getLogintime());
 	    String isFirstTime =  LoginHistoryDAO.getIsFirstTime(sessionUser);
