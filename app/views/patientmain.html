@@ -68,13 +68,15 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
             <h3>#{userName userName: user.name, userId:user.id /}</h3>
             #{if patientOtherDetails != null && patientOtherDetails.disease != null}
             <h4>
-              ${patientOtherDetails.disease.name}, STAGE ${patientOtherDetails.stage}
+              ${patientOtherDetails.disease.name}#{if breastCancerInfo != null && breastCancerInfo.bcStage}, ${breastCancerInfo.bcStage.name}#{/if}
             </h4>
             #{/if}
             #{else}
             <h4>Disease, for Testing Purposes</h4>
             #{/else}
+            #{if session.get("lastLoginTime") != null}
             <p class="last-login">Last Login: <span id="time-ago">${session.get("lastLoginTime")}</span></p>
+            #{/if}
           </div>
         </div><!-- account-info -->
         <div class="account-share">
@@ -636,6 +638,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
 
 
       <script>
+      /*
       (function($){
         var todayDate;
         var lastLogin;
@@ -650,7 +653,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
           lastLogin.html(d.format('M/D/YYYY h:m A'));
         });
       })(jQuery);
-
+*/
 // KEVIN: I don't know what this is for.
 #{set showPopup = session.get("showdistress") /}
 #{ if showPopup == null  }
