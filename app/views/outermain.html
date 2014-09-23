@@ -1,13 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" 
+<html xmlns="http://www.w3.org/1999/xhtml"
 		xmlns:og="http://ogp.me/ns#"
 		xmlns:fb="http://www.facebook.com/2008/fbml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-	<meta name="author" content="TalkAboutHealth" /> 
-	<meta name="robots" content="all" /> 
+	<meta name="author" content="TalkAboutHealth" />
+	<meta name="robots" content="all" />
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="@{'/public/img/favicon.ico'}" />
@@ -26,7 +25,7 @@
 		<script src="/public/plugins//moment/moment.min.js"></script>
 		<script src="/public/js/validator.min.js"></script>
 		<script src="/public/js/devoops.js"></script>
-		
+
 </head>
 <body>
 	<div id="screensaver">
@@ -51,13 +50,13 @@
 			</div>
 		</div>
 	</div>
-	
+
 	<header>
   <div class="log_header">
     <div class="">
       <div class="col-md-6"><img src="/public/images/log_logo.png"><span class="logo_span">NAVIGATOR</span></div>
       <div class="col-md-6">
-        
+
         <div class="my_nav">
         	<div class="navbar navbar-default" role="navigation">
         <div class="navbar-header">
@@ -76,24 +75,24 @@
           <li><a href="#">DASHBOARRD</a></li>
           <li><a href="#">LOGOUT</a></li>
           </ul> -->
-          
+
           <ul class="nav navbar-nav">
-          
-          
-          
-          
+
+
+
+
 		<!-- #{if pageType == 'index'} <li class="active"><a href="javaScript:void(0);">Home</a></li> #{/if}
 		#{else} <li><a href="@{Application.home()}">Home</a></li> #{/else} -->
-		
+
 		#{if pageType == 'about'} <li class="active"><a href="javaScript:void(0);">About</a></li> #{/if}
 		#{else} <li><a href="@{Static.about()}">About</a></li> #{/else}
-		
+
 		#{if pageType == 'contact'} <li class="active"><a href="javaScript:void(0);">Contact</a></li> #{/if}
 		#{else} <li><a href="@{Static.contact()}">Contact</a></li> #{/else}
-  
+
   		#{if pageType == 'login'} <li class="active"><a href="javaScript:void(0);">Login</a></li> #{/if}
-		#{else} <li><a href="@{Secure.login()}">Login</a></li> #{/else}        
-         
+		#{else} <li><a href="@{Secure.login()}">Login</a></li> #{/else}
+
         </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -102,13 +101,13 @@
     </div>
   </div>
 </header>
-	
+
 <!--End Header-->
 <!--Start Container-->
 <div class="log_bg">
   <div class="col-xs-12 col-sm-12">
 			#{doLayout /}
 	</div>
-</div>	
+</div>
 </body>
 </html>
