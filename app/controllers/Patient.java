@@ -179,7 +179,7 @@ public class Patient extends Controller {
         render(user,userDto,expertDetails,expdetails,careteam,education,experties,certificats,patientOtherDetails, breastCancerId, breastCancerInfo);
 	}
 	
-	public static void careMember(int memberId) {
+	public static void careMemberNew(int memberId) {
 		System.out.println("memberId : " + memberId);
 		UserBean user = CommonUtil.loadCachedUser(session);
 		//UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());
@@ -200,7 +200,7 @@ public class Patient extends Controller {
 		List<UserCertificateDTO> certificats = ProfileDAO.getCertificateByField("userid", memberId);
 		
 		
-        render(user,userDto,expertDetails,expdetails,careteam,education,experties,certificats,patientOtherDetails, breastCancerId, breastCancerInfo);
+        render("Patient/careMember.html",user,userDto,expertDetails,expdetails,careteam,education,experties,certificats,patientOtherDetails, breastCancerId, breastCancerInfo);
 	}
 	
 	public static void diagnosis() {

@@ -78,31 +78,32 @@
 
 		</div><!-- video walk through -->
 		<div class="my-care-team col-xs-6">
-			<label><i class="fa fa-play"></i>My Current Care Team has (${maxUsers}) Members:</label>
-
-			<ul class="care-team-members">
-			#{if careExpert.size()>0}
-				 #{list careExpert, as:'expertBean'}
-				 	<li class="care-team-member">
-						<div class="caretaker-image">
-							<a href="@{Patient.careMember(expertBean.expertDetail.id)}"><img src="@{Image.show(expertBean.expertDetail.id)}"></a>
-						</div>
-						<div class="caretaker-info">
-							<h4><a href="@{Patient.careMember(expertBean.expertDetail.id)}">#{userName userName: expertBean.userDetails.user.name, userId: expertBean.userDetails.user.id /} </a> | </h4>
-							#{if expertBean.expertDetail.practiceAddr != null}
-                					<p class="secondary-information">${expertBean.expertDetail.practiceAddr.getLine1()}</p>
-                				#{if expertBean.expertDetail != null}
-                    				<p class="phone">${expertBean.userDetails.mobile}</p>
-                    			#{/if}
-                    	    #{/if}
-						</div><!-- caretaker-info -->
-					</li>
-				 #{/list}
+			#{if maxUsers>0}
+				<label><i class="fa fa-play"></i>My Current Care Team has (${maxUsers}) Members:</label>
+				<ul class="care-team-members">
+				#{if careExpert.size()>0}
+					 #{list careExpert, as:'expertBean'}
+					 	<li class="care-team-member">
+							<div class="caretaker-image">
+								<a href="@{Patient.careMemberNew(expertBean.expertDetail.id)}"><img src="@{Image.show(expertBean.expertDetail.id)}"></a>
+							</div>
+							<div class="caretaker-info">
+								<h4><a href="@{Patient.careMemberNew(expertBean.expertDetail.id)}">#{userName userName: expertBean.userDetails.user.name, userId: expertBean.userDetails.user.id /} </a> | </h4>
+								#{if expertBean.expertDetail.practiceAddr != null}
+	                					<p class="secondary-information">${expertBean.expertDetail.practiceAddr.getLine1()}</p>
+	                				#{if expertBean.expertDetail != null}
+	                    				<p class="phone">${expertBean.userDetails.mobile}</p>
+	                    			#{/if}
+	                    	    #{/if}
+							</div><!-- caretaker-info -->
+						</li>
+					 #{/list}
+				#{/if}
+				</ul>
+				<div class="view-all-members">
+					<a href="/patient/careteam" class="btn btn-default">View All Members</a>
+				</div>
 			#{/if}
-			</ul>
-			<div class="view-all-members">
-				<a href="/patient/careteam" class="btn btn-default">View All Members</a>
-			</div>
 		</div><!-- my care team -->
 	</div><!-- row -->
 	<!-- 
