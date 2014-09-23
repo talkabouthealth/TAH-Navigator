@@ -1,6 +1,7 @@
 package controllers;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.joda.time.Period;
 
@@ -70,7 +71,10 @@ public class Security extends Secure.Security {
 	    LoginHistoryDTO historyDTO = LoginHistoryDAO.getLastLoginByUserId(sessionUser);
 	    SimpleDateFormat smf = new SimpleDateFormat("M/dd/yyyy h:mm a");
 	    //2008-07-17T09:24:17Z
-	    String lastLoginTime = smf.format(historyDTO.getLogintime());
+	    Date dtToday = new Date();
+	    String lastLoginTime = smf.format(dtToday.getTime());
+	    if(historyDTO!=null)
+	    	lastLoginTime = smf.format(historyDTO.getLogintime());
 	    String isFirstTime =  LoginHistoryDAO.getIsFirstTime(sessionUser);
 	    
 	    session.put("showdistress", isFirstTime);

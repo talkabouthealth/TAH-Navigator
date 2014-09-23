@@ -13,6 +13,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Table(name = "nav.loginhistory")
@@ -21,7 +22,8 @@ import javax.persistence.Table;
 public class LoginHistoryDTO implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy= GenerationType.SEQUENCE, generator="loginhistory_id_seq")
+	@SequenceGenerator(allocationSize=1, schema="nav",  name="loginhistory_id_seq", sequenceName = "nav.loginhistory_id_seq")
 	@Column(name = "id")
 	private Long id;
 
