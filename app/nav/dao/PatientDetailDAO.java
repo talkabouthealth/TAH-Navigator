@@ -139,7 +139,7 @@ public class PatientDetailDAO {
 			if (nextDtos != null && nextDtos.size() > 0) {
 				AppointmentDTO nextDto = nextDtos.get(0);
 				nextAppointment = nextDto.getAppointmentdate();
-				nextPurpose = nextDto.getPurpose();
+				nextPurpose = nextDto.getAppointmentid().getName();
 			}
 		} catch (NoResultException e) {
 			
@@ -153,7 +153,7 @@ public class PatientDetailDAO {
 			if (lastDtos != null && lastDtos.size() > 0) {
 				AppointmentDTO lastDto = lastDtos.get(0);
 				lastAppointment = lastDto.getAppointmentdate();
-				lastPurpose = lastDto.getPurpose();
+				lastPurpose = lastDto.getAppointmentid().getName();
 			}
 		} catch (NoResultException e) {
 			
