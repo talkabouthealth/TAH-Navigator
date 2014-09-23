@@ -9,7 +9,7 @@
 			<tr>
 				<td>
 					<label>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}</label>
-					<p>${seq.appointmenttime} - <a href="javaScript:operationAppointment('edit','${seq.id}')">${seq.purpose}</a></p>
+					<p>${seq.appointmenttime} - <a href="javaScript:operationAppointment('edit','${seq.id}')">${seq.appointmentid.name}</a></p>
 				</td>
 				<td>
 					<p>#{userName userName: seq.caremember.name, userId:seq.caremember.id /}</p>
@@ -34,7 +34,7 @@
 				<tr>
 					<td>
 						<label>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}</label>
-						<p>${seq.appointmenttime} - <a href="javaScript:operationAppointment('edit','${seq.id}')">${seq.purpose}</a></p>
+						<p>${seq.appointmenttime} - <a href="javaScript:operationAppointment('edit','${seq.id}')">${seq.appointmentid.name}</a></p>
 					</td>
 					<td>
 						<p>#{userName userName: seq.caremember.name, userId:seq.caremember.id /}</p>

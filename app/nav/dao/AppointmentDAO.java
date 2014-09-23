@@ -86,4 +86,29 @@ public class AppointmentDAO {
 		}
 		return dto;
 	}
+	
+	/**
+	 * get last appointment info of patient
+	 * @param fieldName
+	 * @param param
+	 * @return
+	 */
+	public static AppointmentDTO getLatestAppointment(String fieldName, Object param ,Date date, String status) {
+		
+		AppointmentDTO dto = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			TypedQuery<AppointmentDTO> query = em.createQuery("SELECT c FROM AppointmentDTO c " +
+					" WHERE c."+fieldName+" = :field and deleteflag = false and c.appointmentdate "+(status.equalsIgnoreCase("past")?"<":" >=")+" :date and deleteflag = false", AppointmentDTO.class); 
+			query.setMaxResults(1);
+			query.setParameter("field", param);
+			query.setParameter("date", date);
+			dto = query.getSingleResult();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			em.close();
+		}
+		return dto;
+	}
 }

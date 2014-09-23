@@ -14,6 +14,7 @@ import java.util.Map;
 
 import models.AddressDTO;
 import models.AppointmentDTO;
+import models.AppointmentMasterDTO;
 import models.BreastCancerInfoDTO;
 import models.BreastCancerStageDTO;
 import models.CareTeamMemberDTO;
@@ -32,6 +33,7 @@ import models.UserExpertiesDTO;
 import models.UserTypeDTO;
 import nav.dao.AddressDAO;
 import nav.dao.AppointmentDAO;
+import nav.dao.AppointmentMasterDAO;
 import nav.dao.BaseDAO;
 import nav.dao.CareTeamDAO;
 import nav.dao.DesignationMasterDAO;
@@ -87,7 +89,7 @@ public class Care extends Controller {
 				/* need to refactor - getDiagnosis method performing unnecessary queries for this call. This method is good for the MyDiagnosis page though - Murray */
 				Map<String, Object> patientInfo = PatientDetailDAO.getDiagnosis(patienCareTeamDTO.getPatienid());
 				BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
-				int breastCancerId = Disease.BREAST_CANCER_ID;
+//				int breastCancerId = Disease.BREAST_CANCER_ID;
 				patient.setBreastCancerInfo(breastCancerInfo);
 				
 				DistressBean distress = DistressDAO.getLastDistress(patienCareTeamDTO.getPatien());
@@ -133,7 +135,11 @@ public class Care extends Controller {
 		int breastCancerId = Disease.BREAST_CANCER_ID; 
 		List<UserDTO> drList = UserDAO.getAll("5","");
 		Map <String, Object> ps = PatientDetailDAO.patientSummary(Integer.valueOf(patientId));
-        render(user,expertDetail,patientId,patientDto,patientOtherDetails,distress,noteList, diseases, stages, breastCancerId,drList, ps,lastDistress);
+		
+		//Appointment masterData
+		List<AppointmentMasterDTO> appList = AppointmentMasterDAO.getAllAppointments();
+		
+        render(user,expertDetail,patientId,patientDto,patientOtherDetails,distress,noteList, diseases, stages, breastCancerId,drList, ps,lastDistress,appList);
     }
 	
 	public static void setting() {

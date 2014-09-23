@@ -16,7 +16,7 @@ div.green-title{cursor: pointer;}
 					<div class="col-xs-11 col-sm-11 nopadding" style="display:block;">
 						<div class="col-sm-6 checkDiv" style="padding-top: 10px;border-right: 1px solid #CCC">
 						<p>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}<br/> <!-- THURSDAY MAY 10TH 2014 -->
-						${seq.appointmenttime} <a href="javaScript:void(0);">${seq.purpose}</a></p>
+						${seq.appointmenttime} <a href="javaScript:void(0);">${seq.appointmentid.name}</a></p>
 						</div>
 						<div class="col-sm-6" style="padding-top: 10px;">
 						<p>#{userName userName: seq.caremember.name, userId:seq.caremember.id /}<br/> ${seq.appointmentcenter}</p>
@@ -56,7 +56,7 @@ div.green-title{cursor: pointer;}
                     </div>
                   </div>
                 </div>
-                <div class="media"> <a class="pull-left" href="#"> <img src="@{Image.show(seq.caremember.id)}" class=""> </a>
+                <div class="caretaker-image"> <a href="#"> <img src="@{Image.show(seq.caremember.id)}"> </a>
                   <div class="media-body main-l-p">
                     <p>MY APPOINTMENT IS WITH</p>
                     <div class="secont-l-p-f">
@@ -69,7 +69,7 @@ div.green-title{cursor: pointer;}
               </div>
             </div>
             <div class="line-h"></div>
-            <h3 class="title-2">Purpose of appointment: <span>${seq.purpose}</span></h3>
+            <h3 class="title-2">Purpose of appointment: <span>${seq.appointmentid.name}</span></h3>
 					</div>
 					</li>
 				#{/list}
@@ -88,7 +88,7 @@ div.green-title{cursor: pointer;}
 					<div class="col-xs-11 col-sm-11 nopadding">
 						<div class="col-sm-6 checkDiv" style="padding-top: 10px;border-right: 1px solid #CCC">
 						<p>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}<br/> <!-- THURSDAY MAY 10TH 2014 -->
-						${seq.appointmenttime} <a href="javaScript:void(0);">${seq.purpose}</a></p>
+						${seq.appointmenttime} <a href="javaScript:void(0);">${seq.appointmentid.name}</a></p>
 						</div>
 						<div class="col-sm-6" style="padding-top: 10px;">
 						<p>#{userName userName: seq.caremember.name, userId:seq.caremember.id /}<br/> ${seq.appointmentcenter}</p>
@@ -141,7 +141,7 @@ div.green-title{cursor: pointer;}
               </div>
             </div>
             <div class="line-h"></div>
-            <h3 class="title-2">Purpose of appointment: <span>${seq.purpose}</span></h3>
+            <h3 class="title-2">Purpose of appointment: <span>${seq.appointmentid.name}</span></h3>
 					</div>
 					</li>
 				#{/list}

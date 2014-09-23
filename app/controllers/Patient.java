@@ -30,9 +30,46 @@ public class Patient extends Controller {
 		BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
 		int breastCancerId = Disease.BREAST_CANCER_ID;
 		
-        render(user,userDto,patientOtherDetails, breastCancerId, breastCancerInfo);
+		//Load appointment
+		Date curreDate = new Date();
+		AppointmentDTO apt = AppointmentDAO.getLatestAppointment("patientid.id", user.getId(), curreDate, "upcomming");
+		List<AppointmentCheckListMasterDTO> checlist = null;
+		if(apt != null) {
+			UserDetailsDTO userDetails = UserDAO.getDetailsById(apt.getCaremember().getId());
+			apt.setExpertMobile(userDetails.getMobile());
+			//Load the appointment check list
+			Integer intAppId = new Integer(apt.getAppointmentid().getId());
+			checlist = AppointmentCheckListMasterDAO.getAppointmentCheckList("appointmentid.id", intAppId);
+		}
+
+		//Load care team
+		List<PatienCareTeamDTO> careTeams = CareTeamDAO.getPatienCareTeamByField("patienid", user.getId());
+		UserDetailsDTO userDetails = null;
+		ExpertDetailDTO expertDetail = null;
+		ExpertBean expertBean =null;
+		ArrayList<ExpertBean> careExpert = new ArrayList<ExpertBean>(); 
+		int maxUsers = 0;
+		for (PatienCareTeamDTO patienCareTeamDTO : careTeams) {
+			List<CareTeamMemberDTO>  memberList = CareTeamDAO.getCareTeamMembersByField("careteamid", patienCareTeamDTO.getCareteamid());
+			if(memberList != null && memberList.size()>0) {
+				for (CareTeamMemberDTO expertBean2 : memberList) {
+					maxUsers++;
+					if(maxUsers<5) {
+						expertBean = new ExpertBean();
+						userDetails = UserDAO.getDetailsById(expertBean2.getMemberid());
+						expertDetail = ProfileDAO.getExpertByField("id", expertBean2.getMemberid());
+						expertBean.setUserDetails(userDetails);
+						expertBean.setExpertDetail(expertDetail);
+						careExpert.add(expertBean);
+					}
+				}
+			}
+		}
+		
+		
+        render(user,userDto,patientOtherDetails, breastCancerId, breastCancerInfo,apt,careExpert,maxUsers,checlist);
     }
-	
+
 	public static void appointment() {
 		UserBean user = CommonUtil.loadCachedUser(session);
 		//UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());
@@ -134,6 +171,30 @@ public class Patient extends Controller {
 		System.out.println(session.getId());
 		ExpertDetailDTO expdetails = ProfileDAO.getExpertByField("id", memberId);
 		CareTeamMasterDTO careteam = ProfileDAO.getCareTeamByField("id", teamId);
+		List<UserEducationDTO> education = ProfileDAO.getEducationByField("userid", memberId);
+		List<UserExpertiesDTO> experties = ProfileDAO.getExpertiesByField("userid", memberId);
+		List<UserCertificateDTO> certificats = ProfileDAO.getCertificateByField("userid", memberId);
+		
+		
+        render(user,userDto,expertDetails,expdetails,careteam,education,experties,certificats,patientOtherDetails, breastCancerId, breastCancerInfo);
+	}
+	
+	public static void careMember(int memberId) {
+		System.out.println("memberId : " + memberId);
+		UserBean user = CommonUtil.loadCachedUser(session);
+		//UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());
+		//PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", user.getId());
+		
+		Map<String, Object> patientInfo = PatientDetailDAO.getDiagnosis(user.getId());
+		UserDetailsDTO userDto = (UserDetailsDTO) patientInfo.get("userDetails");
+		PatientDetailDTO patientOtherDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
+		BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
+		int breastCancerId = Disease.BREAST_CANCER_ID;
+
+		UserDetailsDTO expertDetails = UserDAO.getDetailsById(memberId);
+		System.out.println(session.getId());
+		ExpertDetailDTO expdetails = ProfileDAO.getExpertByField("id", memberId);
+		CareTeamMasterDTO careteam = null;//ProfileDAO.getCareTeamByField("id", teamId);
 		List<UserEducationDTO> education = ProfileDAO.getEducationByField("userid", memberId);
 		List<UserExpertiesDTO> experties = ProfileDAO.getExpertiesByField("userid", memberId);
 		List<UserCertificateDTO> certificats = ProfileDAO.getCertificateByField("userid", memberId);

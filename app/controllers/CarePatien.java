@@ -38,6 +38,7 @@ import models.TreatmentRegionDTO;
 import models.UserDTO;
 import models.UserDetailsDTO;
 import nav.dao.AppointmentDAO;
+import nav.dao.AppointmentMasterDAO;
 import nav.dao.BaseDAO;
 import nav.dao.CareTeamDAO;
 import nav.dao.Disease;
@@ -63,7 +64,6 @@ public class CarePatien  extends Controller {
 
 	public static void appointment(int patientId) {
 		Integer idField = new Integer(patientId);
-		//List<AppointmentDTO> list = AppointmentDAO.getAppointmentListByField("patientid.id",idField);
 		Date curreDate = new Date();
 		List<AppointmentDTO> list = AppointmentDAO.getAppointmentListByField("patientid.id", idField, curreDate, "upcomming" );
 		List<AppointmentDTO> expList = AppointmentDAO.getAppointmentListByField("patientid.id" , idField, curreDate, "past" );
@@ -89,7 +89,7 @@ public class CarePatien  extends Controller {
 		PatientDetailDAO.patientVerify(patientId, isVerified);
 		Map<String, String> jsonData = new HashMap<String, String>();
 		jsonData.put("status", "success");
-;		renderJSON(jsonData);
+		renderJSON(jsonData);
 	}
 
 	public static void treatmentPlan(Integer patientId) {
@@ -541,6 +541,8 @@ public class CarePatien  extends Controller {
 				app.setAppointmenttime(time);
 				app.setCaremember(caremember);
 				app.setPurpose(purpose);
+				Integer appIdInt = new Integer(purpose);
+				app.setAppointmentid(AppointmentMasterDAO.getAppointmentByField("id", appIdInt));
 				app.setPatientid(patient);
 				
 				BaseDAO.save(app);
@@ -549,6 +551,8 @@ public class CarePatien  extends Controller {
 				Integer appId =  new Integer(id);
 				AppointmentDTO app = AppointmentDAO.getAppointmentByField("id",appId);
 				app.setPurpose(purpose);
+				Integer appIdInt = new Integer(purpose);
+				app.setAppointmentid(AppointmentMasterDAO.getAppointmentByField("id", appIdInt));
 				app.setAppointmenttime(time);
 				Date appointmentDate = new SimpleDateFormat("MM/dd/yyyy").parse(schDate);
 				app.setAppointmentdate(appointmentDate);

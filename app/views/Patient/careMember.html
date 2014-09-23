@@ -5,7 +5,11 @@
             <div class="row">&nbsp;</div>
 	 <div class="row">
             	<div class="col-sm-8">
-                	<p><a href="@{Patient.careteam()}" class="back-arrow"><i class="fa fa-arrow-circle-o-left"></i> ${careteam.name} CARE TEAM</a></p>
+            	#{if careteam != null}
+                	<p><a href="@{Patient.careteam()}" class="back-arrow"><i class="fa fa-arrow-circle-o-left"></i>
+                	 
+                		${careteam.name} CARE TEAM</a></p>
+                		#{/if}
                     <div class="media">
       <a class="pull-left" href="#"> 
         <img src="@{Image.show(expertDetails.id)}" width="74" height="70" class="img-responsive"> </a>
@@ -51,7 +55,13 @@
                     #{/if}
                 </div>
                 <div class="col-sm-4 line-right">
-                	 <p class="green-title"> <i class="fa fa-map-marker"></i> ${careteam.name} CARE TEAM / OFFICE LOCATION </p>
+                 #{if careteam != null} 
+                	 <p class="green-title"> <i class="fa fa-map-marker"></i>
+                	
+                	 	${careteam.name} CARE TEAM /
+                	 
+                	 	OFFICE LOCATION </p>
+                	 
                      <div class="row">
                      	<div class="col-sm-6">
                      	<a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${careteam.address.line1}+${careteam.address.line2},${careteam.address.city},${careteam.address.state},${careteam.address.country} - ${careteam.address.zip}">
@@ -68,6 +78,7 @@
                      <p>&nbsp;</p>
                      <p class="text-center"><a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${careteam.address.line1}+${careteam.address.line2},${careteam.address.city},${careteam.address.state},${careteam.address.country} - ${careteam.address.zip}" class="btn btn-default-small">GET DIRECTIONS</a></p>
                      <div class="line-h"></div>
+                     #{/if} 
                      #{if certificats != null && certificats.size()>0}
                      <div class="row">
                      	<div class="col-sm-12">

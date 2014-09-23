@@ -13,6 +13,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import nav.dao.AppointmentMasterDAO;
 @Table(name = "nav.appointment")
 @javax.persistence.Entity
 public class AppointmentDTO {
@@ -56,6 +57,10 @@ public class AppointmentDTO {
 
 	@Column(name = "deleteflag")
 	private boolean deleteflag;
+	
+	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="appointmentid", insertable=true, updatable=true)
+	private AppointmentMasterDTO appointmentid;
 	
 	@Transient
 	private String expertMobile;
@@ -156,5 +161,12 @@ public class AppointmentDTO {
 	public void setExpertMobile(String expertMobile) {
 		this.expertMobile = expertMobile;
 	}
-	
+
+	public AppointmentMasterDTO getAppointmentid() {
+		return appointmentid;
+	}
+
+	public void setAppointmentid(AppointmentMasterDTO appointmentid) {
+		this.appointmentid = appointmentid;
+	}
 }
