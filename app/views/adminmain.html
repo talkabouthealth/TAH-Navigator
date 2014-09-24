@@ -1,13 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" 
+<html xmlns="http://www.w3.org/1999/xhtml"
 		xmlns:og="http://ogp.me/ns#"
 		xmlns:fb="http://www.facebook.com/2008/fbml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
-	<meta name="author" content="TalkAboutHealth" /> 
-	<meta name="robots" content="all" /> 
+	<meta name="author" content="TalkAboutHealth" />
+	<meta name="robots" content="all" />
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Admin : TAH Navigator</title>
@@ -16,7 +15,7 @@
 		<!--
 		body,#sidebar-left,#breadcrumb {
 			background: #777 url('/public/img/devoops_pattern_b10.png') 0 0 repeat !important;
-		}	
+		}
 		div#ajax-panel {
 		   background-color: #FFFFFF !important;
 		    border-radius: 0 0 10px 10px;
@@ -51,7 +50,7 @@
 		<script src="/public/plugins/tinymce/jquery.tinymce.min.js"></script>
 		<script src="/public/js/validator.min.js"></script>
 		<script src="/public/js/devoops.js"></script>
-		
+
 </head>
 <body>
 <div id="ajax-panel">Loading <i class="fa fa-spinner fa-spin"></i></div>
@@ -111,7 +110,7 @@
 								</a>
 							</li> -->
 							<li class=""><a href="/logout" style="font-size: 25px;"><i class="fa fa-power-off"></i></a></li>
-							<!-- 
+							<!--
 							<li class="dropdown">
 								<a href="#" class="dropdown-toggle account" data-toggle="dropdown">
 									<div class="avatar">
@@ -171,21 +170,21 @@
 		<div id="sidebar-left" class="col-xs-2 col-sm-2">
 			<ul class="nav main-menu">
 				<li>
-					#{if pageType == 'dashboard'}<a href="#" class="active">#{/if} 
+					#{if pageType == 'dashboard'}<a href="#" class="active">#{/if}
 					#{else}<a href="@{Admin.index()}">#{/else}
 						<i class="fa fa-dashboard"></i>
 						<span class="hidden-xs">Dashboard</span>
 					</a>
 				</li>
 				<li class="dropdown">
-					#{if pageType == 'allmemberlist'}<a href="#" class="active">#{/if} 
+					#{if pageType == 'allmemberlist'}<a href="#" class="active">#{/if}
 					#{else}<a href="@{Admin.allMemberList()}">#{/else}
 						<i class="fa fa-bar-chart-o"></i>
 						<span class="hidden-xs">All Members</span>
 					</a>
 				</li>
 				<li class="dropdown">
-					#{if pageType == 'careteam'}<a href="#" class="active">#{/if} 
+					#{if pageType == 'careteam'}<a href="#" class="active">#{/if}
 					#{else}<a href="@{Admin.careTeam()}">#{/else}
 						<i class="fa fa-bar-chart-o"></i>
 						<span class="hidden-xs">Care Teams</span>
@@ -195,6 +194,6 @@
 		</div>
 		#{doLayout /}
 	</div>
-</div>	
+</div>
 </body>
 </html>
