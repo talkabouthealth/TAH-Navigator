@@ -12,9 +12,558 @@ var careTeamController = (function() {
         'ctpt_save_surgery_data': '/carepatien/saveSurgeryData',
         'ctpt_remove_surgery_data': '/carepatien/removeSurgeryData',
         'verify': '/carepatien/verify',
+        'fup_concern_form' : '/CarePatien/concernForm',
+        'fup_save_concern' : '/CarePatien/saveConcern',
+        'fup_remove_concern': '/CarePatien/removeConcern',
+        'fup_goal_form' : '/CarePatien/goalForm',
+        'fup_save_goal' : '/CarePatien/saveGoal',
+        'fup_remove_goal': '/CarePatien/removeGoal',
+        'fup_care_item_form' : '/CarePatien/careItemForm',
+        'fup_save_care_item' : '/CarePatien/saveCareItem',
+        'fup_remove_care_item': '/CarePatien/removeCareItem',
 		'default': '#'    // nothing 
 	};
     var BREAST_CANCER_ID = 1;
+    
+    var concernForm = {
+        followUpDiv: '#followupplan',
+        formId: '#follow-up-concern-form',
+        saveBtnId: '#save-fup-concern',
+        deleteBtnId: '#remove-fup-concern',
+        concernId: '#fup_cc_concern',
+        nextStepId: '#fup_cc_action_plan',
+        notesId: '#fup_cc_notes',
+        concernDiv: '#fup_cc_concern_div',
+        concernSpan: '#fup_cc_concern_icon',
+        
+        concernOk: function() {
+            var self = concernForm;
+            $(self.concernDiv).addClass('has-success');
+            $(self.concernSpan).addClass('glyphicon-ok');
+            $(self.concernDiv).removeClass('has-error');
+            $(self.concernSpan).removeClass('glyphicon-remove');
+        },
+        concernNotOk: function() {  
+            var self = concernForm;
+            $(self.concernDiv).addClass('has-error');
+            $(self.concernSpan).addClass('glyphicon-remove');
+            $(self.concernDiv).removeClass('has-success');
+            $(self.concernSpan).removeClass('glyphicon-ok');
+        },
+        init: function() {
+            var self = concernForm;
+            $(self.formId).attr('init_flag', '1');
+            $(self.concernId).keyup(function() {
+                var str = $(this).val();
+                if (str) {
+                    self.concernOk();
+                }
+                else {
+                    self.concernNotOk();
+                }
+            });
+            $(self.saveBtnId).click(function() {
+                if (self.save()) {
+                    $(self.formId).modal('hide');
+                }
+            });
+            $(self.deleteBtnId).click(function() {
+                self.remove();
+                $(self.formId).modal('hide');
+            });
+        },
+        empty: function() {
+            var self = concernForm;
+            $(self.concernId).val('');
+            $(self.nextStepId).val('');
+            $(self.notesId).val('');
+        },
+        load: function(concern) {
+            var self = concernForm;
+            if ('concern' in concern) {
+                $(self.concernId).val(concern.concern);
+            }
+            if ('nextStep' in concern) {
+                $(self.nextStepId).val(concern.nextStep);
+            }
+            if ('notes' in concern) {
+                $(self.notesId).val(concern.notes);
+            }
+        },
+        validate: function() {
+            var self = concernForm;
+            var str = $(self.concernId).val();
+            if (str) {
+                self.concernOk();
+            }
+            else {
+                self.concernNotOk();
+            }
+        },
+        save: function() {
+            var self = concernForm;
+            var params = {
+                'patientId': $(self.formId).attr('patient_id'),
+                'fupConcern.concern': $(self.concernId).val(),
+                'fupConcern.nextStep': $(self.nextStepId).val(),
+                'fupConcern.notes': $(self.notesId).val()
+            };
+            if (!params['fupConcern.concern']) {
+                return;
+            }
+            if ($(self.deleteBtnId).is(":visible")) {
+                var concernId = $(self.deleteBtnId).attr("concern_id");
+                params['concernId'] = concernId;
+            }
+            $.post(actions['fup_save_concern'], params, function(htmlText) {
+                $(self.followUpDiv).html(htmlText);
+            }, "html");
+            return true; 
+        },
+        remove: function() {
+            var self = concernForm;
+            var patientId = $(self.formId).attr('patient_id'); 
+            var concernId = $(self.deleteBtnId).attr("concern_id");
+            var params = {
+                'patientId': patientId,
+                'concernId': concernId
+            };
+            
+            $.post(actions['fup_remove_concern'], params, function(htmlText) {
+                $(self.followUpDiv).html(htmlText);
+            }, "html");
+        },
+        open: function(elm) {
+            var self = concernForm;
+            var initFlag = $(self.formId).attr('init_flag');
+            var patientId = $(elm).attr("patient_id");
+            var formType = $(elm).attr("form_type");
+            var params = {};
+            $(self.formId).attr("patient_id", patientId);
+            
+            var formLoad = function() {
+                if (initFlag == '0') {
+                    $(self.formId).modal({
+                        keyboard: false,
+                        backdrop: 'static'
+                    });
+                    self.init();
+                }
+                else {
+                    $(self.formId).modal('show');
+                }
+                self.empty();
+            };
+            if (formType == 'new') {
+                $(self.deleteBtnId).hide();
+                formLoad();
+                self.validate();
+            }
+            else {
+                $(self.deleteBtnId).show();
+                var concernId = $(elm).attr('concern_id');
+                $(self.deleteBtnId).attr("concern_id", concernId);
+                params['concernId'] = concernId;
+                $.post(actions['fup_concern_form'], params, function(data) {
+                    formLoad();
+                    self.load(data.concern);
+                    self.validate();
+                }, "json");
+            }
+        }
+    };
+    
+    var goalForm = {
+        followUpDiv: '#followupplan',
+        formId: '#follow-up-goal-form',
+        saveBtnId: '#save-fup-goal',
+        deleteBtnId: '#remove-fup-goal',
+        goalId: '#fup_gl_goal',
+        nextStepId: '#fup_gl_action_plan',
+        goalDeadlineId: '#fup_gl_goal_deadline',
+        notesId: '#fup_gl_notes',
+        goalDiv: '#fup_gl_goal_div',
+        goalSpan: '#fup_gl_goal_icon',
+        
+        goalOk: function() {
+            var self = goalForm;
+            $(self.goalDiv).addClass('has-success');
+            $(self.goalSpan).addClass('glyphicon-ok');
+            $(self.goalDiv).removeClass('has-error');
+            $(self.goalSpan).removeClass('glyphicon-remove');
+        },
+        goalNotOk: function() {  
+            var self = goalForm;
+            $(self.goalDiv).addClass('has-error');
+            $(self.goalSpan).addClass('glyphicon-remove');
+            $(self.goalDiv).removeClass('has-success');
+            $(self.goalSpan).removeClass('glyphicon-ok');
+        },
+        init: function() {
+            var self = goalForm;
+            $(self.formId).attr('init_flag', '1');
+            $(self.goalId).keyup(function() {
+                var str = $(this).val();
+                if (str) {
+                    self.goalOk();
+                }
+                else {
+                    self.goalNotOk();
+                }
+            });
+            $(self.goalDeadlineId).datepicker({
+                autoclose: true,  
+                todayHighlight: true,
+                startDate: "today",
+                format: "yyyy-mm-dd"
+            });
+            $(self.saveBtnId).click(function() {
+                if (self.save()) {
+                    $(self.formId).modal('hide');
+                }
+            });
+            $(self.deleteBtnId).click(function() {
+                self.remove();
+                $(self.formId).modal('hide');
+            });
+        },
+        empty: function() {
+            var self = goalForm;
+            $(self.goalId).val('');
+            $(self.nextStepId).val('');
+            $(self.goalDeadlineId).val('');
+            $(self.notesId).val('');
+        },
+        load: function(goal) {
+            var self = goalForm;
+            if ('goal' in goal) {
+                $(self.goalId).val(goal.goal);
+            }
+            if ('nextStep' in goal) {
+                $(self.nextStepId).val(goal.nextStep);
+            }
+            if ('goalDeadline' in goal) {
+                $(self.goalDeadlineId).val(dateToStr(new Date(goal.goalDeadline), '-'));
+            }
+            if ('notes' in goal) {
+                $(self.notesId).val(goal.notes);
+            }
+        },
+        validate: function() {
+            var self = goalForm;
+            var str = $(self.goalId).val();
+            if (str) {
+                self.goalOk();
+            }
+            else {
+                self.goalNotOk();
+            }
+        },
+        save: function() {
+            var self = goalForm;
+            var params = {
+                'patientId': $(self.formId).attr('patient_id'),
+                'fupGoal.goal': $(self.goalId).val(),
+                'fupGoal.nextStep': $(self.nextStepId).val(),
+                'fupGoal.goalDeadline': $(self.goalDeadlineId).val(),
+                'fupGoal.notes': $(self.notesId).val()
+            };
+            if (!params['fupGoal.goal']) {
+                return;
+            }
+            if ($(self.deleteBtnId).is(":visible")) {
+                var goalId = $(self.deleteBtnId).attr("goal_id");
+                params['goalId'] = goalId;
+            }
+            $.post(actions['fup_save_goal'], params, function(htmlText) {
+                $(self.followUpDiv).html(htmlText);
+            }, "html");
+            return true; 
+        },
+        remove: function() {
+            var self = goalForm;
+            var patientId = $(self.formId).attr('patient_id'); 
+            var goalId = $(self.deleteBtnId).attr("goal_id");
+            var params = {
+                'patientId': patientId,
+                'goalId': goalId
+            };
+            
+            $.post(actions['fup_remove_goal'], params, function(htmlText) {
+                $(self.followUpDiv).html(htmlText);
+            }, "html");
+        },
+        open: function(elm) {
+            var self = goalForm;
+            var initFlag = $(self.formId).attr('init_flag');
+            var patientId = $(elm).attr("patient_id");
+            var formType = $(elm).attr("form_type");
+            var params = {};
+            $(self.formId).attr("patient_id", patientId);
+            
+            var formLoad = function() {
+                if (initFlag == '0') {
+                    $(self.formId).modal({
+                        keyboard: false,
+                        backdrop: 'static'
+                    });
+                    self.init();
+                }
+                else {
+                    $(self.formId).modal('show');
+                }
+                self.empty();
+            };
+            if (formType == 'new') {
+                $(self.deleteBtnId).hide();
+                formLoad();
+                self.validate();
+            }
+            else {
+                $(self.deleteBtnId).show();
+                var goalId = $(elm).attr('goal_id');
+                $(self.deleteBtnId).attr("goal_id", goalId);
+                params['goalId'] = goalId;
+                $.post(actions['fup_goal_form'], params, function(data) {
+                    formLoad();
+                    self.load(data.goal);
+                    self.validate();
+                }, "json");
+            }
+        }
+    };
+    
+    var careItemForm = {
+        followUpDiv: '#followupplan',
+        formId: '#follow-up-care-item-form',
+        saveBtnId: '#save-fup-careitem',
+        deleteBtnId: '#remove-fup-careitem',
+        activityId: '#fup_ci_activity',
+        frequencyId: '#fup_ci_frequency',
+        endDateId: '#fup_ci_end_date',
+        ongoingId: '#fup_ci_ongoing',
+        purposeId: '#fup_ci_purpose',
+        doctorId: '#fup_ci_doctor',
+        activityDiv: '#fup_ci_activity_div',
+        activitySpan: '#fup_ci_activity_span',
+        
+        activityOk: function() {
+            var self = careItemForm;
+            $(self.activityDiv).addClass('has-success');
+            $(self.activitySpan).addClass('glyphicon-ok');
+            $(self.activityDiv).removeClass('has-error');
+            $(self.activitySpan).removeClass('glyphicon-remove');
+        },
+        activityNotOk: function() {  
+            var self = careItemForm;
+            $(self.activityDiv).addClass('has-error');
+            $(self.activitySpan).addClass('glyphicon-remove');
+            $(self.activityDiv).removeClass('has-success');
+            $(self.activitySpan).removeClass('glyphicon-ok');
+        },
+        init: function() {
+            var self = careItemForm;
+            var activities = [ "Breast Self-Exam", "Mammogram", "Follow-up Appointment", "Pelvic Exam"  ];
+            var purposeMap = {
+                "Breast Self-Exam" : "Search for lumps and changes in breast",
+                "Mammogram" : "Breast cancer screening to catch breast cancer early",
+                "Follow-up Appointment" : "General check-up and long-term side effect follow-up",
+                "Pelvic Exam" : "To screen for illness in the pelvic area"
+            };
+            var frequencies = [ "Daily", "Weekly", "Bi-weekly", "Monthly", "Every 3 Months", "Every 6 Months", "Every Year" ];
+            
+            var doctors = [ "Dr. Jorge Freire", "Dr. Maen Hussein" ];
+            
+            $(self.formId).attr('init_flag', '1');
+            $(self.activityId).keyup(function() {
+                var str = $(this).val();
+                if (str) {
+                    self.activityOk();
+                }
+                else {
+                    self.activityNotOk();
+                }
+            });
+            $(self.activityId).typeahead({
+                source: activities,
+                updater: function(item) {
+                    if (item) {
+                        self.activityOk();
+                    }
+                    else {
+                        self.activityNotOk();
+                    }
+                    if (item in purposeMap) {
+                        $(self.purposeId).val(purposeMap[item]);
+                    }
+                    else {
+                        $(self.purposeId).val('');
+                    }
+                    return item;
+                }
+            });
+            
+            $(self.endDateId).datepicker({
+                autoclose: true,  
+                todayHighlight: true,
+                startDate: "today",
+                format: "yyyy-mm-dd"
+            });
+            
+            $(self.ongoingId).click(function() {
+                if ($(this).prop("checked")) {
+                    $(self.endDateId).prop("disabled", true);
+                }
+                else {
+                    $(self.endDateId).prop("disabled", false);
+                }
+            });
+            
+            $(self.frequencyId).typeahead({
+                source: frequencies
+            });
+            
+            $(self.doctorId).typeahead({
+                source: doctors
+            });
+            $(self.saveBtnId).click(function() {
+                if (self.save()) {
+                    $(self.formId).modal('hide');
+                }
+            });
+            $(self.deleteBtnId).click(function() {
+                self.remove();
+                $(self.formId).modal('hide');
+            });
+        },
+        empty: function() {
+            var self = careItemForm;
+            $(self.activityId).val('');
+            $(self.frequencyId).val('');
+            $(self.endDateId).val('');
+            $(self.endDateId).prop("disabled", false);
+            $(self.ongoingId).prop("checked", false);
+            $(self.purposeId).val('');
+            $(self.doctorId).val('');
+        },
+        load: function(careItem) {
+            var self = careItemForm;
+            if ('activity' in careItem) {
+                $(self.activityId).val(careItem.activity);
+            }
+            if ('frequency' in careItem) {
+                $(self.frequencyId).val(careItem.frequency);
+            }
+            if ('endDate' in careItem) {
+                $(self.endDateId).val(dateToStr(new Date(careItem.endDate), '-'));
+            }
+            if ('ongoing' in careItem) {
+                if (careItem.ongoing) {
+                    $(self.ongoingId).prop("checked", true);
+                }
+            }
+            if ('purpose' in careItem) {
+                $(self.purposeId).val(careItem.purpose);
+            }
+            if ('doctor' in careItem) {
+                $(self.doctorId).val(careItem.doctor);
+            }
+        },
+        validate: function() {
+            var self = careItemForm;
+            var str = $(self.activityId).val();
+            if (str) {
+                self.activityOk();
+            }
+            else {
+                self.activityNotOk();
+            }
+            if ($(self.ongoingId).prop("checked")) {
+                $(self.endDateId).prop("disabled", true);
+            }
+        },
+        save: function() {
+            var self = careItemForm;
+            var params = {
+                'patientId': $(self.formId).attr('patient_id'),
+                'fupCareItem.activity': $(self.activityId).val(),
+                'fupCareItem.frequency': $(self.frequencyId).val(),
+                'fupCareItem.endDate': $(self.endDateId).val(),
+                'fupCareItem.purpose': $(self.purposeId).val(),
+                'fupCareItem.doctor': $(self.doctorId).val()
+            };
+            if ($(self.ongoingId).prop("checked")) {
+                params['fupCareItem.ongoing'] = "ongoing";
+                params['fupCareItem.endDate'] = "";
+            }
+            else {
+                params['fupCareItem.ongoing'] = "";
+            }
+            if (!params['fupCareItem.activity']) {
+                return;
+            }
+            if ($(self.deleteBtnId).is(":visible")) {
+                var careItemId = $(self.deleteBtnId).attr("care_item_id");
+                params['careItemId'] = careItemId;
+            }
+            $.post(actions['fup_save_care_item'], params, function(htmlText) {
+                $(self.followUpDiv).html(htmlText);
+            }, "html");
+            return true; 
+        },
+        remove: function() {
+            var self = careItemForm;
+            var patientId = $(self.formId).attr('patient_id'); 
+            var careItemId = $(self.deleteBtnId).attr("care_item_id");
+            var params = {
+                'patientId': patientId,
+                'careItemId': careItemId
+            };
+            
+            $.post(actions['fup_remove_care_item'], params, function(htmlText) {
+                $(self.followUpDiv).html(htmlText);
+            }, "html");
+        },
+        open: function(elm) {
+            var self = careItemForm;
+            var initFlag = $(self.formId).attr('init_flag');
+            var patientId = $(elm).attr("patient_id");
+            var formType = $(elm).attr("form_type");
+            var params = {};
+            $(self.formId).attr("patient_id", patientId);
+            
+            var formLoad = function() {
+                if (initFlag == '0') {
+                    $(self.formId).modal({
+                        keyboard: false,
+                        backdrop: 'static'
+                    });
+                    self.init();
+                }
+                else {
+                    $(self.formId).modal('show');
+                }
+                self.empty();
+            };
+            if (formType == 'new') {
+                $(self.deleteBtnId).hide();
+                formLoad();
+                self.validate();
+            }
+            else {
+                $(self.deleteBtnId).show();
+                var careItemId = $(elm).attr('care_item_id');
+                $(self.deleteBtnId).attr("care_item_id", careItemId);
+                params['careItemId'] = careItemId;
+                $.post(actions['fup_care_item_form'], params, function(data) {
+                    formLoad();
+                    self.load(data.careItem);
+                    self.validate();
+                }, "json");
+            }
+        }
+    };
+    
     var diagnosis = function(domElement) {
         var patientId = $(domElement).attr("patient_id");
         $.post(actions['ctp_diagnosis_json'], {
@@ -279,6 +828,8 @@ var careTeamController = (function() {
         }, "html");
         return true;
     }
+    
+    
     var saveSurgeryData = function() {
         var patientId = $('#surgery-treatment-form').attr('patient_id');
         var surgeryType = $('#si_st').val();
@@ -311,6 +862,7 @@ var careTeamController = (function() {
         }, "html");
         return true;
     }
+    
     var initializeSurgeryForm = function(data) {
         $('#surgery-treatment-form').attr('init_flag', '1');
         var surgeryTypes = data.surgeryTypes;
@@ -704,6 +1256,7 @@ var careTeamController = (function() {
         $('#rt_side_effects').val('');
         $('#rt_notes').val('');
     };
+    
     var addSurgeryInfoToForm = function(psiDto) {
         $('#si_st').val(psiDto.stDto.name);
         if (psiDto.surgeryDate) {
@@ -826,6 +1379,7 @@ var careTeamController = (function() {
             $('#ctt_bn_icon').removeClass("glyphicon-ok");
         }
     };
+    
     var radiationTreatmentForm = function(domElement) {
         var initFlag = $('#radiation-treatment-form').attr('init_flag');
         var patientId = $(domElement).attr("patient_id");
@@ -1050,7 +1604,10 @@ var careTeamController = (function() {
         'chemotherapy_treatment_form': chemoTreatmentForm,
         'surgery_form': surgeryForm,
         'remove_side_effect': removeSideEffect,
-        'toggle_validate': toggleValidate
+        'toggle_validate': toggleValidate,
+        'fup_concern_form': concernForm.open,
+        'fup_goal_form': goalForm.open,
+        'fup_careitem_form': careItemForm.open
     };
     function evtMsgHandler(msg, domElement, params) {
         var func = msgMap[msg];

@@ -1,151 +1,77 @@
 #{include '/tags/patientSummary.html' /}
-                     <div class="row margin_top">
-                      <div class="col-sm-10 ">
-                          <div class="d_dashboard_01">
-                          <p>Needs / Concerns</p>
-                          </div>
-                      </div>
-                    </div>
-            
-                     <div class="row">					
-                    <div class="col-xs-12 ">
-                        <div class="box table-responsive ui-draggable ui-droppable">
-                            
-                            <div class="box-content no-padding">
-                                <table class="table table-striped table-bordered table-hover table-heading no-border-bottom">
-                                    <thead>
-                                        <tr>
-                                            <th>CONCERN</th>
-                                            <th>NEXT STEPS</th>
-                                            <th>GOAL DATE</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Fertility</td>
-                                            <td>Research options for fertility. Find messages board / personal stories</td>
-                                            <td>05/16/2014</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Financial debt as a result of treatment.</td>
-                                            <td>Follow-up with case manager</td>
-                                            <td>05/20/2014</td>
-                                        </tr>
-                                </tbody></table>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                    <!----------------->
-                    
-                    <!----------------->
-                    <div class="row margin_top">
-                      <div class="col-sm-10 ">
-                          <div class="d_dashboard_01">
-                          <p>Goals</p>
-                          </div>
-                      </div>
-                    </div>
-                    
-                    <div class="row">					
-                    <div class="col-xs-12 ">
-                        <div class="box table-responsive ui-draggable ui-droppable">
-                            <div class="box-content no-padding">
-                                <table class="table table-striped table-bordered table-hover table-heading no-border-bottom">
-                                    <thead>
-                                        <tr>
-                                            <th>GOALS</th>
-                                            <th>NEXT STEP</th>
-                                            <th>GOAL DATE</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Improve Physical Condition</td>
-                                            <td>Exercise 20 minutes daily, Sign up for local Yoga class, Find a walking partner.</td>
-                                            <td>05/14/2014</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Lose 10 Pounds</td>
-                                            <td>Eat smaller portions, shop for healtheir food options next trip to grocery store.</td>
-                                            <td>05/20/2014</td>
-                                        </tr>
-                                </tbody></table>
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-                    
-                    <!-------------------->
-                    
-                     <!----------------->
-                    <div class="row margin_top">
-                      <div class="col-sm-10 ">
-                          <div class="d_dashboard_01">
-                          <p>Follow-Up Care</p>
-                          </div>
-                      </div>
-                    </div>
-                    <div class="row">					
-                    <div class="col-xs-12 ">
-                        <div class="box table-responsive ui-draggable ui-droppable">
-                            
-                            <div class="box-content no-padding">
-                                <table class="table table-striped table-bordered table-hover table-heading no-border-bottom">
-                                    <thead>
-                                        <tr>
-                                            <th>CONCERN</th>
-                                            <th>FREQUENCY</th>
-                                            <th>END-DATE</th>
-                                            <th>PURPOSE</th>
-                                            <th>DOCTOR</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                       <tr>
-                                            <td>Breast self-exam</td>
-                                            <td>Monthly</td>
-                                            <td>Ongoing</td>
-                                            <td>To search for lumps and changes in breast</td>
-                                            <td></td>
-                                        </tr>
-										<tr>
-                                            <td>Mammogram</td>
-                                            <td>Every 6 Months</td>
-                                            <td>05/20/2014</td>
-                                            <td></td>
-                                            <td>Dr. Jen Lee</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Mammogram</td>
-                                            <td>Every year</td>
-                                            <td>05/20/2014</td>
-                                            <td></td>
-                                            <td>Dr. Jen Lee</td>
-                                        </tr>
-										<tr>
-                                            <td>Follow-up appointment</td>
-                                            <td>Every 6 months</td>
-                                            <td>05/01/2014</td>
-                                            <td>Regular check-up and physical exam</td>
-                                            <td>Dr. Murray Jones</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Pelvic Exam</td>
-                                            <td>Every year</td>
-                                            <td>Ongoing</td>
-                                            <td></td>
-                                            <td>Dr. Don Dizon</td>
-                                        </tr>
-                                </tbody></table>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="col-xs-12 col-sm-12" style="border-top: 1px solid #CCC;margin-top: 20px;padding-top: 20px;">
-				<div style="padding-bottom:20px;">
-				<span class="title" style="vertical-align: middle;">NOTES</span>&nbsp;&nbsp;<button class="btn btn-default btn-sm noteBtn" style="font-weight:bold;">+ NEW NOTE</button>
-				</div>
-				#{include '/tags/note.html' /}
-				</div>
+<div class="container-fluid treatment-plan">
+    <div class="title">
+        <h3>Needs / Concerns</h3>
+        <button type="button" class="btn btn-primary" patient_id="${patientId}" form_type="new" onclick="careTeamController.evtMsgHandler('fup_concern_form', this);">+ Add Need</button>
+    </div>
+    #{if concerns}
+    <table class="table table-bordered table-striped table-condensed table-hover">
+        <tr>
+            <th>CONCERN</th>
+		    <th>ACTION PLAN</th>
+			<th>DATE OF CONCERN</th>
+			<th>NOTES</th>
+        </tr>
+        #{list items:concerns, as:'concern'}
+        <tr>
+            <td><a form_type="edit" patient_id="${concern.userId}" concern_id="${concern.id}" onclick="careTeamController.evtMsgHandler('fup_concern_form', this);">${concern.concern}</a></td>
+            <td>#{if concern.nextStep} ${concern.nextStep} #{/if}</td>
+            <td>#{if concern.concernDate} ${concern.concernDate.format('MM/dd/yyyy')} #{/if}</td>
+            <td>#{if concern.notes} ${concern.notes} #{/if}</td>
+        </tr>
+        #{/list}
+    </table>
+    #{/if}
+    
+    <div class="title">
+        <h3>Goals</h3>
+        <button type="button" class="btn btn-primary" patient_id="${patientId}" form_type="new" onclick="careTeamController.evtMsgHandler('fup_goal_form', this);">+ Add Goal</button>
+    </div>
+    #{if goals}
+    <table class="table table-bordered table-striped table-condensed table-hover">
+        <tr>
+            <th>GOAL</th>
+            <th>ACTION PLAN</th>
+            <th>GOAL DEADLINE</th>
+            <th>NOTES</th>
+        </tr>
+        #{list items:goals, as:'goal'}
+        <tr>
+            <td><a form_type="edit" patient_id="${goal.userId}" goal_id="${goal.id}" onclick="careTeamController.evtMsgHandler('fup_goal_form', this);">${goal.goal}</a></td>
+            <td>#{if goal.nextStep} ${goal.nextStep} #{/if}</td>
+            <td>#{if goal.goalDeadline} ${goal.goalDeadline.format('MM/dd/yyyy')} #{/if}</td>
+            <td>#{if goal.notes} ${goal.notes} #{/if}</td>
+        </tr>
+        #{/list}
+    </table>
+    #{/if}
+    
+    <div class="title">
+        <h3>Follow-Up Care</h3>
+        <button type="button" class="btn btn-primary" patient_id="${patientId}" form_type="new" onclick="careTeamController.evtMsgHandler('fup_careitem_form', this);">+ Add Follow-Up Care Item</button>
+    </div>
+    #{if careItems}
+    <table class="table table-bordered table-striped table-condensed table-hover">
+        <tr>
+            <th>CONCERN</th>
+            <th>FREQUENCY</th>
+            <th>END-DATE</th>
+            <th>PURPOSE</th>
+            <th>DOCTOR</th>
+        </tr>
+        #{list items:careItems, as:'ci'}
+        <tr>
+            <td><a form_type="edit" patient_id="${ci.userId}" care_item_id="${ci.id}" onclick="careTeamController.evtMsgHandler('fup_careitem_form', this);">${ci.activity}</a></td>
+            <td>#{if ci.frequency} ${ci.frequency} #{/if}</td>
+            <td>#{if ci.endDate} ${ci.endDate.format('MM/dd/yyyy')} #{/if}#{if ci.ongoing}Ongoing#{/if}</td>
+            <td>#{if ci.purpose} ${ci.purpose} #{/if}</td>
+            <td>#{if ci.doctor} ${ci.doctor} #{/if}</td>
+        </tr>
+        #{/list}
+    </table>
+   #{/if}
+    <div style="padding-bottom:20px;">
+        <span class="title" style="vertical-align: middle;">NOTES</span>&nbsp;&nbsp;<button class="btn btn-default btn-sm noteBtn" style="font-weight:bold;">+ NEW NOTE</button>
+    </div>
+    #{include '/tags/note.html' /}
 </div>

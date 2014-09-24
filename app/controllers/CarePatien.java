@@ -26,7 +26,10 @@ import models.MedicineMasterDTO;
 import models.NoteDTO;
 import models.PatienCareTeamDTO;
 import models.PatientChemoTreatmentDTO;
+import models.PatientConcernDTO;
 import models.PatientDetailDTO;
+import models.PatientFollowUpCareItemDTO;
+import models.PatientGoalDTO;
 import models.PatientMedicationDTO;
 import models.PatientRadiationTreatmentDTO;
 import models.PatientSurgeryInfoDTO;
@@ -42,6 +45,7 @@ import nav.dao.AppointmentMasterDAO;
 import nav.dao.BaseDAO;
 import nav.dao.CareTeamDAO;
 import nav.dao.Disease;
+import nav.dao.FollowUp;
 import nav.dao.MedicationDAO;
 import nav.dao.NotesDAO;
 import nav.dao.PatientDetailDAO;
@@ -103,7 +107,10 @@ public class CarePatien  extends Controller {
 	public static void followupPlan(int patientId) {
 		List<NoteDTO> noteList = NotesDAO.getPatientNotesList(patientId+"");
 		Map <String, Object> ps = PatientDetailDAO.patientSummary(patientId);
-		render(patientId,noteList, ps);
+		List<PatientConcernDTO> concerns = FollowUp.getPatientConcerns(patientId);
+		List<PatientGoalDTO> goals = FollowUp.getPatientGoals(patientId);
+		List<PatientFollowUpCareItemDTO> careItems = FollowUp.getPatientCareItems(patientId);
+		render(patientId,noteList, ps, concerns, goals, careItems);
 	}
 	public static void chemotherapyForm(Integer patientId, Integer treatmentId, Integer initFlag, String formType) {
 		Map<String, Object> jsonData = new HashMap<String, Object>();
@@ -163,6 +170,32 @@ public class CarePatien  extends Controller {
 		renderJSON(jsonData);
 	}
 	
+	public static void concernForm(Integer concernId) {
+		Map<String, Object> jsonData = new HashMap<String, Object>();
+		if (concernId != null) {
+			PatientConcernDTO concern = FollowUp.getConcern(concernId);
+			jsonData.put("concern", concern);
+		}
+		renderJSON(jsonData);
+	}
+	public static void goalForm(Integer goalId) {
+		Map<String, Object> jsonData = new HashMap<String, Object>();
+		if (goalId != null) {
+			PatientGoalDTO goal = FollowUp.getGoal(goalId);
+			jsonData.put("goal", goal);
+		}
+		renderJSON(jsonData);
+	}
+	
+	public static void careItemForm(Integer careItemId) {
+		Map<String, Object> jsonData = new HashMap<String, Object>();
+		if (careItemId != null) {
+			PatientFollowUpCareItemDTO careItem = FollowUp.getCareItem(careItemId);
+			jsonData.put("careItem", careItem);
+		}
+		renderJSON(jsonData);
+	}
+	
 	public static void saveSurgeryData(Integer patientId, Integer treatmentId, Map<String, String> siInfo, Map<Integer, String> sideEffects) {
 		/*
 		System.out.println("------------  Surgery ------------------");
@@ -185,9 +218,69 @@ public class CarePatien  extends Controller {
 		treatmentPlan(patientId);
 	}
 	
+	public static void saveConcern(Integer patientId, Integer concernId, Map<String, String> fupConcern) {
+		System.out.println("------------  Concern ------------------");
+		System.out.println("Patient ID: " + patientId.toString());
+		if (concernId != null) {
+			System.out.println("Concern ID: " + concernId.toString());
+		}
+		for (String key: fupConcern.keySet()) {
+			System.out.println(key + ": " + fupConcern.get(key));
+		}
+		System.out.println("\n-------------------------------------");
+		
+		FollowUp.saveConcern(patientId, concernId, fupConcern);
+		followupPlan(patientId.intValue());
+	}
+	
+	public static void saveGoal(Integer patientId, Integer goalId, Map<String, String> fupGoal) {
+		System.out.println("------------  Goal ------------------");
+		System.out.println("Patient ID: " + patientId.toString());
+		if (goalId != null) {
+			System.out.println("Goal ID: " + goalId.toString());
+		}
+		for (String key: fupGoal.keySet()) {
+			System.out.println(key + ": " + fupGoal.get(key));
+		}
+		System.out.println("\n-------------------------------------");
+		
+		FollowUp.saveGoal(patientId, goalId, fupGoal);
+		followupPlan(patientId.intValue());
+	}
+	
+	public static void saveCareItem(Integer patientId, Integer careItemId, Map<String, String> fupCareItem) {
+		System.out.println("------------  CareItem ------------------");
+		System.out.println("Patient ID: " + patientId.toString());
+		if (careItemId != null) {
+			System.out.println("CareItem ID: " + careItemId.toString());
+		}
+		for (String key: fupCareItem.keySet()) {
+			System.out.println(key + ": " + fupCareItem.get(key));
+		}
+		System.out.println("\n-------------------------------------");
+		
+		FollowUp.saveCareItem(patientId, careItemId, fupCareItem);
+		followupPlan(patientId.intValue());
+	}
+	
 	public static void removeSurgeryData(Integer patientId, Integer treatmentId) {
 		Treatment.removeSurgeryData(treatmentId);
 		treatmentPlan(patientId);
+	}
+	
+	public static void removeConcern(Integer patientId, Integer concernId) {
+		FollowUp.removeConcern(concernId);
+		followupPlan(patientId.intValue());
+	}
+	
+	public static void removeGoal(Integer patientId, Integer goalId) {
+		FollowUp.removeGoal(goalId);
+		followupPlan(patientId.intValue());
+	}
+	
+	public static void removeCareItem(Integer patientId, Integer careItemId) {
+		FollowUp.removeCareItem(careItemId);
+		followupPlan(patientId.intValue());
 	}
 	
 	public static void radiationForm(Integer patientId, Integer treatmentId, Integer initFlag, String formType) {

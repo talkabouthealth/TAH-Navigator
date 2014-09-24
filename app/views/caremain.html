@@ -140,7 +140,7 @@
 
 
 
-<!-- ------------------------ All Care Team Dialogs Here  [START] ------------------------------- -->
+<!-- ------------------------ All Care Team Modal-Templates Here  [START] ------------------------------- -->
 
 <div class="modal"  id="diagnosis-edit-form" tabindex="-1" role="dialog" aria-labelledby="diagnosisEditFormTitle" init-flag="0">
     <div class="modal-dialog">
@@ -498,7 +498,155 @@
         </div>
    </div>
 </div>
-<!-- ------------------------ All Care Team Dialogs Here  [END] ------------------------------- -->
+
+
+<div class="modal" id="follow-up-concern-form" tabindex="-1" role="dialog" aria-labelledby="fupConcernFormTitle" init_flag="0">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="fupConcernFormTitle">Concern Form</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal form-condensed" role="form">
+                    <div class="form-group form-group-sm has-error has-feedback" id="fup_cc_concern_div">
+                        <label for="fup_cc_concern" class="col-xs-4 control-label">Concern</label>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control input-sm" id="fup_cc_concern" placeholder="i.e. Fertility">
+                            <span class="glyphicon glyphicon-remove form-control-feedback" id="fup_cc_concern_icon"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group form-group-sm">
+                        <label for="fup_cc_action_plan" class="col-xs-4 control-label">Next Step</label>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control input-sm" id="fup_cc_action_plan" placeholder="i.e. Research Fertility Options">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group form-group-sm">
+                        <label for="fup_cc_notes" class="col-xs-4 control-label">Note</label>
+                        <div class="col-xs-8">
+                            <textarea rows="3" class="form-control input-sm" id="fup_cc_notes"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-default" id="save-fup-concern">Save</button>
+                <button type="button" class="btn btn-default" id="remove-fup-concern">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="follow-up-goal-form" tabindex="-1" role="dialog" aria-labelledby="fupGoalFormTitle" init_flag="0">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="fupGoalFormTitle">Goal Form</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal form-condensed" role="form">
+                    <div class="form-group form-group-sm has-error has-feedback" id="fup_gl_goal_div">
+                        <label for="fup_gl_goal" class="col-xs-4 control-label">Goal</label>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control input-sm" id="fup_gl_goal" placeholder="i.e. Lose 5 lbs. of weight">
+                            <span class="glyphicon glyphicon-remove form-control-feedback" id="fup_gl_goal_icon"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group form-group-sm">
+                        <label for="fup_gl_action_plan" class="col-xs-4 control-label">Next Step</label>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control input-sm" id="fup_gl_action_plan" placeholder="i.e. Eat smaller portions, shop for healthier food options">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group form-group-sm">
+                        <label for="fup_gl_goal_deadline" class="col-xs-4 control-label">Goal Deadline</label>
+                        <div class="col-xs-3">
+                            <input type="text" class="form-control input-sm" id="fup_gl_goal_deadline" placeholder="YYYY-MM-DD">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group form-group-sm">
+                        <label for="fup_gl_notes" class="col-xs-4 control-label">Note</label>
+                        <div class="col-xs-8">
+                            <textarea rows="3" class="form-control input-sm" id="fup_gl_notes"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-default" id="save-fup-goal">Save</button>
+                <button type="button" class="btn btn-default" id="remove-fup-goal">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="follow-up-care-item-form" tabindex="-1" role="dialog" aria-labelledby="fupCIFormTitle" init_flag="0">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="fupCIFormTitle">Care Item Form</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal form-condensed" role="form">
+                    <div class="form-group form-group-sm has-error has-feedback" id="fup_ci_activity_div">
+                        <label for="fup_ci_activity" class="col-xs-4 control-label">Activity</label>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control input-sm" id="fup_ci_activity" placeholder="i.e. Breast Self-Exam">
+                            <span class="glyphicon glyphicon-remove form-control-feedback" id="fup_ci_activity_icon"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group form-group-sm">
+                        <label for="fup_ci_frequency" class="col-xs-4 control-label">Frequency</label>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control input-sm" id="fup_ci_frequency" placeholder="i.e. Monthly">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group form-group-sm">
+                        <label for="fup_ci_end_date" class="col-xs-4 control-label">End Date</label>
+                        <div class="col-xs-3">
+                            <input type="text" class="form-control input-sm" id="fup_ci_end_date" placeholder="YYYY-MM-DD">
+                        </div>
+                        <div class="col-xs-1">
+                            or
+                        </div>
+                        <div>
+                            <label class="col-xs-3">
+                                <input type="checkbox" id="fup_ci_ongoing"> Ongoing
+                            </label>
+					    </div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label for="fup_ci_purpose" class="col-xs-4 control-label">Purpose</label>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control input-sm" id="fup_ci_purpose" placeholder="i.e. Search for lumps and changes in breast">
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label for="fup_ci_doctor" class="col-xs-4 control-label">Doctor</label>
+                        <div class="col-xs-8">
+                            <input type="text" class="form-control input-sm" id="fup_ci_doctor" placeholder="i.e. Dr. Jorge Freire">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-default" id="save-fup-careitem">Save</button>
+                <button type="button" class="btn btn-default" id="remove-fup-careitem">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ------------------------ All Care Team Modal-Templates Here  [END] ------------------------------- -->
 
 
 
