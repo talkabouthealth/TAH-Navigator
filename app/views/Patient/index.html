@@ -3,7 +3,8 @@
 <!--Start Content-->
 <style>
 <!--
-	div.whats-next-steps-new{ width: 70%;margin:0 auto; }
+	div.whats-next-steps-new{ width: 100%;margin:0 auto; }
+	div.whats-next-steps-new table{ margin:0 auto; }
 	div.activeState {
 		text-align: center; float: left; background: url('/public/images/whats-next/selected.png') no-repeat scroll center center transparent; 
 		width: 170px; height: 232px; vertical-align: middle; color: #FFF;  font-weight: bold;background-size:170px; padding-right: 15px;
@@ -15,7 +16,7 @@
 		width: 150px; height: 232px; vertical-align: middle; color: #FFF; padding-top: 80px; font-weight: bold;background-size:150px;
 	}
 	div.inactiveStat span{ color:#FFF;font-weight: normal;}
-	span.arrow{margin-left: 5px;float: left;margin-top: 105px;font-weight: bold;font-size: 25px}
+	span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*margin-top: 105px;*/
 -->
 </style>
 <div id="content" class="index page">
@@ -125,7 +126,10 @@
 		<div class="whats-next">
 			<h3>What's Next / Where Am I In the Process?</h3>
 			<div class="whats-next-steps-new">
+				<table>
+					<tr>
 				#{if apt != null }
+					<td>
 					#{if apt.appointmentid.id == 1 || apt.appointmentid.id == 2 || apt.appointmentid.id == 3}
 						<div class="activeState">
 							<span>Prepare for<br/>First Appt.</span>
@@ -136,7 +140,9 @@
 							<span>Prepare for<br/>First Appt.</span>
 						</div>
 					#{/else}
+					</td><td>
 					<span class="fa fa-arrow-right arrow">&nbsp;</span>
+					</td><td>
 					#{if apt.appointmentid.id == 4}
 					<div class="activeState">
 						<span>Make<br>Treatment<br/>Decision</span>
@@ -147,7 +153,9 @@
 						<span>Make<br>Treatment<br/>Decision</span>
 						</div>
 					#{/else}
+					</td><td>
 					<span class="fa fa-arrow-right arrow">&nbsp;</span>
+					</td><td>
 					#{if apt.appointmentid.id == 5}
 					<div class="activeState">
 						<span>Prepare<br/> for First<br/> Treatment</span>
@@ -158,7 +166,9 @@
 						<span>Prepare<br/> for First<br/> Treatment</span>
 					</div>
 					#{/else}
+					</td><td>
 					<span class="fa fa-arrow-right arrow">&nbsp;</span>
+					</td><td>
 					#{if apt.appointmentid.id == 6 || apt.appointmentid.id == 7 || apt.appointmentid.id == 9 || apt.appointmentid.id == 10}
 					<div class="activeState">
 						<span>Ongoing<br/>Treatments</span>
@@ -169,7 +179,9 @@
 						<span>Ongoing<br/>Treatments</span>
 					</div>
 					#{/else}
+					</td><td>
 					<span class="fa fa-arrow-right arrow">&nbsp;</span>
+					</td><td>
 					#{if apt.appointmentid.id ==11}
 					<div class="activeState">
 						<span>Continue<br/>Follow-Ups</span>
@@ -180,28 +192,41 @@
 						<span>Continue<br/>Follow-Ups</span>
 					</div>
 					#{/else}
+					</td>
 				#{/if}
 				#{else}
+					<td>
 					<div class="activeState">
 						<span>Prepare for<br/>First Appt.</span>
 					</div>
+					</td><td>
 					<span class="fa fa-arrow-right arrow">&nbsp;</span>
+					</td><td>
 					<div class="inactiveStat">
 						<span>Make<br>Treatment<br/>Decision</span>
 					</div>
+					</td><td>
 					<span class="fa fa-arrow-right arrow">&nbsp;</span>
+					</td><td>
 					<div class="inactiveStat">
 						<span>Prepare<br/> for First<br/> Treatment</span>
 					</div>
+					</td><td>
 					<span class="fa fa-arrow-right arrow">&nbsp;</span>
+					</td><td>
 					<div class="inactiveStat">
 						<span>Ongoing<br/>Treatments</span>
 					</div>
+					</td><td>
 					<span class="fa fa-arrow-right arrow">&nbsp;</span>
+					</td><td>
 					<div class="inactiveStat">
 						<span>Continue<br/>Follow-Ups</span>
 					</div>
+					</td>
 				#{/else}
+				</tr>
+					</table>
 			</div>
 		</div><!-- whats-next -->
 	</div><!-- row -->
