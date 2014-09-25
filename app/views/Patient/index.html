@@ -36,14 +36,30 @@
 
 					<div class="appointment-with">
 						<div class="caretaker-image">
-							<a href="caremember?memberId=552&teamId=2">
+						#{if user.verifiedFlag}
+							<a href="@{Patient.careMemberNew(apt.caremember.id)}">
 								<img src="@{Image.show(apt.caremember.id)}">
 							</a>
+							#{/if}
+						#{else}
+						<a class="disabled" href="#">
+						<img src="@{Image.show(apt.caremember.id)}">
+						</a>
+						#{/else}
 						</div>
 						<label>My appointment is with</label>
-						<h3> <a href="caremember?memberId=552&teamId=2">
+						<h3> 
+						#{if user.verifiedFlag}
+						<a href="@{Patient.careMemberNew(apt.caremember.id)}">
 						#{userName userName: apt.caremember.name, userId:apt.caremember.id /}
-						</a></h3>
+						</a>
+						#{/if}
+						#{else}
+						<a class="disabled" href="#">
+						#{userName userName: apt.caremember.name, userId:apt.caremember.id /}
+						</a>
+						#{/else}
+						</h3>
 						<p> ${apt.expertMobile} <!--| email@email.com--></p>
 					</div><!-- appointment-with -->
 				</div><!-- appointment-information -->
@@ -86,10 +102,24 @@
 					 #{list careExpert, as:'expertBean'}
 					 	<li class="care-team-member">
 							<div class="caretaker-image">
+								#{if user.verifiedFlag}
 								<a href="@{Patient.careMemberNew(expertBean.expertDetail.id)}"><img src="@{Image.show(expertBean.expertDetail.id)}"></a>
+								#{/if}
+								#{else}
+								<a class="disabled" href="#"><img src="@{Image.show(expertBean.expertDetail.id)}"></a>
+								#{/else}
+								
 							</div>
 							<div class="caretaker-info">
-								<h4><a href="@{Patient.careMemberNew(expertBean.expertDetail.id)}">#{userName userName: expertBean.userDetails.user.name, userId: expertBean.userDetails.user.id /} </a> | </h4>
+								<h4>
+								#{if user.verifiedFlag}
+								<a href="@{Patient.careMemberNew(expertBean.expertDetail.id)}">#{userName userName: expertBean.userDetails.user.name, userId: expertBean.userDetails.user.id /}</a>
+								#{/if}
+								#{else}
+								<a class="disabled" href="#">#{userName userName: expertBean.userDetails.user.name, userId: expertBean.userDetails.user.id /}</a>
+								#{/else}
+								
+								 | </h4>
 								#{if expertBean.expertDetail.practiceAddr != null}
 	                					<p class="secondary-information">${expertBean.expertDetail.practiceAddr.getLine1()}</p>
 	                				#{if expertBean.expertDetail != null}
@@ -102,7 +132,13 @@
 				#{/if}
 				</ul>
 				<div class="view-all-members">
+					#{if user.verifiedFlag}
 					<a href="/patient/careteam" class="btn btn-default">View All Members</a>
+					#{/if}
+					#{else}
+					<a class="btn btn-default disabled" href="#">View All Members</a>
+					#{/else}
+					
 				</div>
 			#{/if}
 		</div><!-- my care team -->
