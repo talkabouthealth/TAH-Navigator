@@ -1,65 +1,87 @@
 #{set pageType = 'thrivercareplan' /}
 #{extends 'patientmain.html' /}
-	<!--Start Content-->
 <div id="content" class="col-xs-12 col-sm-10">
-	<!-- <div class="row">
-		<div id="breadcrumb" class="col-xs-12">
-		<ol class="breadcrumb">
-			<li><a href="#">Home</a></li>
-			<li><a href="#">My Thriver care Plan</a></li>
-		</ol>
-		</div>
-	</div> -->
-	 <div class="grey-box">
-            	<div class="row">
-            		<div class="col-sm-12">
-            			<span style="background-color: #FFFFFF;border: 5px solid #FFFFFF;border-radius: 5px;color: #01AF58;font-size: 10px;font-weight: bold;margin-left: -15px;">PATIENT</span>
-            			<span class="text-muted" style="margin-left: 5px;font-size:10px;">LAST UPDATED ${userDto.editdate.format("M/d/yyyy")}</span>
-            		</div>
-                	<div class="col-sm-6">
-                    	<div class="row">
-                        	<div class="col-sm-6">
-                    			<h3>${userDto.firstName} ${userDto.lastName}</h3>
-                                <p><strong>DOB:</strong> #{if userDto.dob != null}${userDto.dob.format("M/d/yyyy")}#{/if}</p>
-                                <p><strong>Phone: </strong> ${userDto.homePhone}</p>
-                    		</div>
-                    		<div class="col-sm-6 border_01">
-                    			<h3>&nbsp;</h3>
-                                <p><strong>Phone(2):</strong> ${userDto.mobile}</p>
-                                <p><strong>Email: </strong> ${userDto.email}</p>
-                   			 </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                    	<div class="row">
-                        	<div class="col-sm-6">
-		                    	<p><strong>Support Contact:</strong>support@email.com</p>
-		                        <p><strong>Contact Phone:</strong>: 352.751.8000</p>
-		                        <p><strong>Contact Email:</strong> test@gmail.com</p>
-                    		</div>
-                    		<div class="col-sm-6 border_02">
-                    	   	#{if patientOtherDetails != null}
-                    			#{if patientOtherDetails.disease != null}
-                    	   			<p><strong>Diagnosis:</strong> ${patientOtherDetails.disease.name}</p>
-                    	   		#{/if}
-                    	   		#{if patientOtherDetails.dateofdiagnosis != null}
-                        		<p><strong>Date of Diagnosis:</strong> ${patientOtherDetails.dateofdiagnosis.format('dd.MM.yyyy')}</p>
-                        		#{/if}
-								<p><strong>Stage:</strong> ${patientOtherDetails.stage}</p>
-							#{/if}
-							#{else}
-                    	   		<p><strong>Diagnosis:</strong> -</p>
-                        		<p><strong>Date of Diagnosis:</strong> -</p>
-								<p><strong>Stage:</strong> -</p>
-							#{/else}
-                   			</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-	
-	<div class="col-xs-12 col-sm-12">
-			Welcome on Patient Thriver care Plan
-	</div>
-	<div id="ajax-content"></div>
+
+    <div class="container-fluid treatment-plan">
+        <!-------------   Concern -------------------->
+        <div class="title">
+	        <h3>Needs / Concerns</h3>	        
+	    </div>
+	    #{if concerns}
+	    <table class="table table-bordered table-striped table-condensed table-hover">
+	        <tr>
+	            <th>CONCERN</th>
+	            <th>ACTION PLAN</th>
+	            <th>DATE OF CONCERN</th>
+	            <th>NOTES</th>
+	        </tr>
+	        #{list items:concerns, as:'concern'}
+	        <tr>
+	            <td>${concern.concern}</td>
+	            <td>#{if concern.nextStep} ${concern.nextStep} #{/if}</td>
+	            <td>#{if concern.concernDate} ${concern.concernDate.format('MM/dd/yyyy')} #{/if}</td>
+	            <td>#{if concern.notes} ${concern.notes} #{/if}</td>
+	        </tr>
+	        #{/list}
+	    </table>
+	    #{/if}
+	    #{else}<p>None</p>#{/else}
+	    
+	    <!-------------   Goal -------------------->
+	    <div class="title">
+	        <h3>Goals</h3>	        
+	    </div>
+	    #{if goals}
+	    <table class="table table-bordered table-striped table-condensed table-hover">
+	        <tr>
+	            <th>GOAL</th>
+	            <th>ACTION PLAN</th>
+	            <th>GOAL DEADLINE</th>
+	            <th>NOTES</th>
+	        </tr>
+	        #{list items:goals, as:'goal'}
+	        <tr>
+	            <td>${goal.goal}</td>
+	            <td>#{if goal.nextStep} ${goal.nextStep} #{/if}</td>
+	            <td>#{if goal.goalDeadline} ${goal.goalDeadline.format('MM/dd/yyyy')} #{/if}</td>
+	            <td>#{if goal.notes} ${goal.notes} #{/if}</td>
+	        </tr>
+	        #{/list}
+	    </table>
+	    #{/if}
+	    #{else}<p>None</p>#{/else}
+	    
+	    <!-------------   Care Item -------------------->
+	    <div class="title">
+	        <h3>Follow-Up Care</h3>	        
+	    </div>
+	    #{if careItems}
+	    <table class="table table-bordered table-striped table-condensed table-hover">
+	        <tr>
+	            <th>CONCERN</th>
+	            <th>FREQUENCY</th>
+	            <th>END-DATE</th>
+	            <th>PURPOSE</th>
+	            <th>DOCTOR</th>
+	        </tr>
+	        #{list items:careItems, as:'ci'}
+	        <tr>
+	            <td>${ci.activity}</td>
+	            <td>#{if ci.frequency} ${ci.frequency} #{/if}</td>
+	            <td>#{if ci.endDate} ${ci.endDate.format('MM/dd/yyyy')} #{/if}#{if ci.ongoing}Ongoing#{/if}</td>
+	            <td>#{if ci.purpose} ${ci.purpose} #{/if}</td>
+	            <td>#{if ci.doctor} ${ci.doctor} #{/if}</td>
+	        </tr>
+	        #{/list}
+	    </table>
+	   #{/if}
+	   #{else}<p>None</p>#{/else}
+	    
+	   <!-------------   Notes --------------------> 
+	   <div style="padding-bottom:20px;">
+           <span class="title" style="vertical-align: middle;">NOTES</span>
+       </div>
+       #{include '/tags/note.html' /} 
+	    
+    </div>
 </div>

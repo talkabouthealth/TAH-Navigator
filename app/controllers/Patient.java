@@ -245,9 +245,14 @@ public class Patient extends Controller {
 		PatientDetailDTO patientOtherDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
 		BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
 		int breastCancerId = Disease.BREAST_CANCER_ID;
+		List<NoteDTO> noteList = NotesDAO.getPatientNotesList(String.valueOf(user.getId()));
+		List<PatientConcernDTO> concerns = FollowUp.getPatientConcerns(user.getId());
+		List<PatientGoalDTO> goals = FollowUp.getPatientGoals(user.getId());
+		boolean noteLinkInactive = true;
+		List<PatientFollowUpCareItemDTO> careItems = FollowUp.getPatientCareItems(user.getId());
 		
 		System.out.println(session.getId());
-        render(user,userDto,patientOtherDetails, breastCancerId, breastCancerInfo);
+        render(user,userDto,patientOtherDetails, breastCancerId, breastCancerInfo, noteList, concerns, goals, careItems, noteLinkInactive);
     }
 
 	public static void treatmentplan() {
