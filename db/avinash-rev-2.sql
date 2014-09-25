@@ -62,7 +62,7 @@ CREATE TABLE nav.appointment
   CONSTRAINT fk2bb71f54f005d950 FOREIGN KEY (patientid)
       REFERENCES nav."user" (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
-)
+);
 
 
 CREATE TABLE nav.appointmentchecklist
@@ -74,7 +74,7 @@ CREATE TABLE nav.appointmentchecklist
   CONSTRAINT appointmentchecklist_fk FOREIGN KEY (appointmentid)
       REFERENCES nav.appointmentmaster (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
-)
+);
 
 
 INSERT INTO nav.appointmentchecklist(appointmentid, checkitem) VALUES (1, 'Pack All Medication Pill Bottles In A Ziploc Bag');
