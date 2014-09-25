@@ -4,9 +4,14 @@
 	<div class="note">
 		<p class="last">#{userName userName: seq.noteBy.name, userId:seq.noteBy.id /}, ${seq.noteDate.format('M/dd/yyyy h:m a')}</p>
 		<h3>
+		    #{if noteLinkInactive}
+		    ${seq.noteTitle}
+		    #{/if}
+		    #{else}  
 			<a href="javaScript:operationNote('edit','${seq.id}','${seq.noteTitle}','${seq.noteDesc}')">
 				${seq.noteTitle}
 			</a>
+			#{/else}
 		</h3>
 		<p>${seq.noteDesc}</p>
 	</div><!-- note -->
