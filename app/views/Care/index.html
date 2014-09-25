@@ -79,7 +79,13 @@
 		#{/else}
 		<td><div>
 			#{if seq.distress != null}
-			${seq.distress.curDist}
+
+			<span class="
+				#{if seq.distress.curDist > 4}
+				high-distress
+				#{/if}">
+				${seq.distress.curDist}
+			</span>
 			#{/if}
 			#{else}-#{/else}
 		</div></td>
