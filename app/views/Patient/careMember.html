@@ -18,7 +18,7 @@
       	#{userName userName: expertDetails.user.name, userId: expertDetails.user.id /}
       </h1>
     </div>
-                	#{if expdetails.practiceAddr != null}
+                	#{if expdetails != null && expdetails.practiceAddr != null}
                 	<div class="secont-l-p-f">
                 		<p class="large-f">${expdetails.practiceAddr.printAddress()}</p>
                 		#{if expertDetails != null}
@@ -45,7 +45,7 @@
 				    	#{/list}
                     </div>
                      <div class="line-h"></div>
-                     #{if expdetails.statement != null}
+                     #{if expdetails != null && expdetails.statement != null}
                     <p class="green-title"><i class="fa fa-folder"></i> PROFESSIONAL STATEMENT </p>
                     <div class="row">
                     	<div class="col-sm-12">
