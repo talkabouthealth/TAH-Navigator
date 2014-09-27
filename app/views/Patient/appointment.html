@@ -7,7 +7,8 @@ div.green-title{cursor: pointer;}
 	<!--Start Content-->
 <div id="content" class="col-xs-12 col-sm-10">
             <div class="col-xs-12 col-sm-12">
-            <br/><br/>
+            
+            <h2 style="float:left;padding-top:30px;">Upcoming Appointments</h2>
            #{if list != null && list.size()>0}
             <ul class="expend-list">
 				#{list list, as:'seq'}
@@ -76,10 +77,10 @@ div.green-title{cursor: pointer;}
 				 </ul>
 			#{/if}
 			#{else}
-				<div class="col-xs-12 col-sm-12 nopadding">No new appointment.</div>
+				<div class="col-xs-12 col-sm-12 nopadding"></br>No new appointments.</div>
 			#{/else}
 			<br/><br/>
-			<h2 style="float:left;padding-top:30px;">Past Appointment</h2>
+			<h2 style="float:left;padding-top:30px;">Past Appointments</h2>
 			#{if listOld != null && listOld.size()>0}
             <ul class="expend-list">
 				#{list listOld, as:'seq'}
@@ -148,7 +149,7 @@ div.green-title{cursor: pointer;}
 				 </ul>
 			#{/if}
 			#{else}
-				<div class="col-xs-12 col-sm-12 nopadding">No appointment.</div>
+				<div class="col-xs-12 col-sm-12 nopadding"></br>No upcoming appointments.</div>
 			#{/else}
 			
 	</div>
