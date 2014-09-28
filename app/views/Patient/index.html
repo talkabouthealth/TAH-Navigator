@@ -3,275 +3,275 @@
 <!--Start Content-->
 <style>
 <!--
-	div.whats-next-steps-new{ width: 100%;margin:0 auto; }
-	div.whats-next-steps-new table{ margin:0 auto; }
-	div.activeState {
-		text-align: center; float: left; background: url('/public/images/whats-next/selected.png') no-repeat scroll center center transparent; 
-		width: 170px; height: 232px; vertical-align: middle; color: #FFF;  font-weight: bold;background-size:170px; padding-right: 15px;
-		padding-top:75px;padding-left: 5px;
-	}
-	div.activeState span{color:#00509b;}
-	div.inactiveStat {
-		text-align: center; float: left; background: url('/public/images/whats-next/unselected.png') no-repeat scroll center center transparent; 
-		width: 150px; height: 232px; vertical-align: middle; color: #FFF; padding-top: 80px; font-weight: bold;background-size:150px;
-	}
-	div.inactiveStat span{ color:#FFF;font-weight: normal;}
-	span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*margin-top: 105px;*/
+div.whats-next-steps-new{ width: 100%;margin:0 auto; }
+div.whats-next-steps-new table{ margin:0 auto; }
+div.activeState {
+  text-align: center; float: left; background: url('/public/images/whats-next/selected.png') no-repeat scroll center center transparent; 
+  width: 170px; height: 232px; vertical-align: middle; color: #FFF;  font-weight: bold;background-size:170px; padding-right: 15px;
+  padding-top:75px;padding-left: 5px;
+}
+div.activeState span{color:#00509b;}
+div.inactiveStat {
+  text-align: center; float: left; background: url('/public/images/whats-next/unselected.png') no-repeat scroll center center transparent; 
+  width: 150px; height: 232px; vertical-align: middle; color: #FFF; padding-top: 80px; font-weight: bold;background-size:150px;
+}
+div.inactiveStat span{ color:#FFF;font-weight: normal;}
+span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*margin-top: 105px;*/
 -->
 </style>
 <div id="content" class="index page">
-	<div class="row">
-			#{if apt != null }
-				<div class="preparation col-xs-6">
-			<label><i class="fa fa-clock-o"></i>My Next Appointment is Scheduled for: ${apt.appointmentid.name}</label>
-			<div class="appointment"> <!-- row -->
-				<div class="appointment-location col-xs-3">
-					<a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${apt.addressid.line1}+${apt.addressid.line2},${apt.addressid.city},${apt.addressid.state},${apt.addressid.country} - ${apt.addressid.zip}">
-						<img width="100%" src="http://maps.googleapis.com/maps/api/staticmap?center=${apt.addressid.line1}+${apt.addressid.line2},${apt.addressid.city},${apt.addressid.state},${apt.addressid.country} - ${apt.addressid.zip}&maptype=roadmap&zoom=12&size=200x200&scale=false&&markers=color:red%7Csize:small%7C${apt.addressid.lat},${apt.addressid.lang}">
-					</a>
-				</div>
-				<div class="appointment-information col-xs-9">
-					<h2> ${apt.appointmentdate.format('EEEE MMMM dd yyyy')} </h2>
-					<h4><span class="time">${apt.appointmenttime} |</span>${apt.appointmentcenter}</h4>
+  <div class="row">
+    #{if apt != null }
+    <div class="preparation col-xs-6">
+      <label><i class="fa fa-clock-o"></i>My Next Appointment is Scheduled for: ${apt.appointmentid.name}</label>
+      <div class="appointment"> <!-- row -->
+        <div class="appointment-location col-xs-3">
+          <a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${apt.addressid.line1}+${apt.addressid.line2},${apt.addressid.city},${apt.addressid.state},${apt.addressid.country} - ${apt.addressid.zip}">
+            <img width="100%" src="http://maps.googleapis.com/maps/api/staticmap?center=${apt.addressid.line1}+${apt.addressid.line2},${apt.addressid.city},${apt.addressid.state},${apt.addressid.country} - ${apt.addressid.zip}&maptype=roadmap&zoom=12&size=200x200&scale=false&&markers=color:red%7Csize:small%7C${apt.addressid.lat},${apt.addressid.lang}">
+          </a>
+        </div>
+        <div class="appointment-information col-xs-9">
+          <h2> ${apt.appointmentdate.format('EEEE MMMM dd yyyy')} </h2>
+          <h4><span class="time">${apt.appointmenttime} |</span>${apt.appointmentcenter}</h4>
 
-					<div class="appointment-with">
-						<div class="caretaker-image">
-						#{if user.verifiedFlag}
-							<a href="@{Patient.careMemberNew(apt.caremember.id)}">
-								<img src="@{Image.show(apt.caremember.id)}">
-							</a>
-							#{/if}
-						#{else}
-						<a class="disabled" href="#">
-						<img src="@{Image.show(apt.caremember.id)}">
-						</a>
-						#{/else}
-						</div>
-						<label>My appointment is with</label>
-						<h3> 
-						#{if user.verifiedFlag}
-						<a href="@{Patient.careMemberNew(apt.caremember.id)}">
-						#{userName userName: apt.caremember.name, userId:apt.caremember.id /}
-						</a>
-						#{/if}
-						#{else}
-						<a class="disabled" href="#">
-						#{userName userName: apt.caremember.name, userId:apt.caremember.id /}
-						</a>
-						#{/else}
-						</h3>
-						<p> ${apt.expertMobile} <!--| email@email.com--></p>
-					</div><!-- appointment-with -->
-				</div><!-- appointment-information -->
-			</div><!-- appointment -->
-			</div><!-- preparation -->
-			<div class="preparation-checklist col-xs-6">
-			<label><i class="fa fa-check-circle-o"></i>Do I have everything I need to ensure a successful visit on my next appointment?</label>
-			<div class="checklist">
-			#{if checlist != null }
-				#{list checlist, as:'seq'}
-					<div class="item">
-						<span class="bullet">&bull;</span> ${seq.checkitem}
-					</div>
-				#{/list}
-			#{/if}
-			</div><!-- checklist -->
+          <div class="appointment-with">
+            <div class="caretaker-image">
+              #{if user.verifiedFlag}
+              <a href="@{Patient.careMemberNew(apt.caremember.id)}">
+                <img src="@{Image.show(apt.caremember.id)}">
+              </a>
+              #{/if}
+              #{else}
+              <a class="disabled" href="#">
+                <img src="@{Image.show(apt.caremember.id)}">
+              </a>
+              #{/else}
+            </div>
+            <label>My appointment is with</label>
+            <h3> 
+              #{if user.verifiedFlag}
+              <a href="@{Patient.careMemberNew(apt.caremember.id)}">
+                #{userName userName: apt.caremember.name, userId:apt.caremember.id /}
+              </a>
+              #{/if}
+              #{else}
+              <a class="disabled" href="#">
+                #{userName userName: apt.caremember.name, userId:apt.caremember.id /}
+              </a>
+              #{/else}
+            </h3>
+            <p> ${apt.expertMobile} <!--| email@email.com--></p>
+          </div><!-- appointment-with -->
+        </div><!-- appointment-information -->
+      </div><!-- appointment -->
+    </div><!-- preparation -->
+    <div class="preparation-checklist col-xs-6">
+      <label><i class="fa fa-check-circle-o"></i>Do I have everything I need to ensure a successful visit on my next appointment?</label>
+      <div class="checklist">
+        #{if checlist != null }
+        #{list checlist, as:'seq'}
+        <div class="item">
+          <span class="bullet">&bull;</span> ${seq.checkitem}
+        </div>
+        #{/list}
+        #{/if}
+      </div><!-- checklist -->
 
-		</div><!-- preparation checklist -->
-			#{/if}
-			#{else}
-				<div class="preparation col-xs-12">
-				<label><i class="fa fa-info-circle"></i>No appointment scheduled.</label>
-				</div>
-			#{/else}
+    </div><!-- preparation checklist -->
+    #{/if}
+    #{else}
+    <div class="preparation col-xs-12">
+      <label><i class="fa fa-info-circle"></i>No appointment scheduled.</label>
+    </div>
+    #{/else}
 
-	</div><!-- row -->
+  </div><!-- row -->
 
-	<div class="row">
-		<div class="video-walk-through col-xs-6">
-			<label><i class="fa fa-play"></i>My First Appointment</label>
+  <div class="row">
+    <div class="video-walk-through col-xs-6">
+      <label class="block"><i class="fa fa-check-circle-o"></i>My First Appointment</label>
 
-			<iframe width="560" height="315" src="//www.youtube.com/embed/u-0P5hQP02k?rel=0" frameborder="0" allowfullscreen></iframe>
+      <iframe width="560" height="315" src="//www.youtube.com/embed/u-0P5hQP02k?rel=0" frameborder="0" allowfullscreen></iframe>
 
-		</div><!-- video walk through -->
-		<div class="my-care-team col-xs-6">
-			#{if maxUsers>0}
-				<label><i class="fa fa-play"></i>My Current Care Team has (${maxUsers}) Members:</label>
-				<ul class="care-team-members">
-				#{if careExpert.size()>0}
-					 #{list careExpert, as:'expertBean'}
-					 	<li class="care-team-member">
-							<div class="caretaker-image">
-								#{if user.verifiedFlag}
-								<a href="@{Patient.careMemberNew(expertBean.expertDetail.id)}"><img src="@{Image.show(expertBean.expertDetail.id)}"></a>
-								#{/if}
-								#{else}
-								<a class="disabled" href="#"><img src="@{Image.show(expertBean.expertDetail.id)}"></a>
-								#{/else}
-								
-							</div>
-							<div class="caretaker-info">
-								<h4>
-								#{if user.verifiedFlag}
-								<a href="@{Patient.careMemberNew(expertBean.expertDetail.id)}">#{userName userName: expertBean.userDetails.user.name, userId: expertBean.userDetails.user.id /}</a>
-								#{/if}
-								#{else}
-								<a class="disabled" href="#">#{userName userName: expertBean.userDetails.user.name, userId: expertBean.userDetails.user.id /}</a>
-								#{/else}
-								
-								 | </h4>
-								#{if expertBean.expertDetail.practiceAddr != null}
-	                					<p class="secondary-information">${expertBean.expertDetail.practiceAddr.getLine1()}</p>
-	                				#{if expertBean.expertDetail != null}
-	                    				<p class="phone">${expertBean.userDetails.mobile}</p>
-	                    			#{/if}
-	                    	    #{/if}
-							</div><!-- caretaker-info -->
-						</li>
-					 #{/list}
-				#{/if}
-				</ul>
-				<div class="view-all-members">
-					#{if user.verifiedFlag}
-					<a href="/patient/careteam" class="btn btn-default">View All Members</a>
-					#{/if}
-					#{else}
-					<a class="btn btn-default disabled" href="#">View All Members</a>
-					#{/else}
-					
-				</div>
-			#{/if}
-		</div><!-- my care team -->
-	</div><!-- row -->
-	<!-- 
-	<div class="row">
-		<div class="whats-next">
-			<h3>What's Next / Where Am I In the Process?</h3>
-			<div class="whats-next-steps">
-				<img src="/public/images/whats-next/whats-next-1.png"/>
-				<img src="/public/images/whats-next/whats-next-2.png"/>
-				<img src="/public/images/whats-next/whats-next-3.png"/>
-				<img src="/public/images/whats-next/whats-next-4.png"/>
-				<img src="/public/images/whats-next/whats-next-5.png"/>
-			</div>
-			
-		</div><!-- whats-next -- >
-	</div><!-- row -->
-	
-	<div class="row">
-		<div class="whats-next">
-			<h3>What's Next / Where Am I In the Process?</h3>
-			<div class="whats-next-steps-new">
-				<table>
-					<tr>
-				#{if apt != null }
-					<td>
-					#{if apt.appointmentid.id == 1 || apt.appointmentid.id == 2 || apt.appointmentid.id == 3}
-						<div class="activeState">
-							<span>Prepare for<br/>First Appt.</span>
-						</div>
-					#{/if}
-					#{else}
-						<div class="inactiveStat">
-							<span>Prepare for<br/>First Appt.</span>
-						</div>
-					#{/else}
-					</td><td>
-					<span class="fa fa-arrow-right arrow">&nbsp;</span>
-					</td><td>
-					#{if apt.appointmentid.id == 4}
-					<div class="activeState">
-						<span>Make<br>Treatment<br/>Decision</span>
-					</div>
-					#{/if}
-					#{else}
-						<div class="inactiveStat">
-						<span>Make<br>Treatment<br/>Decision</span>
-						</div>
-					#{/else}
-					</td><td>
-					<span class="fa fa-arrow-right arrow">&nbsp;</span>
-					</td><td>
-					#{if apt.appointmentid.id == 5}
-					<div class="activeState">
-						<span>Prepare<br/> for First<br/> Treatment</span>
-					</div>
-					#{/if}
-					#{else}
-						<div class="inactiveStat">
-						<span>Prepare<br/> for First<br/> Treatment</span>
-					</div>
-					#{/else}
-					</td><td>
-					<span class="fa fa-arrow-right arrow">&nbsp;</span>
-					</td><td>
-					#{if apt.appointmentid.id == 6 || apt.appointmentid.id == 7 || apt.appointmentid.id == 9 || apt.appointmentid.id == 10}
-					<div class="activeState">
-						<span>Ongoing<br/>Treatments</span>
-					</div>
-					#{/if}
-					#{else}
-					<div class="inactiveStat">
-						<span>Ongoing<br/>Treatments</span>
-					</div>
-					#{/else}
-					</td><td>
-					<span class="fa fa-arrow-right arrow">&nbsp;</span>
-					</td><td>
-					#{if apt.appointmentid.id ==11}
-					<div class="activeState">
-						<span>Continue<br/>Follow-Ups</span>
-					</div>
-					#{/if}
-					#{else}
-					<div class="inactiveStat">
-						<span>Continue<br/>Follow-Ups</span>
-					</div>
-					#{/else}
-					</td>
-				#{/if}
-				#{else}
-					<td>
-					<div class="activeState">
-						<span>Prepare for<br/>First Appt.</span>
-					</div>
-					</td><td>
-					<span class="fa fa-arrow-right arrow">&nbsp;</span>
-					</td><td>
-					<div class="inactiveStat">
-						<span>Make<br>Treatment<br/>Decision</span>
-					</div>
-					</td><td>
-					<span class="fa fa-arrow-right arrow">&nbsp;</span>
-					</td><td>
-					<div class="inactiveStat">
-						<span>Prepare<br/> for First<br/> Treatment</span>
-					</div>
-					</td><td>
-					<span class="fa fa-arrow-right arrow">&nbsp;</span>
-					</td><td>
-					<div class="inactiveStat">
-						<span>Ongoing<br/>Treatments</span>
-					</div>
-					</td><td>
-					<span class="fa fa-arrow-right arrow">&nbsp;</span>
-					</td><td>
-					<div class="inactiveStat">
-						<span>Continue<br/>Follow-Ups</span>
-					</div>
-					</td>
-				#{/else}
-				</tr>
-					</table>
-			</div>
-		</div><!-- whats-next -->
-	</div><!-- row -->
+    </div><!-- video walk through -->
+    <div class="my-care-team col-xs-6">
+      #{if maxUsers>0}
+      <label><i class="fa fa-check-circle-o"></i>My Current Care Team has (${maxUsers}) Members:</label>
+      <ul class="care-team-members">
+        #{if careExpert.size()>0}
+        #{list careExpert, as:'expertBean'}
+        <li class="care-team-member">
+        <div class="caretaker-image">
+          #{if user.verifiedFlag}
+          <a href="@{Patient.careMemberNew(expertBean.expertDetail.id)}"><img src="@{Image.show(expertBean.expertDetail.id)}"></a>
+          #{/if}
+          #{else}
+          <a class="disabled" href="#"><img src="@{Image.show(expertBean.expertDetail.id)}"></a>
+          #{/else}
 
-	<div class="row-hidden">
-		<div class="what-to-expect col-xs-6">
-		</div><!-- what to expect -->
-		<div class="expert-qa col-xs-6">
-		</div><!-- Expert Q&A -->
-	</div><!-- row -->
+        </div>
+        <div class="caretaker-info">
+          <h4>
+            #{if user.verifiedFlag}
+            <a href="@{Patient.careMemberNew(expertBean.expertDetail.id)}">#{userName userName: expertBean.userDetails.user.name, userId: expertBean.userDetails.user.id /}</a>
+            #{/if}
+            #{else}
+            <a class="disabled" href="#">#{userName userName: expertBean.userDetails.user.name, userId: expertBean.userDetails.user.id /}</a>
+            #{/else}
+
+            | </h4>
+          #{if expertBean.expertDetail.practiceAddr != null}
+          <p class="secondary-information">${expertBean.expertDetail.practiceAddr.getLine1()}</p>
+          #{if expertBean.expertDetail != null}
+          <p class="phone">${expertBean.userDetails.mobile}</p>
+          #{/if}
+          #{/if}
+        </div><!-- caretaker-info -->
+        </li>
+        #{/list}
+        #{/if}
+      </ul>
+      <div class="view-all-members">
+        #{if user.verifiedFlag}
+        <a href="/patient/careteam" class="btn btn-default">View All Members</a>
+        #{/if}
+        #{else}
+        <a class="btn btn-default disabled" href="#">View All Members</a>
+        #{/else}
+
+      </div>
+      #{/if}
+    </div><!-- my care team -->
+  </div><!-- row -->
+  <!-- 
+        <div class="row">
+                <div class="whats-next">
+                        <h3>What's Next / Where Am I In the Process?</h3>
+                        <div class="whats-next-steps">
+                                <img src="/public/images/whats-next/whats-next-1.png"/>
+                                <img src="/public/images/whats-next/whats-next-2.png"/>
+                                <img src="/public/images/whats-next/whats-next-3.png"/>
+                                <img src="/public/images/whats-next/whats-next-4.png"/>
+                                <img src="/public/images/whats-next/whats-next-5.png"/>
+                        </div>
+
+                </div><!-- whats-next -- >
+        </div><!-- row -->
+
+  <div class="row">
+    <div class="whats-next">
+      <h3>What's Next / Where Am I In the Process?</h3>
+      <div class="whats-next-steps-new">
+        <table>
+          <tr>
+            #{if apt != null }
+            <td>
+              #{if apt.appointmentid.id == 1 || apt.appointmentid.id == 2 || apt.appointmentid.id == 3}
+              <div class="activeState">
+                <span>Prepare for<br/>First Appt.</span>
+              </div>
+              #{/if}
+              #{else}
+              <div class="inactiveStat">
+                <span>Prepare for<br/>First Appt.</span>
+              </div>
+              #{/else}
+            </td><td>
+              <span class="fa fa-arrow-right arrow">&nbsp;</span>
+            </td><td>
+              #{if apt.appointmentid.id == 4}
+              <div class="activeState">
+                <span>Make<br>Treatment<br/>Decision</span>
+              </div>
+              #{/if}
+              #{else}
+              <div class="inactiveStat">
+                <span>Make<br>Treatment<br/>Decision</span>
+              </div>
+              #{/else}
+            </td><td>
+              <span class="fa fa-arrow-right arrow">&nbsp;</span>
+            </td><td>
+              #{if apt.appointmentid.id == 5}
+              <div class="activeState">
+                <span>Prepare<br/> for First<br/> Treatment</span>
+              </div>
+              #{/if}
+              #{else}
+              <div class="inactiveStat">
+                <span>Prepare<br/> for First<br/> Treatment</span>
+              </div>
+              #{/else}
+            </td><td>
+              <span class="fa fa-arrow-right arrow">&nbsp;</span>
+            </td><td>
+              #{if apt.appointmentid.id == 6 || apt.appointmentid.id == 7 || apt.appointmentid.id == 9 || apt.appointmentid.id == 10}
+              <div class="activeState">
+                <span>Ongoing<br/>Treatments</span>
+              </div>
+              #{/if}
+              #{else}
+              <div class="inactiveStat">
+                <span>Ongoing<br/>Treatments</span>
+              </div>
+              #{/else}
+            </td><td>
+              <span class="fa fa-arrow-right arrow">&nbsp;</span>
+            </td><td>
+              #{if apt.appointmentid.id ==11}
+              <div class="activeState">
+                <span>Continue<br/>Follow-Ups</span>
+              </div>
+              #{/if}
+              #{else}
+              <div class="inactiveStat">
+                <span>Continue<br/>Follow-Ups</span>
+              </div>
+              #{/else}
+            </td>
+            #{/if}
+            #{else}
+            <td>
+              <div class="activeState">
+                <span>Prepare for<br/>First Appt.</span>
+              </div>
+            </td><td>
+              <span class="fa fa-arrow-right arrow">&nbsp;</span>
+            </td><td>
+              <div class="inactiveStat">
+                <span>Make<br>Treatment<br/>Decision</span>
+              </div>
+            </td><td>
+              <span class="fa fa-arrow-right arrow">&nbsp;</span>
+            </td><td>
+              <div class="inactiveStat">
+                <span>Prepare<br/> for First<br/> Treatment</span>
+              </div>
+            </td><td>
+              <span class="fa fa-arrow-right arrow">&nbsp;</span>
+            </td><td>
+              <div class="inactiveStat">
+                <span>Ongoing<br/>Treatments</span>
+              </div>
+            </td><td>
+              <span class="fa fa-arrow-right arrow">&nbsp;</span>
+            </td><td>
+              <div class="inactiveStat">
+                <span>Continue<br/>Follow-Ups</span>
+              </div>
+            </td>
+            #{/else}
+          </tr>
+        </table>
+      </div>
+    </div><!-- whats-next -->
+  </div><!-- row -->
+
+  <div class="row-hidden">
+    <div class="what-to-expect col-xs-6">
+    </div><!-- what to expect -->
+    <div class="expert-qa col-xs-6">
+    </div><!-- Expert Q&A -->
+  </div><!-- row -->
 
 </div>
