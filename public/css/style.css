@@ -2160,3 +2160,12 @@ td.beauty-hover {
     display: none;
   }
 }
+
+.table-fixed {
+	table-layout: fixed;
+}
+
+.table-fixed th,
+.table-fixed td {
+	overflow: hidden;
+}

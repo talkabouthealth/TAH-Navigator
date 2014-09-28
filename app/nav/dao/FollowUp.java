@@ -207,7 +207,8 @@ public class FollowUp {
 		
 		if (goalDeadline != null) {
 			if (!goalDeadline.isEmpty()) {
-				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				//SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 				Date date;
 				try {
 					date = df.parse(goalDeadline);
@@ -268,7 +269,8 @@ public class FollowUp {
 		}
 		else if (endDate != null){
 			if (!endDate.isEmpty()) {
-				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				//SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				SimpleDateFormat df = new SimpleDateFormat("MM-dd-yyyy");
 				Date date;
 				try {
 					date = df.parse(endDate);

@@ -1,14 +1,39 @@
 #{include '/tags/patientSummary.html' /}
 <div class="container-fluid treatment-plan">
     <div class="title">
+        <h3>Follow-Up Care</h3>
+        <button type="button" class="btn btn-primary" patient_id="${patientId}" form_type="new" onclick="careTeamController.evtMsgHandler('fup_careitem_form', this);">+ Add Follow-Up Care Item</button>
+    </div>
+    #{if careItems}
+    <table class="table table-bordered table-striped table-condensed table-hover table-fixed">
+        <tr>
+            <th>CONCERN</th>
+            <th>FREQUENCY</th>
+            <th>END-DATE</th>
+            <th>PURPOSE</th>
+            <th>DOCTOR</th>
+        </tr>
+        #{list items:careItems, as:'ci'}
+        <tr>
+            <td><a form_type="edit" patient_id="${ci.userId}" care_item_id="${ci.id}" onclick="careTeamController.evtMsgHandler('fup_careitem_form', this);">${ci.activity}</a></td>
+            <td>#{if ci.frequency} ${ci.frequency} #{/if}</td>
+            <td>#{if ci.endDate} ${ci.endDate.format('MM/dd/yyyy')} #{/if}#{if ci.ongoing}Ongoing#{/if}</td>
+            <td>#{if ci.purpose} ${ci.purpose} #{/if}</td>
+            <td>#{if ci.doctor} ${ci.doctor} #{/if}</td>
+        </tr>
+        #{/list}
+    </table>
+   #{/if}
+   
+    <div class="title">
         <h3>Needs / Concerns</h3>
         <button type="button" class="btn btn-primary" patient_id="${patientId}" form_type="new" onclick="careTeamController.evtMsgHandler('fup_concern_form', this);">+ Add Need</button>
     </div>
     #{if concerns}
-    <table class="table table-bordered table-striped table-condensed table-hover">
+    <table class="table table-bordered table-striped table-condensed table-hover table-fixed">
         <tr>
             <th>CONCERN</th>
-		    <th>ACTION PLAN</th>
+		    <th>NEXT STEPS</th>
 			<th>DATE OF CONCERN</th>
 			<th>NOTES</th>
         </tr>
@@ -28,10 +53,10 @@
         <button type="button" class="btn btn-primary" patient_id="${patientId}" form_type="new" onclick="careTeamController.evtMsgHandler('fup_goal_form', this);">+ Add Goal</button>
     </div>
     #{if goals}
-    <table class="table table-bordered table-striped table-condensed table-hover">
+    <table class="table table-bordered table-striped table-condensed table-hover table-fixed">
         <tr>
             <th>GOAL</th>
-            <th>ACTION PLAN</th>
+            <th>NEXT STEPS</th>
             <th>GOAL DEADLINE</th>
             <th>NOTES</th>
         </tr>
@@ -46,30 +71,7 @@
     </table>
     #{/if}
     
-    <div class="title">
-        <h3>Follow-Up Care</h3>
-        <button type="button" class="btn btn-primary" patient_id="${patientId}" form_type="new" onclick="careTeamController.evtMsgHandler('fup_careitem_form', this);">+ Add Follow-Up Care Item</button>
-    </div>
-    #{if careItems}
-    <table class="table table-bordered table-striped table-condensed table-hover">
-        <tr>
-            <th>CONCERN</th>
-            <th>FREQUENCY</th>
-            <th>END-DATE</th>
-            <th>PURPOSE</th>
-            <th>DOCTOR</th>
-        </tr>
-        #{list items:careItems, as:'ci'}
-        <tr>
-            <td><a form_type="edit" patient_id="${ci.userId}" care_item_id="${ci.id}" onclick="careTeamController.evtMsgHandler('fup_careitem_form', this);">${ci.activity}</a></td>
-            <td>#{if ci.frequency} ${ci.frequency} #{/if}</td>
-            <td>#{if ci.endDate} ${ci.endDate.format('MM/dd/yyyy')} #{/if}#{if ci.ongoing}Ongoing#{/if}</td>
-            <td>#{if ci.purpose} ${ci.purpose} #{/if}</td>
-            <td>#{if ci.doctor} ${ci.doctor} #{/if}</td>
-        </tr>
-        #{/list}
-    </table>
-   #{/if}
+    
     <div style="padding-bottom:20px;">
         <span class="title" style="vertical-align: middle;">NOTES</span>&nbsp;&nbsp;<button class="btn btn-default btn-sm noteBtn" style="font-weight:bold;">+ NEW NOTE</button>
     </div>
