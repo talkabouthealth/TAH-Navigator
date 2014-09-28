@@ -215,7 +215,7 @@ var careTeamController = (function() {
                 autoclose: true,  
                 todayHighlight: true,
                 startDate: "today",
-                format: "yyyy-mm-dd"
+                format: "mm-dd-yyyy"
             });
             $(self.saveBtnId).click(function() {
                 if (self.save()) {
@@ -243,7 +243,8 @@ var careTeamController = (function() {
                 $(self.nextStepId).val(goal.nextStep);
             }
             if ('goalDeadline' in goal) {
-                $(self.goalDeadlineId).val(dateToStr(new Date(goal.goalDeadline), '-'));
+                //$(self.goalDeadlineId).val(dateToStr(new Date(goal.goalDeadline), '-'));
+                $(self.goalDeadlineId).val(formatDate(new Date(goal.goalDeadline), 'mm-dd-yyyy'));
             }
             if ('notes' in goal) {
                 $(self.notesId).val(goal.notes);
@@ -260,7 +261,7 @@ var careTeamController = (function() {
             }
         },
         save: function() {
-            var self = goalForm;
+            var self = goalForm;            
             var params = {
                 'patientId': $(self.formId).attr('patient_id'),
                 'fupGoal.goal': $(self.goalId).val(),
@@ -407,7 +408,7 @@ var careTeamController = (function() {
                 autoclose: true,  
                 todayHighlight: true,
                 startDate: "today",
-                format: "yyyy-mm-dd"
+                format: "mm-dd-yyyy"
             });
             
             $(self.ongoingId).click(function() {
@@ -455,7 +456,8 @@ var careTeamController = (function() {
                 $(self.frequencyId).val(careItem.frequency);
             }
             if ('endDate' in careItem) {
-                $(self.endDateId).val(dateToStr(new Date(careItem.endDate), '-'));
+                //$(self.endDateId).val(dateToStr(new Date(careItem.endDate), '-'));
+                $(self.endDateId).val(formatDate(new Date(careItem.endDate), 'mm-dd-yyyy'));
             }
             if ('ongoing' in careItem) {
                 if (careItem.ongoing) {
@@ -1428,6 +1430,22 @@ var careTeamController = (function() {
             month = '0' + month;
         }
         return year + separator + month + separator + day;
+    };
+    
+    var formatDate = function(date, format) {
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+        if (day < 10) {
+            day = '0' + day;
+        }
+        if (month < 10) {
+            month = '0' + month;
+        }
+        format = format.replace('yyyy', year);
+        format = format.replace('mm', month);
+        format = format.replace('dd', day);
+        return format;
     };
     var removeSideEffect = function(domElement) {
     	var elmId = $(domElement).attr('elmId');
