@@ -78,7 +78,7 @@ a {
 .user_name{ margin-top:5px;}
 .user_name b{ font-size:12px; color:#00509b;  margin-left:4px;}
 .user_name p{ font-size:35px; color:#00509b; font-weight:normal; }
-.user_bottm{ color:#858b91; font-size:18px; } /*float:left;*/
+.user_bottm{  font-size:18px; } /*float:left;*/
 .user_bottm span{ font-size:25px; }
 
 .common_01{ margin-bottom:15px; margin-top:35px;}
@@ -157,12 +157,12 @@ a {
 
 .dashboard_01{}
 .dashboard_01 p{font-size:14px; color:#00509B; text-transform:uppercase; margin-bottom:15px;}
-.dashboard_01 h4{ color:#858b91; font-size:25px; margin-bottom:0px !important;}
+.dashboard_01 h4{  font-size:25px; margin-bottom:0px !important;}
 .dashboard_01 h5{ color:#00509B; font-size:24px; margin-bottom:30px !important;}
 
 .dashboard_02{}
 .dashboard_02 p{font-size:14px; color:#00509B; margin-bottom:5px; text-transform:uppercase; }
-.dashboard_02 h4{ color:#858b91; font-size:22px; margin-top:0px;}
+.dashboard_02 h4{  font-size:22px; margin-top:0px;}
 .dashboard_02 img {width:100%;}
 
 .center_01{ text-align:center; margin:10px 0px;}
@@ -173,14 +173,14 @@ a {
 
 .dashboard_03{}
 .dashboard_03 p{font-size:14px; color:#00509B; margin-bottom:5px; text-transform:uppercase; }
-.dashboard_03 h4{ color:#858b91; font-size:20px; margin-top:0px;}
+.dashboard_03 h4{  font-size:20px; margin-top:0px;}
 
 .dashboard_04{}
 .dashboard_04 h4{ color:#00509B; font-size:22px; margin-bottom:0px !important;}
-.dashboard_04 h5{ color:#858b91; font-size:20px; margin-bottom:10px !important;}
+.dashboard_04 h5{  font-size:20px; margin-bottom:10px !important;}
 
 .check{}
-.check { color:#858b91;}
+.check { }
 .checkbox_01{height:40px; width:40px; outline:4px dashed #00509B;  float:left;  border:0px;}
 .checkbox_02{ float:left; margin:10px 10px;}
 
@@ -196,7 +196,7 @@ a {
 .product_head{color:#686d73; font-size:13px; margin-top:0px;}
 .product_head b{ font-size:20px;}
 .product_title{color:#777; font-size:15px; margin:5px 0px;}
-.product_title b{color:#858b91; font-weight:600;}
+.product_title b{ font-weight:600;}
 .product_title02{color:#777; font-size:15px; margin:3px 0px;}
 .product_title02 b{color:#686d73; font-weight:600;}
 .product_title02 span{color:#00509B; font-size:15px; margin:3px 0px;}
@@ -286,7 +286,6 @@ a {
 .top-cent-t{font-size:12px; margin:30px 0 0 0; text-align:center}
 .top-cent-t span{color:#01af58;}
 /*p{color:#878c92}*/
-p{color:#686d73;font-size:13px;}
 
 .line-b{border-bottom:1px solid #f7f7f7; height:81px;}
 .back-arrow{display:table; margin:0 0 20px; font-size: 12px; }
