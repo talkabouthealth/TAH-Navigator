@@ -29,8 +29,15 @@
       <tbody>
       #{if patients != null}
       #{list patients, as:'seq'}
-      <tr>
-        <td><div><a href="@{Care.patient(seq.userDetails.id)}">${seq.userDetails.user.name.usreNameNew(seq.userDetails.id)}</a></div>
+      <tr
+        #{if seq.distress != null}
+        class=
+          #{if seq.distress.curDist > 7}"high-distress"#{/if}
+          #{elseif seq.distress.curDist > 4}"medium-distress"#{/elseif}
+        #{/if}
+      >
+
+        <td class="patient-name"><div><a href="@{Care.patient(seq.userDetails.id)}">${seq.userDetails.user.name.usreNameNew(seq.userDetails.id)}</a></div>
         *{  ${seq.userDetails.firstName} ${seq.userDetails.lastName} }*
         </td>
         <td><div>
@@ -77,17 +84,11 @@
 		<td><div>-</div></td>
 		<td><div>-</div></td>
 		#{/else}
-		<td><div>
-			#{if seq.distress != null}
-
-			<span class="
-				#{if seq.distress.curDist > 4}
-				high-distress
-				#{/if}">
-				${seq.distress.curDist}
-			</span>
-			#{/if}
-			#{else}-#{/else}
+		<td class="current-distress"><div>
+                    #{if seq.distress != null}
+                      ${seq.distress.curDist}
+                    #{/if}
+                    #{else}-#{/else}
 		</div></td>
 		<td><div>
 									#{if seq.distress != null}
