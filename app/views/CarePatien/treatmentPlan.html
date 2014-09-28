@@ -8,8 +8,9 @@
     <button type="button" class="btn btn-primary" patient_id="${patientId}" form_type="new" onclick="careTeamController.evtMsgHandler('radiation_treatment_form', this);">+ Add Radiation Treatment</button>
   </div>
 
+
   #{if radiationTreatments}
-  <table class="table table-bordered table-striped table-condensed table-hover">
+  <table class="radiation-treatment table table-bordered table-striped table-condensed table-hover">
     <tr>
       <th class="type">Type</th>
       <th class="dose">Dose</th>
@@ -53,7 +54,7 @@
 
   </div>
   #{if chemoTreatments}
-  <table class="table table-bordered table-striped table-condensed table-hover">
+  <table class="chemotherapy table table-bordered table-striped table-condensed table-hover">
     <tr>
       <th class="treatment-name"></th>
       <th class="cycles"># of Cycles</th>
@@ -98,7 +99,7 @@
 
   </div>
   #{if surgeryInfo}
-  <table class="table table-bordered table-striped table-condensed table-hover">
+  <table class="surgery table table-bordered table-striped table-condensed table-hover">
     <tr>
       <th class="surgery"></th>
       <th class="date">Date</th>

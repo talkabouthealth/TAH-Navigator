@@ -1,0 +1,44 @@
+@column-one: 20%;
+@column-two: 20%;
+@column-three: 25%;
+@column-four: 25%;
+@column-five: 10%;
+
+table.radiation-treatment, table.chemotherapy, table.surgery {
+  width: 100%;
+
+  .type, .surgery-name, .treatment-name {
+    width: @column-one;
+  }
+
+  .dates {
+    width: @column-two;
+  }
+
+  .side-effects {
+    width: @column-four;
+  }
+
+  .notes {
+    width: @column-five;
+  }
+
+}
+
+table.radiation-treatment {
+  .dose, .schedule, .region-treated {
+    width: @column-three/3;
+  }
+}
+
+table.chemotherapy {
+  .cycles, .schedule, .dose-reduction {
+    width: @column-three/3;
+  }
+}
+
+table.surgery {
+  .region {
+    width: @column-three;
+  }
+}
