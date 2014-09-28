@@ -1,0 +1,35 @@
+/* I don't know if this is a global style or not. */
+.button {
+  font-size: @header-button-font;
+  border: 1px solid #6092c1;
+  padding: 6px 10px;
+  white-space: nowrap;
+  display: inline-block;
+  margin-top: 5px;
+  .transition-duration(0.2s);
+
+  &:hover {
+    background: #EEE;
+    text-decoration: none;
+  }
+
+  &.rounded {
+    border-radius: @border-radius;
+  }
+}
+
+.btngroup {
+  .button.rounded {
+    border-radius: 0;
+    border-right: none;
+
+    &:first-child {
+      border-radius: @border-radius 0 0 @border-radius;
+    }
+
+    &:last-child {
+      border-radius: 0 @border-radius @border-radius 0;
+      border-right: 1px solid #6092c1;
+    }
+  }
+}
