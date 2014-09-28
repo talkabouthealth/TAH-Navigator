@@ -12,10 +12,11 @@
         <h3 class="text-muted">MOFFITT - Navigator</h3>
       </div> -->
 	 <div id="log_contaner" class="myform">
-      <div class="log_center"> 
+      <div class="log_center">
       <br/>
-        <div class="log_heading">Welcome.</div>
+        <div class="log_heading">Welcome To Moffitt Cancer Center TVRH.</div>
 		 <br/>
+
 			<form action="@{authenticate()}" method="post" id="loginForm">
 					#{ifErrors}
 						#{errors}
@@ -28,7 +29,7 @@
 					<p class="alert alert-success">&{flash.success}</p>
 					#{/if}
 					<div class="input-group input-group-lg"> <span class="input-group-addon"><img alt="" src="/public/images/em-img.png" style="height: 14px;opacity:0.6;"></span>
-						<input class="form-control" style="border-radius: 0 5px 5px 0 !important;" placeholder="Enter Email Address"
+						<input class="form-control" style="border-radius: 0 5px 5px 0 !important;" placeholder="Enter Email or Username"
 							name="email" type="email" id="email"
 							value="${flash.email}" autofocus required
 							data-match-error="Wrong email address" data-error="Enter Email Address">
@@ -41,12 +42,12 @@
 							data-error="Please provide value for password">
 							<div class="help-block with-errors"></div>
 					</div>
-			
+
 			<br/>
         	<p class="text-center"><button type="submit" type="button" id="signin" class="btn btn-lg btn-primary btn-block my-btn-log">Login</button></p>
 <!--         	<br/> -->
 <!--         	<br/> -->
-        	
+
 	        <div class="col-xs-12 col-sm-12" style="padding: 10px 0;">
 	            <div class="col-sm-6 save_id">
 	              <input name="remember" id="remember" value="true" ${flash.remember ? 'checked="true"' : ''} type="checkbox">
