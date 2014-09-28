@@ -1,5 +1,5 @@
 var DistressMeter = function() {
-  var showDistressButton, nextPageButton;
+  var showDistressButton, nextPageButton, backButton;
   var distressModal, distressForm, distressAmountText, distressAmountValue;
   var step1, step2;
   var indicator, indicatorAmount, indicatorText;
@@ -65,6 +65,14 @@ var DistressMeter = function() {
     $('.toggle-switch input[name="distressType"]').prop('checked', false);
     distressModal.modal({ keyboard: false });
 
+    distressModal.find('div.stepchecker strong').each(function(){
+      var strong = $(this);
+      var toggle = strong.prev().find('label');
+      strong.unbind('click').click(function(){
+        toggle.click();
+      });
+    });
+
     if ( amount > 1 ) {
       labelNone.show().animate({opacity: 1});
     }
@@ -92,6 +100,12 @@ var DistressMeter = function() {
     page++;
   };
 
+  var previousPage = function() {
+    step1.show();
+    step2.hide();
+    page--;
+  };
+
   var calculateTopOps = function(value) {
     var topOps = ( value - 1 ) * 10;
     if(topOps>1) {
@@ -108,7 +122,8 @@ var DistressMeter = function() {
 
   $(document).ready(function(){
     showDistressButton = $('a.distress-meter');
-    nextPageButton = $('#distress button');
+    nextPageButton = $('#distress button.next-page');
+    backButton = $('#distress button.back');
     distressModal = $('#distress');
     distressForm = $('#distressForm');
     indicator = $('.progress .distress-amount');
@@ -133,6 +148,10 @@ var DistressMeter = function() {
       nextPage();
     });
 
+    backButton.click(function(e){
+      e.preventDefault();
+      previousPage();
+    });
 
     // var slider_range_min_amount = $(".slider-range-min-amount");
     sliderRange.slider({
