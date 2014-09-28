@@ -1,53 +1,53 @@
 .sidebar {
-    background: #0F7970 url('/public/img/devoops_pattern_b10.png') 0 0 repeat !important;
+  background: #0F7970 url('/public/img/devoops_pattern_b10.png') 0 0 repeat !important;
 }
 
 table.table>tbody>tr>td {
-    padding: 0;
+  padding: 0;
 }
 .table{
-	font-size: @body-font;
+  font-size: @body-font;
 
-	th {
-		padding: @table-cell-padding;
-	}
+  th {
+    padding: @table-cell-padding;
+  }
 
-	> thead > tr > td, > tbody > tr > td, > tfoot > tr > td {
-		padding: 0;
+  > thead > tr > td, > tbody > tr > td, > tfoot > tr > td {
+    padding: 0;
 
-	}
+  }
 
+  td {
+    padding: 0;
+  }
+
+  td:first-child {
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  td.current-distress {
+    text-align: center;
+    font-size: @large-font;
+    font-weight: bold;
+  }
+
+  tr:nth-child(2n) {
     td {
-        padding: 0;
+      background: white;
+
+      div {
+        &:before {
+          .gradient(rgba(255,255,255,0), rgba(255,255,255,1))
+        }
+      }
     }
-
-    td:first-child {
-        font-weight: bold;
-        text-transform: uppercase;
-    }
-
-    td:nth-child(9n+6) {
-        text-align: center;
-        font-size: @medium-font;
-        font-weight: bold;
-    }
-
-	tr:nth-child(2n) {
-		td {
-			background: white;
-
-			div {
-				&:before {
-					.gradient(rgba(255,255,255,0), rgba(255,255,255,1))
-				}
-			}
-		}
-	}
+  }
 }
 
 td {
-	padding: 0;
-	position: relative;
+  padding: 0;
+  position: relative;
 
   div {
     max-height: @table-cell-max-height;
@@ -55,19 +55,19 @@ td {
     padding: 10px;
 
     &.tooltipstered {
-    	cursor: pointer;
+      cursor: pointer;
     }
 
     &:before {
-    	@height: 35px;
-    	content: "";
-    	display: block;
-    	position: absolute;
-    	top: @table-cell-max-height - @height;
-    	left: 0;
-    	height: @height;
-    	width: 100%;
-    	.gradient(rgba(249,249,249,0), rgba(249,249,249,1))
+      @height: 35px;
+      content: "";
+      display: block;
+      position: absolute;
+      top: @table-cell-max-height - @height;
+      left: 0;
+      height: @height;
+      width: 100%;
+      .gradient(rgba(249,249,249,0), rgba(249,249,249,1))
     }
   }
 }
