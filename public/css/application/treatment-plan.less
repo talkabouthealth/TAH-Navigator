@@ -1,36 +1,57 @@
-.treatment-plan {
-	h3 {
-		display: inline;
-		margin-right: @padding;
-		text-transform: uppercase;
-		font-size: @large-font;
-	}
+@column-one: 20%;
+@column-two: 20%;
+@column-three: 25%;
+@column-four: 25%;
+@column-five: 10%;
 
-	.title {
-		margin: @padding 0;
-	}
+table.radiation-treatment, table.chemotherapy, table.surgery {
+  width: 100%;
 
-	button {
-		margin-top: -5px;
-		display: inline-block;
-	}
+  &.table {
+    > tbody > tr > td {
+      padding: @table-cell-padding;
+      font-size: @medium-font;
+    }
+  }
 
-	table {
-		margin-bottom: @padding*4;
+  .type, .surgery-name, .treatment-name {
+    width: @column-one;
+  }
 
-		.btn {
-			margin: 0;
-			padding: 0;
-		}
+  .dates {
+    width: @column-two;
+  }
 
-		td:first-child {
+  .side-effects {
+    width: @column-four;
+  }
 
-		}
+  .notes {
+    width: @column-five;
+  }
 
-	}
+}
 
-	table.table > tbody > tr > td {
-		padding: 5px;
-		vertical-align: middle;
-	}
+table.radiation-treatment {
+  .dose, .schedule, .region-treated {
+    width: @column-three/3;
+  }
+}
+
+table.chemotherapy {
+  .cycles, .schedule, .dose-reduction {
+    width: @column-three/3;
+  }
+}
+
+table.surgery {
+  .region {
+    width: @column-three;
+  }
+}
+
+#treatmentplan {
+  .btn {
+    margin-bottom: @padding;
+  }
 }

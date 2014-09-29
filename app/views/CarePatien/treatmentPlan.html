@@ -13,9 +13,9 @@
   <table class="radiation-treatment table table-bordered table-striped table-condensed table-hover">
     <tr>
       <th class="type">Type</th>
+      <th class="dates">Dates</th>
       <th class="dose">Dose</th>
       <th class="schedule">Schedule</th>
-      <th class="dates">Dates</th>
       <th class="region">Region Treated</th>
       <th class="side-effects">Side Effects Experienced</th>
       <th class="notes">Notes</th>
@@ -23,11 +23,11 @@
     #{list items:radiationTreatments, as:'rt'}
     <tr>
       <td class="type"><a form_type="edit" patient_id="${rt.userId}" treatment_id="${rt.id}" onclick="careTeamController.evtMsgHandler('radiation_treatment_form', this);">${rt.rtDto.name}</a></td>
-      <td class="dose">#{if rt.dose} ${rt.dose} #{/if}</td>
-      <td class="schedule">#{if rt.rsDto} ${rt.rsDto.timePeriod} #{/if}</td>
       <td class="dates">#{if rt.startDate} ${rt.startDate.format('MM/dd/yyyy')} #{/if}
         #{if rt.endDate} - ${rt.endDate.format('MM/dd/yyyy')} #{/if}
       </td>
+      <td class="dose">#{if rt.dose} ${rt.dose} #{/if}</td>
+      <td class="schedule">#{if rt.rsDto} ${rt.rsDto.timePeriod} #{/if}</td>
       <td class="region">#{if rt.trDto} ${rt.trDto.region} #{/if}</td>
       <td class="side-effects">
         #{if rt.prtSeDtos}
@@ -46,50 +46,9 @@
     #{/list}
   </table>
   #{/if}
-  <!-- Chemotherapy Treatment -->
-  <div class="title">
-    <h3>Chemotherapy</h3>
 
-    <button type="button" class="btn btn-primary" patient_id="${patientId}" form_type="new" onclick="careTeamController.evtMsgHandler('chemotherapy_treatment_form', this);">+ Add New Chemotherapy Treatment</button>
 
-  </div>
-  #{if chemoTreatments}
-  <table class="chemotherapy table table-bordered table-striped table-condensed table-hover">
-    <tr>
-      <th class="treatment-name"></th>
-      <th class="cycles"># of Cycles</th>
-      <th class="schedule">Schedule</th>
-      <th class="dose-reduction">% Dose Reduction</th>
-      <th class="dates">Dates</th>
-      <th class="side-effects">Side Effects Experienced</th>
-      <th class="notes">Notes</th>
-    </tr>
-    #{list items:chemoTreatments, as:'ct'}
-    <tr>
-      <td class="treatment-name"><a form_type="edit" patient_id="${ct.userId}" treatment_id="${ct.id}" onclick="careTeamController.evtMsgHandler('chemotherapy_treatment_form', this);">${ct.genericName} (${ct.brandName})</a></td>
-      <td class="cycles">#{if ct.cycleNo} ${ct.cycleNo} #{/if}</td>
-      <td class="schedule">#{if ct.csDto} ${ct.csDto.timePeriod} #{/if}</td>
-      <td class="dose-reduction">#{if ct.doseReduction} ${ct.doseReduction}% #{/if}</td>
-      <td class="dates">#{if ct.startDate} ${ct.startDate.format('MM/dd/yyyy')} #{/if}
-        #{if ct.endDate} - ${ct.endDate.format('MM/dd/yyyy')} #{/if}
-      </td>
-      <td class="side-effects">
-        #{if ct.pctSeDtos}
-        #{list items: ct.pctSeDtos, as:'pctSeDto'}
-        #{if pctSeDto_isFirst}
-        ${pctSeDto.seDto.description}
-        #{/if}
-        #{else}
-        , ${pctSeDto.seDto.description}
-        #{/else}
-        #{/list}
-        #{/if}
-      </td>
-      <td class="notes">#{if ct.notes} ${ct.notes} #{/if}</td>
-    </tr>
-    #{/list}
-  </table>
-  #{/if}
+
 
   <!-- Surgery -->
   <div class="title">
@@ -101,7 +60,7 @@
   #{if surgeryInfo}
   <table class="surgery table table-bordered table-striped table-condensed table-hover">
     <tr>
-      <th class="surgery"></th>
+      <th class="surgery-name"></th>
       <th class="date">Date</th>
       <th class="region-treated">Region Treated</th>
       <th class="side-effects">Side Effects Experienced</th>
@@ -109,7 +68,7 @@
     </tr>
     #{list items:surgeryInfo, as:'si'}
     <tr>
-      <td class="surgery"><a form_type="edit" patient_id="${si.userId}" treatment_id="${si.id}" onclick="careTeamController.evtMsgHandler('surgery_form', this);">${si.stDto.name}</a></td>
+      <td class="surgery-name"><a form_type="edit" patient_id="${si.userId}" treatment_id="${si.id}" onclick="careTeamController.evtMsgHandler('surgery_form', this);">${si.stDto.name}</a></td>
       <td class="date">#{if si.surgeryDate} ${si.surgeryDate.format('MM/dd/yyyy')} #{/if}</td>
       <td class="region-treated">#{if si.trDto} ${si.trDto.region} #{/if}</td>
       <td class="side-effects">
@@ -125,6 +84,56 @@
         #{/if}
       </td>
       <td class="notes">#{if si.notes} ${si.notes} #{/if}</td>
+    </tr>
+    #{/list}
+  </table>
+  #{/if}
+
+
+
+
+  <!-- Chemotherapy Treatment -->
+  <div class="title">
+    <h3>Chemotherapy</h3>
+
+    <button type="button" class="btn btn-primary" patient_id="${patientId}" form_type="new" onclick="careTeamController.evtMsgHandler('chemotherapy_treatment_form', this);">+ Add New Chemotherapy Treatment</button>
+
+  </div>
+
+
+  #{if chemoTreatments}
+  <table class="chemotherapy table table-bordered table-striped table-condensed table-hover">
+    <tr>
+      <th class="treatment-name"></th>
+      <th class="dates">Dates</th>
+      <th class="cycles"># of Cycles</th>
+      <th class="schedule">Schedule</th>
+      <th class="dose-reduction">% Dose Reduction</th>
+      <th class="side-effects">Side Effects Experienced</th>
+      <th class="notes">Notes</th>
+    </tr>
+    #{list items:chemoTreatments, as:'ct'}
+    <tr>
+      <td class="treatment-name"><a form_type="edit" patient_id="${ct.userId}" treatment_id="${ct.id}" onclick="careTeamController.evtMsgHandler('chemotherapy_treatment_form', this);">${ct.genericName} (${ct.brandName})</a></td>
+      <td class="dates">#{if ct.startDate} ${ct.startDate.format('MM/dd/yyyy')} #{/if}
+        #{if ct.endDate} - ${ct.endDate.format('MM/dd/yyyy')} #{/if}
+      </td>
+      <td class="cycles">#{if ct.cycleNo} ${ct.cycleNo} #{/if}</td>
+      <td class="schedule">#{if ct.csDto} ${ct.csDto.timePeriod} #{/if}</td>
+      <td class="dose-reduction">#{if ct.doseReduction} ${ct.doseReduction}% #{/if}</td>
+      <td class="side-effects">
+        #{if ct.pctSeDtos}
+        #{list items: ct.pctSeDtos, as:'pctSeDto'}
+        #{if pctSeDto_isFirst}
+        ${pctSeDto.seDto.description}
+        #{/if}
+        #{else}
+        , ${pctSeDto.seDto.description}
+        #{/else}
+        #{/list}
+        #{/if}
+      </td>
+      <td class="notes">#{if ct.notes} ${ct.notes} #{/if}</td>
     </tr>
     #{/list}
   </table>
