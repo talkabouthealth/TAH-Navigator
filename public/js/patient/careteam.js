@@ -31,12 +31,12 @@
     if (isPanelSelected) {
       currContent.slideUp(); 
     } else {
-      var teamId = $(currHeader).data('teamid');
+//      var teamId = $(currHeader).data('teamid');
       currContent.slideDown();
-      $(currContent ).html('loading');
-      $.post( "/patient/careteamSpecific", {d:new Date(),careTeamId:teamId}, function( data ) {
-        $(currContent ).html( data );
-      });
+//      $(currContent ).html('loading');
+//      $.post( "/patient/careteamSpecific", {d:new Date(),careTeamId:teamId}, function( data ) {
+//        $(currContent ).html( data );
+//      });
     }
     return false; // Cancels the default action
   };

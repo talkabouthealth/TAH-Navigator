@@ -139,9 +139,14 @@ public class Application extends Controller {
     		 Mail.activation(detailDto,url);
     		 LoginHistoryDAO.saveLogin(member.getEmail(),"local",false,session.getId());
     		 if(user.getUserType() == 'p') {
-    			 String userId = user.getId()+"";
-    			 String fromPage = "s";
-    			 render("Application/distress.html",userId,fromPage);
+//    			 String userId = user.getId()+"";
+//    			 String fromPage = "s";
+    			 session.put("username", user.getEmail());
+    			 CommonUtil.refreshCachedUser(session);
+    			 session.put("usertype", "user");
+    			 session.put("showdistress", "true");
+    			 Patient.index();
+//    			 render("Application/distress.html",userId,fromPage);
     		 } else {
     			 Static.success();
     		 }

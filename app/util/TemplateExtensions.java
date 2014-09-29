@@ -25,6 +25,7 @@ public class TemplateExtensions extends JavaExtensions {
 	public static String usreName(String userId,Integer id) {
 		String name="";
 		UserDetailsDTO details = UserDAO.getDetailsById(id);
+		if(details!=null) {
 		if(StringUtils.isBlank(details.getFirstName()) && StringUtils.isBlank(details.getLastName())) {
 			name = details.getUser().getName();
 		} else {
@@ -43,6 +44,7 @@ public class TemplateExtensions extends JavaExtensions {
 //				name = exp.getDesignation().getAbbr() + ". " + name;//details.getFirstName() + " " + details.getLastName();
 //			}
 			name = details.getFirstName() ;
+		}
 		}
 		if(StringUtils.isNotBlank(name))
 			return name;

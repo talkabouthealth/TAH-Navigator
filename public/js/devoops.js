@@ -1811,6 +1811,7 @@ function FileUpload(){
 	        $viewBtn.show();
 	        $viewBtn.attr("href", response.tempLink);
 	        $(".profilePic").attr("src", $(".profilePic").attr("src")+"?t=" + new Date().getTime());
+	        $(".account-image img").attr("src", $(".account-image img").attr("src")+"?t=" + new Date().getTime());
 	    }
 	});
 }
@@ -2360,6 +2361,8 @@ $(document).ready(function () {
 			LoadAjaxContent(url);
 		}
 		if ($(this).attr('href') == '#') {
+			//Added alert for the inactive account
+			$("#verificationAlert").modal({ keyboard: false });
 			e.preventDefault();
 		}
 	});

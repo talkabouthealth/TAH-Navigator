@@ -204,18 +204,15 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
 
 
 
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="distress modal fade" id="verificationAlert" tabindex="-1" role="dialog" aria-labelledby="verificationAlertLabel" aria-hidden="true">
   <div class="modal-dialog">
-    <div class="modal-content">
+    <div class="modal-content col-xs-12 col-sm-12">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Account not verified</h4>
+        <h4 class="modal-title" id="verificationAlertLabel">Account not verified</h4>
       </div>
       <div class="modal-body">
         Please contact admin to verify your account.
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
     </div>
   </div>
@@ -635,39 +632,68 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
     </div>
   </div>
 </div>
+<div class="distress modal fade" id="welcome" role="dialog" aria-labelledby="welcomeLable" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title" id="myModalLabel">&nbsp;</h4>
+	      </div>
+	      <div class="modal-body">
+	        <h3>Thank you for signing up for the TVRH Navigator!</h3>
+			<p style="margin:30px 50px;">
+			For security purposes, we will send you an email to verify your email address.
+			<br/><br/>
+			The next steps are to answer a question and share how you are doing. This will enable us to provide you more personalized care and prepare for your next appointment.
+			</p>
+	      </div>
+	      <div class="modal-footer">
+	       Step 2 of 4&nbsp;&nbsp; <button type="button" class="btn btn-default btn-label-right cont" data-next="2">CONTINUE <span><i class="fa fa-chevron-right"></i></span></button>
+	      </div>
+	    </div>
+	  </div>
+</div>
 <script type='text/javascript' src="/public/js/patient/distressMeter.js"></script>
 
 
       <script>
-      /*
+      
       (function($){
         var todayDate;
         var lastLogin;
         $(document).ready(function(){
           todayDate = $('.today-date');
-          lastLogin = $('.last-login span');
+//           lastLogin = $('.last-login span');
 
           todayDate.html($.datepicker.formatDate('DD m/d/yy', new Date()));
 //           lastLogin.timeago();
-
-          var d = moment(lastLogin.html(), 'YYYY-MM-DD h:m:s A');
-          lastLogin.html(d.format('M/D/YYYY h:m A'));
+          
+//           var d = moment(lastLogin.html(), 'YYYY-MM-DD h:m:s A');
+//           lastLogin.html(d.format('M/D/YYYY h:m A'));
         });
       })(jQuery);
-*/
-// KEVIN: I don't know what this is for.
-#{set showPopup = session.get("showdistress") /}
-#{ if showPopup == null  }
-#{set showPopup = 'true' /}
-#{set session.put("showdistress",'false') /}
-#{/if}
-#{elseif showPopup == 'true'}
-#{set session.put("showdistress",'false') /}
-#{/elseif}
-#{ if showPopup == 'true'}
-distressMeter();
-#{/if}
 
+// KEVIN: I don't know what this is for.
+$(document).ready(function(){
+	$("a.disabled").click(function(e){
+		$("#verificationAlert").modal({ keyboard: false });
+	});
+	#{set showPopup = session.get("showdistress") /}
+	#{ if showPopup == null  }
+		#{set showPopup = 'true' /}
+		#{set session.put("showdistress",'false') /}
+	#{/if}
+	#{elseif showPopup == 'true'}
+		#{set session.put("showdistress",'false') /}
+	#{/elseif}
+	#{ if showPopup == 'true'}
+		$('#welcome').modal({ keyboard: false });
+		$('#welcome button.cont').click(function(e){
+			$('#welcome').modal('hide');
+		    $('a.distress-meter').click();
+		});
+	#{/if}
+});
   </script>
 </body>
 </html>

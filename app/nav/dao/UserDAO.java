@@ -203,7 +203,9 @@ public class UserDAO {
 		UserTypeDTO userTypedto = UserTypeDAO.getEntityById(memberBean.getUserType());
 		if(userTypedto.getAbbravation() == 'p') {
 			dto.setIsverified(false);
-			dto.setActive(false);
+			//dto.setActive(false);
+			//Set activated as user should to login without access to other pages than dashboard 
+			dto.setActive(true);
 		} else {
 			dto.setIsverified(true);
 			dto.setActive(true);
