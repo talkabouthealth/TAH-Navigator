@@ -1,7 +1,7 @@
 var DistressMeter = function() {
   var showDistressButton, nextPageButton, backButton;
   var distressModal, distressForm, distressAmountText, distressAmountValue;
-  var step1, step2;
+  var step1, step2, step3;
   var indicator, indicatorAmount, indicatorText;
   var sliderRange;
   var labelExtreme, labelNone;
@@ -60,6 +60,7 @@ var DistressMeter = function() {
     $("#step2").hide();
     $(".progress-bar").slider( "value", amount );
     setIndicator(amount);
+    $("#step3").hide();
 
     $(".otherDetails").val('');
     $('.toggle-switch input[name="distressType"]').prop('checked', false);
@@ -87,6 +88,7 @@ var DistressMeter = function() {
       step1.hide();
       distressAmountValue.html(amount);
       step2.show();
+      step3.hide();
       distressAmountText.html(distressRange[amount]);
     } else if ( page === 2 ) {
       var d = moment(new Date());
@@ -94,8 +96,16 @@ var DistressMeter = function() {
       var postData = distressForm.serializeArray();
       var formURL = distressForm.attr("action");
       $.post(formURL, postData, function( data ) {
-        distressModal.modal('hide');
+//        distressModal.modal('hide');
+    	  nextPage();
       });
+    } else if ( page === 3 ) {
+//    	 distressModal.modal('hide');
+    	 step1.hide();
+    	 step2.hide();
+         step3.show();
+    } else if ( page === 4 ) {
+    	distressModal.modal('hide');
     }
     page++;
   };
@@ -103,6 +113,7 @@ var DistressMeter = function() {
   var previousPage = function() {
     step1.show();
     step2.hide();
+    step3.hide();
     page--;
   };
 
@@ -137,7 +148,7 @@ var DistressMeter = function() {
 
     step1 = distressModal.find('#step1');
     step2 = distressModal.find('#step2');
-
+    step3 = distressModal.find('#step3');
     showDistressButton.click(function(e){
       e.preventDefault();
       launchDistressMeter();
