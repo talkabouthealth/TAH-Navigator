@@ -243,8 +243,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
             <div class="progress progress-ui">
               <div class="progress-bar progress-bar-success slider-style slider-range-min ui-slider-vertical" aria-disabled="false">
                 <label class="no-distress" style="top: 92%">1 NO DISTRESS</label>
-                <label class="extreme-distress">10 EXTREME DISTRESS</label>
-
+					<label class="extreme-distress">10 EXTREME DISTRESS</label>
                 <div class="distress-amount">
                   <span class="distress-amount-value"></span>
                   <p class="distress-amount-text"></p>
@@ -625,7 +624,16 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
         </div>
         <div class="modal-footer col-xs-12 col-sm-12" >
           <button type="button" class="btn borderless back">Back</button>
-          <button type="button" class="btn btn-default next-page" data-next="3">Submit</button>
+          <button type="button" class="btn btn-default next-page" data-next="3">Continue</button>
+        </div>
+      </div>
+      <div id="step3" class="step1 modal-body" style="float:left;display:block;  padding-top: 50px;">
+        <div class="col-xs-12 col-sm-12" style="padding: 10px 50px;">
+           <p><b>Thank you for sharing about how you are doing. This will help us provide you more personalized care.</b></p>
+			<p><b>Please update us about how you are doing whenever something changes. This is also a great way to track your progress over time.</b></p>
+        </div>
+        <div class="modal-footer col-xs-12 col-sm-12" >
+          <button type="button" class="btn btn-default btn-label-right next-page" data-next="2">Continue <span><i class="fa fa-chevron-right"></i></span></button>
         </div>
       </div>
       #{/form}

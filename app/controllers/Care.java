@@ -322,7 +322,7 @@ public class Care extends Controller {
 					System.out.println("Form file is not null");
 					educationDTO.setLogopath("/public/upload/"+photo.getName());
 					InputStream in = new FileInputStream(photo);
-					OutputStream out = new FileOutputStream(new File("/opt/sayli/navigator/public/upload/"+photo.getName()));
+					OutputStream out = new FileOutputStream(new File("/opt/navigator-public/TAH-Navigator/trunk/public/upload/"+photo.getName()));
 					IOUtils.copy(in,out);
 					out.close();
 					in.close();
@@ -345,7 +345,7 @@ public class Care extends Controller {
 						System.out.println("Form file is not null");
 						educationDTO.setLogopath("/public/upload/"+photo.getName());
 						InputStream in = new FileInputStream(photo);
-						OutputStream out = new FileOutputStream(new File("/opt/sayli/navigator/public/upload/"+photo.getName()));
+						OutputStream out = new FileOutputStream(new File("/opt/navigator-public/TAH-Navigator/trunk/public/upload/"+photo.getName()));
 						IOUtils.copy(in,out);
 						out.close();
 						in.close();
