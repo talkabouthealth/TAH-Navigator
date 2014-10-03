@@ -71,7 +71,7 @@ table.table-condensed {
 				    <div class="help-block with-errors"></div>
 				</div>			  
 		        <div class="form-group">
-				    <label for="exampleInputEmail1">Password</label>
+				    <label for="exampleInputEmail1">Password (must be 8 letters or longer and contain at least one number)</label>
 				    <div class="input-group">
 				    <input id="inputPassword" type="password" class="form-control" name="member.password" placeholder="Password" data-toggle="validator" data-minlength="8" required>
 				     <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
@@ -109,8 +109,8 @@ table.table-condensed {
 		    	<div class="form-group for-patient">
 				    <label for="exampleInputEmail1">Date of birth (mm/dd/yyyy)</label>
 				    <div class="input-group">
-					    <input type="text" class="form-control" id="hasDatepicker" name="member.dob" value="${flash['member.dob']}" placeholder="Enter date of birth" data-date-format="mm/dd/yyyy" data-date-viewmode="day" data-date-minviewmode="day">
-						<!--<input type="text" class="form-control datepicker" name="member.dob" value="${flash['member.dob']}" placeholder="Enter date of birth" data-date-format="mm/dd/yyyy" data-date-viewmode="day" data-date-minviewmode="day">-->
+					    <!--<input type="text" class="form-control datepicker" id="hasDatepicker" name="member.dob" value="${flash['member.dob']}" placeholder="Enter date of birth" data-date-format="mm/dd/yyyy" data-date-viewmode="day" data-date-minviewmode="day">-->
+						<input type="text" class="form-control" name="member.dob" value="${flash['member.dob']}" placeholder="Enter date of birth (mm/dd/yyyy)" data-date-format="mm/dd/yyyy" data-date-viewmode="day" data-date-minviewmode="day">
 						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 			  		</div>
 				</div>
@@ -163,11 +163,11 @@ table.table-condensed {
 			</div>			  
 	    	<div class="form-group for-patient">
 			    <label for="exampleInputEmail1">Mobile Phone (i.e. 352-750-1234)</label>
-			    <input type="text" class="form-control" name="member.mobile" value="${flash['member.mobile']}" placeholder="Enter mobile number">
+			    <input type="text" class="form-control" name="member.mobile" value="${flash['member.mobile']}" placeholder="Enter mobile number (i.e. 352-750-1234)">
 			</div>
 	    	<div class="form-group for-patient">
 			    <label for="exampleInputEmail1">Home Phone (i.e. 352-750-1234)</label>
-			    <input type="text" class="form-control" name="member.homePhone" value="${flash['member.homePhone']}" placeholder="Enter home phone">
+			    <input type="text" class="form-control" name="member.homePhone" value="${flash['member.homePhone']}" placeholder="Enter home phone (i.e. 352-750-1234)">
 			</div>
 			
 			<div class="form-group for-patient">
@@ -176,7 +176,7 @@ table.table-condensed {
 			</div>
 			<div class="form-group for-patient">
 			    <label for="exampleInputEmail1">Emergency or Support Contact Phone (i.e. 352-750-1234)</label>
-			    <input type="text" class="form-control" name="member.supportContactPhone" value="${flash['member.supportContactPhone']}" placeholder="Enter support contact phone">
+			    <input type="text" class="form-control" name="member.supportContactPhone" value="${flash['member.supportContactPhone']}" placeholder="Enter support contact phone (i.e. 352-750-1234)">
 			</div>
 			
 		</div>
