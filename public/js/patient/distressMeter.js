@@ -172,7 +172,16 @@ var DistressMeter = function() {
       value: 1,
       step: 1,
       orientation : 'vertical',
-      slide: slide
+      slide: slide,
+      slide: function(event, ui) {
+        if ( ui.value > 7 ) {
+          $(this).addClass('high-distress').removeClass('medium-distress');
+        } else if ( ui.value > 4 ) {
+          $(this).removeClass('high-distress').addClass('medium-distress');
+        } else {
+          $(this).removeClass('high-distress').removeClass('medium-distress');
+        }
+      }
     });
 
   });

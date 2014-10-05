@@ -235,8 +235,10 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
             <p style="font-size:12px"><span class="btn" style="padding: 0px 10px; border-radius: 15px;font-size:12px">STEP 1</span>  DISTRESS TOOL</p>
             <br/><br/>
             <h4>HOW IT WORKS</h4>
-            <p>Please use the slider to the right to choose a level of distress starting at 1 (no distress) up to 10 (extreme distress and discomfort) based on your distress over the last 7 days including today.
-            </br></br>Click the "continue" button below when complete.
+            <div class="instructions">
+              <p>Please use the slider to the right to choose a level of distress starting at 1 (no distress) up to 10 (extreme distress and discomfort) based on your distress over the last 7 days including today.
+              </br></br>Click the "continue" button below when complete.
+            </div>
             </p>
           </div>
           <div class="col-xs-6 col-sm-6" style="border-left:1px solid #CCC">
@@ -668,7 +670,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
 
 
       <script>
-      
+
       (function($){
         var todayDate;
         var lastLogin;
@@ -678,7 +680,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
 
           todayDate.html($.datepicker.formatDate('DD m/d/yy', new Date()));
 //           lastLogin.timeago();
-          
+
 //           var d = moment(lastLogin.html(), 'YYYY-MM-DD h:m:s A');
 //           lastLogin.html(d.format('M/D/YYYY h:m A'));
         });

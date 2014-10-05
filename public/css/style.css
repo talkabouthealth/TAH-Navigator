@@ -828,14 +828,10 @@ td.beauty-hover {
   background-image:         linear-gradient(to bottom, #f0f0f0, #dfdfdf);
 }
 .progress-bar .ui-widget-header {
-  background: #D8D8D8;
+  /*background: #D8D8D8;*/
 }
 .progress-bar-primary .ui-widget-header {
   background: #6AA6D6;
-  color:#f8f8f8;
-}
-.progress-bar-success .ui-widget-header {
-  background: #63CC9E;
   color:#f8f8f8;
 }
 .progress-bar-info .ui-widget-header {
@@ -1709,9 +1705,9 @@ td.beauty-hover {
 }
 .btn + .dropdown-menu {
   margin-top: -10px;
-  background: rgba(0, 0, 0, 0.7) !important; padding: 0; border: 0; 
-  right: 0; 
-  left: auto; 
+  background: rgba(0, 0, 0, 0.7) !important; padding: 0; border: 0;
+  right: 0;
+  left: auto;
   min-width: 100%;
 }
 .btn + .dropdown-menu > li > a {
