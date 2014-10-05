@@ -35,11 +35,15 @@ public class Patient extends Controller {
 		AppointmentDTO apt = AppointmentDAO.getLatestAppointment("patientid.id", user.getId(), curreDate, "upcomming");
 		List<AppointmentCheckListMasterDTO> checlist = null;
 		if(apt != null) {
-			UserDetailsDTO userDetails = UserDAO.getDetailsById(apt.getCaremember().getId());
-			apt.setExpertMobile(userDetails.getMobile());
-			//Load the appointment check list
-			Integer intAppId = new Integer(apt.getAppointmentid().getId());
-			checlist = AppointmentCheckListMasterDAO.getAppointmentCheckList("appointmentid.id", intAppId);
+			if (apt.getCaremember() != null) {
+				UserDetailsDTO userDetails = UserDAO.getDetailsById(apt.getCaremember().getId());
+				apt.setExpertMobile(userDetails.getMobile());
+				//Load the appointment check list
+				if (apt.getAppointmentid() != null) {
+					Integer intAppId = new Integer(apt.getAppointmentid().getId());
+					checlist = AppointmentCheckListMasterDAO.getAppointmentCheckList("appointmentid.id", intAppId);
+				}
+			}
 		}
 
 		//Load care team
@@ -87,8 +91,10 @@ public class Patient extends Controller {
 		List<AppointmentDTO> listOther = AppointmentDAO.getAppointmentListByField("patientid.id", userDto.getId(), curreDate, "upcomming" );
 		if(listOther != null) {
 			for (AppointmentDTO appointmentDTO : listOther) {
-				userDetails = UserDAO.getDetailsById(appointmentDTO.getCaremember().getId());
-				appointmentDTO.setExpertMobile(userDetails.getMobile());
+				if (appointmentDTO.getCaremember() != null) {
+					userDetails = UserDAO.getDetailsById(appointmentDTO.getCaremember().getId());
+					appointmentDTO.setExpertMobile(userDetails.getMobile());
+				}
 				list.add(appointmentDTO);
 			}
 		} else {
@@ -99,8 +105,10 @@ public class Patient extends Controller {
 		List<AppointmentDTO> listOld = new ArrayList<AppointmentDTO>();
 		if(expListOther != null) {
 			for (AppointmentDTO appointmentDTO : expListOther) {
-				userDetails = UserDAO.getDetailsById(appointmentDTO.getCaremember().getId());
-				appointmentDTO.setExpertMobile(userDetails.getMobile());
+				if (appointmentDTO.getCaremember() != null) {
+					userDetails = UserDAO.getDetailsById(appointmentDTO.getCaremember().getId());
+					appointmentDTO.setExpertMobile(userDetails.getMobile());
+				}
 				listOld.add(appointmentDTO);
 			}
 		} else {

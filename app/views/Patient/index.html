@@ -23,7 +23,7 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
   <div class="row">
     #{if apt != null }
     <div class="preparation col-xs-6">
-      <label><i class="fa fa-clock-o"></i>My Next Appointment is Scheduled for: ${apt.appointmentid.name}</label>
+      <label><i class="fa fa-clock-o"></i>My Next Appointment is Scheduled for: ${apt.careMemberName}</label>
       <div class="appointment"> <!-- row -->
         <div class="appointment-location col-xs-3">
           <a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${apt.addressid.line1}+${apt.addressid.line2},${apt.addressid.city},${apt.addressid.state},${apt.addressid.country} - ${apt.addressid.zip}">
@@ -36,6 +36,7 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
 
           <div class="appointment-with">
             <div class="caretaker-image">
+              #{if apt.caremember}
               #{if user.verifiedFlag}
               <a href="@{Patient.careMemberNew(apt.caremember.id)}">
                 <img src="@{Image.show(apt.caremember.id)}">
@@ -46,17 +47,25 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
                 <img src="@{Image.show(apt.caremember.id)}">
               </a>
               #{/else}
+              #{/if}
             </div>
             <label>My appointment is with</label>
             <h3> 
               #{if user.verifiedFlag}
-              <a href="@{Patient.careMemberNew(apt.caremember.id)}">
-                #{userName userName: apt.caremember.name, userId:apt.caremember.id /}
+              #{if apt.caremember}
+              <a href="@{Patient.careMemberNew(apt.caremember.id)}">                
+                ${apt.careMemberName}
               </a>
               #{/if}
               #{else}
               <a class="disabled" href="#">
-                #{userName userName: apt.caremember.name, userId:apt.caremember.id /}
+                ${apt.careMemberName}
+              </a>
+              #{/else}
+              #{/if}
+              #{else}
+              <a class="disabled" href="#">
+                ${apt.careMemberName}
               </a>
               #{/else}
             </h3>
@@ -164,9 +173,9 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
       <div class="whats-next-steps-new">
         <table>
           <tr>
-            #{if apt != null }
+            #{if apt != null}
             <td>
-              #{if apt.appointmentid.id == 1 || apt.appointmentid.id == 2 || apt.appointmentid.id == 3}
+              #{if (apt.appointmentid && (apt.appointmentid.id == 1 || apt.appointmentid.id == 2 || apt.appointmentid.id == 3)) || apt.treatementStep == 'Prepare for First Appointment'}
               <div class="activeState">
                 <span>Prepare for<br/>First Appt.</span>
               </div>
@@ -179,7 +188,7 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
             </td><td>
               <span class="fa fa-arrow-right arrow">&nbsp;</span>
             </td><td>
-              #{if apt.appointmentid.id == 4}
+              #{if (apt.appointmentid && apt.appointmentid.id == 4) || apt.treatementStep == 'Make Treatment Decision'}
               <div class="activeState">
                 <span>Make<br>Treatment<br/>Decision</span>
               </div>
@@ -192,7 +201,7 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
             </td><td>
               <span class="fa fa-arrow-right arrow">&nbsp;</span>
             </td><td>
-              #{if apt.appointmentid.id == 5}
+              #{if (apt.appointmentid && apt.appointmentid.id == 5) || apt.treatementStep == 'Prepare for First Treatment'}
               <div class="activeState">
                 <span>Prepare<br/> for First<br/> Treatment</span>
               </div>
@@ -205,7 +214,7 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
             </td><td>
               <span class="fa fa-arrow-right arrow">&nbsp;</span>
             </td><td>
-              #{if apt.appointmentid.id == 6 || apt.appointmentid.id == 7 || apt.appointmentid.id == 9 || apt.appointmentid.id == 10}
+              #{if (apt.appointmentid && (apt.appointmentid.id == 6 || apt.appointmentid.id == 7 || apt.appointmentid.id == 9 || apt.appointmentid.id == 10)) || apt.treatementStep == 'Ongoing Treatments'}
               <div class="activeState">
                 <span>Ongoing<br/>Treatments</span>
               </div>
@@ -218,7 +227,7 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
             </td><td>
               <span class="fa fa-arrow-right arrow">&nbsp;</span>
             </td><td>
-              #{if apt.appointmentid.id ==11}
+              #{if (apt.appointmentid  && apt.appointmentid.id == 11) || apt.treatementStep == 'Continue Follow-Ups'}
               <div class="activeState">
                 <span>Continue<br/>Follow-Ups</span>
               </div>
@@ -260,7 +269,7 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
                 <span>Continue<br/>Follow-Ups</span>
               </div>
             </td>
-            #{/else}
+            #{/else}            
           </tr>
         </table>
       </div>

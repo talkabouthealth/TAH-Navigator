@@ -17,10 +17,10 @@ div.green-title{cursor: pointer;}
         <div class="col-xs-11 col-sm-11 nopadding" style="display:block;">
           <div class="col-sm-6 checkDiv" style="padding-top: 10px;border-right: 1px solid #CCC">
             <p>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}<br/> <!-- THURSDAY MAY 10TH 2014 -->
-            ${seq.appointmenttime} <a href="javaScript:void(0);">${seq.appointmentid.name}</a></p>
+            ${seq.appointmenttime} <a href="javaScript:void(0);">${seq.purposeText}</a></p>
           </div>
           <div class="col-sm-6" style="padding-top: 10px;">
-            <p>#{userName userName: seq.caremember.name, userId:seq.caremember.id /}<br/> ${seq.appointmentcenter}</p>
+            <p>${seq.careMemberName}<br/> ${seq.appointmentcenter}</p>
           </div>
         </div>
         <div class="col-xs-1 col-sm-1 nopadding">
@@ -37,7 +37,7 @@ div.green-title{cursor: pointer;}
               <p class="large-f"><span>Appointment is Scheduled for:</span></p>
               <h1 class="g-mmm">${seq.appointmentdate.format('EEEE MMMM dd yyyy')}</h1>
               <p class="large-f"><span>${seq.appointmenttime} </span></p>
-        <h3 class="title-2 purpose-of-appointment">Purpose of appointment: <span>${seq.appointmentid.name}</span></h3>
+        <h3 class="title-2 purpose-of-appointment">Purpose of appointment: <span>${seq.purposeText}</span></h3>
             </div>
           </div>
           <div class="col-sm-6 line-right">
@@ -58,13 +58,14 @@ div.green-title{cursor: pointer;}
                 </div>
               </div>
             </div>
+            #{if seq.caremember}
             <div class="caretaker-image"> <a href="#"> <img src="@{Image.show(seq.caremember.id)}"> </a></div>
+            #{/if}
               <div class="media-body main-l-p">
                 <p>MY APPOINTMENT IS WITH</p>
                 <div class="secont-l-p-f">
-                  <p class="large-f"><span>#{userName userName: seq.caremember.name, userId:seq.caremember.id /} </span></p>
-                  <p> ${seq.expertMobile} 
-                  &nbsp;<!-- |&nbsp; ${seq.caremember.email}--></p>
+                  <p class="large-f"><span>${seq.careMemberName} </span></p>
+                  <p> ${seq.expertMobile}                   
                 </div>
             </div>
           </div>
