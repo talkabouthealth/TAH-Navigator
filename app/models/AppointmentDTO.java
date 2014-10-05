@@ -65,7 +65,15 @@ public class AppointmentDTO {
 	@Transient
 	private String expertMobile;
 	
-
+	@Column(name="caremember_name")
+	private String careMemberName;
+	
+	@Column(name="purpose_text")
+	private String purposeText;
+	
+	@Column(name="treatment_process_step")
+	private String treatementStep;
+	
 	public int getId() {
 		return id;
 	}
@@ -168,5 +176,29 @@ public class AppointmentDTO {
 
 	public void setAppointmentid(AppointmentMasterDTO appointmentid) {
 		this.appointmentid = appointmentid;
+	}
+
+	public String getCareMemberName() {
+		return careMemberName;
+	}
+
+	public void setCareMemberName(String careMemberName) {
+		this.careMemberName = careMemberName;
+	}
+
+	public String getPurposeText() {
+		return purposeText;
+	}
+
+	public void setPurposeText(String purposeText) {
+		this.purposeText = purposeText;
+	}
+
+	public String getTreatementStep() {
+		return treatementStep;
+	}
+
+	public void setTreatementStep(String treatementStep) {
+		this.treatementStep = treatementStep;
 	}
 }

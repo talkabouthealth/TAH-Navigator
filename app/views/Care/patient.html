@@ -234,7 +234,7 @@
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				<h4 class="modal-title" id="myModalLabel_appointment">ADD NEW APPOINTMENT</h4>
 			</div>
-			#{form @CarePatien.appointmentOperation() , id:'appointmentForm' }
+			#{form @CarePatien.appointmentOperation() , id:'appointmentForm', class: 'form-horizontal' }
 			<input type="hidden" name="operation" />
       		<input type="hidden" name="patientId" value="${patientId}"/>
       		<input type="hidden" name="id" />
@@ -243,58 +243,49 @@
 
 				<div class="form-group form-group-sm">
                         <label class="col-xs-3 control-label" for="rt_schedule">Purpose of Appointment</label>
-                        <div class="col-xs-9 form-group input-group">
-                           <select id="appointmentFormPurpose" name="purpose">
-                           		#{list appList, as:'seq'}
-                           			<option value="${seq.id}">${seq.name}</option>
-                           		#{/list}
-                           		<!-- 
-								<option value="1st Appointment With Radiation Oncologist">1st Appointment With Radiation Oncologist</option>
-								<option value="1st Appointment With Surgeon">1st Appointment With Surgeon</option>
-								<option value="1st Appointment With Oncologist">1st Appointment With Oncologist</option>
-								<option value="Make Treatment Decision">Make Treatment Decision</option>
-								<option value="1st Radiation Treatment">1st Radiation Treatment</option>
-								<option value="Surgery">Surgery</option>
-								<option value="Surgery Follow-up Appointment">Surgery Follow-up Appointment</option>
-								<option value="1st Oncology Treatment With New Medication">1st Oncology Treatment With New Medication</option>
-								<option value="Ongoing Radiation Treatment">Ongoing Radiation Treatment</option>
-								<option value="Treatment Progress Check-in">Treatment Progress Check-in</option>
-								<option value="Ongoing Treatment Follow-up">Ongoing Treatment Follow-up</option>
-								 -->
-							</select>
+                        <div class="col-xs-8 form-group input-group">                           
+                            <input type="text" id="appointment_purpose" name="purposeText" class="form-control nomargin" placeholder="i.e. 1st Appointment With Radiation Oncologist" required="required">
+                                <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+                        </div>
+                </div>
+                <div class="form-group form-group-sm" id="treatment_step_process">
+                        <label class="col-xs-3 control-label" for="rt_schedule">Step in the Treatment Process</label>
+                        <div class="col-xs-8 form-group input-group">                           
+                            <select class="form-control nomargin" id="ts_process">
+                                <option>Prepare for 1st appointment</option>
+                                <option>Make treatment decision</option>
+                                <option>Ongoing treatments</option>
+                                <option>Continue follow-ups</option>                                
+                            </select>
                         </div>
                 </div>
                  <div class="form-group form-group-sm">
                         <label class="col-xs-3 control-label" for="rt_schedule">Time</label>
-                        <div class="col-xs-9 form-group input-group">
-                           <input type="text" class="form-control timeField nomargin" name="time"   required />
+                        <div class="col-xs-8 form-group input-group">
+                           <input type="text" class="form-control timeField nomargin" name="time" required="required">
                            <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
                         </div>
                 </div>
                  <div class="form-group form-group-sm">
                         <label class="col-xs-3 control-label" for="rt_schedule">Date</label>
-                        <div class="col-xs-9 form-group input-group">
-                           <input type="text" class="form-control nomargin" id="hasDatepicker" name="schDate" required/>
+                        <div class="col-xs-8 form-group input-group">
+                           <input type="text" class="form-control nomargin" id="hasDatepicker" name="schDate" required="required">
                            <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
                         </div>
                 </div>
                  <div class="form-group form-group-sm">
                         <label class="col-xs-3 control-label" for="rt_schedule">Center</label>
-                        <div class="col-xs-9 form-group input-group">
-                           <input type="text" class="form-control nomargin" value="Moffitt Cancer Center TVRH" name="center" required="required" />
+                        <div class="col-xs-8 form-group input-group">
+                           <input type="text" class="form-control nomargin" value="Moffitt Cancer Center TVRH" name="center" required="required">
                            <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
                         </div>
                 </div>
                 <div class="form-group form-group-sm">
                         <label class="col-xs-3 control-label" for="rt_schedule">Physician/Nurse</label>
-                        <div class="col-xs-9 form-group input-group">
+                        <div class="col-xs-8 form-group input-group">
                            #{if noteList != null}
-								<select  class="memberselect nomargin" name="memberid"  required >
-									<option value=""></option>
-								#{list drList, as:'seq'}
-									<option value="${seq.id}"> ${seq.name.usreNameNew(seq.id)} </option>
-								#{/list}
-								</select>
+								<input type="text" id="appointment_verified_members" name="membername" class="form-control nomargin" placeholder="i.e. Ryan Belen" required="required">
+                                <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
 							#{/if}
 							#{else}
 								No expert assigned
@@ -303,29 +294,29 @@
                 </div>
                 <div class="form-group form-group-sm">
                         <label class="col-xs-3 control-label" for="rt_schedule">Address1</label>
-                        <div class="col-xs-9 form-group input-group">
-                          	<input type="text" class="form-control nomargin" value="1400 US Highway 441, Suite 540" name="address1" required />
+                        <div class="col-xs-8 form-group input-group">
+                          	<input type="text" class="form-control nomargin" value="1400 US Highway 441, Suite 540" name="address1" required="required">
                            	<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
                         </div>
                 </div>
                 <div class="form-group form-group-sm">
                         <label class="col-xs-3 control-label" for="rt_schedule">City</label>
-                        <div class="col-xs-9 form-group input-group">
-                          	<input type="text" class="form-control nomargin" value="The Villages" name="city" required />
+                        <div class="col-xs-8 form-group input-group">
+                          	<input type="text" class="form-control nomargin" value="The Villages" name="city" required="required">
                            	<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
                         </div>
                 </div>
                 <div class="form-group form-group-sm">
                         <label class="col-xs-3 control-label" for="rt_schedule">State</label>
-                        <div class="col-xs-9 form-group input-group">
-                          	<input type="text" class="form-control nomargin" value="FL" name="state" required />
+                        <div class="col-xs-8 form-group input-group">
+                          	<input type="text" class="form-control nomargin" value="FL" name="state" required="required">
                            	<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
                         </div>
                 </div>
                 <div class="form-group form-group-sm">
                         <label class="col-xs-3 control-label" for="rt_schedule">Zip Code</label>
-                        <div class="col-xs-9 form-group input-group">
-                          	<input type="text" class="form-control nomargin" value="32159" name="zip" required/>
+                        <div class="col-xs-8 form-group input-group">
+                          	<input type="text" class="form-control nomargin" value="32159" name="zip" required="required">
                            	<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
                         </div>
                 </div>
@@ -440,7 +431,7 @@
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				<h4 class="modal-title" id="myModalLabel">ADD NEW MEDICATION</h4>
 			</div>
-			#{form @CarePatien.medicationOperation() , id:'medicationForm' }
+			#{form @CarePatien.medicationOperation() , id:'medicationForm'}
 			<div class="modal-body">
 				<input type="hidden" name="operation" />
       			<input type="hidden" name="id" />
@@ -923,6 +914,39 @@ $(document).ready(function() {
 
 	$('#appointmentForm').submit(function(event) {
 		var postData = $("#appointmentForm").serializeArray();
+        var $avm = $('#appointment_verified_members');
+        var $ap = $('#appointment_purpose');
+        var membername = $avm.val();
+        var members = $avm.data("careMembers");
+        var verified = false;
+        for (var id in members) {
+            if(members[id] == membername) {
+                $avm.attr("careMemberId", id); 
+                verified = true;
+                break;
+            }
+        }
+        if (!verified) {
+            $avm.removeAttr("careMemberId");
+        }        
+        postData.push({name: "memberid", value: $avm.attr("careMemberId") || 0});
+        
+        var purposes = $ap.data("purposes");
+        var purpose_text = $.trim($ap.val());
+        var definedPurpose = false;
+        var purpose = 0;
+        for (var i = 0; i < purposes.length; i++) {
+            if (purposes[i].name == purpose_text) {
+                definedPurpose = true;
+                purpose = purposes[i].id;
+                break;
+            }
+        }
+        if (!definedPurpose) {
+            postData.push({name: "treatmentProcessStep", value: $("#ts_process option:selected").text()});    
+        }
+        postData.push({name: "purpose", value: purpose});
+        
 		var formURL = $("#appointmentForm").attr("action");
 		$.post(formURL, postData, function( data ) {
 			$('#addEditAppointment').modal('hide');
@@ -1033,20 +1057,82 @@ operationNote = function(operation,id,title,desc) {
 	}
 }
 operationAppointment = function(operation, id) {
+    $('#treatment_step_process').hide();
+    var $avm = $('#appointment_verified_members');
+    var $ap = $('#appointment_purpose');
+    var initFlag = $avm.attr("init_flag");    
+    if (!initFlag) {
+        $avm.attr('init_flag', 1);
+        $.post('/care/appointmentForm', {}, function (data) {
+            var members = data.members; 
+            var purposes = data.purposes;
+            $avm.data("careMembers", members);
+            $ap.data("purposes", purposes);
+            var arr = [];                        
+            for (var id in members) {
+                arr.push(members[id]);
+            }                              
+            $avm.typeahead({
+                source: arr,
+                minLength: 0                
+	        });    
+            var purposeList = [];
+            var length = purposes.length;
+            for (var i = 0; i < length; i++) {
+                purposeList.push(purposes[i].name);
+            }
+            $ap.typeahead({
+                source: purposeList,
+                minLength: 0,
+                updater: function(item) {
+                    $('#treatment_step_process').hide();
+                    return item;
+                }
+            });
+            $ap.blur(function(e) {
+                var purposes = $ap.data("purposes");
+                var purposetext = $.trim($ap.val());
+                var definedPurpose = false;
+                for (var i = 0; i < purposes.length; i++) {
+                    if (purposes[i].name == purposetext) {
+                        definedPurpose = true;
+                        break;
+                    }
+                }
+                if (definedPurpose) {
+                    $('#treatment_step_process').hide();
+                }
+                else if(purposetext.length > 0) {
+                    $('#treatment_step_process').show();
+                }
+            });
+	    }, "json");
+    }
 	if(operation == 'edit') {
 		var formURL = "/carePatien/patientAppointment";
 		var postData = {'id':id};
 		$.post(formURL, postData, function( data ) {
-			if(data != '.') {
+			if(data != '.') {			    			    
 				$("#myModalLabel_appointment").html("EDIT APPOINTMENT");
 				$("#appointmentForm input[name='operation']").val("edit");
 				$("#appointmentForm input[name='id']").val(data.id);
-				$("#appointmentFormPurpose").select2("val", data.purpose);
+				//$("#appointmentFormPurpose").select2("val", data.purpose);
+                $ap.val(data.purposeText);
+                if ('treatementStep' in data) {
+                    $('#treatment_step_process').show();
+                    $('#treatment_step_process option').each(function(index, elm) {
+                        var text = $(elm).text();
+                        if (text == data.treatmentStep) {
+                            $(elm).prop("selected", true);
+                        }
+                    });
+                }
 				$("#appointmentForm input[name='time']").val(data.appointmenttime);
 				$("#appointmentForm input[name='schDate']").val($.datepicker.formatDate('mm/dd/yy', new Date(data.appointmentdate)));
 				$("#appointmentForm input[name='center']").val(data.appointmentcenter);
-				$("#appointmentForm select[name='memberid']").val(data.caremember.id);
-				$("#appointmentForm select[name='memberid']").select2();
+				//$("#appointmentForm select[name='memberid']").val(data.caremember.id);				
+				//$("#appointmentForm select[name='memberid']").select2();
+                $avm.val(data.careMemberName);
 				$("#appointmentForm input[name='address1']").val(data.addressid.line1);
 				$("#appointmentForm input[name='city']").val(data.addressid.city);
 				$("#appointmentForm input[name='state']").val(data.addressid.state);
@@ -1078,7 +1164,7 @@ operationAppointment = function(operation, id) {
 		$("#appointmentForm input[name='schDate']").val("");
 		$("#appointmentForm input[name='center']").val("Moffitt Cancer Center TVRH");
 		//$("#appointmentForm select[name='memberid']").val();
-		$("#appointmentForm select[name='memberid']").select2("val", $("#appointmentForm select[name='memberid'] option:eq(1)").val());
+		//$("#appointmentForm select[name='memberid']").select2("val", $("#appointmentForm select[name='memberid'] option:eq(1)").val());
 		$("#appointmentForm input[name='address1']").val("1400 U.S. Highway 441");
 		$("#appointmentForm input[name='city']").val("The Villages");
 		$("#appointmentForm input[name='state']").val("FL");

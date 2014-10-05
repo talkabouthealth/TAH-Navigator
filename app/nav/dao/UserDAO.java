@@ -12,6 +12,7 @@ import java.util.concurrent.ExecutionException;
 
 import javax.mail.Session;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -32,13 +33,16 @@ import com.google.gson.Gson;
 
 import models.ExpertDetailDTO;
 import models.PatienCareTeamDTO;
+import models.PatientConcernDTO;
 import models.PatientDetailDTO;
 import models.SecurityQuestionDTO;
+import models.SideEffectDTO;
 import models.UserDTO;
 import models.UserDetailsDTO;
 import models.UserTypeDTO;
 import util.CommonUtil;
 import util.JPAUtil;
+import nav.dto.CareMember;
 import nav.dto.SignUpMemberBean;
 import nav.dto.UserBean;
 public class UserDAO {
@@ -140,6 +144,50 @@ public class UserDAO {
 			em.close();
 		}
 		return dto;
+	}
+	
+	public static List<CareMember> verifiedCareMembers() {
+		EntityManager em = JPAUtil.getEntityManager();		
+		List<UserDTO> users = null;
+		List<CareMember> members = new ArrayList<CareMember>();
+		try {						
+			CriteriaBuilder cb = em.getCriteriaBuilder();
+		    CriteriaQuery<UserDTO> c = cb.createQuery(UserDTO.class);
+		    Root<UserDTO> user = c.from(UserDTO.class);		    		   
+		    c.select(user).where(cb.and(cb.or(cb.equal(user.get("usertypeid").get("id"), new Long(4)), cb.equal(user.get("usertypeid").get("id"), new Long(5))), cb.equal(user.get("isverified"), true)));		    
+		    TypedQuery<UserDTO> query = em.createQuery(c);
+		    users = query.getResultList();		    
+		    for (UserDTO u : users) {
+		    	CareMember cm = new CareMember();		    	
+		    	ExpertDetailDTO expert = null;
+		    	UserDetailsDTO details = null;
+		    	TypedQuery<UserDetailsDTO> userQuery = em.createQuery("SELECT c FROM UserDetailsDTO c WHERE c.id = :id", UserDetailsDTO.class); 
+		    	userQuery.setParameter("id", u.getId());
+				try {
+					details = userQuery.getSingleResult();
+				} catch (NoResultException e1) {
+					e1.printStackTrace();
+				}		    	
+		    	TypedQuery<ExpertDetailDTO> expertQuery = em.createQuery("SELECT e FROM ExpertDetailDTO e WHERE e.id = :id", ExpertDetailDTO.class);
+		    	expertQuery.setParameter("id", u.getId());
+		    	try {
+					expert = expertQuery.getSingleResult();
+				} catch (NoResultException e2) {
+					e2.printStackTrace();
+				}				
+		    	cm.setId(u.getId());
+		    	cm.setFirstName(details.getFirstName());
+		    	cm.setLastName(details.getLastName());		    	
+		    	if (expert != null) {
+		    		cm.setDesignation(expert.getDesignation().getAbbr());
+		    	}		    	
+		    	members.add(cm);
+		    }						
+		} 
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return members;
 	}
 	
 	public static <Y> List<UserDTO> getAll(String userType,String uname) {

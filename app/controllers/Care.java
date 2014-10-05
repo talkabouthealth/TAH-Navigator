@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -47,6 +48,7 @@ import nav.dao.PatientDetailDAO;
 import nav.dao.ProfileDAO;
 import nav.dao.UserDAO;
 import nav.dao.UserTypeDAO;
+import nav.dto.CareMember;
 import nav.dto.DistressBean;
 import nav.dto.PatientBean;
 import nav.dto.UserBean;
@@ -162,13 +164,47 @@ public class Care extends Controller {
 		List<BreastCancerStageDTO> stages = Disease.breastCancerStages();
 		int breastCancerId = Disease.BREAST_CANCER_ID; 
 		List<UserDTO> drList = UserDAO.getAll("5","");
-		Map <String, Object> ps = PatientDetailDAO.patientSummary(Integer.valueOf(patientId));
 		
+		Map <String, Object> ps = PatientDetailDAO.patientSummary(Integer.valueOf(patientId));		
 		//Appointment masterData
 		List<AppointmentMasterDTO> appList = AppointmentMasterDAO.getAllAppointments();
 		
-        render(user,expertDetail,patientId,patientDto,patientOtherDetails,distress,noteList, diseases, stages, breastCancerId,drList, ps,lastDistress,appList);
+        render(user,expertDetail,patientId,patientDto,patientOtherDetails,distress,noteList, diseases, stages, breastCancerId, ps,lastDistress,appList);
     }
+	
+	public static void appointmentForm() {
+		Map<String, Object> jsonData = new HashMap<String, Object>();
+		List<CareMember> members = UserDAO.verifiedCareMembers();
+		List<AppointmentMasterDTO> appList = AppointmentMasterDAO.getAllAppointments();
+		Map<Integer, String> memberNames = new HashMap<Integer, String>();
+		for(CareMember cm : members) {			
+			StringBuilder name = new StringBuilder("");
+			if (cm.getFirstName() != null) {
+				name.append(cm.getFirstName());
+			}
+			if (cm.getLastName() != null) {
+				if (name.length() > 0) {
+					name.append(" " + cm.getLastName());
+				}
+				else {
+					name.append(cm.getLastName());
+				}
+			}
+			
+			if (cm.getDesignation() != null) {
+				if (name.length() > 0) {
+					name.append(", " + cm.getDesignation());
+				}
+				else {
+					name.append(cm.getDesignation());
+				}
+			}
+			memberNames.put(cm.getId(), name.toString());
+		}
+		jsonData.put("members", memberNames);
+		jsonData.put("purposes", appList);
+		renderJSON(jsonData);
+	}
 	
 	public static void setting() {
 		UserBean user = CommonUtil.loadCachedUser(session);
