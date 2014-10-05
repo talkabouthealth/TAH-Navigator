@@ -10,7 +10,7 @@
 	<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="@{'/public/img/favicon.ico'}" />
-	<title>TAH Navigator</title>
+	<title>TVRH Navigator</title>
 
   <link href="/public/css/styles.less" rel="stylesheet/less" />
   <link href="/public/css/logged-out/styles.less" rel="stylesheet/less" />
@@ -55,7 +55,7 @@
 	<header>
   <div class="log_header">
     <div class="">
-      <div class="col-md-6"><img src="/public/images/moffitt-logo.png"></div>
+      <div class="col-md-6"><a href="@{Secure.login()}"><img src="/public/images/moffitt-logo.png"></a></div>
       <div class="col-md-6">
 
         <div class="my_nav">
@@ -79,21 +79,19 @@
 
           <ul class="nav navbar-nav">
 
-
-
-
 		<!-- #{if pageType == 'index'} <li class="active"><a href="javaScript:void(0);">Home</a></li> #{/if}
 		#{else} <li><a href="@{Application.home()}">Home</a></li> #{/else} -->
 
+		#{if pageType == 'login'} <li class="active"><a href="javaScript:void(0);">Login</a></li> #{/if}
+		#{else} <li><a href="@{Secure.login()}">Login</a></li> #{/else}
+		
 		#{if pageType == 'about'} <li class="active"><a href="javaScript:void(0);">About</a></li> #{/if}
 		#{else} <li><a href="@{Static.about()}">About</a></li> #{/else}
 
 		#{if pageType == 'contact'} <li class="active"><a href="javaScript:void(0);">Contact</a></li> #{/if}
 		#{else} <li><a href="@{Static.contact()}">Contact</a></li> #{/else}
 
-  		#{if pageType == 'login'} <li class="active"><a href="javaScript:void(0);">Login</a></li> #{/if}
-		#{else} <li><a href="@{Secure.login()}">Login</a></li> #{/else}
-
+  		
         </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -108,7 +106,14 @@
 <div class="log_bg">
   <div class="col-xs-12 col-sm-12">
 			#{doLayout /}
+	<div class="footer" >
+ 		<p class="text-center" style="color:white;"><a href="javascript:window.open('@{Static.tos()}','Terms of Service','width=700,height=700')" style="color:white;" target="_blank">Terms of Service</a> - <a href="javascript:window.open('@{Static.privacy()}','Privacy Policy','width=700,height=700')" style="color:white;" target="_blank">Privacy Policy</a> </br></br> Copyright 2014 TalkAboutHealth</p>
+		
 	</div>
+  </div>
+ 		
 </div>
+
 </body>
+
 </html>

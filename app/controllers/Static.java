@@ -23,5 +23,10 @@ public class Static extends Controller {
 	public static void pageNotFound() {
 		render();
 	}
-	
+	public static void tos() {
+		render();
+	}
+	public static void privacy() {
+		render();
+	}
 }

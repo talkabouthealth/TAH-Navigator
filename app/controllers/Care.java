@@ -8,7 +8,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +48,7 @@ import nav.dao.PatientDetailDAO;
 import nav.dao.ProfileDAO;
 import nav.dao.UserDAO;
 import nav.dao.UserTypeDAO;
+import nav.dto.CareMember;
 import nav.dto.DistressBean;
 import nav.dto.PatientBean;
 import nav.dto.UserBean;
@@ -108,6 +112,32 @@ public class Care extends Controller {
 				patients.add(patient);
 			}
 		}
+		// Descending Order of Last Distress check Date
+		Collections.sort(patients, new Comparator<PatientBean>() {
+			@Override
+			public int compare(PatientBean o1, PatientBean o2) {
+				Date o1Date = null;
+				Date o2Date = null;
+				if (o1.getDistress() != null) {
+					o1Date = o1.getDistress().getDistressDate();
+				}
+				if (o2.getDistress() != null) {
+					o2Date = o2.getDistress().getDistressDate();
+				}
+				if (o1Date != null && o2Date != null) {
+					return o2Date.compareTo(o1Date);
+				}
+				else if (o2Date != null) {
+					return 1;
+				}
+				else if (o1Date != null) {
+					return -1;
+				}				
+				else {
+					return 0;
+				}				
+			}
+		});
         render(user,expertDetail,patients);
     }
 	
@@ -134,13 +164,47 @@ public class Care extends Controller {
 		List<BreastCancerStageDTO> stages = Disease.breastCancerStages();
 		int breastCancerId = Disease.BREAST_CANCER_ID; 
 		List<UserDTO> drList = UserDAO.getAll("5","");
-		Map <String, Object> ps = PatientDetailDAO.patientSummary(Integer.valueOf(patientId));
 		
+		Map <String, Object> ps = PatientDetailDAO.patientSummary(Integer.valueOf(patientId));		
 		//Appointment masterData
 		List<AppointmentMasterDTO> appList = AppointmentMasterDAO.getAllAppointments();
 		
-        render(user,expertDetail,patientId,patientDto,patientOtherDetails,distress,noteList, diseases, stages, breastCancerId,drList, ps,lastDistress,appList);
+        render(user,expertDetail,patientId,patientDto,patientOtherDetails,distress,noteList, diseases, stages, breastCancerId, ps,lastDistress,appList);
     }
+	
+	public static void appointmentForm() {
+		Map<String, Object> jsonData = new HashMap<String, Object>();
+		List<CareMember> members = UserDAO.verifiedCareMembers();
+		List<AppointmentMasterDTO> appList = AppointmentMasterDAO.getAllAppointments();
+		Map<Integer, String> memberNames = new HashMap<Integer, String>();
+		for(CareMember cm : members) {			
+			StringBuilder name = new StringBuilder("");
+			if (cm.getFirstName() != null) {
+				name.append(cm.getFirstName());
+			}
+			if (cm.getLastName() != null) {
+				if (name.length() > 0) {
+					name.append(" " + cm.getLastName());
+				}
+				else {
+					name.append(cm.getLastName());
+				}
+			}
+			
+			if (cm.getDesignation() != null) {
+				if (name.length() > 0) {
+					name.append(", " + cm.getDesignation());
+				}
+				else {
+					name.append(cm.getDesignation());
+				}
+			}
+			memberNames.put(cm.getId(), name.toString());
+		}
+		jsonData.put("members", memberNames);
+		jsonData.put("purposes", appList);
+		renderJSON(jsonData);
+	}
 	
 	public static void setting() {
 		UserBean user = CommonUtil.loadCachedUser(session);
@@ -294,7 +358,7 @@ public class Care extends Controller {
 					System.out.println("Form file is not null");
 					educationDTO.setLogopath("/public/upload/"+photo.getName());
 					InputStream in = new FileInputStream(photo);
-					OutputStream out = new FileOutputStream(new File("/opt/sayli/navigator/public/upload/"+photo.getName()));
+					OutputStream out = new FileOutputStream(new File("/opt/navigator-public/TAH-Navigator/trunk/public/upload/"+photo.getName()));
 					IOUtils.copy(in,out);
 					out.close();
 					in.close();
@@ -317,7 +381,7 @@ public class Care extends Controller {
 						System.out.println("Form file is not null");
 						educationDTO.setLogopath("/public/upload/"+photo.getName());
 						InputStream in = new FileInputStream(photo);
-						OutputStream out = new FileOutputStream(new File("/opt/sayli/navigator/public/upload/"+photo.getName()));
+						OutputStream out = new FileOutputStream(new File("/opt/navigator-public/TAH-Navigator/trunk/public/upload/"+photo.getName()));
 						IOUtils.copy(in,out);
 						out.close();
 						in.close();

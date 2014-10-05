@@ -599,7 +599,7 @@ public class CarePatien  extends Controller {
 		render("CarePatien/careteamblock.html",careteam,otherExpert,expertBeanHead);
 	}
 	
-	public static void appointmentOperation(String operation,int patientId,int id,String purpose,String time,String schDate,String center,int memberid,String address1,String city,String state,String zip) {
+	public static void appointmentOperation(String operation,int patientId,int id,String purpose, String purposeText, String treatmentProcessStep, String time,String schDate,String center,int memberid, String membername, String address1,String city,String state,String zip) {
 		
 		UserBean user = CommonUtil.loadCachedUser(session);
 		UserDTO addedby = UserDAO.getUserBasicByField("id",user.getId());
@@ -619,7 +619,8 @@ public class CarePatien  extends Controller {
 
 				BaseDAO.save(address);
 				UserDTO patient = UserDAO.getUserBasicByField("id", patientId);
-				UserDTO caremember = UserDAO.getUserBasicByField("id", memberid);
+				
+				
 
 				//08/19/2014
 				//mm/dd/yyyy
@@ -632,26 +633,47 @@ public class CarePatien  extends Controller {
 				app.setAppointmentcenter(center);
 				app.setAppointmentdate(appointmentDate);
 				app.setAppointmenttime(time);
-				app.setCaremember(caremember);
-				app.setPurpose(purpose);
-				Integer appIdInt = new Integer(purpose);
-				app.setAppointmentid(AppointmentMasterDAO.getAppointmentByField("id", appIdInt));
-				app.setPatientid(patient);
+				if (memberid > 0) {
+					UserDTO caremember = UserDAO.getUserBasicByField("id", memberid);
+					app.setCaremember(caremember);
+				}
+				app.setCareMemberName(membername);
+				if (Integer.valueOf(purpose) > 0) {
+					app.setPurpose(purpose);
+					Integer appIdInt = new Integer(purpose);
+					app.setAppointmentid(AppointmentMasterDAO.getAppointmentByField("id", appIdInt));
+				}
+				else {
+					app.setTreatementStep(treatmentProcessStep);
+				}
+				app.setPurposeText(purposeText);
 				
+				app.setPatientid(patient);				
 				BaseDAO.save(app);
 			} else if("edit".equalsIgnoreCase(operation)) {
 				//Need to code this.
 				Integer appId =  new Integer(id);
 				AppointmentDTO app = AppointmentDAO.getAppointmentByField("id",appId);
-				app.setPurpose(purpose);
-				Integer appIdInt = new Integer(purpose);
-				app.setAppointmentid(AppointmentMasterDAO.getAppointmentByField("id", appIdInt));
+				if (Integer.valueOf(purpose) > 0) {
+					app.setPurpose(purpose);
+					Integer appIdInt = new Integer(purpose);
+					app.setAppointmentid(AppointmentMasterDAO.getAppointmentByField("id", appIdInt));
+					app.setTreatementStep(null);
+				}
+				else {
+					app.setTreatementStep(treatmentProcessStep);
+				}
+				app.setPurposeText(purposeText);
+				
 				app.setAppointmenttime(time);
 				Date appointmentDate = new SimpleDateFormat("MM/dd/yyyy").parse(schDate);
 				app.setAppointmentdate(appointmentDate);
 				app.setAppointmentcenter(center);
-				UserDTO caremember = UserDAO.getUserBasicByField("id", memberid);
-				app.setCaremember(caremember);
+				if (memberid > 0) {
+					UserDTO caremember = UserDAO.getUserBasicByField("id", memberid);
+					app.setCaremember(caremember);
+				}
+				app.setCareMemberName(membername);
 				
 				AddressDTO address = app.getAddressid();
 				address.setCity(city);

@@ -10,7 +10,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="shortcut icon" href="@{'/public/img/favicon.ico'}" />
-  <title>Patient : TAH Navigator</title>
+  <title>TVRH Navigator</title>
   <link href="/public/css/patients/styles.less" rel="stylesheet/less" />
   <link href="/public/css/styles.less" rel="stylesheet/less" />
   <script src="/public/js/lib/less-1.7.4.min.js"></script>
@@ -243,8 +243,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
             <div class="progress progress-ui">
               <div class="progress-bar progress-bar-success slider-style slider-range-min ui-slider-vertical" aria-disabled="false">
                 <label class="no-distress" style="top: 92%">1 NO DISTRESS</label>
-                <label class="extreme-distress">10 EXTREME DISTRESS</label>
-
+					<label class="extreme-distress">10 EXTREME DISTRESS</label>
                 <div class="distress-amount">
                   <span class="distress-amount-value"></span>
                   <p class="distress-amount-text"></p>
@@ -625,7 +624,17 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
         </div>
         <div class="modal-footer col-xs-12 col-sm-12" >
           <button type="button" class="btn borderless back">Back</button>
-          <button type="button" class="btn btn-default next-page" data-next="3">Submit</button>
+          <button type="button" class="btn btn-default next-page" data-next="3">Continue</button>
+        </div>
+      </div>
+      	<div id="step3" class="step1 modal-body" style="float:left;display:block;">
+        <div class="col-xs-12 col-sm-12" style="padding: 10px 50px;">
+           <p><h4>Thank you for sharing how you are doing. The more you share, the more we can personalize your care.</h4></p><br/>
+			<p><h4>Please use this tool to update us on how you are doing whenever something changes. This is also a great way to track your progress over time.</h4></p><br/>
+        	<p><h4>If this is an emergency, please call 911.</h4></p>
+        </div>
+        <div class="modal-footer col-xs-12 col-sm-12" >
+          <button type="button" class="btn btn-default btn-label-right next-page" data-next="2">Continue <span><i class="fa fa-chevron-right"></i></span></button>
         </div>
       </div>
       #{/form}
@@ -640,12 +649,14 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
 	        <h4 class="modal-title" id="myModalLabel">&nbsp;</h4>
 	      </div>
 	      <div class="modal-body">
+	        <div style="padding: 10px 50px;">
 	        <h3>Thank you for signing up for the TVRH Navigator!</h3>
 			<p style="margin:30px 50px;">
-			For security purposes, we will send you an email to verify your email address.
-			<br/><br/>
-			The next steps are to answer a question and share how you are doing. This will enable us to provide you more personalized care and prepare for your next appointment.
+			<h4>For security purposes, we will send you an email to verify your email address.</h4>
+			<br/>
+			<h4>The next step is to answer a question and share how you are doing. This will enable us to provide you more personalized care and prepare for your next appointment.</h4>
 			</p>
+			</div>
 	      </div>
 	      <div class="modal-footer">
 	       Step 2 of 4&nbsp;&nbsp; <button type="button" class="btn btn-default btn-label-right cont" data-next="2">CONTINUE <span><i class="fa fa-chevron-right"></i></span></button>
