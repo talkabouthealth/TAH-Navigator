@@ -227,42 +227,29 @@ table.table-condensed {
 		  <div class="col-md-12">
 		  	<div class="checkbox">
 			    <label>
-			      <input name="member.tosFlag" type="checkbox" required> I agree to the Moffitt Cancer Center - TVRH Terms of Service and Privacy Policy.
-			      <i class="fa fa-square-o"></i>
+			      <input name="member.tosFlag" type="checkbox" required> I agree to the Moffitt Cancer Center - TVRH<i class="fa fa-square-o"></i>
 			    </label>
+			     <a href="javascript:window.open('@{Static.tos()}','Terms of Service','width=700,height=700')" style="color:white;" target="_blank">Terms of Service</a> and <a href="javascript:window.open('@{Static.privacy()}','Privacy Policy','width=700,height=700')" style="color:white;" target="_blank">Privacy Policy</a>.
+			      
+			      
+			      
 			     <div class="help-block with-errors"></div>
 			</div>
-			<div class="checkbox">
+<!--			<div class="checkbox">
 			    <label>
 			      <input name="member.smtFlag" type="checkbox" required> I accept the Security Messaging Terms and Conditions.
 			      <i class="fa fa-square-o"></i>
 			    </label>
 			     <div class="help-block with-errors"></div>
 			</div>
+-->
 			<div class="form-group">
 			<button type="submit" class="btn-primary btn-lg btn-block" >Next Step</button>
 			</div>
 			</div>
          #{/form}
 		</div>
-		<!--<div class="col-md-4">
-			<div class="panel panel-primary">
-			<div class="panel-heading">Moffitt Cance Center - TVRH Navigator</div>
-				<blockquote>Why you will love the Moffitt Cance Center - TVRH Navigator</blockquote>
-			<ul>
-				<li>We'll guide you through treatments step-by-step.</li>
-				<li>Connect with you care team.</li>
-				<li>What to expect. How to prepare. Next steps.</li>
-				<li>Reminders of appointments and to take medications.</li>
-				<li>Visualize your treatment plan.</li>
-				<li>Track your progress and symptoms.</li>
-			</ul>
-			</div>
-		</div><!--
-      </div>
-      <div class="footer">
-        <p>&copy; Copyright 2014 - TalkAboutHealth</p>
-      </div>
+      
     </div> <!-- /container -->
     <script>
 <!--
