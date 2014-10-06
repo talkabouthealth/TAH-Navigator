@@ -104,72 +104,80 @@ var DistressMeter = function() {
       var formURL = distressForm.attr("action");
       $.post(formURL, postData, function( data ) {
 //        distressModal.modal('hide');
-    	  nextPage();
-      });
+nextPage();
+});
     } else if ( page === 3 ) {
 //    	 distressModal.modal('hide');
-    	 step1.hide();
-    	 step2.hide();
-         step3.show();
-    } else if ( page === 4 ) {
-    	distressModal.modal('hide');
-    }
-    page++;
-  };
+step1.hide();
+step2.hide();
+step3.show();
+} else if ( page === 4 ) {
+ distressModal.modal('hide');
+}
+page++;
+};
 
-  var previousPage = function() {
-    step1.show();
-    step2.hide();
-    step3.hide();
-    page--;
-  };
+var previousPage = function() {
+  step1.show();
+  step2.hide();
+  step3.hide();
+  page--;
+};
 
-  var calculateTopOps = function(value) {
-    var topOps = ( value - 1 ) * 10;
-    if(topOps>1) {
-      topOps = topOps+2;
-    }
-    return topOps;
-  };
+var calculateTopOps = function(value) {
+  var topOps = ( value - 1 ) * 10;
+  if(topOps>1) {
+    topOps = topOps+2;
+  }
+  return topOps;
+};
 
-  var slide = function( event, ui ) {
-    var value = ui.value;
-    document.forms.distressForm.curDist.value = value;
-    setIndicator(value);
-  };
+var slide = function( event, ui ) {
+  var value = ui.value;
+  document.forms.distressForm.curDist.value = value;
+  setIndicator(value);
 
-  $(document).ready(function(){
-    showDistressButton = $('a.distress-meter');
-    nextPageButton = $('#distress button.next-page');
-    backButton = $('#distress button.back');
-    distressModal = $('#distress');
-    distressForm = $('#distressForm');
-    indicator = $('.progress .distress-amount');
-    indicatorAmount = indicator.find('.distress-amount-value');
-    indicatorText = indicator.find('.distress-amount-text');
-    sliderRange = $('.progress-bar');
-    distressAmountValue = $('.distress-amount-value');
-    distressAmountText = $('.distress-amount-text');
-    labelExtreme = distressModal.find('label.extreme-distress');
-    labelNone = distressModal.find('label.no-distress');
+  if ( ui.value > 7 ) {
+    $(this).addClass('high-distress').removeClass('medium-distress');
+  } else if ( ui.value > 4 ) {
+    $(this).removeClass('high-distress').addClass('medium-distress');
+  } else {
+    $(this).removeClass('high-distress').removeClass('medium-distress');
+  }
+};
 
-    step1 = distressModal.find('#step1');
-    step2 = distressModal.find('#step2');
-    step3 = distressModal.find('#step3');
-    showDistressButton.click(function(e){
-      e.preventDefault();
-      launchDistressMeter();
-    });
+$(document).ready(function(){
+  showDistressButton = $('a.distress-meter');
+  nextPageButton = $('#distress button.next-page');
+  backButton = $('#distress button.back');
+  distressModal = $('#distress');
+  distressForm = $('#distressForm');
+  indicator = $('.progress .distress-amount');
+  indicatorAmount = indicator.find('.distress-amount-value');
+  indicatorText = indicator.find('.distress-amount-text');
+  sliderRange = $('.progress-bar');
+  distressAmountValue = $('.distress-amount-value');
+  distressAmountText = $('.distress-amount-text');
+  labelExtreme = distressModal.find('label.extreme-distress');
+  labelNone = distressModal.find('label.no-distress');
 
-    nextPageButton.click(function(e){
-      e.preventDefault();
-      nextPage();
-    });
+  step1 = distressModal.find('#step1');
+  step2 = distressModal.find('#step2');
+  step3 = distressModal.find('#step3');
+  showDistressButton.click(function(e){
+    e.preventDefault();
+    launchDistressMeter();
+  });
 
-    backButton.click(function(e){
-      e.preventDefault();
-      previousPage();
-    });
+  nextPageButton.click(function(e){
+    e.preventDefault();
+    nextPage();
+  });
+
+  backButton.click(function(e){
+    e.preventDefault();
+    previousPage();
+  });
 
     // var slider_range_min_amount = $(".slider-range-min-amount");
     sliderRange.slider({
@@ -179,16 +187,7 @@ var DistressMeter = function() {
       value: 1,
       step: 1,
       orientation : 'vertical',
-      slide: slide,
-      slide: function(event, ui) {
-        if ( ui.value > 7 ) {
-          $(this).addClass('high-distress').removeClass('medium-distress');
-        } else if ( ui.value > 4 ) {
-          $(this).removeClass('high-distress').addClass('medium-distress');
-        } else {
-          $(this).removeClass('high-distress').removeClass('medium-distress');
-        }
-      }
+      slide: slide
     });
 
   });
