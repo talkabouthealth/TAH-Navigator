@@ -65,7 +65,14 @@ var DistressMeter = function() {
     $(".otherDetails").val('');
     $('.toggle-switch input[name="distressType"]').prop('checked', false);
     distressModal.modal({ keyboard: false });
-
+    distressModal.on('hidden.bs.modal', function (e) {
+    	$("#youTubeVideo").show();
+    	$("#youTubeVideoImage").hide();
+    });
+    distressModal.on('shown.bs.modal', function (e) {
+    	$("#youTubeVideo").hide();
+    	$("#youTubeVideoImage").show();
+    });
     distressModal.find('div.stepchecker strong').each(function(){
       var strong = $(this);
       var toggle = strong.prev().find('label');

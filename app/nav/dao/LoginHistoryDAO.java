@@ -37,7 +37,7 @@ public class LoginHistoryDAO {
 			TypedQuery<LoginHistoryDTO> query = em.createQuery("FROM LoginHistoryDTO c WHERE c.user.id = :field order by c.logintime desc", LoginHistoryDTO.class);
 			query.setMaxResults(3);
 			query.setParameter("field", new Integer(user.getId()));
-			if(query.getResultList().size()>2)
+			if(query.getResultList().size()>1)
 				isFirstTime = false;
 		} catch(Exception e) {
 			e.printStackTrace();
