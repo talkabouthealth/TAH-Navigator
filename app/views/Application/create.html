@@ -1,47 +1,7 @@
 #{extends 'outermain.html' /}
 <div class="registration-steps">
-	<ul class="accordion">
-		<li class="step step-1">
-			<div class="header">
-				<p class="status"><span class="not-yet-completed">Not Yet Completed</span> <i class="fa fa-chevron-down fa-chevron-up fa-lg"></i></p>
-				<h2><span>Step 1:</span> Username / Password</h2>
-			</div>
-			<div class="content">
-				I am mr. content
-			</div>
-		</li>
-		<li class="step step-2">
-			<div class="header">
-				<p class="status"><span class="not-yet-completed">Not Yet Completed</span> <i class="fa fa-chevron-down fa-chevron-up fa-lg"></i></p>
-				<h2><span>Step 2:</span> User Information</h2>
-			</div>
-			<div class="content"></div>
-		</li>
-		<li class="step step-3">
-			<div class="header">
-				<p class="status"><span class="not-yet-completed">Not Yet Completed</span> <i class="fa fa-chevron-down fa-chevron-up fa-lg"></i></p>
-				<h2><span>Step 3:</span> Security Questions</h2>
-			</div>
-			<div class="content"></div>
-		</li>
-		<li class="step step-4">
-			<div class="header">
-				<p class="status"><span class="not-yet-completed">Not Yet Completed</span> <i class="fa fa-chevron-down fa-chevron-up fa-lg"></i></p>
-				<h2><span>Step 4:</span> Terms & Services</h2>
-			</div>
-			<div class="content"></div>
-		</li>
-	</ul>
-</div>
-
-<div class="container">
-
-      <div class="row marketing">
-
-        <div class="col-md-8">
          <!-- <form role="form"> -->
        	  #{form @Application.register() , id:'signup' }
-       	   <div class="col-md-12">
        	    <ul class="list-group">
 						#{ifErrors}
 							   <li class="list-group-item list	-group-item-warning">Validation failed! Please correct the following errors,</li>
@@ -53,7 +13,13 @@
 							<li class="list-group-item list-group-item-danger">${flash.error}</li>
 						#{/if}
 						  </ul>
-					</div>
+	<ul class="accordion">
+		<li class="step step-1">
+			<div class="header">
+				<p class="status"><span class="not-yet-completed">Not Yet Completed</span> <i class="fa fa-chevron-down fa-chevron-up fa-lg"></i></p>
+				<h2><span>Step 1:</span> Username / Password</h2>
+			</div>
+			<div class="content">
 			<div class="col-md-12">
 				*{Removed all other user types as only patient is supported to signup now.}*
 				*{
@@ -63,6 +29,7 @@
 				    	#{if userTypelist != null}#{list userTypelist, as:'seq'}<option #{if flash['member.userType'].equals(seq.id.toString()) }  selected #{/if} value="${seq.id}">${seq.name}</option>#{/list}#{/if}</select>
 				</div>
 				}*
+
 				<input type="hidden" name="member.userType" value="1"/>
 		        <div class="form-group">
 				    <label for="exampleInputEmail1">Username</label>
@@ -89,9 +56,15 @@
 					<div class="help-block with-errors"></div>
 				</div>
 			</div>
-			<div id="notForOther">
-			<div class="col-md-12">
-				<div class="headding"><h4>Identification</h4></div>
+			</div>
+		</li>
+		<li class="step step-2">
+			<div class="header">
+				<p class="status"><span class="not-yet-completed">Not Yet Completed</span> <i class="fa fa-chevron-down fa-chevron-up fa-lg"></i></p>
+				<h2><span>Step 2:</span> User Information</h2>
+			</div>
+			<div class="content">
+
 
 			  	<div class="form-group">
 				    <label class="for-patient">First Name</label>
@@ -132,11 +105,8 @@
 				    	  <div class="help-block with-errors"></div>
 					</div>
 				</div>-->
-			</div>
-		</div>
 
-		<div class="col-md-12">
-			<div class="headding"><h4>Contact Information</h4></div>
+
 	 		<div class="form-group">
 			    <label for="exampleInputEmail1">Email</label>
 			    <div class="input-group">
@@ -181,11 +151,17 @@
 			    <input type="text" class="form-control" name="member.supportContactPhone" value="${flash['member.supportContactPhone']}" placeholder="Enter support contact phone (i.e. 352-750-1234)">
 			</div>
 
-		</div>
-		<div class="col-md-12">
-			<div class="headding"><h4>Security Information</h4></div>
-				<!--<div class="form-group"><p class="nopadding">Choose all questions below and enter one answer for each question.</p></div>-->
-			  	<div class="form-group">
+
+			</div><!-- content -->
+
+		</li>
+		<li class="step step-3">
+			<div class="header">
+				<p class="status"><span class="not-yet-completed">Not Yet Completed</span> <i class="fa fa-chevron-down fa-chevron-up fa-lg"></i></p>
+				<h2><span>Step 3:</span> Security Questions & Terms of Service</h2>
+			</div>
+			<div class="content">
+<div class="form-group">
 
 				    <label for="exampleInputEmail1">Security question</label>
 				    <select class="form-control" name="member.seq1">
@@ -224,14 +200,11 @@
 				    </div>
 				    <div class="help-block with-errors"></div>
 				</div>-->
-		</div>
-		</div>
-		  <div class="col-md-12">
-		  	<div class="checkbox">
+<div class="checkbox">
 			    <label>
 			      <input name="member.tosFlag" type="checkbox" required> I agree to the Moffitt Cancer Center - TVRH<i class="fa fa-square-o"></i>
 			    </label>
-			     <a href="javascript:window.open('@{Static.tos()}','Terms of Service','width=700,height=700')" style="color:white;" target="_blank">Terms of Service</a> and <a href="javascript:window.open('@{Static.privacy()}','Privacy Policy','width=700,height=700')" style="color:white;" target="_blank">Privacy Policy</a>.
+			     <a href="javascript:window.open('@{Static.tos()}','Terms of Service','width=700,height=700')" target="_blank">Terms of Service</a> and <a href="javascript:window.open('@{Static.privacy()}','Privacy Policy','width=700,height=700')" target="_blank">Privacy Policy</a>.
 
 
 
@@ -245,10 +218,23 @@
 			     <div class="help-block with-errors"></div>
 			</div>
 -->
+			</div><!-- content -->
+		</li>
+	</ul>
+</div>
+
+<div class="container">
+
+      <div class="row marketing">
+
+
+
+
+
 			<div class="form-group">
-			<button type="submit" class="btn-primary btn-lg btn-block" >Next Step</button>
+			<button type="submit" class="btn-primary btn-lg btn-block" >Submit</button>
 			</div>
-			</div>
+
          #{/form}
 		</div>
 

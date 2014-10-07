@@ -54,6 +54,7 @@
 				index: i
 			}));
 		});
+		$(steps[0]).data('step').open();
 	});
 })(jQuery);
 
