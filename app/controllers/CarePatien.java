@@ -342,7 +342,7 @@ public class CarePatien  extends Controller {
 		renderJSON(jsonData);
 	}
 	
-	public static void updateDiagnosis(int patientId, Integer diseaseId, Date dateOfDiagnosis, Date dob, String phone, String supportName, String supportNumber, Map<String, String> diseaseInfo) {
+	public static void updateDiagnosis(int patientId, Integer diseaseId, String dateOfDiagnosis, String dob, String phone, String supportName, String supportNumber, Map<String, String> diseaseInfo) {
 		/*
 		System.out.println("-------------------------------------");
 		System.out.println("Pateint ID: " + patientId);

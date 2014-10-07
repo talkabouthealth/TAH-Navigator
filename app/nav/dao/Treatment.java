@@ -187,7 +187,7 @@ public class Treatment {
 		psiDto.setTrId(trId);
 		
 		if (surgeryDate != null && !surgeryDate.isEmpty()) {
-			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 			try {
 				Date date = df.parse(surgeryDate);
 				psiDto.setSurgeryDate(date);
@@ -306,7 +306,7 @@ public class Treatment {
 			pctDto.setDoseReduction(doseReduction);
 		}
 		if (startDate != null && !startDate.isEmpty()) {
-			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 			try {
 				Date date = df.parse(startDate);
 				pctDto.setStartDate(date);
@@ -315,7 +315,7 @@ public class Treatment {
 			}	
 		}
 		if (endDate != null && !endDate.isEmpty()) {
-			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 			try {
 				Date date = df.parse(endDate);
 				pctDto.setEndDate(date);
@@ -481,7 +481,7 @@ public class Treatment {
 		prtDto.setDose(dose);
 		prtDto.setNotes(notes);
 		if (!startDate.isEmpty()) {
-			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 			Date date;
 			try {
 				date = df.parse(startDate);
@@ -491,7 +491,7 @@ public class Treatment {
 			}
 		}
 		if (!endDate.isEmpty()) {
-			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 			Date date;
 			try {
 				date = df.parse(endDate);
