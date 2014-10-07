@@ -1,0 +1,101 @@
+@duration: .3s;
+.registration-steps {
+	margin: 0 -15px; /* Undo Bootstrap */
+
+	ul, li {
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+
+	.step {
+		.transition-duration(@duration);
+		border-left: 0px solid @blue;
+
+		&.open {
+			background-color: @lightest-gray;
+			border-left: 10px solid @blue;
+
+			.header {
+				.transition-duration(@duration);
+				background: @lightest-gray;
+				border: none;
+
+				h2 {
+					.transition-duration(@duration);
+					border-left: 2px solid transparent1G;
+					color: @blue;
+					margin-left: -10px;
+
+					span {
+
+						color: white;
+						background: @blue;
+						padding: 5px 10px;
+						border-radius: @padding;
+						font-weight: normal;
+					}
+				}
+
+				.status {
+					span {
+
+					.transition-duration(@duration);
+					opacity: 0;
+					}
+				}
+			}
+		}
+
+		.header {
+			background: white;
+			padding: 5px;
+			cursor: pointer;
+
+			h2 {
+				text-transform: uppercase;
+				border-left: 2px solid @blue;
+				font-size: @medium-font;
+				font-weight: normal;
+				color: @soft-gray;
+				padding: @padding 0 @padding @padding*2;
+
+				span {
+					color: @blue;
+					font-weight: bold;
+				}
+			}
+
+			.status {
+				padding: @padding;
+				float: right;
+				text-transform: uppercase;
+				color: @soft-gray;
+
+				i {
+					color: @soft-gray;
+					margin-left: @padding;
+				}
+
+				span.not-yet-completed {
+					color: @red;
+					font-style: italic;
+				}
+
+				span.completed {
+					color: @green;
+				}
+			}
+		}
+
+		.content {
+			display: none;
+			background: inherit;
+			color: @dark-gray;
+			margin: 0;
+
+
+		}
+
+	}
+}

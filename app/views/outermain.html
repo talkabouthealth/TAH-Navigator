@@ -26,6 +26,7 @@
 		<script src="/public/plugins//moment/moment.min.js"></script>
 		<script src="/public/js/validator.min.js"></script>
 		<script src="/public/js/devoops.js"></script>
+		<script src="/public/js/logged-out/script.js"></script>
 
 </head>
 <body>
@@ -84,14 +85,14 @@
 
 		#{if pageType == 'login'} <li class="active"><a href="javaScript:void(0);">Login</a></li> #{/if}
 		#{else} <li><a href="@{Secure.login()}">Login</a></li> #{/else}
-		
+
 		#{if pageType == 'about'} <li class="active"><a href="javaScript:void(0);">About</a></li> #{/if}
 		#{else} <li><a href="@{Static.about()}">About</a></li> #{/else}
 
 		#{if pageType == 'contact'} <li class="active"><a href="javaScript:void(0);">Contact</a></li> #{/if}
 		#{else} <li><a href="@{Static.contact()}">Contact</a></li> #{/else}
 
-  		
+
         </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -108,10 +109,10 @@
 			#{doLayout /}
 	<div class="footer" >
  		<p class="text-center" style="color:white;"><a href="javascript:window.open('@{Static.tos()}','Terms of Service','width=700,height=700')" style="color:white;" target="_blank">Terms of Service</a> - <a href="javascript:window.open('@{Static.privacy()}','Privacy Policy','width=700,height=700')" style="color:white;" target="_blank">Privacy Policy</a> </br></br> Copyright 2014 TalkAboutHealth</p>
-		
+
 	</div>
   </div>
- 		
+
 </div>
 
 
