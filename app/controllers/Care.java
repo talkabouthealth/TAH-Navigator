@@ -169,7 +169,7 @@ public class Care extends Controller {
 		//Appointment masterData
 		List<AppointmentMasterDTO> appList = AppointmentMasterDAO.getAllAppointments();
 		
-        render(user,expertDetail,patientId,patientDto,patientOtherDetails,distress,noteList, diseases, stages, breastCancerId, ps,lastDistress,appList);
+        render(user,expertDetail,patientId,patientDto,patientOtherDetails,distress,noteList, diseases, stages, breastCancerId, ps,lastDistress,appList,drList);
     }
 	
 	public static void appointmentForm() {
