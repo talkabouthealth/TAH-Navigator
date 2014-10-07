@@ -42,6 +42,9 @@ public class Patient extends Controller {
 				if (apt.getAppointmentid() != null) {
 					Integer intAppId = new Integer(apt.getAppointmentid().getId());
 					checlist = AppointmentCheckListMasterDAO.getAppointmentCheckList("appointmentid.id", intAppId);
+				} else {
+					Integer intAppId = new Integer(1);
+					checlist = AppointmentCheckListMasterDAO.getAppointmentCheckList("appointmentid.id", intAppId);
 				}
 			}
 		}
