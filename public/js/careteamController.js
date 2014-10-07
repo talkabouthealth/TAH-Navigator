@@ -242,8 +242,7 @@ var careTeamController = (function() {
             if ('nextStep' in goal) {
                 $(self.nextStepId).val(goal.nextStep);
             }
-            if ('goalDeadline' in goal) {
-                //$(self.goalDeadlineId).val(dateToStr(new Date(goal.goalDeadline), '-'));
+            if ('goalDeadline' in goal) {                
                 $(self.goalDeadlineId).val(formatDate(new Date(goal.goalDeadline), 'mm-dd-yyyy'));
             }
             if ('notes' in goal) {
@@ -455,8 +454,7 @@ var careTeamController = (function() {
             if ('frequency' in careItem) {
                 $(self.frequencyId).val(careItem.frequency);
             }
-            if ('endDate' in careItem) {
-                //$(self.endDateId).val(dateToStr(new Date(careItem.endDate), '-'));
+            if ('endDate' in careItem) {                
                 $(self.endDateId).val(formatDate(new Date(careItem.endDate), 'mm-dd-yyyy'));
             }
             if ('ongoing' in careItem) {
@@ -580,11 +578,11 @@ var careTeamController = (function() {
         			$('#disease').append('<option value="' + diseases[i].id + '">' + diseases[i].name + '</option>');
         		}
         		$('#first-diagnosed').datepicker({
-                    format: 'yyyy-mm-dd',
+                    format: 'mm/dd/yyyy',
                     autoclose: true
         		});
         		$('#dob').datepicker({
-        			format: 'yyyy-mm-dd',
+        			format: 'mm/dd/yyyy',
                     autoclose: true
         		});
         		var bcStages = data.bcStages;
@@ -639,14 +637,14 @@ var careTeamController = (function() {
             else {
             	$('#diseaseId').val('');
             }
-            if ("firstDiagnosed" in data) {
-                $('#first-diagnosed').val(data.firstDiagnosed);
+            if ("firstDiagnosed" in data) {                
+                $('#first-diagnosed').val(formatDate(new Date(data.firstDiagnosed), 'mm/dd/yyyy'));
             }
             else {
             	$('#first-diagnosed').val('');
             }
-            if ("dateOfBirth" in data) {
-                $('#dob').val(data.dateOfBirth);
+            if ("dateOfBirth" in data) {                
+                $('#dob').val(formatDate(new Date(data.dateOfBirth), 'mm/dd/yyyy'));
             }
             else {
             	$('#dob').val('');
@@ -890,7 +888,7 @@ var careTeamController = (function() {
             }
         });
         $('#si_date').datepicker({
-            format: 'yyyy-mm-dd',
+            format: 'mm/dd/yyyy',
             autoclose: true
         });
         var treatmentRegions = data.treatmentRegions;
@@ -974,11 +972,11 @@ var careTeamController = (function() {
         if (pctDto.doseReduction) {
             $('#ctt_dose').val(pctDto.doseReduction);
         }
-        if (pctDto.startDate) {
-            $('#ctt_start_date').val(dateToStr(new Date(pctDto.startDate), '-'));
+        if (pctDto.startDate) {            
+            $('#ctt_start_date').val(formatDate(new Date(pctDto.startDate), 'mm/dd/yyyy'));
         }
         if (pctDto.endDate) {
-            $('#ctt_end_date').val(dateToStr(new Date(pctDto.endDate), '-'));
+            $('#ctt_end_date').val(formatDate(new Date(pctDto.endDate), 'mm/dd/yyyy'));
         }
         if ('pctSeDtos' in pctDto) {
             var pctSeDtos = pctDto.pctSeDtos;
@@ -1084,11 +1082,11 @@ var careTeamController = (function() {
             source: tmp
         });
         $('#ctt_start_date').datepicker({
-            format: 'yyyy-mm-dd',
+            format: 'mm/dd/yyyy',
             autoclose: true
         });
         $('#ctt_end_date').datepicker({
-            format: 'yyyy-mm-dd',
+            format: 'mm/dd/yyyy',
             autoclose: true
         });
         
@@ -1186,18 +1184,8 @@ var careTeamController = (function() {
         $('#datepickerRangeRadForm').datepicker({
     		defaultDate: +1 ,minDate:"+1d",
               startDate: "today",
-              format: "yyyy-mm-dd"
-        });
-        /*
-        $('#rt_start_date').datepicker({
-            format: 'yyyy-mm-dd',
-            autoclose: true
-        });
-        $('#rt_end_date').datepicker({
-            format: 'yyyy-mm-dd',
-            autoclose: true
-        });
-        */
+              format: "mm/dd/yyyy"
+        });        
         var treatmentRegions = data.treatmentRegions;
         length = treatmentRegions.length;
         tmp = [];
@@ -1260,7 +1248,7 @@ var careTeamController = (function() {
     var addSurgeryInfoToForm = function(psiDto) {
         $('#si_st').val(psiDto.stDto.name);
         if (psiDto.surgeryDate) {
-            $('#si_date').val(dateToStr(new Date(psiDto.surgeryDate), '-'));
+            $('#si_date').val(formatDate(new Date(psiDto.surgeryDate), 'mm/dd/yyyy'));
         }
         if ('trDto' in psiDto) {
             $('#si_region').val(psiDto.trDto.region);
@@ -1293,10 +1281,10 @@ var careTeamController = (function() {
             $('#rt_schedule').val(prtDto.rsDto.timePeriod);
         }
         if (prtDto.startDate) {
-            $('#rt_start_date').val(dateToStr(new Date(prtDto.startDate), '-'));
+            $('#rt_start_date').val(formatDate(new Date(prtDto.startDate), 'mm/dd/yyyy'));
         }
         if (prtDto.endDate) {
-            $('#rt_end_date').val(dateToStr(new Date(prtDto.endDate), '-'));
+            $('#rt_end_date').val(formatDate(new Date(prtDto.endDate), 'mm/dd/yyyy'));
         }
         $('#datepickerRangeRadForm').datepicker({ startDate: prtDto.startDate, endDate: prtDto.endDate});
         if ('trDto' in prtDto) {
@@ -1416,20 +1404,7 @@ var careTeamController = (function() {
             }
             triggerRadiationFormEvents();
         }, "json");
-    };
-    var dateToStr = function(date, separator) {
-        var day = date.getDate();
-        var month = date.getMonth() + 1;
-        var year = date.getFullYear();
-        if (day < 10) {
-            day = '0' + day;
-        }
-        if (month < 10) {
-            month = '0' + month;
-        }
-        return year + separator + month + separator + day;
-    };
-    
+    };    
     var formatDate = function(date, format) {
         var day = date.getDate();
         var month = date.getMonth() + 1;

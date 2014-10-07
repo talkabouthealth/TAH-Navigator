@@ -1,5 +1,6 @@
 package nav.dao;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -298,7 +299,7 @@ public class PatientDetailDAO {
 		return jsonData;
 	}
 	
-	public static void updateDiagnosis(int patientId, Integer diseaseId, Date dateOfDiagnosis, Date dob, String phone, String supportName, String supportNumber, Map<String, String> diseaseInfo) {
+	public static void updateDiagnosis(int patientId, Integer diseaseId, String dateOfDiagnosis, String dob, String phone, String supportName, String supportNumber, Map<String, String> diseaseInfo) {
 		EntityManager em = JPAUtil.getEntityManager();
 		PatientDetailDTO patientDetails;
 		UserDetailsDTO userDetails;
@@ -315,8 +316,24 @@ public class PatientDetailDAO {
 			}
 			else {
 				patientDetails.setDiseaseId(null);
-			}
-			patientDetails.setDateofdiagnosis(dateOfDiagnosis);
+			}			
+			if (dateOfDiagnosis != null) {
+				if (!dateOfDiagnosis.isEmpty()) {					
+					SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+					Date date;
+					try {
+						date = df.parse(dateOfDiagnosis);
+						patientDetails.setDateofdiagnosis(date);
+					} catch (ParseException e) {
+						//e.printStackTrace();
+					}
+				}
+				else {
+					patientDetails.setDateofdiagnosis(null);
+				}
+			}			
+			
+			
 			patientDetails.setEc1name(supportName);
 			patientDetails.setEc1number(supportNumber);
 			em.getTransaction().begin();
@@ -331,7 +348,21 @@ public class PatientDetailDAO {
 			else {
 				patientDetails.setDiseaseId(null);
 			}
-			patientDetails.setDateofdiagnosis(dateOfDiagnosis);
+			if (dateOfDiagnosis != null) {
+				if (!dateOfDiagnosis.isEmpty()) {					
+					SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+					Date date;
+					try {
+						date = df.parse(dateOfDiagnosis);
+						patientDetails.setDateofdiagnosis(date);
+					} catch (ParseException e1) {
+						//e.printStackTrace();
+					}
+				}
+				else {
+					patientDetails.setDateofdiagnosis(null);
+				}
+			}
 			patientDetails.setEc1name(supportName);
 			patientDetails.setEc1number(supportNumber);
 			em.getTransaction().begin();
@@ -389,7 +420,25 @@ public class PatientDetailDAO {
 		TypedQuery<UserDetailsDTO> query2 = em.createQuery("SELECT c FROM UserDetailsDTO c WHERE c.id = :id", UserDetailsDTO.class); 
 		query2.setParameter("id", patientId);
 		userDetails = query2.getSingleResult();
-		userDetails.setDob(dob);
+		
+		//userDetails.setDob(dob);
+		
+		if (dob != null) {
+			if (!dob.isEmpty()) {					
+				SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+				Date date;
+				try {
+					date = df.parse(dob);
+					userDetails.setDob(date);
+				} catch (ParseException e1) {
+					//e.printStackTrace();
+				}
+			}
+			else {
+				userDetails.setDob(null);
+			}
+		}
+		
 		userDetails.setHomePhone(phone);
 		em.getTransaction().begin();
 		em.persist(userDetails);
