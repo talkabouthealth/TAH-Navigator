@@ -1,17 +1,17 @@
 #{include '/tags/patientSummary.html' /}
 <div class="medications">
 	<button class="btn btn-default btn-sm medicationBtn" style="font-weight:bold;">+ New Medication</button>
-
 	#{if medicationList != null && medicationList.size()>0}
 		#{list medicationList, as:'seq'}
 			<div class="medication">
-
 					<h3><a href="javaScript:operationMedication('edit','${seq.id}')">${seq.medicine.genericname}</a></h3>
 					<p><strong>BRAND NAME: </strong>${seq.medicine.brandname}</p>
 					<p><strong>FREQUENCY: </strong>${seq.frequency}</p>
 					<p><strong>DATES: </strong>${seq.startdate.format('MM/dd/yyyy')} - ${seq.enddate.format('MM/dd/yyyy')}</p>
 					<p><strong>SPECIAL INSTRUCTIONS: </strong>${seq.specialinstruction}</p>
-					<p><strong>PRESCRIBING PYSICIAN: </strong>#{userName userName: seq.caremember.name, userId:seq.caremember.id /}</p>
+					#{if seq.caremember != null}
+						<p><strong>PRESCRIBING PYSICIAN: </strong>#{userName userName: seq.caremember.name, userId:seq.caremember.id /}</p>
+					#{/if}
 
 				#{if seq.method != null}
 <!--				${seq.method}-->

@@ -479,7 +479,7 @@
                         </div>
                 </div>
 
-                 <div class="form-group form-group-sm">
+                 <div class="form-group form-group-sm" style="height:25px;">
                         <label class="col-xs-4 control-label" for="rt_schedule">Dates</label>
                         <div class="col-xs-8 form-group nopadding input-daterange" id="datepickerRange">
 <!--                           <div class="col-xs-7 input-daterange" id="datepickerRange" > -->
@@ -999,7 +999,8 @@ operationMedication = function(operation,id) {
 				});
 
 				$("#addEditmedication textarea[name='otherdetails']").val(data.specialinstruction);
-				$("#addEditmedication select[name='memberid']").val(data.caremember.id);
+				if(data.caremember != null)
+					$("#addEditmedication select[name='memberid']").val(data.caremember.id);
 
 
 				$('#addEditmedication').appendTo("body").modal();

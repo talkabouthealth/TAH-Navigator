@@ -204,10 +204,16 @@ public class UserDAO {
 	    Predicate predicate = cb.gt(from.<Integer> get("id"), 1);
 	    criteriaList.add(predicate);
 
-	    if(userType != null &&  !"0".equals(userType)){
+	    if(userType != null && "5".equals(userType)) {
+//	    	Predicate predicate2= cb.equal(from.get("usertypeid").get("id"), Integer.parseInt(userType));
+	    	Predicate predicate2= cb.or(cb.equal(from.get("usertypeid").get("id"), new Long(4)), cb.equal(from.get("usertypeid").get("id"), new Long(5)));
+	    	criteriaList.add(predicate2);
+	    } else if(userType != null &&  !"0".equals(userType)){
 	    	Predicate predicate2= cb.equal(from.get("usertypeid").get("id"), Integer.parseInt(userType));
 	    	criteriaList.add(predicate2);
 	    }
+	    
+	    criteriaList.add(cb.equal(from.get("isverified"), true));
 
 	    if(StringUtils.isNotBlank(uname) ) {
 	    	Expression<String> path = from.get("name");

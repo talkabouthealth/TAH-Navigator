@@ -810,10 +810,8 @@ var careTeamController = (function() {
             'ctInfo.startDate': startDate,
             'ctInfo.endDate': endDate,
             'ctInfo.notes': notes
-        };
-        if (parseInt(doseReduction)) {
-            params['ctInfo.doseReduction'] = parseInt(doseReduction);
-        }
+        };        
+        params['ctInfo.doseReduction'] = doseReduction;        
         if (typeof sideEffects != "undefined") {
             for (var i = 0; i < sideEffects.length; i++) {
                 params['sideEffects.' + i] = sideEffects[i];
@@ -974,7 +972,7 @@ var careTeamController = (function() {
             $('#ctt_schedule').val(pctDto.csDto.timePeriod);
         }
         if (pctDto.doseReduction) {
-            $('#ctt_dose').val(pctDto.doseReduction + '%');
+            $('#ctt_dose').val(pctDto.doseReduction);
         }
         if (pctDto.startDate) {
             $('#ctt_start_date').val(dateToStr(new Date(pctDto.startDate), '-'));

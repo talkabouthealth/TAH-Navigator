@@ -302,8 +302,8 @@ public class Treatment {
 			}
 			pctDto.setCsId(csId);
 		}
-		if (doseReduction != null && !doseReduction.isEmpty()) {
-			pctDto.setDoseReduction(Integer.valueOf(doseReduction));
+		if (doseReduction != null && !doseReduction.isEmpty()) {			
+			pctDto.setDoseReduction(doseReduction);
 		}
 		if (startDate != null && !startDate.isEmpty()) {
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
