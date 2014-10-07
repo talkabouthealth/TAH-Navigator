@@ -29,7 +29,7 @@ public class PatientChemoTreatmentDTO {
 	private Integer csId;
 	
 	@Column(name="dose_reduction")
-	private Integer doseReduction;
+	private String doseReduction;
 	
 	@Column(name="start_date")
 	private Date startDate;
@@ -78,15 +78,7 @@ public class PatientChemoTreatmentDTO {
 
 	public void setCsId(Integer csId) {
 		this.csId = csId;
-	}
-
-	public Integer getDoseReduction() {
-		return doseReduction;
-	}
-
-	public void setDoseReduction(Integer doseReduction) {
-		this.doseReduction = doseReduction;
-	}
+	}	
 
 	public Date getStartDate() {
 		return startDate;
@@ -142,5 +134,13 @@ public class PatientChemoTreatmentDTO {
 
 	public void setBrandName(String brandName) {
 		this.brandName = brandName;
+	}
+
+	public String getDoseReduction() {
+		return doseReduction;
+	}
+
+	public void setDoseReduction(String doseReduction) {
+		this.doseReduction = doseReduction;
 	}
 }
