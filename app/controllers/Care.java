@@ -182,6 +182,7 @@ public class Care extends Controller {
 			if (cm.getFirstName() != null) {
 				name.append(cm.getFirstName());
 			}
+			/*
 			if (cm.getLastName() != null) {
 				if (name.length() > 0) {
 					name.append(" " + cm.getLastName());
@@ -199,6 +200,7 @@ public class Care extends Controller {
 					name.append(cm.getDesignation());
 				}
 			}
+			*/
 			memberNames.put(cm.getId(), name.toString());
 		}
 		jsonData.put("members", memberNames);
