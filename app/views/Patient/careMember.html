@@ -27,6 +27,7 @@
                     </div>
                     #{/if}
                     </div>
+                    #{if education.size() > 0}
                     <div class="line-h"></div>
                     <p class="green-title"><i class="fa fa-bookmark"></i>  EDUCATION / BACKGROUND </p>
       <div class="row education">
@@ -44,8 +45,9 @@
                       </div>
 				    	#{/list}
                     </div>
-                     <div class="line-h"></div>
-                     #{if expdetails != null && expdetails.statement != null}
+                    #{/if}
+                    #{if expdetails != null && expdetails.statement != null}
+                     <div class="line-h"></div>                     
                     <p class="green-title"><i class="fa fa-folder"></i> PROFESSIONAL STATEMENT </p>
                     <div class="row">
                     	<div class="col-sm-12">
