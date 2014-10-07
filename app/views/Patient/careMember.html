@@ -46,7 +46,7 @@
 				    	#{/list}
                     </div>
                     #{/if}
-                    #{if expdetails != null && expdetails.statement != null}
+                    #{if expdetails != null && expdetails.statement != null && !expdetails.statement.trim().isEmpty() }
                      <div class="line-h"></div>                     
                     <p class="green-title"><i class="fa fa-folder"></i> PROFESSIONAL STATEMENT </p>
                     <div class="row">
