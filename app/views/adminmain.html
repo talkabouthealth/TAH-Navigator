@@ -13,9 +13,9 @@
 	<link rel="shortcut icon" href="@{'/public/img/favicon.ico'}" />
 	<style type="text/css">
 		<!--
-		body,#sidebar-left,#breadcrumb {
-			background: #777 url('/public/img/devoops_pattern_b10.png') 0 0 repeat !important;
-		}
+/* 		body,#sidebar-left,#breadcrumb { */
+/* 			background: #777 url('/public/img/devoops_pattern_b10.png') 0 0 repeat !important; */
+/* 		} */
 		div#ajax-panel {
 		   background-color: #FFFFFF !important;
 		    border-radius: 0 0 10px 10px;
@@ -32,10 +32,12 @@
 		.navbar{ background-color: #00509b; /*border-bottom: 3px solid #000000;*/ }
 		-->
 	</style>
+	<link href="/public/css/styles.less" rel="stylesheet/less" />
+	 <script type="text/javascript" src="/public/js/lib/less-1.7.4.min.js"></script>
 		<link href="/public/plugins/bootstrap/bootstrap.css" rel="stylesheet">
 		<link href="/public/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet">
-		<link href="/public/css/font-awesome.css" rel="stylesheet">
-		<link href='/public/css/righteous.css' rel='stylesheet' type='text/css'>
+<!-- 	<link href="/public/css/font-awesome.css" rel="stylesheet"> -->
+<!-- 	<link href='/public/css/righteous.css' rel='stylesheet' type='text/css'> -->
 		<link href="/public/plugins/fancybox/jquery.fancybox.css" rel="stylesheet">
 		<link href="/public/plugins/fullcalendar/fullcalendar.css" rel="stylesheet">
 		<link href="/public/plugins/xcharts/xcharts.min.css" rel="stylesheet">
@@ -188,6 +190,13 @@
 					#{else}<a href="@{Admin.careTeam()}">#{/else}
 						<i class="fa fa-bar-chart-o"></i>
 						<span class="hidden-xs">Care Teams</span>
+					</a>
+				</li>
+				<li class="dropdown">
+					#{if pageType == 'appsetting'}<a href="#" class="active">#{/if}
+					#{else}<a href="@{Admin.appSettings()}">#{/else}
+						<i class="fa fa-bar-chart-o"></i>
+						<span class="hidden-xs">App Settings</span>
 					</a>
 				</li>
 			</ul>

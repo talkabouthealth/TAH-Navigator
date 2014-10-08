@@ -5,11 +5,14 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import models.ApplicationSettingsDTO;
 import models.CareTeamMasterDTO;
 import models.CareTeamMemberDTO;
 import models.InvitedDTO;
 import models.UserDTO;
 import models.UserTypeDTO;
+import nav.dao.ApplicationSettingDAO;
+import nav.dao.BaseDAO;
 import nav.dao.CareTeamDAO;
 import nav.dao.UserDAO;
 import nav.dao.UserTypeDAO;
@@ -35,6 +38,11 @@ public class Admin extends Controller {
 	
 	public static void addCareMember() {
 		render();
+	}
+	
+	public static void appSettings() {
+		UserBean user = CommonUtil.loadCachedUser(session);
+		render(user);
 	}
 	
 	public static void createCareMember(String email,String name,String password, boolean isActive) {
@@ -87,6 +95,32 @@ public class Admin extends Controller {
 		UserDAO.updateUserActivationFlag(userId,Boolean.parseBoolean(flag),op);
 		renderJSON("{\"status\":\"Done\",\"messages\": \"Updated user.\"}");
 	}
+	
+	public static void adminSettingsAjaxOperation(String op,String settingname, String flag,String type) {
+		System.out.println("Operation : " + op);
+		System.out.println("flag : " + flag);
+		System.out.println("settingname : " + settingname);
+		System.out.println("type : " + type);
+		ApplicationSettingsDTO settingDto = ApplicationSettingDAO.getDetailsByField("propertyname", settingname);
+		boolean isNew = false;
+		if(settingDto == null) {
+			settingDto = new ApplicationSettingsDTO();
+			isNew = true;
+		}
+		settingDto.setPropertytype(type);
+		settingDto.setPropertyvalue(flag);
+		settingDto.setPropertyname(settingname);
+
+		if(isNew) {
+			BaseDAO.save(settingDto);
+		} else {
+			BaseDAO.update(settingDto);
+		}
+
+		renderJSON("{\"status\":\"Done\",\"messages\": \"Updated setting.\"}");
+		
+	}
+	
 	
 	public static void editUser(int userId) {
 		UserBean user = CommonUtil.loadCachedUser(session);
