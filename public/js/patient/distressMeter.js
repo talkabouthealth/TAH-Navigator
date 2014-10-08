@@ -137,9 +137,9 @@ var slide = function( event, ui ) {
   document.forms.distressForm.curDist.value = value;
   setIndicator(value);
 
-  if ( ui.value > 7 ) {
+  if ( ui.value >= 7 ) {
     $(this).addClass('high-distress').removeClass('medium-distress');
-  } else if ( ui.value > 4 ) {
+  } else if ( ui.value >= 4 ) {
     $(this).removeClass('high-distress').addClass('medium-distress');
   } else {
     $(this).removeClass('high-distress').removeClass('medium-distress');
