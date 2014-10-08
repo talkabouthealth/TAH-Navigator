@@ -188,7 +188,12 @@ public class Profile extends Controller {
     			}
     			message =email;
     		} else if("mp".equals(op)) {
-    			message = "This email is not verified. Please verify the email first";
+    			//message = "This email is not verified. Please verify the email first";
+    			String prevEmail = userDto.getEmail();
+    			userDto.setEmail(email);
+    			UserDAO.updateUserBasic(userDto);
+    			emailDto.setEmail(prevEmail);
+    			UserOtherEmailDAO.update(emailDto);
     		}
     	}
 		renderText(message);

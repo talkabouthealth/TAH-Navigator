@@ -33,6 +33,7 @@ import models.UserDTO;
 import models.UserDetailsDTO;
 import models.UserEducationDTO;
 import models.UserExpertiesDTO;
+import models.UserOtherEmailDTO;
 import models.UserTypeDTO;
 import nav.dao.AddressDAO;
 import nav.dao.AppointmentDAO;
@@ -47,6 +48,7 @@ import nav.dao.NotesDAO;
 import nav.dao.PatientDetailDAO;
 import nav.dao.ProfileDAO;
 import nav.dao.UserDAO;
+import nav.dao.UserOtherEmailDAO;
 import nav.dao.UserTypeDAO;
 import nav.dto.CareMember;
 import nav.dto.DistressBean;
@@ -258,7 +260,8 @@ public class Care extends Controller {
 		UserBean user = CommonUtil.loadCachedUser(session);
 		UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());
 		ExpertDetailDTO expertDetail = ExpertDetailDAO.getDetailsByField("id", user.getId());
-		render(user,userDto,expertDetail);
+		List<UserOtherEmailDTO> emailList =  UserOtherEmailDAO.getAllByField("user.id", user.getId());
+		render(user,userDto,expertDetail, emailList);
 	}
 
 	public static void updateCareProfile(String userName,String firstName,String userType,String designation,String mobile,String street1,String street2,String city,String state,String country,String zip,String statement) { //String designation,String homephone,
