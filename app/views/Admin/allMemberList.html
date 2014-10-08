@@ -156,7 +156,7 @@ $(document).ready(function() {
 			  },
 			  success:function(data){
 			    $('#ajax-panel').empty();
-			      $('#ajax-panel').append('<strong>' + data.status + '</strong>:' + data.messages + '');
+			    $('#ajax-panel').append('<strong>' + data.status + '</strong>:&nbsp; ' + data.messages + '');
 			  },
 			  error:function(){
 			    $('#ajax-panel').html('<strong>Oops!</strong> Try that again in a few moments.');

@@ -63,7 +63,7 @@
 	        <tr>
 	            <th>GOAL</th>
 	            <th>ACTION PLAN</th>
-	            <th>GOAL DEADLINE</th>
+	            <th>GOAL START DATE</th>
 	            <th>NOTES</th>
 	        </tr>
 	        #{list items:goals, as:'goal'}
@@ -80,10 +80,12 @@
 	    	    
 	    
 	   <!-------------   Notes --------------------> 
-	   <div style="padding-bottom:20px;">
+<!--	   <div style="padding-bottom:20px;">
            <span class="title" style="vertical-align: middle;">NOTES</span>
-       </div>
-       #{include '/tags/note.html' /} 
-	    
+       </div>-->	
+       *{   
+       #{include '/tags/note.html' /}
+       }* 	   
+ 
     </div>
 </div>

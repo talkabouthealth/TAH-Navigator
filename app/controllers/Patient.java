@@ -72,9 +72,11 @@ public class Patient extends Controller {
 				}
 			}
 		}
-		
-		
-        render(user,userDto,patientOtherDetails, breastCancerId, breastCancerInfo,apt,careExpert,maxUsers,checlist);
+		ApplicationSettingsDTO accesstoallpages = ApplicationSettingDAO.getDetailsByField("propertyname", "accesstoallpages");
+		if(!user.isVerifiedFlag()) {
+			user.setVerifiedFlag(Boolean.parseBoolean(accesstoallpages.getPropertyvalue()));
+		}
+        render(user,userDto,patientOtherDetails, breastCancerId, breastCancerInfo,apt,careExpert,maxUsers,checlist,accesstoallpages);
     }
 
 	public static void appointment() {

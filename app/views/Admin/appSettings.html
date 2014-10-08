@@ -1,0 +1,59 @@
+#{set pageType = 'appsetting' /}
+#{extends 'adminmain.html' /}
+	<!--Start Content-->
+<div id="content" class="col-xs-12 col-sm-10">
+	<div id="breadcrumb" class="col-xs-12">
+		<ol class="breadcrumb">
+			<li><a href="#">Home</a></li>
+			<li><a href="#">Application settings</a></li>
+		</ol>
+	</div>
+	<div class="col-xs-12 col-sm-12">
+		<div class="checkbox-inline">
+			<label>
+				<input type="checkbox" id="accessallpages"> Access to all pages
+				<i class="fa fa-square-o"></i>
+			</label>
+		</div>
+	</div>
+	<div class="col-xs-12 col-sm-12">
+		This setting if checked will let patient view all pages regardless of there verification status.
+	</div>
+</div>
+<script>
+<!--
+$(document).ready(function(){
+	$("#accessallpages").click(function(){
+		var isVerified = 'false';
+		if ($(this).prop('checked')==true) {
+			isVerified = 'true';
+		}
+
+		//String op,String settingname, String flag
+		$.ajax({
+			  type: 'POST',
+			  url: '/admin/adminSettingsAjaxOperation',
+			  data: { 'op':'edit' ,'settingname':'accesstoallpages', 'flag': isVerified , 'type' : 'boolean' },
+			  beforeSend:function(){
+			    $('#ajax-panel').show();
+			    $('#ajax-panel').html('Loading... <i class="fa fa-spinner fa-spin"></i>');
+			  },
+			  success:function(data){
+			    $('#ajax-panel').empty();
+			    $('#ajax-panel').append('<strong>' + data.status + '</strong>:' + data.messages + '');
+			  },
+			  error:function(){
+			    $('#ajax-panel').html('<strong>Oops!</strong> Try that again in a few moments.');
+			  }
+		}).always(function() {
+			setTimeout(function(){removeAjaxPanel();}, 2000);
+		});
+	});
+});
+removeAjaxPanel = function() {
+	$('#ajax-panel').fadeOut("fast", function() {
+		$('#ajax-panel').empty();
+	});
+}
+-->
+</script>
