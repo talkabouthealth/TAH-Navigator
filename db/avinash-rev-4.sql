@@ -7,4 +7,4 @@ CREATE TABLE nav.applicationsettings
   CONSTRAINT applicationsettings_pk PRIMARY KEY (id)
 );
 
-INSERT INTO nav.applicationsettings (propertyname, propertyvalue, propertytype) VALUES ("accesstoallpages", "true", "boolean");
+INSERT INTO nav.applicationsettings (propertyname, propertyvalue, propertytype) VALUES ('accesstoallpages', 'true', 'boolean');
