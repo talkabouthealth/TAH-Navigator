@@ -71,6 +71,7 @@
 				float: right;
 				text-transform: uppercase;
 				color: @soft-gray;
+				position: relative;
 
 				i {
 					color: @soft-gray;
@@ -83,7 +84,20 @@
 				}
 
 				span.completed {
-					color: @green;
+					color: @dark-green;
+					margin-right: 35px;
+
+					i {
+						color: @dark-green;
+						position: absolute;
+						top: 6px;
+						right: 6px;
+					}
+
+					&+i {
+						display: none;
+					}
+
 				}
 			}
 		}

@@ -7,7 +7,9 @@
 		this.header = this.step.find('.header');
 		this.content = this.step.find('.content');
 		this.status = this.header.find('.status');
+		this.statusSpan = this.status.find('span');
 		this.chevron = this.status.find('.fa');
+		this.inputs = this.content.find('input');
 
 		this.state = 'closed';
 
@@ -30,6 +32,7 @@
 			this.step.removeClass('open');
 			this.chevron.addClass('fa-chevron-down');
 			this.state = 'closed';
+			checkInputs();
 		};
 
 		this.toggle = function() {
@@ -39,6 +42,40 @@
 				this.close();
 			}
 		};
+
+		var complete = function(done) {
+			if ( done ) {
+				this.statusSpan.attr('class', 'completed').html('Completed <i class="fa fa-check-circle-o fa-3x"></i>');
+			} else {
+				this.statusSpan.attr('class', 'not-yet-completed').html('Not Yet Completed');
+			}
+
+		}.bind(this);
+
+		var checkInputs = function() {
+			var missing = false;
+
+			if ( this.content.find('div.has-error').length ) {
+				missing = true;
+			} else {
+				this.inputs.each(function(){
+					var input = $(this);
+					if ( input.attr('type') === 'checkbox' ) {
+						if ( !input.prop('checked')) {
+							missing = true;
+						}
+					} else {
+						if (! input.val()) {
+							missing = true;
+						}
+					}
+				});
+			}
+
+			complete( !missing );
+		}.bind(this);
+
+		this.inputs.change(checkInputs);
 
 		this.header.click(function(){
 			this.toggle();
