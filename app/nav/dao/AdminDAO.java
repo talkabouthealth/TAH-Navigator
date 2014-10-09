@@ -19,7 +19,8 @@ public class AdminDAO {
 		UserDTO account = null;
 		try {
 			EntityManager em = JPAUtil.getEntityManager();
-			TypedQuery<UserDTO> query = em.createQuery("FROM UserDTO c WHERE (c.email = :email or c.name = :name) and c.password = :pass ", UserDTO.class); //and c.userType = :userType
+//			TypedQuery<UserDTO> query = em.createQuery("FROM UserDTO c WHERE (c.email = :email or c.name = :name) and c.password = :pass ", UserDTO.class); //and c.userType = :userType
+			TypedQuery<UserDTO> query = em.createQuery("FROM UserDTO c WHERE (upper(c.email) = upper(:email) or c.name = :name) and c.password = :pass ", UserDTO.class); //and c.userType = :userType
 			//and c.isActive = :isActive 
 			query.setParameter("email", email);
 			query.setParameter("name", email);

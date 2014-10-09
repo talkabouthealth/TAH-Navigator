@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS  nav.applicationsettings;
 CREATE TABLE nav.applicationsettings
 (
   id serial NOT NULL,
