@@ -852,8 +852,7 @@ $(document).ready(function() {
 	$('#hasDatepicker').datepicker({defaultDate: +1 ,minDate:"+1d"});
 
 	$('#datepickerRange').datepicker({
-		defaultDate: +1 ,minDate:"+1d",
-          startDate: "today",
+		defaultDate: +1 ,minDate:"+1d",          
           format: "mm/dd/yyyy"
     });
 
@@ -992,7 +991,7 @@ operationMedication = function(operation,id) {
 // 				$("#addEditmedication input[name='startDate']").val($.datepicker.formatDate('mm/dd/yy', new Date(data.startdate)));
 // 				$("#addEditmedication input[name='endDate']").val($.datepicker.formatDate('mm/dd/yy', new Date(data.enddate)));
 
-				$('#datepickerRange').datepicker({ startDate: data.startdate, endDate: data.enddate});
+				$('#datepickerRange').datepicker({ startDate: data.startdate, endDate: data.enddate});                
 				$("#addEditmedication input[name='deleteMD']").show();
 				$("#addEditmedication input[name='deleteMD']").click(function() {
 					operationMedication('delete',data.id);

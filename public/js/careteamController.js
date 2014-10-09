@@ -213,8 +213,7 @@ var careTeamController = (function() {
             });
             $(self.goalDeadlineId).datepicker({
                 autoclose: true,  
-                todayHighlight: true,
-                startDate: "today",
+                todayHighlight: true,                
                 format: "mm-dd-yyyy"
             });
             $(self.saveBtnId).click(function() {
@@ -405,8 +404,7 @@ var careTeamController = (function() {
             
             $(self.endDateId).datepicker({
                 autoclose: true,  
-                todayHighlight: true,
-                startDate: "today",
+                todayHighlight: true,                
                 format: "mm-dd-yyyy"
             });
             
@@ -1182,8 +1180,7 @@ var careTeamController = (function() {
         });
         
         $('#datepickerRangeRadForm').datepicker({
-    		defaultDate: +1 ,minDate:"+1d",
-              startDate: "today",
+              defaultDate: +1 ,minDate:"+1d",              
               format: "mm/dd/yyyy"
         });        
         var treatmentRegions = data.treatmentRegions;
