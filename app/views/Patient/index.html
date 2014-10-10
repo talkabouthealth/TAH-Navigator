@@ -54,7 +54,7 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
               #{if user.verifiedFlag}
               #{if apt.caremember}
               <a href="@{Patient.careMemberNew(apt.caremember.id)}">                
-                ${apt.careMemberName}
+                #{userName userName: apt.caremember.name, userId: apt.caremember.id /}
               </a>
               #{/if}
               #{else}

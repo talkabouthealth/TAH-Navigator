@@ -20,7 +20,15 @@ div.green-title{cursor: pointer;}
             ${seq.appointmenttime} <a href="javaScript:void(0);">${seq.purposeText}</a></p>
           </div>
           <div class="col-sm-6" style="padding-top: 10px;">
-            <p>${seq.careMemberName}<br/> ${seq.appointmentcenter}</p>
+            <p>
+            #{if seq.caremember != null}
+            	 #{userName userName: seq.caremember.name, userId:seq.caremember.id /}
+            #{/if}
+            #{else}
+            ${seq.careMemberName}
+            #{/else}
+            <br/> 
+            ${seq.appointmentcenter}</p>
           </div>
         </div>
         <div class="col-xs-1 col-sm-1 nopadding">
@@ -64,7 +72,12 @@ div.green-title{cursor: pointer;}
               <div class="media-body main-l-p">
                 <p>MY APPOINTMENT IS WITH</p>
                 <div class="secont-l-p-f">
-                  <p class="large-f"><span>${seq.careMemberName} </span></p>
+                  <p class="large-f"><span>            #{if seq.caremember != null}
+            	 #{userName userName: seq.caremember.name, userId:seq.caremember.id /}
+            #{/if}
+            #{else}
+            ${seq.careMemberName}
+            #{/else} </span></p>
                   <p> ${seq.expertMobile}
                 </div>
             </div>
@@ -93,8 +106,12 @@ div.green-title{cursor: pointer;}
           </div>
           <div class="col-sm-6" style="padding-top: 10px;">
             <p>
-            	*{ #{userName userName: seq.caremember.name, userId:seq.caremember.id /} }*
-            	${seq.careMemberName}
+            	            #{if seq.caremember != null}
+            	 #{userName userName: seq.caremember.name, userId:seq.caremember.id /}
+            #{/if}
+            #{else}
+            ${seq.careMemberName}
+            #{/else}
             	<br/> ${seq.appointmentcenter}</p>
           </div>
         </div>
@@ -135,16 +152,19 @@ div.green-title{cursor: pointer;}
             
             <div class="media"> 
             #{if seq.caremember}
-            	<a class="pull-left" href="#"> <img src="@{Image.show(seq.caremember.id)}" class="">
+            	<a class="pull-left" href="#"> <img src="@{Image.show(seq.caremember.id)}" class=""> </a>
             #{/if} 
-            </a>
               <div class="media-body main-l-p">
                 <p>MY APPOINTMENT IS WITH</p>
                 <div class="secont-l-p-f">
                   <p class="large-f">
                   	<span>
-                  	*{ #{userName userName: seq.caremember.name, userId:seq.caremember.id /} }*
-                  	${seq.careMemberName} 
+                  	            #{if seq.caremember != null}
+            	 #{userName userName: seq.caremember.name, userId:seq.caremember.id /}
+            #{/if}
+            #{else}
+            ${seq.careMemberName}
+            #{/else}
                   	</span></p>
                   <p> ${seq.expertMobile}
                  *{ &nbsp; |&nbsp; ${seq.caremember.email} }*</p>
