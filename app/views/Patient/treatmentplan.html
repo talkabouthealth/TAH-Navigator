@@ -17,7 +17,7 @@
         <th class="schedule">Schedule</th>
 
         <th class="region-treated">Region Treated</th>
-        <th class="side-effects">Side Effects Experienced</th>
+        <!--<th class="side-effects">Side Effects Experienced</th>-->
         <th class="notes">Notes</th>
       </tr>
       #{list items:radiationTreatments, as:'rt'}
@@ -30,7 +30,7 @@
         <td class="schedule">#{if rt.rsDto} ${rt.rsDto.timePeriod} #{/if}</td>
 
         <td class="region-treated">#{if rt.trDto} ${rt.trDto.region} #{/if}</td>
-        <td class="side-effects">
+        <!--<td class="side-effects">
           #{if rt.prtSeDtos}
           #{list items: rt.prtSeDtos, as:'prtSeDto'}
           #{if prtSeDto_isFirst}
@@ -41,7 +41,7 @@
           #{/else}
           #{/list}
           #{/if}
-        </td>
+        </td>-->
         <td class="notes">#{if rt.notes} ${rt.notes} #{/if}</td>
       </tr>
       #{/list}
@@ -69,7 +69,7 @@
         <th class="surgery-name"></th>
         <th class="date">Date</th>
         <th class="region">Region Treated</th>
-        <th class="side-effects">Side Effects Experienced</th>
+        <!--<th class="side-effects">Side Effects Experienced</th>-->
         <th class="notes">Notes</th>
       </tr>
       #{list items:surgeryInfo, as:'si'}
@@ -77,7 +77,7 @@
         <td class="surgery-name">${si.stDto.name}</td>
         <td class="date">#{if si.surgeryDate} ${si.surgeryDate.format('MM/dd/yyyy')} #{/if}</td>
         <td class="region">#{if si.trDto} ${si.trDto.region} #{/if}</td>
-        <td class="side-effects">
+        <!--<td class="side-effects">
           #{if si.pstSeDtos}
           #{list items: si.pstSeDtos, as:'pstSeDto'}
           #{if pstSeDto_isFirst}
@@ -88,7 +88,7 @@
           #{/else}
           #{/list}
           #{/if}
-        </td>
+        </td>-->
         <td class="notes">#{if si.notes} ${si.notes} #{/if}</td>
       </tr>
       #{/list}
@@ -100,8 +100,6 @@
     <p>None</p>
 
     #{/else}
-
-
 
     <!-- Chemotherapy Treatment -->
     <div class="title">
@@ -117,7 +115,7 @@
         <th class="schedule">Schedule</th>
         <th class="dose-reduction">% Dose Reduction</th>
 
-        <th class="side-effects">Side Effects Experienced</th>
+        <!--<th class="side-effects">Side Effects Experienced</th>-->
         <th class="notes">Notes</th>
       </tr>
       #{list items:chemoTreatments, as:'ct'}
@@ -130,7 +128,7 @@
         <td class="schedule">#{if ct.csDto} ${ct.csDto.timePeriod} #{/if}</td>
         <td class="dose-reduction">#{if ct.doseReduction} ${ct.doseReduction} #{/if}</td>
 
-        <td class="side-effects">
+        <!--<td class="side-effects">
           #{if ct.pctSeDtos}
           #{list items: ct.pctSeDtos, as:'pctSeDto'}
           #{if pctSeDto_isFirst}
@@ -141,7 +139,7 @@
           #{/else}
           #{/list}
           #{/if}
-        </td>
+        </td>-->
         <td class="notes">#{if ct.notes} ${ct.notes} #{/if}</td>
       </tr>
       #{/list}
