@@ -79,7 +79,12 @@
 			<td><div>${seq.appointmentInfo.purposeText}</div></td>
 			<td>
 				<div>
+					#{if seq.appointmentInfo.caremember != null}
 					#{userName userName: seq.appointmentInfo.caremember.name, userId:seq.appointmentInfo.caremember.id /}
+					#{/if}
+					#{else}
+					${seq.appointmentInfo.careMemberName}
+					#{/else}
 				</div>
 			</td>
 		#{/if}
