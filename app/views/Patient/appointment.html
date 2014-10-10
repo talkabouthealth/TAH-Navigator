@@ -132,7 +132,12 @@ div.green-title{cursor: pointer;}
                 </div>
               </div>
             </div>
-            <div class="media"> <a class="pull-left" href="#"> <img src="@{Image.show(seq.caremember.id)}" class=""> </a>
+            
+            <div class="media"> 
+            #{if seq.caremember}
+            	<a class="pull-left" href="#"> <img src="@{Image.show(seq.caremember.id)}" class="">
+            #{/if} 
+            </a>
               <div class="media-body main-l-p">
                 <p>MY APPOINTMENT IS WITH</p>
                 <div class="secont-l-p-f">
