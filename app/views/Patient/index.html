@@ -23,7 +23,7 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
   <div class="row">
     #{if apt != null }
     <div class="preparation col-xs-6">
-      <label><i class="fa fa-clock-o"></i>My Next Appointment is Scheduled for: ${apt.careMemberName}</label>
+      <label><i class="fa fa-clock-o"></i>My Next Appointment is Scheduled for: </label>
       <div class="appointment"> <!-- row -->
         <div class="appointment-location col-xs-3">
           <a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${apt.addressid.line1}+${apt.addressid.line2},${apt.addressid.city},${apt.addressid.state},${apt.addressid.country} - ${apt.addressid.zip}">
@@ -98,7 +98,7 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
 
   <div class="row">
     <div class="video-walk-through col-xs-6">
-      <label class="block"><i class="fa fa-check-circle-o"></i>My First Appointment</label>
+      <label class="block"><i class="fa fa-check-circle-o"></i>Welcome To Moffitt TVRH Video</label>
 
       <iframe id="youTubeVideo" width="560" height="315" src="//www.youtube.com/embed/u-0P5hQP02k?rel=0" frameborder="0" allowfullscreen></iframe>
       <img id="youTubeVideoImage" width="560" height="315" src="//i.ytimg.com/vi/u-0P5hQP02k/default.jpg" style="display:none;">
