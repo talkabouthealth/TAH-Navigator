@@ -76,8 +76,17 @@
 		</div></td>
 		#{if seq.appointmentInfo != null}
 			<td><div>${seq.appointmentInfo.appointmentdate.format("M/dd/yyyy")}</div></td>
-			<td><div>${seq.appointmentInfo.appointmentid.name}</div></td>
-			<td><div>#{userName userName: seq.appointmentInfo.caremember.name, userId:seq.appointmentInfo.caremember.id /}</div></td>
+			<td><div>${seq.appointmentInfo.purposeText}</div></td>
+			<td>
+				<div>
+					#{if seq.appointmentInfo.caremember != null}
+					#{userName userName: seq.appointmentInfo.caremember.name, userId:seq.appointmentInfo.caremember.id /}
+					#{/if}
+					#{else}
+					${seq.appointmentInfo.careMemberName}
+					#{/else}
+				</div>
+			</td>
 		#{/if}
 		#{else}
 		<td><div>-</div></td>

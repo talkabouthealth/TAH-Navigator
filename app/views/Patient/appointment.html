@@ -20,7 +20,15 @@ div.green-title{cursor: pointer;}
             ${seq.appointmenttime} <a href="javaScript:void(0);">${seq.purposeText}</a></p>
           </div>
           <div class="col-sm-6" style="padding-top: 10px;">
-            <p>${seq.careMemberName}<br/> ${seq.appointmentcenter}</p>
+            <p>
+            #{if seq.caremember != null}
+            	 #{userName userName: seq.caremember.name, userId:seq.caremember.id /}
+            #{/if}
+            #{else}
+            ${seq.careMemberName}
+            #{/else}
+            <br/> 
+            ${seq.appointmentcenter}</p>
           </div>
         </div>
         <div class="col-xs-1 col-sm-1 nopadding">
@@ -30,7 +38,7 @@ div.green-title{cursor: pointer;}
         </div>
       </div>
       <div class="show-div-list" style="display: none;">
-        <div class="row">
+        <div > <!-- class="row" -->
           <div class="col-sm-6">
 
             <div class="secont-l-p-f text-center">
@@ -64,13 +72,18 @@ div.green-title{cursor: pointer;}
               <div class="media-body main-l-p">
                 <p>MY APPOINTMENT IS WITH</p>
                 <div class="secont-l-p-f">
-                  <p class="large-f"><span>${seq.careMemberName} </span></p>
+                  <p class="large-f"><span>            #{if seq.caremember != null}
+            	 #{userName userName: seq.caremember.name, userId:seq.caremember.id /}
+            #{/if}
+            #{else}
+            ${seq.careMemberName}
+            #{/else} </span></p>
                   <p> ${seq.expertMobile}
                 </div>
             </div>
           </div>
         </div>
-        <div class="line-h"></div>
+<!--         <div class="line-h"></div> -->
       </div>
       </li>
       #{/list}
@@ -89,10 +102,17 @@ div.green-title{cursor: pointer;}
         <div class="col-xs-11 col-sm-11 nopadding">
           <div class="col-sm-6 checkDiv" style="padding-top: 10px;border-right: 1px solid #CCC">
             <p>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}<br/> <!-- THURSDAY MAY 10TH 2014 -->
-            ${seq.appointmenttime} <a href="javaScript:void(0);">${seq.appointmentid.name}</a></p>
+            ${seq.appointmenttime} <a href="javaScript:void(0);">${seq.purposeText}</a></p>
           </div>
           <div class="col-sm-6" style="padding-top: 10px;">
-            <p>#{userName userName: seq.caremember.name, userId:seq.caremember.id /}<br/> ${seq.appointmentcenter}</p>
+            <p>
+            	            #{if seq.caremember != null}
+            	 #{userName userName: seq.caremember.name, userId:seq.caremember.id /}
+            #{/if}
+            #{else}
+            ${seq.careMemberName}
+            #{/else}
+            	<br/> ${seq.appointmentcenter}</p>
           </div>
         </div>
         <div class="col-xs-1 col-sm-1 nopadding">
@@ -102,14 +122,13 @@ div.green-title{cursor: pointer;}
         </div>
       </div>
       <div class="show-div-list" style="display: none;">
-        <div class="row">
+        <div><!--  class="row" -->
           <div class="col-sm-6">
-
             <div class="secont-l-p-f text-center">
               <p class="large-f"><span>Appointment is Scheduled for:</span></p>
               <h1 class="g-mmm">${seq.appointmentdate.format('EEEE MMMM dd yyyy')}</h1>
               <p class="large-f"><span>${seq.appointmenttime} </span></p>
-        <h3 class="title-2 purpose-of-appointment">Purpose of appointment: <span>${seq.appointmentid.name}</span></h3>
+        <h3 class="title-2 purpose-of-appointment">Purpose of appointment: <span>${seq.purposeText}</span></h3>
             </div>
           </div>
           <div class="col-sm-6 line-right">
@@ -130,19 +149,31 @@ div.green-title{cursor: pointer;}
                 </div>
               </div>
             </div>
-            <div class="media"> <a class="pull-left" href="#"> <img src="@{Image.show(seq.caremember.id)}" class=""> </a>
+            
+            <div class="media"> 
+            #{if seq.caremember}
+            	<a class="pull-left" href="#"> <img src="@{Image.show(seq.caremember.id)}" class=""> </a>
+            #{/if} 
               <div class="media-body main-l-p">
                 <p>MY APPOINTMENT IS WITH</p>
                 <div class="secont-l-p-f">
-                  <p class="large-f"><span>#{userName userName: seq.caremember.name, userId:seq.caremember.id /} </span></p>
+                  <p class="large-f">
+                  	<span>
+                  	            #{if seq.caremember != null}
+            	 #{userName userName: seq.caremember.name, userId:seq.caremember.id /}
+            #{/if}
+            #{else}
+            ${seq.careMemberName}
+            #{/else}
+                  	</span></p>
                   <p> ${seq.expertMobile}
-                  &nbsp; |&nbsp; ${seq.caremember.email}</p>
+                 *{ &nbsp; |&nbsp; ${seq.caremember.email} }*</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <div class="line-h"></div>
+<!--         <div class="line-h"></div> -->
       </div>
       </li>
       #{/list}
@@ -151,7 +182,6 @@ div.green-title{cursor: pointer;}
     #{else}
     <div class="col-xs-12 col-sm-12 nopadding"></br>No past appointments.</div>
     #{/else}
-
   </div>
 </div>
 <script type="text/javascript">

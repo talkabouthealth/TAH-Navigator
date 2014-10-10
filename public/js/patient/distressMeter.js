@@ -192,4 +192,18 @@ $(document).ready(function(){
 
   });
 
+  // cute li'l hack to support iPads and touch devices for the toggle switches
+  var touchend = function(e) {
+    e.preventDefault();
+    var toggleSwitch = $(this).find('.toggle-switch input');
+    toggleSwitch.prop('checked', !toggleSwitch.prop('checked'));
+  };
+  $('.stepchecker').bind('touchend', touchend);
+  $('.stepchecker').bind('touchcancel', touchend);
+  $('.stepchecker').click(function(e){
+    if ( e && e.target == this ) {
+      touchend(e);
+    }
+  });
+
 }();

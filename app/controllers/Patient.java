@@ -73,7 +73,7 @@ public class Patient extends Controller {
 			}
 		}
 		ApplicationSettingsDTO accesstoallpages = ApplicationSettingDAO.getDetailsByField("propertyname", "accesstoallpages");
-		if(!user.isVerifiedFlag()) {
+		if(!user.isVerifiedFlag() && accesstoallpages != null) {
 			user.setVerifiedFlag(Boolean.parseBoolean(accesstoallpages.getPropertyvalue()));
 		}
         render(user,userDto,patientOtherDetails, breastCancerId, breastCancerInfo,apt,careExpert,maxUsers,checlist,accesstoallpages);
@@ -81,62 +81,81 @@ public class Patient extends Controller {
 
 	public static void appointment() {
 		UserBean user = CommonUtil.loadCachedUser(session);
-		//UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());
-		//PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", user.getId());
 		
-		Map<String, Object> patientInfo = PatientDetailDAO.getDiagnosis(user.getId());
-		UserDetailsDTO userDto = (UserDetailsDTO) patientInfo.get("userDetails");
-		PatientDetailDTO patientOtherDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
-		BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
-		int breastCancerId = Disease.BREAST_CANCER_ID;
-		
-		List<AppointmentDTO> list = new ArrayList<AppointmentDTO>();
-		UserDetailsDTO userDetails = null;
-		Date curreDate = new Date();
-		List<AppointmentDTO> listOther = AppointmentDAO.getAppointmentListByField("patientid.id", userDto.getId(), curreDate, "upcomming" );
-		if(listOther != null) {
-			for (AppointmentDTO appointmentDTO : listOther) {
-				if (appointmentDTO.getCaremember() != null) {
-					userDetails = UserDAO.getDetailsById(appointmentDTO.getCaremember().getId());
-					appointmentDTO.setExpertMobile(userDetails.getMobile());
-				}
-				list.add(appointmentDTO);
-			}
-		} else {
-			list = null;
-		}
-
-		List<AppointmentDTO> expListOther = AppointmentDAO.getAppointmentListByField("patientid.id" , userDto.getId(), curreDate, "past" );
-		List<AppointmentDTO> listOld = new ArrayList<AppointmentDTO>();
-		if(expListOther != null) {
-			for (AppointmentDTO appointmentDTO : expListOther) {
-				if (appointmentDTO.getCaremember() != null) {
-					userDetails = UserDAO.getDetailsById(appointmentDTO.getCaremember().getId());
-					appointmentDTO.setExpertMobile(userDetails.getMobile());
-				}
-				listOld.add(appointmentDTO);
-			}
-		} else {
-			listOld = null;
+		ApplicationSettingsDTO accesstoallpages = ApplicationSettingDAO.getDetailsByField("propertyname", "accesstoallpages");
+		if(!user.isVerifiedFlag() && accesstoallpages != null) {
+			user.setVerifiedFlag(Boolean.parseBoolean(accesstoallpages.getPropertyvalue()));
 		}
 		
-        render(user,userDto,patientOtherDetails,list,listOld, breastCancerId, breastCancerInfo);
+		if(user.isVerifiedFlag()) {
+			//UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());
+			//PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", user.getId());
+			
+			Map<String, Object> patientInfo = PatientDetailDAO.getDiagnosis(user.getId());
+			UserDetailsDTO userDto = (UserDetailsDTO) patientInfo.get("userDetails");
+			PatientDetailDTO patientOtherDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
+			BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
+			int breastCancerId = Disease.BREAST_CANCER_ID;
+			
+			List<AppointmentDTO> list = new ArrayList<AppointmentDTO>();
+			UserDetailsDTO userDetails = null;
+			Date curreDate = new Date();
+			List<AppointmentDTO> listOther = AppointmentDAO.getAppointmentListByField("patientid.id", userDto.getId(), curreDate, "upcomming" );
+			if(listOther != null) {
+				for (AppointmentDTO appointmentDTO : listOther) {
+					if (appointmentDTO.getCaremember() != null) {
+						userDetails = UserDAO.getDetailsById(appointmentDTO.getCaremember().getId());
+						appointmentDTO.setExpertMobile(userDetails.getMobile());
+					}
+					list.add(appointmentDTO);
+				}
+			} else {
+				list = null;
+			}
+	
+			List<AppointmentDTO> expListOther = AppointmentDAO.getAppointmentListByField("patientid.id" , userDto.getId(), curreDate, "past" );
+			List<AppointmentDTO> listOld = new ArrayList<AppointmentDTO>();
+			if(expListOther != null) {
+				for (AppointmentDTO appointmentDTO : expListOther) {
+					if (appointmentDTO.getCaremember() != null) {
+						userDetails = UserDAO.getDetailsById(appointmentDTO.getCaremember().getId());
+						appointmentDTO.setExpertMobile(userDetails.getMobile());
+					}
+					listOld.add(appointmentDTO);
+				}
+			} else {
+				listOld = null;
+			}
+			
+	        render(user,userDto,patientOtherDetails,list,listOld, breastCancerId, breastCancerInfo);
+		} else {
+			index();
+		}
     }
 
 	public static void careteam() {
 		System.out.println(session.getId());
 		UserBean user = CommonUtil.loadCachedUser(session);
-		//UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());
-		//PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", user.getId());
+		ApplicationSettingsDTO accesstoallpages = ApplicationSettingDAO.getDetailsByField("propertyname", "accesstoallpages");
+		if(!user.isVerifiedFlag() && accesstoallpages != null) {
+			user.setVerifiedFlag(Boolean.parseBoolean(accesstoallpages.getPropertyvalue()));
+		}
 		
-		Map<String, Object> patientInfo = PatientDetailDAO.getDiagnosis(user.getId());
-		UserDetailsDTO userDto = (UserDetailsDTO) patientInfo.get("userDetails");
-		PatientDetailDTO patientOtherDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
-		BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
-		int breastCancerId = Disease.BREAST_CANCER_ID;
-		
-		List<PatienCareTeamDTO> careTeams = CareTeamDAO.getPatienCareTeamByField("patienid", user.getId());
-        render(user,userDto,patientOtherDetails,careTeams, breastCancerId, breastCancerInfo);
+		if(user.isVerifiedFlag()) {
+			//UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());
+			//PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", user.getId());
+			
+			Map<String, Object> patientInfo = PatientDetailDAO.getDiagnosis(user.getId());
+			UserDetailsDTO userDto = (UserDetailsDTO) patientInfo.get("userDetails");
+			PatientDetailDTO patientOtherDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
+			BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
+			int breastCancerId = Disease.BREAST_CANCER_ID;
+			
+			List<PatienCareTeamDTO> careTeams = CareTeamDAO.getPatienCareTeamByField("patienid", user.getId());
+	        render(user,userDto,patientOtherDetails,careTeams, breastCancerId, breastCancerInfo);
+		} else {
+			index();
+		}
     }
 	
 	public static void careteamSpecific(int careTeamId) {
@@ -223,67 +242,97 @@ public class Patient extends Controller {
 		System.out.println(session.getId());
 		PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", user.getId());
 		*/
-		
-		Map<String, Object> patientInfo = PatientDetailDAO.getDiagnosis(user.getId());
-		UserDetailsDTO userDto = (UserDetailsDTO) patientInfo.get("userDetails");
-		PatientDetailDTO patientOtherDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
-		BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
-		int breastCancerId = Disease.BREAST_CANCER_ID;
-		
-        render(user,breastCancerId, userDto,patientOtherDetails, breastCancerInfo);
+		ApplicationSettingsDTO accesstoallpages = ApplicationSettingDAO.getDetailsByField("propertyname", "accesstoallpages");
+		if(!user.isVerifiedFlag() && accesstoallpages != null) {
+			user.setVerifiedFlag(Boolean.parseBoolean(accesstoallpages.getPropertyvalue()));
+		}
+		if(user.isVerifiedFlag()) {
+			Map<String, Object> patientInfo = PatientDetailDAO.getDiagnosis(user.getId());
+			UserDetailsDTO userDto = (UserDetailsDTO) patientInfo.get("userDetails");
+			PatientDetailDTO patientOtherDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
+			BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
+			int breastCancerId = Disease.BREAST_CANCER_ID;
+			
+	        render(user,breastCancerId, userDto,patientOtherDetails, breastCancerInfo);
+		} else {
+			index();
+		}
     }
 	
 	public static void medication() {
 		UserBean user = CommonUtil.loadCachedUser(session);
 		//UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());
 		//PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", user.getId());
-		
-		Map<String, Object> patientInfo = PatientDetailDAO.getDiagnosis(user.getId());
-		UserDetailsDTO userDto = (UserDetailsDTO) patientInfo.get("userDetails");
-		PatientDetailDTO patientOtherDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
-		BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
-		int breastCancerId = Disease.BREAST_CANCER_ID;
-		
-		System.out.println(session.getId());
-		List<PatientMedicationDTO> medicationList = MedicationDAO.getMedicine("patientid", userDto.getId());
-		render(user,userDto,patientOtherDetails,medicationList, breastCancerId, breastCancerInfo);
+		ApplicationSettingsDTO accesstoallpages = ApplicationSettingDAO.getDetailsByField("propertyname", "accesstoallpages");
+		if(!user.isVerifiedFlag() && accesstoallpages != null) {
+			user.setVerifiedFlag(Boolean.parseBoolean(accesstoallpages.getPropertyvalue()));
+		}
+		if(user.isVerifiedFlag()) {
+			Map<String, Object> patientInfo = PatientDetailDAO.getDiagnosis(user.getId());
+			UserDetailsDTO userDto = (UserDetailsDTO) patientInfo.get("userDetails");
+			PatientDetailDTO patientOtherDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
+			BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
+			int breastCancerId = Disease.BREAST_CANCER_ID;
+			
+			System.out.println(session.getId());
+			List<PatientMedicationDTO> medicationList = MedicationDAO.getMedicine("patientid", userDto.getId());
+			render(user,userDto,patientOtherDetails,medicationList, breastCancerId, breastCancerInfo);
+		} else {
+			index();
+		}
     }
 
 	public static void thrivercareplan() {
 		UserBean user = CommonUtil.loadCachedUser(session);
 		//UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());
 		//PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", user.getId());
-		Map<String, Object> patientInfo = PatientDetailDAO.getDiagnosis(user.getId());
-		UserDetailsDTO userDto = (UserDetailsDTO) patientInfo.get("userDetails");
-		PatientDetailDTO patientOtherDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
-		BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
-		int breastCancerId = Disease.BREAST_CANCER_ID;
-		List<NoteDTO> noteList = NotesDAO.getPatientNotesList(String.valueOf(user.getId()));
-		List<PatientConcernDTO> concerns = FollowUp.getPatientConcerns(user.getId());
-		List<PatientGoalDTO> goals = FollowUp.getPatientGoals(user.getId());
-		boolean noteLinkInactive = true;
-		List<PatientFollowUpCareItemDTO> careItems = FollowUp.getPatientCareItems(user.getId());
-		
-		System.out.println(session.getId());
-        render(user,userDto,patientOtherDetails, breastCancerId, breastCancerInfo, noteList, concerns, goals, careItems, noteLinkInactive);
+		ApplicationSettingsDTO accesstoallpages = ApplicationSettingDAO.getDetailsByField("propertyname", "accesstoallpages");
+		if(!user.isVerifiedFlag() && accesstoallpages != null) {
+			user.setVerifiedFlag(Boolean.parseBoolean(accesstoallpages.getPropertyvalue()));
+		}
+		if(user.isVerifiedFlag()) {
+			Map<String, Object> patientInfo = PatientDetailDAO.getDiagnosis(user.getId());
+			UserDetailsDTO userDto = (UserDetailsDTO) patientInfo.get("userDetails");
+			PatientDetailDTO patientOtherDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
+			BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
+			int breastCancerId = Disease.BREAST_CANCER_ID;
+			List<NoteDTO> noteList = NotesDAO.getPatientNotesList(String.valueOf(user.getId()));
+			List<PatientConcernDTO> concerns = FollowUp.getPatientConcerns(user.getId());
+			List<PatientGoalDTO> goals = FollowUp.getPatientGoals(user.getId());
+			boolean noteLinkInactive = true;
+			List<PatientFollowUpCareItemDTO> careItems = FollowUp.getPatientCareItems(user.getId());
+			
+			System.out.println(session.getId());
+	        render(user,userDto,patientOtherDetails, breastCancerId, breastCancerInfo, noteList, concerns, goals, careItems, noteLinkInactive);
+		} else {
+			index();
+		}
     }
 
 	public static void treatmentplan() {
 		UserBean user = CommonUtil.loadCachedUser(session);
 		//UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());
 		//PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", user.getId());
-		Map<String, Object> patientInfo = PatientDetailDAO.getDiagnosis(user.getId());
-		UserDetailsDTO userDto = (UserDetailsDTO) patientInfo.get("userDetails");
-		PatientDetailDTO patientOtherDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
-		BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
-		int breastCancerId = Disease.BREAST_CANCER_ID;
-		
-		System.out.println(session.getId());
-		Integer patientId = user.getId();
-		List<PatientRadiationTreatmentDTO> radiationTreatments = Treatment.getPatientRadiationTreatments(patientId);
-		List<PatientChemoTreatmentDTO> chemoTreatments = Treatment.getPatientChemoTreatments(patientId);
-		List<PatientSurgeryInfoDTO> surgeryInfo = Treatment.getPatientSurgeryInfo(patientId);		
-        render(user,userDto,patientOtherDetails, patientId, radiationTreatments, chemoTreatments, surgeryInfo, breastCancerId, breastCancerInfo);
+		ApplicationSettingsDTO accesstoallpages = ApplicationSettingDAO.getDetailsByField("propertyname", "accesstoallpages");
+		if(!user.isVerifiedFlag() && accesstoallpages != null) {
+			user.setVerifiedFlag(Boolean.parseBoolean(accesstoallpages.getPropertyvalue()));
+		}
+		if(user.isVerifiedFlag()) {
+			Map<String, Object> patientInfo = PatientDetailDAO.getDiagnosis(user.getId());
+			UserDetailsDTO userDto = (UserDetailsDTO) patientInfo.get("userDetails");
+			PatientDetailDTO patientOtherDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
+			BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
+			int breastCancerId = Disease.BREAST_CANCER_ID;
+			
+			System.out.println(session.getId());
+			Integer patientId = user.getId();
+			List<PatientRadiationTreatmentDTO> radiationTreatments = Treatment.getPatientRadiationTreatments(patientId);
+			List<PatientChemoTreatmentDTO> chemoTreatments = Treatment.getPatientChemoTreatments(patientId);
+			List<PatientSurgeryInfoDTO> surgeryInfo = Treatment.getPatientSurgeryInfo(patientId);		
+	        render(user,userDto,patientOtherDetails, patientId, radiationTreatments, chemoTreatments, surgeryInfo, breastCancerId, breastCancerInfo);
+		} else {
+			index();
+		}
     }
 
 	public static void setting() {

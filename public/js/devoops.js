@@ -2360,7 +2360,7 @@ $(document).ready(function () {
 			window.location.hash = url;
 			LoadAjaxContent(url);
 		}
-		if ($(this).attr('href') == '#') {
+		if ($(this).attr('href') == '#' && $(this).hasClass('disabled')) {
 			//Added alert for the inactive account
 			$("#verificationAlert").modal({ keyboard: false });
 			e.preventDefault();

@@ -155,7 +155,8 @@ public class PatientDetailDAO {
 			if (lastDtos != null && lastDtos.size() > 0) {
 				AppointmentDTO lastDto = lastDtos.get(0);
 				lastAppointment = lastDto.getAppointmentdate();
-				lastPurpose = lastDto.getAppointmentid().getName();
+				lastPurpose = lastDto.getPurposeText();
+//				lastPurpose = lastDto.getAppointmentid().getName();
 			}
 		} catch (NoResultException e) {
 			
