@@ -14,9 +14,7 @@
       <a class="pull-left" href="#"> 
         <img src="@{Image.show(expertDetails.id)}" width="74" height="70" class="img-responsive"> </a>
       <div class="media-body main-l-p">
-      <h1>
-      	#{userName userName: expertDetails.user.name, userId: expertDetails.user.id /}
-      </h1>
+      <h1 style="display: inline;">#{userName userName: expertDetails.user.name, userId: expertDetails.user.id /} | </h1><h3 style="display: inline">${expdetails.designation.designation}</h3>      
     </div>
                 	#{if expdetails != null && expdetails.practiceAddr != null}
                 	<div class="secont-l-p-f">

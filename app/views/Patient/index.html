@@ -121,6 +121,7 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
 
         </div>
         <div class="caretaker-info">
+           <div>
           <h4>
             #{if user.verifiedFlag}
             <a href="@{Patient.careMemberNew(expertBean.expertDetail.id)}">#{userName userName: expertBean.userDetails.user.name, userId: expertBean.userDetails.user.id /}</a>
@@ -129,7 +130,8 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
             <a class="disabled" href="#">#{userName userName: expertBean.userDetails.user.name, userId: expertBean.userDetails.user.id /}</a>
             #{/else}
 
-            | </h4>
+            |</h4><h5 style="display: inline;">${expertBean.expertDetail.designation.designation}</h5>
+            </div>
           #{if expertBean.expertDetail.practiceAddr != null}
           <p class="secondary-information">${expertBean.expertDetail.practiceAddr.getLine1()}</p>
           #{if expertBean.expertDetail != null}
