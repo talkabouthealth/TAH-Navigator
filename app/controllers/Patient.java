@@ -276,7 +276,18 @@ public class Patient extends Controller {
 			
 			System.out.println(session.getId());
 			List<PatientMedicationDTO> medicationList = MedicationDAO.getMedicine("patientid", userDto.getId());
-			render(user,userDto,patientOtherDetails,medicationList, breastCancerId, breastCancerInfo);
+			List<PatientMedicationDTO> currentMedications = new ArrayList<PatientMedicationDTO>();
+			List<PatientMedicationDTO> pastMedications = new ArrayList<PatientMedicationDTO>();
+			Date today = new Date();
+			for (PatientMedicationDTO mDto : medicationList) {
+				if ((today.compareTo(mDto.getStartdate()) >= 0) && (today.compareTo(mDto.getEnddate()) <=0)) {
+					currentMedications.add(mDto);
+				}
+				else {
+					pastMedications.add(mDto);
+				}
+			}
+			render(user,userDto,patientOtherDetails,medicationList, breastCancerId, breastCancerInfo, currentMedications, pastMedications);
 		} else {
 			index();
 		}

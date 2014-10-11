@@ -3,204 +3,53 @@
 <!--Start Content-->
 <div class="medications page">
 
-  <!-- <div class="header">
-    <h1><i class="fa fa-clock-o"></i>My Medication Calendar</h1>
-  </div> -->
-  <!--
-  <div class="medication-calendar">
-    <div class="header">
-      <h2>Daily Medication Checklist</h2>
-    </div>
-    <div class="calendar">
-      <div class="day">
-        <div class="cell-container">
-          <div class="cell">
-            <div class="header"><h4>Monday <hr /></h4></div>
-            <div class="cell-content">
-              <img src="/public/images/pill.png" />
-              <h3>Tamoxifen</h3>
-              <p class="instructions">One <span>(1)</span> pill by mouth</p>
 
-              <div class="recommendations">
-                <label>Recommended Time</label>
-                <p>Mornings, with Water</p>
-              </div>
-              <img src="/public/images/oral.png">
-            </div>
-          </div>
-          <div class="cell">
-            <div class="header">
-              <h3>Herceptin</h3>
-              <p class="instructions">Infusion</p>
-            </div>
-            <div class="cell-content">
-
-              <div class="recommendations">
-                <label>To be administered</label>
-              </div>
-              <img src="/public/images/img51.png">
-              <div class="location">
-                <h4>Location</h4>
-                <p>Careview Center</p>
-              </div>
-            </div>
-          </div>
+#{if medicationList != null && medicationList.size()>0}
+    #{if currentMedications.size() > 0}
+        <div class="row">
+            <div class="col-xs-12"><h1>Current Medications</h1></div>
         </div>
-      </div>
-      <div class="day">
-        <div class="cell-container">
-          <div class="cell">
-            <div class="header"><h4>Tuesday <hr /></h4></div>
-            <div class="cell-content">
-              <img src="/public/images/pill.png" />
-              <h3>Tamoxifen</h3>
-              <p class="instructions">One <span>(1)</span> pill by mouth</p>
-
-              <div class="recommendations">
-                <label>Recommended Time</label>
-                <p>Mornings, with Water</p>
-              </div>
-              <img src="/public/images/oral.png">
-            </div>
-          </div>
+        #{list currentMedications, as:'seq'}    
+        <div class="medication">    
+            <h3>${seq.medicine.genericname}</h3>
+            <p><strong>BRAND NAME: </strong>${seq.medicine.brandname}</p>
+            <p><strong>FREQUENCY: </strong>${seq.frequency}</p>
+            <p><strong>DATES: </strong>${seq.startdate.format('MM/dd/yyyy')} - ${seq.enddate.format('MM/dd/yyyy')}</p>
+            <p><strong>SPECIAL INSTRUCTIONS: </strong>${seq.specialinstruction}</p>
+            #{if seq.caremember != null}
+                <p><strong>PRESCRIBING PYSICIAN: </strong>#{userName userName: seq.caremember.name, userId:seq.caremember.id /}</p>
+            #{/if}
+            #{if seq.method}<!--<img src="/public/images/${seq.method}.png"/>${seq.method}-->#{/if}
+           #{if seq.medicine.image}<img src="/image/showMedicine/${seq.id}"/>#{/if}
         </div>
-      </div>
-      <div class="day">
-        <div class="cell-container">
-          <div class="cell">
-            <div class="header"><h4>Wednesday <hr /></h4></div>
-            <div class="cell-content">
-              <img src="/public/images/pill.png" />
-              <h3>Tamoxifen</h3>
-              <p class="instructions">One <span>(1)</span> pill by mouth</p>
-
-              <div class="recommendations">
-                <label>Recommended Time</label>
-                <p>Mornings, with Water</p>
-              </div>
-              <img src="/public/images/oral.png">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="day">
-        <div class="cell-container">
-          <div class="cell">
-            <div class="header"><h4>Thursday <hr /></h4></div>
-            <div class="cell-content">
-              <img src="/public/images/pill.png" />
-              <h3>Tamoxifen</h3>
-              <p class="instructions">One <span>(1)</span> pill by mouth</p>
-
-              <div class="recommendations">
-                <label>Recommended Time</label>
-                <p>Mornings, with Water</p>
-              </div>
-              <img src="/public/images/oral.png">
-            </div>
-          </div>
-          <div class="cell">
-            <div class="header">
-              <h3>Herceptin</h3>
-              <p class="instructions">Infusion</p>
-            </div>
-            <div class="cell-content">
-
-              <div class="recommendations">
-                <label>To be administered</label>
-              </div>
-              <img src="/public/images/img51.png">
-              <div class="location">
-                <h4>Location</h4>
-                <p>Careview Center</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="day">
-        <div class="cell-container">
-          <div class="cell">
-            <div class="header"><h4>Friday <hr /></h4></div>
-            <div class="cell-content">
-              <img src="/public/images/pill.png" />
-              <h3>Tamoxifen</h3>
-              <p class="instructions">One <span>(1)</span> pill by mouth</p>
-
-              <div class="recommendations">
-                <label>Recommended Time</label>
-                <p>Mornings, with Water</p>
-              </div>
-              <img src="/public/images/oral.png">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="day">
-        <div class="cell-container">
-          <div class="cell">
-            <div class="header"><h4>Saturday <hr /></h4></div>
-            <div class="cell-content">
-              <img src="/public/images/pill.png" />
-              <h3>Tamoxifen</h3>
-              <p class="instructions">One <span>(1)</span> pill by mouth</p>
-
-              <div class="recommendations">
-                <label>Recommended Time</label>
-                <p>Mornings, with Water</p>
-              </div>
-              <img src="/public/images/oral.png">
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="day">
-        <div class="cell-container">
-          <div class="cell">
-            <div class="header"><h4>Sunday <hr /></h4></div>
-            <div class="cell-content">
-              <img src="/public/images/pill.png" />
-              <h3>Tamoxifen</h3>
-              <p class="instructions">One <span>(1)</span> pill by mouth</p>
-
-              <div class="recommendations">
-                <label>Recommended Time</label>
-                <p>Mornings, with Water</p>
-              </div>
-              <img src="/public/images/oral.png">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-  -->
-
-    #{if medicationList != null && medicationList.size()>0}
-    #{list medicationList, as:'seq'}
-    <div class="medication">
-        <h3>${seq.medicine.genericname}</h3>
-        <p><strong>BRAND NAME: </strong>${seq.medicine.brandname}</p>
-        <p><strong>FREQUENCY: </strong>${seq.frequency}</p>
-        <p><strong>DATES: </strong>${seq.startdate.format('MM/dd/yyyy')} - ${seq.enddate.format('MM/dd/yyyy')}</p>
-        <p><strong>SPECIAL INSTRUCTIONS: </strong>${seq.specialinstruction}</p>
-        #{if seq.caremember != null}
-        	<p><strong>PRESCRIBING PYSICIAN: </strong>#{userName userName: seq.caremember.name, userId:seq.caremember.id /}</p>
-		#{/if}
-      	#{if seq.method}
-<!--        	 <img src="/public/images/${seq.method}.png"/>
-		${seq.method}-->
-        #{/if}
-       #{if seq.medicine.image}
-        <img src="/image/showMedicine/${seq.id}"/>
-        #{/if}
-    </div><!-- medication -->
-    #{/list}
+        #{/list}
     #{/if}
-    #{else}
-    <div>No medication added.</div>
-    #{/else}
-  </div>
-  <div id="ajax-content"></div>
+
+    #{if pastMedications.size() > 0}
+        <div class="row">
+            <div class="col-xs-12"><h1>Past Medications</h1></div>
+        </div>
+        #{list pastMedications, as:'seq'}    
+        <div class="medication">    
+            <h3>${seq.medicine.genericname}</h3>
+            <p><strong>BRAND NAME: </strong>${seq.medicine.brandname}</p>
+            <p><strong>FREQUENCY: </strong>${seq.frequency}</p>
+            <p><strong>DATES: </strong>${seq.startdate.format('MM/dd/yyyy')} - ${seq.enddate.format('MM/dd/yyyy')}</p>
+            <p><strong>SPECIAL INSTRUCTIONS: </strong>${seq.specialinstruction}</p>
+            #{if seq.caremember != null}
+                <p><strong>PRESCRIBING PYSICIAN: </strong>#{userName userName: seq.caremember.name, userId:seq.caremember.id /}</p>
+            #{/if}
+            #{if seq.method}<!--<img src="/public/images/${seq.method}.png"/>${seq.method}-->#{/if}
+           #{if seq.medicine.image}<img src="/image/showMedicine/${seq.id}"/>#{/if}
+        </div>
+        #{/list}
+    #{/if}
+
+#{/if}
+#{else}
+<div class="row">
+    <div class="col-xs-12">No medication added.</div>
 </div>
+#{/else}
+</div>
+
