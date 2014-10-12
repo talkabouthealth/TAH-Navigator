@@ -8,18 +8,18 @@ div.green-title{cursor: pointer;}
 <div id="content" class="page my-appointments">
   <div class="col-xs-12 col-sm-12">
 
-    <h2 style="float:left;padding-top:30px;">Upcoming Appointments</h2>
+    <h2>Upcoming Appointments</h2>
     #{if list != null && list.size()>0}
     <ul class="expend-list">
       #{list list, as:'seq'}
       <li>
       <div class="green-title">
-        <div class="col-xs-11 col-sm-11 nopadding" style="display:block;">
+        <div class="col-xs-12 col-sm-12 nopadding" style="display:block;">
           <div class="col-sm-6 checkDiv" style="padding-top: 10px;border-right: 1px solid #CCC">
             <p>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}<br/> <!-- THURSDAY MAY 10TH 2014 -->
             ${seq.appointmenttime} <a href="javaScript:void(0);">${seq.purposeText}</a></p>
           </div>
-          <div class="col-sm-6" style="padding-top: 10px;">
+          <div class="col-sm-5" style="padding-top: 10px;">
             <p>
             #{if seq.caremember != null}
             	 #{userName userName: seq.caremember.name, userId:seq.caremember.id /}
@@ -27,15 +27,13 @@ div.green-title{cursor: pointer;}
             #{else}
             ${seq.careMemberName}
             #{/else}
-            <br/> 
+            <br/>
             ${seq.appointmentcenter}</p>
           </div>
         </div>
-        <div class="col-xs-1 col-sm-1 nopadding">
           <div class="toggle-text-container">
             <span class="toggleText button"><span class="text">See More</span> <span class="ui-accordion-header-icon ui-icon ui-accordion-header-icon1 ui-icon-triangle-1-e"></span></span>
           </div>
-        </div>
       </div>
       <div class="show-div-list" style="display: none;">
         <div > <!-- class="row" -->
@@ -93,18 +91,18 @@ div.green-title{cursor: pointer;}
     <div class="col-xs-12 col-sm-12 nopadding"></br>No upcoming appointments.</div>
     #{/else}
     <br/><br/>
-    <h2 style="float:left;padding-top:30px;">Past Appointments</h2>
+    <h2>Past Appointments</h2>
     #{if listOld != null && listOld.size()>0}
     <ul class="expend-list">
       #{list listOld, as:'seq'}
       <li>
       <div class="green-title">
-        <div class="col-xs-11 col-sm-11 nopadding">
+        <div class="col-xs-12 col-sm-12 nopadding">
           <div class="col-sm-6 checkDiv" style="padding-top: 10px;border-right: 1px solid #CCC">
             <p>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}<br/> <!-- THURSDAY MAY 10TH 2014 -->
             ${seq.appointmenttime} <a href="javaScript:void(0);">${seq.purposeText}</a></p>
           </div>
-          <div class="col-sm-6" style="padding-top: 10px;">
+          <div class="col-sm-5" style="padding-top: 10px;">
             <p>
             	            #{if seq.caremember != null}
             	 #{userName userName: seq.caremember.name, userId:seq.caremember.id /}
@@ -115,11 +113,9 @@ div.green-title{cursor: pointer;}
             	<br/> ${seq.appointmentcenter}</p>
           </div>
         </div>
-        <div class="col-xs-1 col-sm-1 nopadding">
           <div class="toggle-text-container">
             <span class="toggleText button"><span class="text">See More</span>  <span class="ui-accordion-header-icon ui-icon ui-accordion-header-icon1 ui-icon-triangle-1-e"></span></span>
           </div>
-        </div>
       </div>
       <div class="show-div-list" style="display: none;">
         <div><!--  class="row" -->
@@ -149,11 +145,11 @@ div.green-title{cursor: pointer;}
                 </div>
               </div>
             </div>
-            
-            <div class="media"> 
+
+            <div class="media">
             #{if seq.caremember}
             	<a class="pull-left" href="#"> <img src="@{Image.show(seq.caremember.id)}" class=""> </a>
-            #{/if} 
+            #{/if}
               <div class="media-body main-l-p">
                 <p>MY APPOINTMENT IS WITH</p>
                 <div class="secont-l-p-f">
