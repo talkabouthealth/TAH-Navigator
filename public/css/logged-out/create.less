@@ -118,8 +118,28 @@
 	}
 
 	.form-group {
-		label, input {
+		label, input, select {
 			font-size: @large-font;
+		}
+	}
+
+
+	@danger-red-background : #f2dede;
+	@danger-red : #a94442;
+	ul.list-group {
+		background: @danger-red-background;
+		color: @danger-red;
+		padding: @padding;
+
+		li.list-group-item {
+			background: @danger-red-background;
+			color: @danger-red;
+			font-size: @large-font;
+
+		}
+
+		li.list-group-item-danger {
+			padding: 0 @padding;
 		}
 	}
 }
