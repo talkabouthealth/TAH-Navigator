@@ -14,28 +14,22 @@ table.table>tbody>tr>td {
   }
 
   td {
-    padding: 0;
-  }
+  	padding: 0;
+  	position: relative;
 
-}
+  	div {
+  		max-height: @table-cell-max-height;
+  		overflow: hidden;
 
-td {
-  padding: 0;
-  position: relative;
+  		&.tooltipstered {
+  			cursor: pointer;
+  		}
 
-  div {
-    max-height: @table-cell-max-height;
-    overflow: hidden;
-
-    &.tooltipstered {
-      cursor: pointer;
-    }
-
-    &:before {
-      @height: 35px;
-      content: "";
-      display: block;
-      position: absolute;
+  		&:before {
+  			@height: 35px;
+  			content: "";
+  			display: block;
+  			position: absolute;
       top: @table-cell-max-height - @height + 20px; // we add 20px because we removed padding from the div.
       left: 0;
       height: @height;
@@ -44,3 +38,5 @@ td {
     }
   }
 }
+}
+
