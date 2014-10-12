@@ -20,21 +20,6 @@ body {
     color: #FFF;
 }
 
-.log_header{ background:#006ea1; width:100%; padding:15px 0px; float:left; width:100%; border-bottom:2px solid #002739; box-shadow:0 0 10px rgba(0,0,0,.5)}
-.logo_span{ color:#FFF; font-size:13px; margin-left:10px;}
-#log_contaner{ max-width:400px; width:98%; margin:0 auto;}
-.log_heading{ color:#FFF; text-align:center; font-size:40px; padding:15px 0}
-.log_bg{ background:url(../images/login_bg.png) no-repeat center #004261; width:100%; float:left; /*padding:5px 0px 5px 0px;*/ } 
-.log_bg_01{ background:#006ea1; no-repeat center; width:100%; float:left; padding:20px 0px 20px 0px;} 
-.log_padding{ margin:20px 300px;}
-.log_center{width:100%;}
-
-.save_id{ font-size:13px; color:#8baab8;padding-left: 0;}
-.forget{ font-size:15px; color:#8baab8; float:right;  padding-right: 0;}
-.forget a{ font-size:15px; color:#caf4f4; float:right;}
-.log_p{ color:#caf4f4;   font-size: 15px;
-    font-weight: bold; padding:10px 0 20px; text-align:center; margin: 0 -60px;  }
-/* .form-control{font-size:40px; height:65px;} */
 
 .myform .input-group{margin-bottom:10px;}
 .my-btn{font-size:18px; height:40px; padding:0 20px;}
@@ -50,7 +35,7 @@ body {
 .my-btn-register{background:#246297;  font-size: 25px;
     font-weight: bold;
     height: 50px;
-    
+
     box-shadow:0 3px 5px rgba(0,0,0,.5); text-transform:uppercase;}
 .my-btn-cont{background:none; border:2px solid #8baab8;font-size: 13px;padding: 2px 15px !important;}
 .btn-lg{padding:5px 15px;text-shadow: 2px 2px 2px #333;}
@@ -75,10 +60,10 @@ body {
 .form-control_02{font-size:20px; height:30px; width:100%; line-height:30px; background-color:#d8d8d8; color:#006ea1; text-align:justify;}
 .input-text_01{ width:100%; height:35px; padding:0px 5px;}
 .myform .input-group-lg > .form-control, .input-group-lg > .input-group-addon, .input-group-lg > .input-group-btn > .btn{
-	font-size: 20px; 
+	font-size: 20px;
 	height: 50px;
 	padding: 0px 16px;
-	  
+
 }
 
 .text_p_01{ font-size:19px;}
@@ -131,14 +116,14 @@ right: 20px;}
 	.forget,.forget a{ float:none !important; text-align:center;}
 	.breadcrumb{position:static; }
 	.log_header{height:auto !important; float:left; width:100%;  }
-	
+
 .my_nav{float:none !important}
 
 
 }
 
 @media (max-width: 620px) {
-#log_contaner{width:90% !important;}	
+#log_contaner{width:90% !important;}
 }
 @media (max-width:450px) {
 .log_header img{width:78%}
