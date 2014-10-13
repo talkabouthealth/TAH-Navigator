@@ -37,7 +37,9 @@ public class Admin extends Controller {
     }
 	
 	public static void addCareMember() {
-		render();
+		UserBean user = CommonUtil.loadCachedUser(session);
+		System.out.println(session.getId());
+		render(user);
 	}
 	
 	public static void appSettings() {
@@ -53,12 +55,12 @@ public class Admin extends Controller {
 		account.setUserType('c');
 
 		InvitedDTO invitedDTO = new  InvitedDTO();
-		invitedDTO.setName(name);
-		invitedDTO.setPassword(password);
+//		invitedDTO.setName(name);
+//		invitedDTO.setPassword(password);
 		invitedDTO.setActivateOnSignup(isActive);
-		invitedDTO.setUserType('c');
-		invitedDTO.setIsInvitationSent(false);
-		invitedDTO.setTimestamp(new Date());
+//		invitedDTO.setUserType('c');
+//		invitedDTO.setIsInvitationSent(false);
+//		invitedDTO.setTimestamp(new Date());
 
 		EntityManager em = JPAUtil.getEntityManager();
 		em.getTransaction().begin();

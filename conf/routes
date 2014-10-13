@@ -15,7 +15,7 @@ GET		/image/showMedicine/{medId}								Image.showMedicine
 #Login Pages
 GET     /login                                  Login.index
 GET		/verify/{verifyCode}					Application.verifyEmail
-
+GET		/createinvited/{id}						Application.createinvited
 # POST /distress									Application.distress
 # distress
 

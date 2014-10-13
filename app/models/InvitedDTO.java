@@ -15,79 +15,177 @@ import javax.persistence.*;
 public class InvitedDTO implements Serializable {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy= GenerationType.SEQUENCE, generator="invited_id_seq")
+	@SequenceGenerator(allocationSize=1, schema="nav",  name="invited_id_seq", sequenceName = "nav.invited_id_seq")
 	@Column(name = "id")
-	private Long id;
+	private int id;
 
-	@Column(name = "name")
-	private String name;
+	@Column(name = "email")
+	private String email;
 
-	@Column(name = "password")
-	private String password;
+	@Column(name = "firstname")
+	private String firstname;
+	
+	@Column(name = "lastname")
+	private String lastname;
 
-	@Column(name = "usertype")
-	private char userType;
+	@Column(name="purpose_text")
+	private String purposeText;
+	
+	@Column(name="treatment_process_step")
+	private String treatementStep;
+	
+	@Column(name = "appointmenttime")
+	private String appointmenttime;
+
+	@Column(name = "appointmentdate")
+	private Date appointmentdate;
+
+	@Column(name = "appointmentcenter")
+	private String appointmentcenter;
+
+	@OneToOne
+	@JoinColumn(name = "caremember")
+	private UserDTO caremember;
+
+	@OneToOne
+	@JoinColumn(name = "addedby")
+	private UserDTO addedby;
+
+	@OneToOne
+	@JoinColumn(name = "addressid")
+	private AddressDTO addressid;
 
 	@Column(name = "activateonsignup")
 	private boolean activateOnSignup;
 
-	@Column(name = "timestamp")
-	private Date timestamp;
-
 	@Column(name = "invitationsent")
 	private boolean isInvitationSent;
+
+	@Column(name = "addedon")
+	private Date addedon;
 
 	public InvitedDTO() {
 	}
 
-	
-	public Long getId() {
-		return this.id;
+	public int getId() {
+		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
-	}   
-	public String getName() {
-		return this.name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}   
-	public String getPassword() {
-		return this.password;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}   
-	public char getUserType() {
-		return this.userType;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public void setUserType(char userType) {
-		this.userType = userType;
-	}   
-	public boolean getActivateOnSignup() {
-		return this.activateOnSignup;
+	public String getFirstname() {
+		return firstname;
+	}
+
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+
+	public String getLastname() {
+		return lastname;
+	}
+
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
+
+	public String getPurposeText() {
+		return purposeText;
+	}
+
+	public void setPurposeText(String purposeText) {
+		this.purposeText = purposeText;
+	}
+
+	public String getTreatementStep() {
+		return treatementStep;
+	}
+
+	public void setTreatementStep(String treatementStep) {
+		this.treatementStep = treatementStep;
+	}
+
+	public String getAppointmenttime() {
+		return appointmenttime;
+	}
+
+	public void setAppointmenttime(String appointmenttime) {
+		this.appointmenttime = appointmenttime;
+	}
+
+	public Date getAppointmentdate() {
+		return appointmentdate;
+	}
+
+	public void setAppointmentdate(Date appointmentdate) {
+		this.appointmentdate = appointmentdate;
+	}
+
+	public String getAppointmentcenter() {
+		return appointmentcenter;
+	}
+
+	public void setAppointmentcenter(String appointmentcenter) {
+		this.appointmentcenter = appointmentcenter;
+	}
+
+	public UserDTO getCaremember() {
+		return caremember;
+	}
+
+	public void setCaremember(UserDTO caremember) {
+		this.caremember = caremember;
+	}
+
+	public UserDTO getAddedby() {
+		return addedby;
+	}
+
+	public void setAddedby(UserDTO addedby) {
+		this.addedby = addedby;
+	}
+
+	public AddressDTO getAddressid() {
+		return addressid;
+	}
+
+	public void setAddressid(AddressDTO addressid) {
+		this.addressid = addressid;
+	}
+
+	public boolean isActivateOnSignup() {
+		return activateOnSignup;
 	}
 
 	public void setActivateOnSignup(boolean activateOnSignup) {
 		this.activateOnSignup = activateOnSignup;
-	}   
-	public Date getTimestamp() {
-		return this.timestamp;
 	}
 
-	public void setTimestamp(Date timestamp) {
-		this.timestamp = timestamp;
-	}   
-	public boolean getIsInvitationSent() {
-		return this.isInvitationSent;
+	public boolean isInvitationSent() {
+		return isInvitationSent;
 	}
 
-	public void setIsInvitationSent(boolean isInvitationSent) {
+	public void setInvitationSent(boolean isInvitationSent) {
 		this.isInvitationSent = isInvitationSent;
 	}
+
+	public Date getAddedon() {
+		return addedon;
+	}
+
+	public void setAddedon(Date addedon) {
+		this.addedon = addedon;
+	}
+	 
 }

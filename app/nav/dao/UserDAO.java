@@ -252,7 +252,10 @@ public class UserDAO {
 	public static UserDTO parseUserObject(SignUpMemberBean memberBean) {
 		UserDTO dto = new UserDTO();
 		dto.setEmail(memberBean.getEmail());
-		dto.setName(memberBean.getUserName());
+		if(memberBean.getUserName() != null)
+			dto.setName(memberBean.getUserName());
+		else
+			dto.setName("");
 		dto.setPassword(CommonUtil.hashPassword(memberBean.getPassword()));
 		UserTypeDTO userTypedto = UserTypeDAO.getEntityById(memberBean.getUserType());
 		if(userTypedto.getAbbravation() == 'p') {

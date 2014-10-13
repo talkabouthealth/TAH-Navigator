@@ -17,11 +17,11 @@ public class SignUpMemberBean {
 	
 	@Required private String userType;
 	
-	@Required private String userName;
+	private String userName;
 	
 	@Required private String password;
 	
-	@Required private String repassword;
+//	@Required private String repassword;
 
 	private String firstName;
 	
@@ -39,7 +39,7 @@ public class SignUpMemberBean {
 	
 	@Required @Email private String email;
 	
-	@Required @Email private String verifyemail;
+//	@Required @Email private String verifyemail;
 	
 	private String mobile;
 	
@@ -60,6 +60,9 @@ public class SignUpMemberBean {
 	private boolean tosFlag =false;
 	
 	private boolean smtFlag =false;
+	
+	private String invitationId = "0";
+	
 
 	public SignUpMemberBean() {
 	}
@@ -113,13 +116,13 @@ public class SignUpMemberBean {
 		this.password = password;
 	}
 
-	public String getRepassword() {
-		return repassword;
-	}
-
-	public void setRepassword(String repassword) {
-		this.repassword = repassword;
-	}
+//	public String getRepassword() {
+//		return repassword;
+//	}
+//
+//	public void setRepassword(String repassword) {
+//		this.repassword = repassword;
+//	}
 
 	public String getFirstName() {
 		return firstName;
@@ -185,13 +188,13 @@ public class SignUpMemberBean {
 		this.email = email;
 	}
 
-	public String getVerifyemail() {
-		return verifyemail;
-	}
-
-	public void setVerifyemail(String verifyemail) {
-		this.verifyemail = verifyemail;
-	}
+//	public String getVerifyemail() {
+//		return verifyemail;
+//	}
+//
+//	public void setVerifyemail(String verifyemail) {
+//		this.verifyemail = verifyemail;
+//	}
 
 	public String getMobile() {
 		return mobile;
@@ -270,5 +273,13 @@ public class SignUpMemberBean {
 
 	public void setSmtFlag(boolean smtFlag) {
 		this.smtFlag = smtFlag;
+	}
+
+	public String getInvitationId() {
+		return invitationId;
+	}
+
+	public void setInvitationId(String invitationId) {
+		this.invitationId = invitationId;
 	}
 }

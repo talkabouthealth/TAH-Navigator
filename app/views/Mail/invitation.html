@@ -1,0 +1,41 @@
+<table>
+<tr>
+	<td>TAH Navigator</td>
+</tr>
+<tr>
+	<td>
+		Welcome
+		#{if firstname != null}
+			 ${firstname} 
+			 #{if lastname != null}
+			 	${lastname}
+			 #{/if}
+		#{/if},
+		#{else}
+			Welcome user,
+		#{/else}
+		<br/><br/>We welcome you to TAH Navigator. As per our communication you appointment is scheduled. To get more details please create your account.
+		</td>
+	
+</tr>
+<tr>
+	<td>
+		<br/><br/>
+	</td>
+</tr>
+<tr>
+	<td>
+		<a target="_new" href="${url}/createinvited/${id}">Click here</a> to create your account.
+	</td>
+</tr>
+<tr>
+	<td>
+		<br/><br/>
+	</td>
+</tr>
+<tr>
+	<td>
+		TAH Navigator
+	</td>
+</tr>
+</table>

@@ -10,7 +10,7 @@
       #{ifErrors}
       #{errors}
       <!-- <p class="alert alert-danger">${error}</p> -->
-      <p class="alert alert-danger">It looks like this email doesn't exist. <a href="@{Application.create()}">Do you want to register?</a></p>
+      <p class="alert alert-danger">${error} <a href="@{Application.create()}">Do you want to register?</a></p>
       <!-- <p class="alert alert-danger">Incorrect password. <a href="@{Application.forgot()}">Would you like to reset it?</a></p> -->
       #{/errors}
       #{/ifErrors}
@@ -23,7 +23,7 @@
 
         <form action="@{authenticate()}" method="post" id="loginForm">
           <div class="input-group input-group-lg"> <span class="input-group-addon"><img alt="" src="/public/images/em-img.png" style="height: 14px;opacity:0.6;"></span>
-            <input class="form-control" style="border-radius: 0 5px 5px 0 !important;" placeholder="Enter Email or Username"
+            <input class="form-control" style="border-radius: 0 5px 5px 0 !important;" placeholder="Enter Email"
             name="email" type="email" id="email"
             value="${flash.email}" autofocus required
             data-match-error="Wrong email address" data-error="Enter Email Address">

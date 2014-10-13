@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -24,10 +25,10 @@ import models.CareTeamMemberDTO;
 import models.DesignationMasterDTO;
 import models.DiseaseMasterDTO;
 import models.ExpertDetailDTO;
+import models.InvitedDTO;
 import models.NoteDTO;
 import models.PatienCareTeamDTO;
 import models.PatientDetailDTO;
-import models.PatientDistressDTO;
 import models.UserCertificateDTO;
 import models.UserDTO;
 import models.UserDetailsDTO;
@@ -53,15 +54,19 @@ import nav.dao.UserTypeDAO;
 import nav.dto.CareMember;
 import nav.dto.DistressBean;
 import nav.dto.PatientBean;
+import nav.dto.SignUpMemberBean;
 import nav.dto.UserBean;
+import notifiers.Mail;
 
 import org.apache.commons.io.IOUtils;
-
-import com.google.gson.JsonObject;
+import org.apache.commons.lang.StringUtils;
 
 import play.mvc.Controller;
 import play.mvc.With;
 import util.CommonUtil;
+
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 
 @Check({"care","care"})
 @With( { Secure.class } )
@@ -143,6 +148,111 @@ public class Care extends Controller {
         render(user,expertDetail,patients);
     }
 	
+	public static void invite() {
+		UserBean user = CommonUtil.loadCachedUser(session);
+		System.out.println(session.getId());
+		ExpertDetailDTO expertDetail = ProfileDAO.getExpertByField("id", user.getId());
+		List<UserDTO> drList = UserDAO.getAll("5","");
+        render(user,expertDetail,drList);
+	}
+	
+	public static void sendInvitation(String email,String firstname,String lastname,String purposeText, String treatmentProcessStep, String time,String schDate,String center,int memberid, 
+			String address1,String city,String state,String zip) {
+		 validation.clear();
+		System.out.println("email: "+ email);
+		System.out.println("firstname: "+ firstname);
+		System.out.println("lastname: "+ lastname);
+		System.out.println("purposeText: "+ purposeText);
+		System.out.println("treatmentProcessStep: "+ treatmentProcessStep);
+		System.out.println("time: "+ time);
+		System.out.println("schDate: "+ schDate);
+		System.out.println("center: "+ center);
+		System.out.println("memberid: "+ memberid);
+		
+		System.out.println("address1: "+ address1);
+		System.out.println("city: "+ city);
+		System.out.println("state: "+ state);
+		System.out.println("zip: "+ zip);
+	   	 validateMember(email);
+	   	 System.out.println(validation.hasErrors());
+	   	 if (validation.hasErrors()) {
+	            params.flash();
+	            validation.keep();
+	      
+	            JsonObject obj = new JsonObject();
+				obj.add("status", new JsonPrimitive("300"));
+				renderJSON(obj);
+	        } 
+		
+		try {
+			AddressDTO address = new AddressDTO();
+			address.setCity(city);
+			address.setLine1(address1);
+			address.setState(state);
+			address.setZip(zip);
+
+			BaseDAO.save(address);
+
+			InvitedDTO app = new InvitedDTO();
+			app.setEmail(email);
+			app.setFirstname(firstname);
+			app.setLastname(lastname);
+			app.setPurposeText(purposeText);
+			if(StringUtils.isNotBlank(treatmentProcessStep))
+				app.setTreatementStep(treatmentProcessStep);
+
+			app.setAppointmenttime(time);
+
+			Date appointmentDate = new SimpleDateFormat("MM/dd/yyyy").parse(schDate);
+			app.setAppointmentdate(appointmentDate);
+
+			app.setAppointmentcenter(center);
+
+			UserDTO caremember = UserDAO.getUserBasicByField("id", memberid);
+			app.setCaremember(caremember);
+
+			UserBean user = CommonUtil.loadCachedUser(session);
+			UserDTO addedby = UserDAO.getUserBasicByField("id",user.getId());
+			app.setAddedby(addedby);
+
+			app.setAddressid(address);
+
+			app.setActivateOnSignup(false);
+			app.setInvitationSent(false);
+
+			app.setAddedon(new Date());
+
+			BaseDAO.save(app);
+   		 	String url = "http://"+request.host;
+   		 	Mail.invitation(firstname,lastname,email,app.getId(),url);
+   				 
+		} catch(Exception e) {
+			e.printStackTrace();
+			JsonObject obj = new JsonObject();
+			obj.add("status", new JsonPrimitive("100"));
+			renderJSON(obj);
+		}
+
+		JsonObject obj = new JsonObject();
+		obj.add("status", new JsonPrimitive("200"));
+		renderJSON(obj);
+	}
+    private static void validateMember(String member) {
+    	if(member != null) {
+    		System.out.println("Not null");
+    		if (!validation.hasError("member.email")) {
+    			System.out.println("Not null email");
+    			System.out.println(member);
+    			UserBean user = UserDAO.getByUserEmail(member);
+    			if(user != null) {
+    				validation.addError("member.email", "email.exists", "");
+    			}
+    		} else {
+    			System.out.println("Not null email");
+    		}
+    	}
+	}
+    
 	public static void report(String patientId) {
 		UserBean user = CommonUtil.loadCachedUser(session);
 		System.out.println(session.getId());

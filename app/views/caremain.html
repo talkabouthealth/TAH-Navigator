@@ -189,6 +189,13 @@
             <span class="hidden-xs">Patient Dashboard</span>
           </a>
         </li>
+		<li>
+            #{if pageType == 'invite'}<a href="#" class="active">#{/if}
+            #{else}<a href="@{Care.invite()}">#{/else}
+            <i class="fa fa fa-inbox"></i>
+            <span class="hidden-xs">Invite New patient</span>
+          </a>
+        </li>
         <!--
         <li class="dropdown">
           #{if pageType == 'report'}<a href="#" class="active">#{/if}

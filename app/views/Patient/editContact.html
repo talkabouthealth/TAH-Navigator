@@ -23,7 +23,7 @@
 				    		<div class="form-group for-patient">
 				    		 	<div class="input-group">
 						    		<input type="text" 
-									#{if userDto != null}  
+									#{if userDto != null && userDto.dob != null}  
 									    value="${userDto.dob.format('MM/dd/yyy')}"
 								    #{/if} 
 								    class="form-control datepicker" name="dob" value="${flash['userDto.dob']}" placeholder="Date of birth" data-date-format="mm/dd/yyyy" data-date-viewmode="day" data-date-minviewmode="day">

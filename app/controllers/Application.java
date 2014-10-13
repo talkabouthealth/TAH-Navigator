@@ -3,17 +3,21 @@ package controllers;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import models.AppointmentDTO;
 import models.ContactTypeDTO;
+import models.InvitedDTO;
 import models.PatientDistressDTO;
 import models.SecurityQuestionDTO;
+import models.UserDTO;
 import models.UserDetailsDTO;
 import models.UserTypeDTO;
+import nav.dao.BaseDAO;
 import nav.dao.ContactTypeDAO;
 import nav.dao.DistressDAO;
+import nav.dao.InvitationDAO;
 import nav.dao.LoginHistoryDAO;
 import nav.dao.SecurityQuestionDAO;
 import nav.dao.UserDAO;
@@ -135,8 +139,7 @@ public class Application extends Controller {
     		 //Mail for welcome user may needed in future.
     		 System.out.println("Application.java - User email: " + detailDto.getEmail());
     		 
-    		 String url = "http://"+request.host;
-    		 Mail.activation(detailDto,url);
+    		
     		 LoginHistoryDAO.saveLogin(member.getEmail(),"local",false,session.getId());
     		 if(user.getUserType() == 'p') {
 //    			 String userId = user.getId()+"";
@@ -145,9 +148,40 @@ public class Application extends Controller {
     			 CommonUtil.refreshCachedUser(session);
     			 session.put("usertype", "user");
     			 session.put("showdistress", "true");
+    			 
+    			 if(member.getInvitationId() != null && !member.getInvitationId().equalsIgnoreCase("0")) {
+    			    	Integer intId = new Integer(member.getInvitationId());
+    			    	InvitedDTO invitationdto = InvitationDAO.getDetailsByField("id",intId);
+
+    					AppointmentDTO app = new AppointmentDTO();
+    					app.setAddedby(invitationdto.getAddedby());
+    					app.setAddedon(invitationdto.getAddedon());
+    					app.setAddressid(invitationdto.getAddressid());
+    					app.setAppointmentcenter(invitationdto.getAppointmentcenter());
+    					app.setAppointmentdate(invitationdto.getAppointmentdate());
+    					app.setAppointmenttime(invitationdto.getAppointmenttime());
+    					app.setCaremember(invitationdto.getCaremember());
+   						app.setPurposeText(invitationdto.getPurposeText());
+   						app.setTreatementStep(invitationdto.getTreatementStep());
+    					app.setPatientid(detailDto.getUser());
+    					BaseDAO.save(app);
+
+    					UserDTO usr = detailDto.getUser();
+						usr.setIsverified(true);
+						usr.setActive(true);
+						BaseDAO.update(usr);
+
+						invitationdto.setActivateOnSignup(true);
+						BaseDAO.update(invitationdto);
+    			 } else {
+    				 String url = "http://"+request.host;
+    	    		 Mail.activation(detailDto,url);
+    			 }
     			 Patient.index();
 //    			 render("Application/distress.html",userId,fromPage);
     		 } else {
+    			 String url = "http://"+request.host;
+	    		 Mail.activation(detailDto,url);
     			 Static.success();
     		 }
     	 }
@@ -238,7 +272,28 @@ public class Application extends Controller {
 			Static.pageNotFound();
 		}
 	}
-    
+
+    public static void createinvited(String id) throws Throwable {
+    	System.out.println("ID: " + id);
+    	Integer intId = new Integer(id);
+    	InvitedDTO invitationdto = InvitationDAO.getDetailsByField("id",intId);
+    	
+    	if (invitationdto == null) {
+    		render("Application/createerror.html");
+    	} else {
+	    	String invitationId = id;
+	    	String fname = invitationdto.getFirstname();
+	    	String lname = invitationdto.getLastname();
+	    	String email = invitationdto.getEmail();
+	
+	    	List<SecurityQuestionDTO> securityQuestionList =  SecurityQuestionDAO.getSecurityQuestions();
+	    	List<UserTypeDTO> userTypelist = UserTypeDAO.getUserTypeList();
+	    	List<ContactTypeDTO> contactTypes =  ContactTypeDAO.getContactTypeList();
+	    	
+	    	render("Application/create.html",fname,lname,email,invitationId,securityQuestionList,userTypelist,contactTypes);
+    	}
+    }
+
     public static void userName(String userId) {
     	render("Navigator demo User");
     }
