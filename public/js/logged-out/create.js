@@ -4,7 +4,7 @@
 	var Step = function(opts) {
 		this.index = opts.index;
 		this.step = opts.el;
-		this.header = this.step.find('.header');
+		this.header = this.step.find('.headerc');
 		this.content = this.step.find('.content');
 		this.status = this.header.find('.status');
 		this.statusSpan = this.status.find('span');
