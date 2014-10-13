@@ -61,7 +61,10 @@
 		}
 	}
     
-    .validate_btn {
+    .validate_btn[verified="no"] {
         background-color: @red;
+    }
+    .validate_btn[verified="yes"] {
+        background-color: @blue;
     }
 }
