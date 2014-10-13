@@ -1,63 +1,57 @@
 #{extends 'outermain.html' /}
 <div class="registration-steps">
-         <!-- <form role="form"> -->
-       	  #{form @Application.register() , id:'signup' }
-       	    <ul class="list-group">
-						#{ifErrors}
-							   <li class="list-group-item list	-group-item-warning">Validation failed! Please correct the following errors,</li>
-						   #{errors}
-						      <li class="list-group-item list-group-item-danger">${error}</li>
-						   #{/errors}
-						#{/ifErrors}
-						#{if flash.contains("error") }
-							<li class="list-group-item list-group-item-danger">${flash.error}</li>
-						#{/if}
-						  </ul>
+	<!-- <form role="form"> -->
+	#{form @Application.register() , id:'signup' }
+	<ul class="list-group">
+		#{ifErrors}
+		<li class="list-group-item list	-group-item-warning">Validation failed! Please correct the following errors,</li>
+		#{errors}
+		<li class="list-group-item list-group-item-danger">${error}</li>
+		#{/errors}
+		#{/ifErrors}
+		#{if flash.contains("error") }
+		<li class="list-group-item list-group-item-danger">${flash.error}</li>
+		#{/if}
+	</ul>
 	<ul class="accordion">
 		<li class="step step-1">
 			<div class="header">
 				<p class="status"><span class="not-yet-completed">Not Yet Completed</span> <i class="fa fa-chevron-down fa-chevron-up fa-lg"></i></p>
-				<h2><span>Step 1:</span> Username / Password</h2>
+				<h2><span>Step 1:</span> Email / Password</h2>
 			</div>
 			<div class="content">
-			<div class="col-md-12">
-				*{Removed all other user types as only patient is supported to signup now.}*
-				*{
-		        <div class="form-group">
-				    <label for="exampleInputEmail1">Patient, caregiver, family, doctor etc.</label>
-				    <select id="userType" class="form-control" name="member.userType">
-				    	#{if userTypelist != null}#{list userTypelist, as:'seq'}<option #{if flash['member.userType'].equals(seq.id.toString()) }  selected #{/if} value="${seq.id}">${seq.name}</option>#{/list}#{/if}</select>
-				</div>
-				}*
+				<div class="col-md-12">
+					*{Removed all other user types as only patient is supported to signup now.}*
+					*{
+					<div class="form-group">
+						<label for="exampleInputEmail1">Patient, caregiver, family, doctor etc.</label>
+						<select id="userType" class="form-control" name="member.userType">
+							#{if userTypelist != null}#{list userTypelist, as:'seq'}<option #{if flash['member.userType'].equals(seq.id.toString()) }  selected #{/if} value="${seq.id}">${seq.name}</option>#{/list}#{/if}</select>
+						</div>
+					}*
 
-				<input type="hidden" name="member.userType" value="1"/>
-		        <div class="form-group">
-				    <label for="exampleInputEmail1">Username</label>
-				    <div class="input-group">
-				    <input type="text" class="form-control" name="member.userName" value="${flash['member.userName']}" placeholder="Enter user name" required>
-				    <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
-				    </div>
-				    <div class="help-block with-errors"></div>
-				</div>
-		        <div class="form-group">
-				    <label for="exampleInputEmail1">Password (must be 8 letters or longer and contain at least one number)</label>
-				    <div class="input-group">
-				    <input id="inputPassword" type="password" class="form-control" name="member.password" placeholder="Password" data-toggle="validator" data-minlength="8" required>
-				     <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
-				    </div>
-				    <p class="help-block">Password must be 8 letters or longer and contain at least one number</p>
-				</div>
-		        <div class="form-group">
-				    <label for="exampleInputEmail1">Verify Password</label>
-				    <div class="input-group">
-					<input type="password" class="form-control" name="member.repassword" placeholder="Verify Password" data-match="#inputPassword" data-match-error="Whoops, these don't match" required>
-					 <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
-				    </div>
-					<div class="help-block with-errors"></div>
+					<input type="hidden" name="member.userType" value="1"/>
+					<div class="form-group">
+						<label for="exampleInputEmail1">Email</label>
+						<div class="input-group">
+							<input type="text" class="form-control" name="member.userName" value="${flash['member.userName']}" placeholder="Enter email" required>
+							<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+						</div>
+						<div class="help-block with-errors"></div>
+					</div>
+					<div class="form-group">
+						<label for="exampleInputEmail1">Password (must be 8 letters or longer and contain at least one number)</label>
+						<div class="input-group">
+							<input id="inputPassword" type="password" class="form-control" name="member.password" placeholder="Password" data-toggle="validator" data-minlength="8" required>
+							<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+						</div>
+						<p class="help-block">Password must be 8 letters or longer and contain at least one number</p>
+					</div>
 				</div>
 			</div>
-			</div>
-		</li>
+		</li><!-- step 1 -->
+
+
 		<li class="step step-2">
 			<div class="header">
 				<p class="status"><span class="not-yet-completed">Not Yet Completed</span> <i class="fa fa-chevron-down fa-chevron-up fa-lg"></i></p>
@@ -66,28 +60,28 @@
 			<div class="content">
 
 
-			  	<div class="form-group">
-				    <label class="for-patient">First Name</label>
-				    <label class="for-doctor">Name</label>
-				     <div class="input-group">
-				    <input type="text" class="form-control" name="member.firstName" value="${flash['member.firstName']}" placeholder="Enter first name" required>
-				     <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
-				      </div>
-				      <div class="help-block with-errors"></div>
-				    <label class="for-doctor">(As you would like it to appear for patients. For example: John Smith, MD or Nancy Smith, RN)</label>
+				<div class="form-group">
+					<label class="for-patient">First Name</label>
+					<label class="for-doctor">Name</label>
+					<div class="input-group">
+						<input type="text" class="form-control" name="member.firstName" value="${flash['member.firstName']}" placeholder="Enter first name" required>
+						<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+					</div>
+					<div class="help-block with-errors"></div>
+					<label class="for-doctor">(As you would like it to appear for patients. For example: John Smith, MD or Nancy Smith, RN)</label>
 				</div>
-		 		<div class="form-group for-patient">
-				    <label for="exampleInputEmail1">Last Name</label>
-				    <input type="text" class="form-control" name="member.lastName" value="${flash['member.lastName']}" placeholder="Enter last name">
+				<div class="form-group for-patient">
+					<label for="exampleInputEmail1">Last Name</label>
+					<input type="text" class="form-control" name="member.lastName" value="${flash['member.lastName']}" placeholder="Enter last name">
 				</div>
 
-		    	<div class="form-group for-patient">
-				    <label for="exampleInputEmail1">Date of birth (mm/dd/yyyy)</label>
-				    <div class="input-group">
-					    <!--<input type="text" class="form-control datepicker" id="hasDatepicker" name="member.dob" value="${flash['member.dob']}" placeholder="Enter date of birth" data-date-format="mm/dd/yyyy" data-date-viewmode="day" data-date-minviewmode="day">-->
+				<div class="form-group for-patient">
+					<label for="exampleInputEmail1">Date of birth (mm/dd/yyyy)</label>
+					<div class="input-group">
+						<!--<input type="text" class="form-control datepicker" id="hasDatepicker" name="member.dob" value="${flash['member.dob']}" placeholder="Enter date of birth" data-date-format="mm/dd/yyyy" data-date-viewmode="day" data-date-minviewmode="day">-->
 						<input type="text" class="form-control" id="hasDatepicker" name="member.dob" value="${flash['member.dob']}" placeholder="Enter date of birth (mm/dd/yyyy)" data-date-format="mm/dd/yyyy" data-date-viewmode="day" data-date-minviewmode="day">
 						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-			  		</div>
+					</div>
 				</div>
 
   				<!--
@@ -107,49 +101,28 @@
 				</div>-->
 
 
-	 		<div class="form-group">
-			    <label for="exampleInputEmail1">Email</label>
-			    <div class="input-group">
-			    <input id="inputEmail" type="email" class="form-control" value="${flash['member.email']}" name="member.email" placeholder="Enter email" required>
-			     <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
-				    </div>
-			     <div class="help-block with-errors"></div>
-			</div>
-	    	<div class="form-group">
-			    <label for="exampleInputEmail1">Verify Email</label>
-			    <div class="input-group">
-			    <input type="email" class="form-control" name="member.verifyemail" value="${flash['member.verifyemail']}" placeholder="Verify email" data-match="#inputEmail" data-match-error="Whoops, email don't match"  required>
-			       <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
-				    </div>
-			    <div class="help-block with-errors"></div>
-			</div>
-		  	<div class="form-group for-patient">
-			    <label for="exampleInputEmail1">Select your preferred method of receiving reminders and notifications</label>
-			    <select class="form-control" name="member.contactMethod">
-				    	#{if contactTypes != null}
-				    		#{list contactTypes, as:'seq'}
-				    			<option #{if flash['member.contactMethod'].equals(seq.id.toString()) }  selected #{/if}  value="${seq.id}">${seq.name}</option>
-				    		#{/list}
-				    	#{/if}
-				</select>
-			</div>
-	    	<div class="form-group for-patient">
-			    <label for="exampleInputEmail1">Mobile Phone (i.e. 352-750-1234)</label>
-			    <input type="text" class="form-control" name="member.mobile" value="${flash['member.mobile']}" placeholder="Enter mobile number (i.e. 352-750-1234)">
-			</div>
-	    	<div class="form-group for-patient">
-			    <label for="exampleInputEmail1">Home Phone (i.e. 352-750-1234)</label>
-			    <input type="text" class="form-control" name="member.homePhone" value="${flash['member.homePhone']}" placeholder="Enter home phone (i.e. 352-750-1234)">
-			</div>
-
-			<div class="form-group for-patient">
-				    <label for="exampleInputEmail1">Emergency or Support Contact Name</label>
-				    <input type="text" class="form-control" name="member.supportContactName" value="${flash['member.supportContactName']}" placeholder="Enter support contact name">
-			</div>
-			<div class="form-group for-patient">
-			    <label for="exampleInputEmail1">Emergency or Support Contact Phone (i.e. 352-750-1234)</label>
-			    <input type="text" class="form-control" name="member.supportContactPhone" value="${flash['member.supportContactPhone']}" placeholder="Enter support contact phone (i.e. 352-750-1234)">
-			</div>
+				<div class="form-group for-patient">
+					<label for="exampleInputEmail1">Select your preferred method of receiving reminders and notifications</label>
+					<select class="form-control" name="member.contactMethod">
+						#{if contactTypes != null}
+						#{list contactTypes, as:'seq'}
+						<option #{if flash['member.contactMethod'].equals(seq.id.toString()) }  selected #{/if}  value="${seq.id}">${seq.name}</option>
+						#{/list}
+						#{/if}
+					</select>
+				</div>
+				<div class="form-group for-patient">
+					<label for="exampleInputEmail1">Phone (i.e. 352-750-1234)</label>
+					<input type="text" class="form-control" name="member.mobile" value="${flash['member.mobile']}" placeholder="Enter mobile number (i.e. 352-750-1234)">
+				</div>
+				<div class="form-group for-patient">
+					<label for="exampleInputEmail1">Emergency or Support Contact Name</label>
+					<input type="text" class="form-control" name="member.supportContactName" value="${flash['member.supportContactName']}" placeholder="Enter support contact name">
+				</div>
+				<div class="form-group for-patient">
+					<label for="exampleInputEmail1">Emergency or Support Contact Phone (i.e. 352-750-1234)</label>
+					<input type="text" class="form-control" name="member.supportContactPhone" value="${flash['member.supportContactPhone']}" placeholder="Enter support contact phone (i.e. 352-750-1234)">
+				</div>
 
 
 			</div><!-- content -->
@@ -161,25 +134,25 @@
 				<h2><span>Step 3:</span> Security Questions & Terms of Service</h2>
 			</div>
 			<div class="content">
-<div class="form-group">
+				<div class="form-group">
 
-				    <label for="exampleInputEmail1">Security question</label>
-				    <select class="form-control" name="member.seq1">
-				    	#{if securityQuestionList != null}
-				    		#{list securityQuestionList, as:'seq'}
-				    			<option #{if flash['member.seq1'].equals(seq.id.toString()) } selected #{/if} value="${seq.id}">${seq.question}</option>
-				    		#{/list}
-				    	#{/if}
-				    	</select>
-				    *{ <input type="text" class="form-control" name="member.seq1" placeholder="Security question 1">}*
+					<label for="exampleInputEmail1">Security question</label>
+					<select class="form-control" name="member.seq1">
+						#{if securityQuestionList != null}
+						#{list securityQuestionList, as:'seq'}
+						<option #{if flash['member.seq1'].equals(seq.id.toString()) } selected #{/if} value="${seq.id}">${seq.question}</option>
+						#{/list}
+						#{/if}
+					</select>
+					*{ <input type="text" class="form-control" name="member.seq1" placeholder="Security question 1">}*
 				</div>
-		 		<div class="form-group">
-				    <label for="exampleInputEmail1">Security answer</label>
-				     <div class="input-group">
-				    <input type="text" class="form-control" name="member.sea1"  value="${flash['member.sea1']}" placeholder="Enter Security answer 1" required>
-				     <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
-				    </div>
-				    <div class="help-block with-errors"></div>
+				<div class="form-group">
+					<label for="exampleInputEmail1">Security answer</label>
+					<div class="input-group">
+						<input type="text" class="form-control" name="member.sea1"  value="${flash['member.sea1']}" placeholder="Enter Security answer 1" required>
+						<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+					</div>
+					<div class="help-block with-errors"></div>
 				</div>
 <!--	    	<div class="form-group">
 				    <label for="exampleInputEmail1">Security question 2</label>
@@ -199,17 +172,17 @@
 				    <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
 				    </div>
 				    <div class="help-block with-errors"></div>
-				</div>-->
-<div class="checkbox">
-			    <label>
-			      <input name="member.tosFlag" type="checkbox" required> I agree to the Moffitt Cancer Center - TVRH<i class="fa fa-square-o"></i>
-			    </label>
-			     <a href="javascript:window.open('@{Static.tos()}','Terms of Service','width=700,height=700')" target="_blank">Terms of Service</a> and <a href="javascript:window.open('@{Static.privacy()}','Privacy Policy','width=700,height=700')" target="_blank">Privacy Policy</a>.
+				  </div>-->
+				  <div class="checkbox">
+				  	<label>
+				  		<input name="member.tosFlag" type="checkbox" required> I agree to the Moffitt Cancer Center - TVRH<i class="fa fa-square-o"></i>
+				  	</label>
+				  	<a href="javascript:window.open('@{Static.tos()}','Terms of Service','width=700,height=700')" target="_blank">Terms of Service</a> and <a href="javascript:window.open('@{Static.privacy()}','Privacy Policy','width=700,height=700')" target="_blank">Privacy Policy</a>.
 
 
 
-			     <div class="help-block with-errors"></div>
-			</div>
+				  	<div class="help-block with-errors"></div>
+				  </div>
 <!--			<div class="checkbox">
 			    <label>
 			      <input name="member.smtFlag" type="checkbox" required> I accept the Security Messaging Terms and Conditions.
@@ -217,35 +190,44 @@
 			    </label>
 			     <div class="help-block with-errors"></div>
 			</div>
--->
-			</div><!-- content -->
-		</li>
-	</ul>
+		-->
+	</div><!-- content -->
+</li>
+</ul>
 </div>
 
 <div class="container">
 
-      <div class="row marketing">
+	<div class="row marketing">
 
 
 
 
 
-			<div class="form-group">
+		<div class="form-group">
 			<button type="submit" class="btn-primary btn-lg btn-block" >Submit</button>
-			</div>
-
-         #{/form}
 		</div>
 
-    </div> <!-- /container -->
-    <script>
+		#{/form}
+	</div>
+
+</div> <!-- /container -->
+<script>
 <!--
 $(document).ready(function() {
 // 	$('.datepicker').datepicker();
-	$('#hasDatepicker').datepicker();
-	$('#signup').validator();
-	var userType = $("#userType").val();
+// $('#hasDatepicker').datepicker();
+$('#signup').validator();
+var userType = $("#userType").val();
+if(userType == '5' || userType == '4') {
+	$(".for-patient").hide();
+	$(".for-doctor").show();
+} else {
+	$(".for-patient").show();
+	$(".for-doctor").hide();
+}
+$("#userType").change(function(){
+	var userType = $(this).val();
 	if(userType == '5' || userType == '4') {
 		$(".for-patient").hide();
 		$(".for-doctor").show();
@@ -253,16 +235,8 @@ $(document).ready(function() {
 		$(".for-patient").show();
 		$(".for-doctor").hide();
 	}
-	$("#userType").change(function(){
-		var userType = $(this).val();
-		if(userType == '5' || userType == '4') {
-			$(".for-patient").hide();
-			$(".for-doctor").show();
-		} else {
-			$(".for-patient").show();
-			$(".for-doctor").hide();
-		}
-	});
+});
 });
 -->
 </script>
+<script src="/public/js/logged-out/create.js"></script>

@@ -1,0 +1,42 @@
+table.table>tbody>tr>td {
+  padding: 0;
+}
+.table{
+  font-size: @body-font;
+
+  th {
+    padding: @table-cell-padding;
+  }
+
+  > thead > tr > td, > tbody > tr > td, > tfoot > tr > td {
+    padding: 0;
+
+  }
+
+  td {
+  	padding: 0;
+  	position: relative;
+
+  	div {
+  		max-height: @table-cell-max-height;
+  		overflow: hidden;
+
+  		&.tooltipstered {
+  			cursor: pointer;
+  		}
+
+  		&:before {
+  			@height: 35px;
+  			content: "";
+  			display: block;
+  			position: absolute;
+      top: @table-cell-max-height - @height + 20px; // we add 20px because we removed padding from the div.
+      left: 0;
+      height: @height;
+      width: 100%;
+      .gradient(rgba(249,249,249,0), rgba(249,249,249,1))
+    }
+  }
+}
+}
+

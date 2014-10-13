@@ -1,8 +1,8 @@
 @column-one: 20%;
-@column-two: 20%;
-@column-three: 25%;
-@column-four: 25%;
-@column-five: 10%;
+@column-two: 10%;
+@column-three: 15%;
+@column-four: 15%;
+@column-five: 40%;
 
 table.radiation-treatment, table.chemotherapy, table.surgery {
   width: 100%;
@@ -46,7 +46,8 @@ table.chemotherapy {
 
 table.surgery {
   .region {
-    width: @column-three;
+    width: @column-three + @column-four;
+
   }
 }
 
