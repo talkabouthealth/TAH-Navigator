@@ -47,6 +47,20 @@
 			</div>
 		</div>
 		<div class="form-group form-group-sm">
+			<label class="col-xs-3 control-label" for="rt_schedule">Physician/Nurse</label>
+			<div class="col-xs-8 form-group input-group">
+				#{if drList != null}
+					<select class="memberselect" name="memberid">
+					#{list drList, as:'seq'}
+						<option value="${seq.id}"> ${seq.name.usreNameNew(seq.id)} </option>
+					#{/list}
+					</select>
+				#{/if}
+				#{else} No expert assigned #{/else}
+			</div>
+		</div>
+		
+		<div class="form-group form-group-sm">
 			<label class="col-xs-3 control-label" for="rt_schedule">Purpose of Appointment</label>
 			<div class="col-xs-8 form-group input-group">
 				<input type="text" id="appointment_purpose" name="purposeText" class="form-control nomargin appointment_purpose"  value="1st Appointment With Radiation Oncologist" required="required"> 
@@ -74,19 +88,7 @@
 				<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
 			</div>
 		</div>
-		<div class="form-group form-group-sm">
-			<label class="col-xs-3 control-label" for="rt_schedule">Physician/Nurse</label>
-			<div class="col-xs-8 form-group input-group">
-				#{if drList != null}
-					<select class="memberselect" name="memberid">
-					#{list drList, as:'seq'}
-						<option value="${seq.id}"> ${seq.name.usreNameNew(seq.id)} </option>
-					#{/list}
-					</select>
-				#{/if}
-				#{else} No expert assigned #{/else}
-			</div>
-		</div>
+		
 		<div class="form-group form-group-sm">
 			<label class="col-xs-3 control-label" for="rt_schedule">Address1</label>
 			<div class="col-xs-8 form-group input-group">
