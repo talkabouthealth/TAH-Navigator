@@ -34,6 +34,9 @@ public class PatientDistressDTO {
 	
 	@Column(name = "otherdetail")
 	private String otherdetail;
+	
+	@Column(name="update_by")
+	private Integer updateBy;
 
 	public int getId() {
 		return id;
@@ -81,5 +84,13 @@ public class PatientDistressDTO {
 
 	public void setOtherdetail(String otherdetail) {
 		this.otherdetail = otherdetail;
+	}
+
+	public Integer getUpdateBy() {
+		return updateBy;
+	}
+
+	public void setUpdateBy(Integer updateBy) {
+		this.updateBy = updateBy;
 	}
 }

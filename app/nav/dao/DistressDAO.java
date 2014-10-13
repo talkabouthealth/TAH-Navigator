@@ -40,6 +40,25 @@ public class DistressDAO {
 		return distressDTO;
 	}
 	
+	public static PatientDistressDTO updateDistressByCareTeam(int distressValue, UserDTO user, Integer updateBy, Date daterecrded, String otherDetail) {
+		PatientDistressDTO distressDTO = new PatientDistressDTO();
+		distressDTO.setDaterecrded(daterecrded);
+		distressDTO.setDistressvalue(distressValue);
+		distressDTO.setThrough(GlobalConstant.DISTRESS_MODE_WEB);
+		distressDTO.setUser(user);
+		distressDTO.setUpdateBy(updateBy);
+		distressDTO.setOtherdetail(otherDetail);
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.persist(distressDTO);
+			em.getTransaction().commit();
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+		} 
+		return distressDTO;
+	}
+	
 	public static boolean savePatientDistressDetails(int distresstypeid,boolean distressvalue,PatientDistressDTO patiendistress) {
 
 		PatientDistressDetailDTO distressDTO = new PatientDistressDetailDTO();

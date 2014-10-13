@@ -21,11 +21,10 @@ import play.mvc.Controller;
 import play.mvc.With;
 import util.CommonUtil;
 
-@Check({"user","user"})
 @With( { Secure.class } )
 public class Distress  extends Controller {
 
-	public static void save(String curDist,String [] distressType,String otherDetail,String daterecrded) {
+	public static void save(String curDist,String [] distressType,String otherDetail,String daterecrded, Integer updateBy, Integer patientId) {
 
 //		System.out.println("dist : " + curDist);
 //		System.out.println("otherDetail : " + otherDetail);
@@ -39,10 +38,19 @@ public class Distress  extends Controller {
 		if(StringUtils.isBlank(otherDetail)) {
 			otherDetail = "";
 		}
-		UserBean user = CommonUtil.loadCachedUser(session);
-		UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());
+		UserBean user = null;
+		UserDetailsDTO userDto = null;
 		int distInt = Integer.parseInt(curDist);
-		PatientDistressDTO dto = DistressDAO.savePatientDistress(distInt,userDto.getUser(),otherDetail,dtCreated);
+		PatientDistressDTO dto = null;
+		if (updateBy != null) {
+			UserDTO uDto = UserDAO.getUserBasicByField("id", patientId);
+			dto = DistressDAO.updateDistressByCareTeam(distInt, uDto, updateBy, dtCreated, otherDetail);
+		}
+		else {
+			user = CommonUtil.loadCachedUser(session);
+			userDto = UserDAO.getDetailsById(user.getId());
+			dto = DistressDAO.savePatientDistress(distInt,userDto.getUser(),otherDetail,dtCreated);
+		}
 		if(distressType != null) {
 			for (String string : distressType) {
 				System.out.println("string : " + string);

@@ -22,3 +22,5 @@ CREATE TABLE nav.appointmentalert (
     alert_detail character varying(200),
     alert_sent timestamp without time zone
 );
+
+ALTER TABLE nav.patientdistress ADD COLUMN update_by INTEGER DEFAULT NULL;
