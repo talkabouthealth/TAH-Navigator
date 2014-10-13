@@ -10,7 +10,14 @@
       #{ifErrors}
       #{errors}
       <!-- <p class="alert alert-danger">${error}</p> -->
-      <p class="alert alert-danger">${error} <a href="@{Application.create()}">Do you want to register?</a></p>
+       <p class="alert alert-danger">
+      #{if 'password' == error.key}
+      ${error}
+      #{/if}
+      #{else}
+      ${error} <a href="@{Application.create()}">Do you want to register?</a>
+      #{/else}
+      </p>
       <!-- <p class="alert alert-danger">Incorrect password. <a href="@{Application.forgot()}">Would you like to reset it?</a></p> -->
       #{/errors}
       #{/ifErrors}
