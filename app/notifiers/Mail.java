@@ -32,8 +32,7 @@ public class Mail extends Mailer {
 	public static void invitation(String firstname,String lastname, String email,int id,String url) {
 		MailTemplateDTO mailTemplateDto =  MailTemplateDAO.getByTemplateName("invitation");
 		setSubject(mailTemplateDto.getSubject());
-//		addRecipient(email);
-		addRecipient("aawte.umesh@s5infotech.com");
+		addRecipient(email);
 		setFrom(mailTemplateDto.getForm());
 		send(firstname,lastname,id,url);
 	}
