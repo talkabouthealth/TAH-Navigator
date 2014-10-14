@@ -59,7 +59,6 @@ public class UserDAO {
 			EntityManager em = JPAUtil.getEntityManager();
 			TypedQuery<UserDTO> query = em.createQuery("FROM UserDTO c WHERE upper(c.email) = upper(:email)", UserDTO.class); 
 			query.setParameter("email", email);
-			query.setParameter("name", email);
 			dto = query.getSingleResult();
 			if(dto != null) {
 				account = new UserBean();
