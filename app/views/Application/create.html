@@ -40,10 +40,10 @@
 						<label for="exampleInputEmail1">Email</label>
 						<div class="input-group">
 							#{if email}
-			    				<input type="email" class="form-control" name="member.email" value="${email}" placeholder="Enter email" required>
+			    				<input id="emailField" type="email" class="form-control" name="member.email" value="${email}" placeholder="Enter email" required>
 			    			#{/if}
 			    			#{else}
-			    				<input type="email" class="form-control" name="member.email" value="${flash['member.email']}" placeholder="Enter email" required>
+			    				<input id="emailField" type="email" class="form-control" name="member.email" value="${flash['member.email']}" placeholder="Enter email" required>
 			    			#{/else}
 							<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
 						</div>
@@ -232,7 +232,18 @@
 <!--
 $(document).ready(function() {
 $('#hasDatepicker').datepicker();
-$('#signup').validator();
+var valid = $('#signup').validator();
+
+$("#emailField").blur(function(e) {
+	$.post('/application/validateEmail', {email:$(this).val()}, function (data) {
+		if(data.emailused == true) {
+			$("#emailField").parent().parent().find("div.with-errors").html("<ul class='list-unstyled'><li style='color:#d15e5e !important'>This email is already registered, please choose another one.</li></ul>");
+		} else {
+			$("#emailField").parent().parent().find("div.with-errors").html("");
+		}
+	}, "json");
+});
+
 var userType = $("#userType").val();
 if(userType == '5' || userType == '4') {
 	$(".for-patient").hide();
