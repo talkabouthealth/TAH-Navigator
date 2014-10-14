@@ -47,8 +47,33 @@ import nav.dto.SignUpMemberBean;
 import nav.dto.UserBean;
 public class UserDAO {
 
+//	public static UserBean getByUserEmail(String email) {
+//		return getUserByField("email",email);
+//	}
+	
+	
 	public static UserBean getByUserEmail(String email) {
-		return getUserByField("email",email);
+		UserDTO dto = null;
+		UserBean account = null;
+		try {
+			EntityManager em = JPAUtil.getEntityManager();
+			TypedQuery<UserDTO> query = em.createQuery("FROM UserDTO c WHERE upper(c.email) = upper(:email)", UserDTO.class); 
+			query.setParameter("email", email);
+			query.setParameter("name", email);
+			dto = query.getSingleResult();
+			if(dto != null) {
+				account = new UserBean();
+				account.setId(dto.getId());
+				account.setName(dto.getName().trim());
+				account.setEmail(dto.getEmail().trim());
+				account.setUserType(dto.getUserType());
+				account.setActive(dto.isActive());
+				account.setVerifiedFlag(dto.isIsverified());
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return account;
 	}
 	
 	public static UserBean getByUserId(String usreId) {
