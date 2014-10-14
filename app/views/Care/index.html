@@ -76,7 +76,7 @@
 		</div></td>
 		#{if seq.appointmentInfo != null}
 			<td><div>${seq.appointmentInfo.appointmentdate.format("M/dd/yyyy")}</div></td>
-			<td>#{if seq.nextAppointment}${seq.nextAppointment.appointmentdate.format("M/dd/yyyy")}#{/if}</td>
+			<td><div>#{if seq.nextAppointment}${seq.nextAppointment.appointmentdate.format("M/dd/yyyy")}#{/if}#{else}-#{/else}</div></td>
 			<td>
 				<div>
 					#{if seq.appointmentInfo.caremember != null}
@@ -90,7 +90,7 @@
 		#{/if}
 		#{else}
 		<td><div>-</div></td>
-		<td>#{if seq.nextAppointment}${seq.nextAppointment.appointmentdate.format("M/dd/yyyy")}#{/if}</td>
+		<td><div>#{if seq.nextAppointment}${seq.nextAppointment.appointmentdate.format("M/dd/yyyy")}#{/if}#{else}-#{/else}</div></td>
 		<td><div>-</div></td>
 		#{/else}
 		<td class="current-distress"><div>
