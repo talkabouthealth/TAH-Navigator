@@ -7,7 +7,8 @@ var DistressMeter = function() {
   var labelExtreme, labelNone;
 
   var amount = 1;
-
+  var postData;
+  var formURL;
   var page = 1;
   var lastDistress = {};
   var distressRange = {
@@ -123,17 +124,18 @@ var DistressMeter = function() {
     } else if ( page === 2 ) {
       var d = moment(new Date());
       document.forms.distressForm.daterecrded.value = d.format('M/D/YYYY h:m A');
-      var postData = distressForm.serializeArray();
-      var formURL = distressForm.attr("action");
-      $.post(formURL, postData, function( data ) {
-//        distressModal.modal('hide');
-nextPage();
-});
+      postData = distressForm.serializeArray();
+      formURL = distressForm.attr("action");
+      step1.hide();
+      step2.hide();
+      step3.show();
     } else if ( page === 3 ) {
-//    	 distressModal.modal('hide');
-step1.hide();
-step2.hide();
-step3.show();
+    $.post(formURL, postData, function( data ) {
+//        distressModal.modal('hide');
+//nextPage();
+});
+    	 distressModal.modal('hide');
+
 } else if ( page === 4 ) {
  distressModal.modal('hide');
 }
@@ -141,9 +143,17 @@ page++;
 };
 
 var previousPage = function() {
-  step1.show();
-  step2.hide();
-  step3.hide();
+  if (page == 3) {
+    step1.hide();
+    step2.show();
+    step3.hide();
+  }
+  else if (page == 2) {
+    step1.show();
+    step2.hide();
+    step3.hide();
+  }
+  
   page--;
 };
 
