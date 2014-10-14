@@ -14,6 +14,7 @@ public class PatientBean {
 	private DistressBean distress;
 	private BreastCancerInfoDTO breastCancerInfo;
 	private AppointmentDTO appointmentInfo;
+	private AppointmentDTO nextAppointment;
 	private NoteDTO note;
 	
 	public UserDetailsDTO getUserDetails() {
@@ -51,5 +52,11 @@ public class PatientBean {
 	}
 	public void setNote(NoteDTO note) {
 		this.note = note;
+	}
+	public AppointmentDTO getNextAppointment() {
+		return nextAppointment;
+	}
+	public void setNextAppointment(AppointmentDTO nextAppointment) {
+		this.nextAppointment = nextAppointment;
 	}
 }

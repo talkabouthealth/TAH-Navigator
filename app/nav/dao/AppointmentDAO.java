@@ -4,10 +4,10 @@ import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 import util.JPAUtil;
-
 import models.AppointmentDTO;
 import models.NoteDTO;
 import models.PatientMedicationDTO;
@@ -108,6 +108,20 @@ public class AppointmentDAO {
 			e.printStackTrace();
 		} finally {
 			em.close();
+		}
+		return dto;
+	}
+	
+	public static AppointmentDTO nextAppointment(Integer patientId) {
+		AppointmentDTO dto = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		TypedQuery<AppointmentDTO> query = em.createQuery("SELECT a FROM AppointmentDTO a WHERE a.patientid.id = :patientId and a.deleteflag = false and a.appointmentdate >= current_date ORDER BY a.appointmentdate ASC", AppointmentDTO.class);
+		query.setMaxResults(1);
+		query.setParameter("patientId", patientId);
+		try {
+			dto = query.getSingleResult();
+		} catch (NoResultException e) {			
+			e.printStackTrace();
 		}
 		return dto;
 	}

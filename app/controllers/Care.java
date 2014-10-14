@@ -107,7 +107,12 @@ public class Care extends Controller {
 				if(distress !=null) {
 					patient.setDistress(distress);
 				}
-				AppointmentDTO appointment=AppointmentDAO.getLastAppointment(patienCareTeamDTO.getPatien(),new Date());
+				AppointmentDTO appointment=AppointmentDAO.getLastAppointment(patienCareTeamDTO.getPatien(),new Date());				
+				AppointmentDTO nextAppointment = AppointmentDAO.nextAppointment(patienCareTeamDTO.getPatienid());
+				if (nextAppointment != null) {
+					patient.setNextAppointment(nextAppointment);
+				}
+				
 				if(appointment !=null) {
 					patient.setAppointmentInfo(appointment);
 				}

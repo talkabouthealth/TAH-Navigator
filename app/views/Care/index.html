@@ -18,7 +18,7 @@
           <th>NAME</th>
           <th>DIAGNOSIS</th>
           <th>LAST VISIT</th>
-		  <th>LAST VISIT INFO</th>
+		  <th>NEXT VISIT</th>
           <th>LAST MD</th>
           <th>LAST DISTRESS LEVEL</th>
           <th>LAST DISTRESS CHECK-IN</th>
@@ -76,7 +76,7 @@
 		</div></td>
 		#{if seq.appointmentInfo != null}
 			<td><div>${seq.appointmentInfo.appointmentdate.format("M/dd/yyyy")}</div></td>
-			<td><div>${seq.appointmentInfo.purposeText}</div></td>
+			<td>#{if seq.nextAppointment}${seq.nextAppointment.appointmentdate.format("M/dd/yyyy")}#{/if}</td>
 			<td>
 				<div>
 					#{if seq.appointmentInfo.caremember != null}
@@ -90,7 +90,7 @@
 		#{/if}
 		#{else}
 		<td><div>-</div></td>
-		<td><div>-</div></td>
+		<td>#{if seq.nextAppointment}${seq.nextAppointment.appointmentdate.format("M/dd/yyyy")}#{/if}</td>
 		<td><div>-</div></td>
 		#{/else}
 		<td class="current-distress"><div>
