@@ -4,7 +4,9 @@ package controllers;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import models.AppointmentDTO;
 import models.ContactTypeDTO;
@@ -149,7 +151,7 @@ public class Application extends Controller {
     			 session.put("usertype", "user");
     			 session.put("showdistress", "true");
     			 
-    			 if(member.getInvitationId() != null && !member.getInvitationId().equalsIgnoreCase("0")) {
+    			 if(StringUtils.isNotBlank(member.getInvitationId()) && !member.getInvitationId().equalsIgnoreCase("0")) {
     			    	Integer intId = new Integer(member.getInvitationId());
     			    	InvitedDTO invitationdto = InvitationDAO.getDetailsByField("id",intId);
 
