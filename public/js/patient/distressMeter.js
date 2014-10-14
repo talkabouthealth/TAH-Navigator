@@ -9,7 +9,7 @@ var DistressMeter = function() {
   var amount = 1;
 
   var page = 1;
-
+  var lastDistress = {};
   var distressRange = {
     1: 'No Distress',
     2: 'Mild Distress',
@@ -49,11 +49,16 @@ var DistressMeter = function() {
     }
   };
 
-
+  
 
   var launchDistressMeter = function() {
-    amount = 1;
-
+    var amount;
+    if ($.isEmptyObject(lastDistress)) {
+        amount = 1;
+    }
+    else {
+        amount = lastDistress.curDist;
+    }    
     page = 1;
     $("#step1").show();
     distressAmountValue.html(amount);
@@ -64,7 +69,7 @@ var DistressMeter = function() {
 
     $(".otherDetails").val('');
     $('.toggle-switch input[name="distressType"]').prop('checked', false);
-    distressModal.modal({ keyboard: false });
+    distressModal.modal({ keyboard: false, backdrop: 'static' });
     distressModal.on('hidden.bs.modal', function (e) {
     	$("#youTubeVideo").show();
     	$("#youTubeVideoImage").hide();
@@ -97,6 +102,24 @@ var DistressMeter = function() {
       step2.show();
       step3.hide();
       distressAmountText.html(distressRange[amount]);
+      
+      if (!$.isEmptyObject(lastDistress)) {
+        var otherDetail = lastDistress.otherdetail;
+        var distressList = otherDetail.split(",<br/>");        
+        $('div.stepchecker').each(function(index, elm) {
+          var $checkbox = $(elm).find('input[type="checkbox"]');
+          var $stext = $(elm).find("strong");
+          var name = $stext.text();          
+          for (var i = 0; i < distressList.length; i++) {
+            if (name == distressList[i]) {
+              $checkbox.prop("checked", true);
+              break;
+            }   
+          }          
+        });
+      }
+      
+      
     } else if ( page === 2 ) {
       var d = moment(new Date());
       document.forms.distressForm.daterecrded.value = d.format('M/D/YYYY h:m A');
@@ -166,7 +189,19 @@ $(document).ready(function(){
   step3 = distressModal.find('#step3');
   showDistressButton.click(function(e){
     e.preventDefault();
-    launchDistressMeter();
+    var patientId = $(this).attr("patientId");
+    $.post('/distress/lastDistressIn24Hours', {
+        patientId: patientId
+    }, function(data) {
+        if ($.isEmptyObject(data)) {
+            lastDistress = {};
+        }
+        else {
+            lastDistress = data.lastDistress;
+        }        
+        launchDistressMeter();
+    }, "json");
+    
   });
 
   nextPageButton.click(function(e){

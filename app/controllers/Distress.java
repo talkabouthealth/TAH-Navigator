@@ -3,11 +3,15 @@ package controllers;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 
 import nav.dao.DistressDAO;
+import nav.dao.PatientAlert;
 import nav.dao.UserDAO;
+import nav.dto.DistressBean;
 import nav.dto.UserBean;
 import models.PatientDistressDTO;
 import models.UserDTO;
@@ -62,5 +66,22 @@ public class Distress  extends Controller {
 		JsonObject obj = new JsonObject();
 		obj.add("status", new JsonPrimitive("200"));
 		renderJSON(obj);
+	}
+	public static void lastDistressIn24Hours(Integer patientId) {
+		Map<String, Object> jsonData = new HashMap<String, Object>();
+		UserDTO user = UserDAO.getUserBasicByField("id", patientId);
+		DistressBean obj = DistressDAO.getLastDistress(user);
+		boolean flag = false;
+		if (obj != null) {
+			Date now = new Date();
+			long diff = now.getTime() -obj.getDistressDate().getTime();
+			if (diff <= PatientAlert.ONE_DAY) {
+				flag = true;
+			}
+		}
+		if (flag) {
+			jsonData.put("lastDistress", obj);
+		}
+		renderJSON(jsonData);
 	}
 }
