@@ -62,7 +62,7 @@ public class CommonUtil {
 		while (hashText.length() < 32) {
 			hashText = "0"+hashText;
 		}
-		Logger.info("hashPassword : " + 32);
+//		Logger.info("hashPassword : " + 32);
 		return hashText;
 	}
 

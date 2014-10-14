@@ -251,6 +251,21 @@ public class Application extends Controller {
     	}
 	}
     
+    public static void validateEmail(String email) {
+    	Map<String, Object> jsonData = new HashMap<String, Object>();
+    	if(email != null) {
+   			UserBean user = UserDAO.getByUserEmail(email);
+   			if(user != null) {
+   				jsonData.put("emailused", true);
+   			} else {
+   				jsonData.put("emailused", false);
+   			}
+   		} else {
+   			jsonData.put("emailused", false);
+    	}
+    	renderJSON(jsonData);
+    }
+    
     public static void verifyEmail(String verifyCode) throws Throwable {
     	System.out.println(verifyCode);
 		notFoundIfNull(verifyCode);
