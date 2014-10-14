@@ -25,6 +25,8 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
   <script src="/public/plugins//moment/moment.min.js"></script>
   <script src="/public/js/validator.min.js"></script>
   <script src="/public/js/devoops.js"></script>
+  <style type="text/css">    
+  </style>
 </head>
 <body>
 <!--
@@ -195,8 +197,12 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
     </div><!-- nav -->
     <div class="content">
       #{doLayout /}
-    </div><!-- content -->
+    </div><!-- content -->     
   </div><!-- body -->
+  <div class="footer-terms-policy">
+        <div><small>Terms of Service - Privacy Policy</small></div>            
+        <div><small>Copyright ${new Date().format('yyyy')} TalkAboutHealth</small></div>
+    </div>
 </div><!-- wrapper -->
 
 
@@ -284,6 +290,6 @@ $(document).ready(function(){
 	#{/if}
 });
   </script>
-  #{ googleAnalytics /}
+  #{ googleAnalytics /} 
 </body>
 </html>
