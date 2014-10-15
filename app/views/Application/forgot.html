@@ -14,11 +14,21 @@
 					#{if flash.error}
 					<p class="alert alert-danger">&{flash.error}</p>
 					#{/if} #{if flash.success}
+					<!--
 					<p class="alert alert-success">&{flash.success}
 					<span class="success">Your username and password were sent to you email.
 					    	Please sign in <a href='@{Secure.login()}'>here</a>.</span>
-					    	</p>
-					#{/if}
+					    	</p>-->
+					
+					<p class="alert alert-success">
+                           <span class="success">We've sent a new password to your email address.</br></br>
+                           Please enter your new password at the Moffitt TVRH Navigator <a href='@{Secure.login()}'>login page</a> and then reset your password.</span>
+                    </p>
+                    
+                    #{/if}
+					
+					
+					
 					<div class="input-group input-group-lg">
 					<span class="input-group-addon"><img alt="" src="/public/images/em-img.png"></span>
 						<input class="form-control" placeholder="Enter Email Address"
