@@ -89,7 +89,8 @@ public class Admin extends Controller {
 	
 	public static void passwordForm(String userId,String name) {
 		Map<String, Object> jsonData = new HashMap<String, Object>();
-		UserDetailsDTO patientDto = UserDAO.getDetailsById(userId);
+		Integer intId = new Integer(userId);
+		UserDTO patientDto = UserDAO.getUserBasicByField("id",intId);
 		jsonData.put("id", userId);
 		Integer id = new Integer(userId);
 		jsonData.put("name", TemplateExtensions.usreName(userId, id));
