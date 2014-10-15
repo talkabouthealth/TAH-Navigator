@@ -14,19 +14,20 @@
 
 .login-container {
 	padding-right: @space/2;
-	border-right: 1px solid #8baab8;
+	border-left: 1px solid #8baab8;
 }
 
-@register-top-padding: 130px;
+@register-top-padding: 158px;
 @register-h3-space: 74px;
+@font-size: @gargantuan-font;
 .register-container {
 	padding-left: @space/2;
 	text-align: center;
-	padding-top: @register-top-padding - @register-h3-space;
+	padding-top: @register-top-padding - @font-size - @register-h3-space;
 
 	h3 {
 		margin-bottom: @register-h3-space;
-		font-size: @huge-font;
+		font-size: @font-size;
 	}
 }
 
@@ -55,7 +56,7 @@
 
 .log_header{ background:#006ea1; width:100%; padding:15px 0px; float:left; width:100%; border-bottom:2px solid #002739; box-shadow:0 0 10px rgba(0,0,0,.5)}
 .logo_span{ color:#FFF; font-size:13px; margin-left:10px;}
-.log_heading{ color:#FFF; text-align:center; font-size:40px; padding:15px 0}
+.log_heading{ color:@light-gray; text-align:center; font-size:40px; padding:15px 0}
 .log_bg{ background:url('../../images/login_bg.png') no-repeat center #004261; width:100%; float:left;}
 .log_bg_01{ background:#006ea1 no-repeat center; width:100%; float:left; padding:20px 0px 20px 0px;}
 .log_padding{ margin:20px 300px;}
