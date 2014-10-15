@@ -123,33 +123,33 @@ public class Care extends Controller {
 				}
 				patients.add(patient);
 			}
+			// Descending Order of Last Distress check Date
+			Collections.sort(patients, new Comparator<PatientBean>() {
+				@Override
+				public int compare(PatientBean o1, PatientBean o2) {
+					Date o1Date = null;
+					Date o2Date = null;
+					if (o1.getDistress() != null) {
+						o1Date = o1.getDistress().getDistressDate();
+					}
+					if (o2.getDistress() != null) {
+						o2Date = o2.getDistress().getDistressDate();
+					}
+					if (o1Date != null && o2Date != null) {
+						return o2Date.compareTo(o1Date);
+					}
+					else if (o2Date != null) {
+						return 1;
+					}
+					else if (o1Date != null) {
+						return -1;
+					}				
+					else {
+						return 0;
+					}				
+				}
+			});
 		}
-		// Descending Order of Last Distress check Date
-		Collections.sort(patients, new Comparator<PatientBean>() {
-			@Override
-			public int compare(PatientBean o1, PatientBean o2) {
-				Date o1Date = null;
-				Date o2Date = null;
-				if (o1.getDistress() != null) {
-					o1Date = o1.getDistress().getDistressDate();
-				}
-				if (o2.getDistress() != null) {
-					o2Date = o2.getDistress().getDistressDate();
-				}
-				if (o1Date != null && o2Date != null) {
-					return o2Date.compareTo(o1Date);
-				}
-				else if (o2Date != null) {
-					return 1;
-				}
-				else if (o1Date != null) {
-					return -1;
-				}				
-				else {
-					return 0;
-				}				
-			}
-		});
         render(user,expertDetail,patients);
     }
 	
