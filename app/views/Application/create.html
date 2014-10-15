@@ -27,7 +27,7 @@
 				<h2><span>Step 1:</span> Email / Password</h2>
 			</div>
 			<div class="content">
-				<div class="col-md-12">
+				<div>
 					*{Removed all other user types as only patient is supported to signup now.}*
 					*{
 					<div class="form-group">
@@ -58,6 +58,7 @@
 						<p class="help-block">Password must be 8 letters or longer and contain at least one number</p>
 					</div>
 				</div>
+				<div class="complete">Step 1 complete, please click on Step 2 below to continue.</div>
 			</div>
 		</li><!-- step 1 -->
 
@@ -70,6 +71,7 @@
 			<div class="content">
 
 
+<div>
 				<div class="form-group">
 					<label class="for-patient">First Name</label>
 					<label class="for-doctor">Name</label>
@@ -80,9 +82,9 @@
 				    	#{else}
 				     	<input type="text" class="form-control" name="member.firstName" value="${flash['member.firstName']}" placeholder="Enter first name" required>
 				     	#{/else}
-				   
-						
-						
+
+
+
 						<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
 					</div>
 					<div class="help-block with-errors"></div>
@@ -147,7 +149,9 @@
 					<input type="text" class="form-control" name="member.supportContactPhone" value="${flash['member.supportContactPhone']}" placeholder="Enter support contact phone (i.e. 352-750-1234)">
 				</div>
 
+</div>
 
+				<div class="complete">Step 2 complete, please click on Step 3 below to continue.</div>
 			</div><!-- content -->
 
 		</li>
@@ -157,6 +161,7 @@
 				<h2><span>Step 3:</span> Security Questions & Terms of Service</h2>
 			</div>
 			<div class="content">
+				<div>
 				<div class="form-group">
 
 					<label for="exampleInputEmail1">Security question</label>
@@ -214,6 +219,9 @@
 			     <div class="help-block with-errors"></div>
 			</div>
 		-->
+
+</div>
+		<div class="complete">Step 3 complete, please click on Submit below.</div>
 	</div><!-- content -->
 </li>
 </ul>
@@ -224,7 +232,7 @@
 		<div class="form-group">
 			<button type="submit" class="btn-primary btn-lg btn-block" >Submit</button>
 		</div>
-		
+
 	</div>
 </div> <!-- /container -->
 	#{/form}

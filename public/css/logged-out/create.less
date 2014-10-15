@@ -8,8 +8,14 @@
 		list-style: none;
 	}
 
-	p.help-block {
-		font-size: @medium-font;
+	.help-block {
+		font-size: @large-font;
+	}
+
+	.complete {
+		opacity: 0;
+		color: @green;
+		font-size: @large-font;
 	}
 
 	.step {
@@ -128,12 +134,21 @@
 	ul.list-group {
 		background: @danger-red-background;
 		color: @danger-red;
-		padding: @padding;
+		padding: 0 @padding;
+
+		li:first-child {
+			padding-top: @padding;
+		}
+
+		li:last-child {
+			padding-bottom: @padding;
+		}
 
 		li.list-group-item {
 			background: @danger-red-background;
 			color: @danger-red;
 			font-size: @large-font;
+			border: none;
 
 		}
 
