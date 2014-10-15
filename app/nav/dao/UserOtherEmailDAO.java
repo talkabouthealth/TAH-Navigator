@@ -21,6 +21,22 @@ import util.JPAUtil;
 
 public class UserOtherEmailDAO {
 
+	public static UserOtherEmailDTO getDetailsByUserEmail(String email,Object userid) {
+		UserOtherEmailDTO dto = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			TypedQuery<UserOtherEmailDTO> query = em.createQuery("SELECT c FROM UserOtherEmailDTO c WHERE c.email = :email and c.user.id=:userid", UserOtherEmailDTO.class); 
+			query.setParameter("email", email);
+			query.setParameter("userid", userid);
+			dto = query.getSingleResult();
+		} catch(Exception e) {
+//			e.printStackTrace();
+		} finally {
+			em.close();
+		}
+		return dto;
+	}
+	
 	public static UserOtherEmailDTO getDetailsByField(String fieldName, Object value) {
 		UserOtherEmailDTO dto = null;
 		EntityManager em = JPAUtil.getEntityManager();

@@ -46,6 +46,8 @@
 						<th>Type</th>
 						<th>Verified</th>
 						<th>Activated</th>
+						<th>-</th>
+						<th>-</th>
 		  			</tr>
 		  			</thead>
 		  			<tbody>
@@ -63,8 +65,8 @@
 							#{/elseif}
 							#{set cssClass = '' /}
 							<tr ${cssClass}>
-					  			<td><a href="@{Admin.editUser(seq.id)}" >${seq.name}</a></td>
-					  			<td>${seq.email}</td>
+					  			<td><a href="@{Admin.editUser(seq.id)}" >${seq.name.usreName(seq.id)}</a></td>
+					  			<td><a href="@{Admin.editUser(seq.id)}" >${seq.email}</a></td>
 					  			<td>${seq.usertypeid.name}</td>
 					  			<td>
 					  				#{if seq.isverified}
@@ -90,6 +92,8 @@
 					  				#{/else}
 					  			}*
 					  			</td>
+					  			<td><a href="javaScript:changePassword(${seq.id})">Change Password</a></td>
+					  			<td><a href="@{Admin.loginAsAnotherUser(seq.id)}">Login as user</a></td>
 					  		</tr>
 						#{/list}
 					#{/if}
@@ -106,7 +110,45 @@
 </div>
 	<div id="ajax-content"></div>
 <!-- </div> -->
-	
+<div class="modal fade" id="addEditNote" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+   <div class="modal-dialog modal-m">
+   <div class="modal-content col-xs-12 col-sm-12">
+   #{form @Admin.savePassword() , id:'noteForm' }
+      	<input type="hidden" name="id" />
+      		<div class="modal-header">
+        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        		<h4 class="modal-title" id="myModalLabel_note">EDIT PASSWORD</h4>
+      		</div>
+        	<div class="modal-body" style="display:block;">
+                    <div class="form-group form-group-sm">
+                        <label class="col-xs-3 control-label" for="rt_schedule">Name</label>
+                        <div class="col-xs-9 form-group input-group">
+                            <input type="text"  name="name" placeholder="i.e. Note for other care team members. Not for patients." class="form-control input-sm" required>
+                            <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+                        </div>
+                    </div>
+					<div class="form-group form-group-sm">
+                        <label class="col-xs-3 control-label" for="rt_schedule">Email</label>
+                        <div class="col-xs-9 form-group input-group">
+                            <input type="text"  name="email" placeholder="i.e. Note for other care team members. Not for patients." class="form-control input-sm" required>
+                            <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-sm">
+                        <label class="col-xs-3 control-label" for="rt_schedule">New Password</label>
+                        <div class="col-xs-9 form-group input-group">
+                            <input type="text"  name="password" placeholder="i.e. Note for other care team members. Not for patients." class="form-control input-sm" required>
+                            <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+                        </div>
+                    </div>
+    		</div>
+     		<div class="modal-footer col-xs-12 col-sm-12" >
+       			<button type="submit" class="btn btn-default" data-next="3"> SAVE </button>
+    		</div>
+      #{/form}
+		</div>
+	</div>
+</div>
 
 <script type="text/javascript">
 <!--
@@ -166,11 +208,33 @@ $(document).ready(function() {
 			setTimeout(function(){removeAjaxPanel();}, 2000);
 		});
 	});
+
+	/*
+	$('#appointmentForm').submit(function(event) {
+		var postData = $("#appointmentForm").serializeArray();
+		var formURL = $("#appointmentForm").attr("action");
+		$.post(formURL, postData, function( data ) {
+			$('#addEditAppointment').modal('hide');
+		});
+ 		event.preventDefault();
+	});
+	*/
 });
 removeAjaxPanel = function() {
 	$('#ajax-panel').fadeOut("fast", function() {
 		$('#ajax-panel').empty();
 	});
+}
+
+changePassword = function(userId) {
+    $.post('/admin/passwordForm', {'userId':userId}, function (data) {
+    	$("#noteForm  input[name='id']").val(data.id);
+    	$("#noteForm  input[name='name']").val(data.name);
+    	$("#noteForm  input[name='email']").val(data.email);
+    	$("#noteForm  input[name='password']").val(data.password);
+        var purposes = data.purposes;
+        $('#addEditNote').appendTo("body").modal();
+    }, "json");
 }
 -->
 </script>

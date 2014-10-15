@@ -124,14 +124,19 @@ $(document).ready(function() {
 			url: "/profile/updateAditionalEmail",
 			data: {"email":email,"op":"mp"},
 			success: function(msg){
-				//$("#errorGroup").html("<li class='list-group-item list-group-item-danger'>"+msg+"</li>");                
-                var $email = $("#emailList").find("[data-for='" + email + "']");
-                var current_email = $primaryEmail.html();
-                $primaryEmail.html(email);
-                $email.attr('data-for', current_email);
-                $email.find('div').eq(0).find('span').html(current_email);
-                $email.find('div').eq(0).find('span').html(current_email);
-                $email.find('div>span>a').attr('email', current_email);
+				if($.trim(msg) != 'Already used email') {
+					//$("#errorGroup").html("<li class='list-group-item list-group-item-danger'>"+msg+"</li>");                
+	                var $email = $("#emailList").find("[data-for='" + email + "']");
+	                var current_email = $primaryEmail.html();
+	                $primaryEmail.html(email);
+	                $email.attr('data-for', current_email);
+	                $email.find('div').eq(0).find('span').html(current_email);
+	                $email.find('div').eq(0).find('span').html(current_email);
+	                $email.find('div>span>a').attr('email', current_email);
+				} else {
+					$("#errorGroup").html("<li class='list-group-item list-group-item-danger'>"+msg+"</li>"); 
+					//alert(msg);
+				}
 			},
 			error: function() {
 				$("#errorGroup").html("<li class='list-group-item list-group-item-danger'>Internal server error. Please try again.</li>"); 

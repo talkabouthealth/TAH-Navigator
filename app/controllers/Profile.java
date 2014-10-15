@@ -159,28 +159,38 @@ public class Profile extends Controller {
 	
 	public static void updateAditionalEmail(String email,String op) {
 		UserBean user = CommonUtil.loadCachedUser(session);
-    	UserDTO userDto = UserDAO.getUserBasicByField("id", user.getId());
+		Integer id = new Integer(user.getId());
+    	UserDTO userDto = UserDAO.getUserBasicByField("id", id);
     	System.out.println("New Rec : " + email);
     	String message ="";
     	if(userDto != null) {
-    		UserOtherEmailDTO emailDto = UserOtherEmailDAO.getDetailsByField("email", email);
+    		UserOtherEmailDTO emailDto = UserOtherEmailDAO.getDetailsByUserEmail(email,id);
+    		UserDTO isExist = UserDAO.getUserBasicByField("email", email);
     		if("a".equals(op)) {
-	    		if(emailDto != null) {
-	    			emailDto.setActive(true);
-	    			emailDto.setAddDate(new Date());
-	    			UserOtherEmailDAO.update(emailDto);
-	    			message ="d";
-	    		} else {
-	    			emailDto = new UserOtherEmailDTO();
-	    			emailDto.setUser(userDto);
-	    			emailDto.setActive(true);
-	    			emailDto.setPrimary(false);
-	    			emailDto.setAddDate(new Date());
-	    			emailDto.setEmail(email);
-	    			emailDto.setVerificationcode(UUID.randomUUID());
-	    			UserOtherEmailDAO.save(emailDto);
-	    			message =email;
-	    		}
+    			if(isExist != null )
+    				message ="d";
+    			else {
+		    		if(emailDto != null) {
+		    			if(emailDto.getUser().getId() != user.getId()) {
+		    				message ="d";
+		    			} else {
+			    			emailDto.setActive(true);
+			    			emailDto.setAddDate(new Date());
+			    			UserOtherEmailDAO.update(emailDto);
+			    			message ="d";
+		    			}
+		    		} else {
+		    			emailDto = new UserOtherEmailDTO();
+		    			emailDto.setUser(userDto);
+		    			emailDto.setActive(true);
+		    			emailDto.setPrimary(false);
+		    			emailDto.setAddDate(new Date());
+		    			emailDto.setEmail(email);
+		    			emailDto.setVerificationcode(UUID.randomUUID());
+		    			UserOtherEmailDAO.save(emailDto);
+		    			message =email;
+		    		}
+    			}
     		} else if("r".equals(op)) {
     			if(emailDto != null) {
     				emailDto.setUser(userDto);
@@ -189,11 +199,19 @@ public class Profile extends Controller {
     			message =email;
     		} else if("mp".equals(op)) {
     			//message = "This email is not verified. Please verify the email first";
-    			String prevEmail = userDto.getEmail();
-    			userDto.setEmail(email);
-    			UserDAO.updateUserBasic(userDto);
-    			emailDto.setEmail(prevEmail);
-    			UserOtherEmailDAO.update(emailDto);
+//    			UserDTO isExist = UserDAO.getUserBasicByField("email", email);
+    			if(isExist == null) {
+	    			String prevEmail = userDto.getEmail();
+	    			userDto.setEmail(email);
+	    			UserDAO.updateUserBasic(userDto);
+	    			session.put("username", email);
+	    			CommonUtil.refreshCachedUser(session);
+	    			emailDto.setEmail(prevEmail);
+	    			UserOtherEmailDAO.update(emailDto);
+	    			message = email;
+    			} else {
+    				message ="Already used email";	
+    			}
     		}
     	}
 		renderText(message);

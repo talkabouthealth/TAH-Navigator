@@ -1,26 +1,34 @@
 package controllers;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 
 import models.ApplicationSettingsDTO;
+import models.AppointmentMasterDTO;
 import models.CareTeamMasterDTO;
 import models.CareTeamMemberDTO;
 import models.InvitedDTO;
 import models.UserDTO;
+import models.UserDetailsDTO;
 import models.UserTypeDTO;
 import nav.dao.ApplicationSettingDAO;
+import nav.dao.AppointmentMasterDAO;
 import nav.dao.BaseDAO;
 import nav.dao.CareTeamDAO;
 import nav.dao.UserDAO;
 import nav.dao.UserTypeDAO;
+import nav.dto.CareMember;
 import nav.dto.UserBean;
+import play.Play;
 import play.mvc.Controller;
 import play.mvc.With;
 import util.CommonUtil;
 import util.JPAUtil;
+import util.TemplateExtensions;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -74,15 +82,44 @@ public class Admin extends Controller {
 	public static void allMemberList() {
 		List<UserTypeDTO> userTypelist = UserTypeDAO.getUserTypeList();
 		UserBean user = CommonUtil.loadCachedUser(session);
-		List<UserDTO> list = UserDAO.getAll("0",null);
+		List<UserDTO> list = UserDAO.getAllForAdmin("0",null);
 		flash("uname", "");
 		render(user,list,userTypelist);
 	}
+	
+	public static void passwordForm(String userId,String name) {
+		Map<String, Object> jsonData = new HashMap<String, Object>();
+		UserDetailsDTO patientDto = UserDAO.getDetailsById(userId);
+		jsonData.put("id", userId);
+		Integer id = new Integer(userId);
+		jsonData.put("name", TemplateExtensions.usreName(userId, id));
+		jsonData.put("email", patientDto.getEmail());
+		String newPassword = CommonUtil.generateRandomPassword();
+		jsonData.put("password", newPassword);
+		renderJSON(jsonData);
+	}
+	
+	public static void savePassword(String id,String name,String email,String password) {
+		System.out.println("id: " + id);
+		System.out.println("name: " + name);
+		System.out.println("email: " + email);
+		System.out.println("password: " + password);
+
+		Integer intId = new Integer(id);
+		UserDTO bean = UserDAO.getUserBasicByField("id", intId);
+		if(password != null && !password.equals("") && bean!=null && password.length()>8) {
+			String hashPassword = CommonUtil.hashPassword(password);
+			bean.setPassword(hashPassword);
+			BaseDAO.update(bean);
+		}
+		allMemberList();
+	}
+
 	public static void filterUsers(String userType,String uname) {
 		System.out.println(userType);
 		List<UserTypeDTO> userTypelist = UserTypeDAO.getUserTypeList();
 		UserBean user = CommonUtil.loadCachedUser(session);
-		List<UserDTO> list = UserDAO.getAll(userType,uname);
+		List<UserDTO> list = UserDAO.getAllForAdmin(userType,uname);
 		flash("userType", userType);
 		flash("uname", uname);
 		render("Admin/allMemberList.html",user,list,userTypelist);
@@ -172,5 +209,45 @@ public class Admin extends Controller {
 			data.add(object);
 		}		
 		renderText(data.toString());
+	}
+	
+	/**
+	 * Use for login as another user from admin. 
+	 * @param userName
+	 * @throws Throwable
+	 */
+	public static void loginAsAnotherUser(String userId) throws Throwable{
+		
+		if(userId != null && !userId.equals("")){
+			Integer intId = new Integer(userId);
+			UserDTO bean = UserDAO.getUserBasicByField("id", intId);
+			if(bean != null){
+		        session.clear();
+		        response.removeCookie("rememberme");
+				Security.authenticate(bean.getEmail(), bean.getPassword(),true);
+				session.put("username", bean.getEmail());
+				String url = flash.get("url");
+		        System.out.println("URL: "+ url);
+		        if(url == null) {
+		        	String callbackURL = "";
+		            url = callbackURL+Play.ctxPath + "/";
+		        }
+				if('a' == bean.getUserType()) {
+		        	session.put("usertype", "admin");
+//		        	Admin.index();
+		        	url = url + "admin/index";
+		        } else if('c' == bean.getUserType()) {
+		        	 session.put("usertype", "care");
+//		        	Care.index();
+		        	url = url + "care/index";
+		        } else if('p' == bean.getUserType()) {
+		       	 	session.put("usertype", "user");
+//		       	 	Patient.index();
+		       	 url = url + "patient/index";
+		       }
+				redirect(url);
+			}
+		}
+		
 	}
 }

@@ -149,9 +149,13 @@ public class UserDAO {
 	}
 	
 	public static UserDetailsDTO getDetailsById(int usreId) {
-		Integer in = new Integer(usreId);
-		UserDetailsDTO dto = getDetailsByField("id", in);
-		return dto;
+		try {
+			Integer in = new Integer(usreId);
+		
+			UserDetailsDTO dto = getDetailsByField("id", in);
+			return dto;
+		} catch(Exception e) {}
+		return null;
 	}
 	
 	public static UserDetailsDTO getDetailsByField(String fieldName, Object value) {
@@ -212,6 +216,44 @@ public class UserDAO {
 			e.printStackTrace();
 		}
 		return members;
+	}
+	
+	public static <Y> List<UserDTO> getAllForAdmin(String userType,String uname) {
+		
+		EntityManager em = JPAUtil.getEntityManager();
+	try{
+		 
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+	    CriteriaQuery<UserDTO> cq = cb.createQuery(UserDTO.class);
+	    Root<UserDTO> from = cq.from(UserDTO.class);
+	    cq.select(from);
+	    
+	    List criteriaList = new ArrayList();
+	    Predicate predicate = cb.gt(from.<Integer> get("id"), 1);
+	    criteriaList.add(predicate);
+
+	    if(userType != null &&  !"0".equals(userType)){
+	    	Predicate predicate2= cb.equal(from.get("usertypeid").get("id"), Integer.parseInt(userType));
+	    	criteriaList.add(predicate2);
+	    }
+	    
+	    if(StringUtils.isNotBlank(uname) ) {
+	    	Expression<String> path = from.get("name");
+	    	Predicate predicate3 = cb.like(path, uname+"%");
+	    	criteriaList.add(predicate3);
+	    }
+        cq.where(cb.and((Predicate[]) criteriaList.toArray(new Predicate[0])));
+
+	    cq.orderBy(cb.asc(from.get("id")));
+	    
+	    TypedQuery<UserDTO> query = em.createQuery(cq);
+	    
+	    return query.getResultList();
+	}catch(Exception e) {
+		e.printStackTrace();
+		
+	}
+	    return null;
 	}
 	
 	public static <Y> List<UserDTO> getAll(String userType,String uname) {

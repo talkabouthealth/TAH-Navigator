@@ -37,21 +37,22 @@
 					    	<label for="exampleInputEmail1">Email</label>
 						</div>
 	 					<div class="form-group">
-						    <div> ${user.email} <span style="float:right;">Primary</span></div>
+						    <div> <span id="primary_email">${user.email}</span> <span style="float:right;">Primary</span></div>
 						    <!-- for loop -->
 						   		<div id="emailList">
 							    	#{if emaiList != null}
 							    	#{list emaiList, as:'eml'}
 							    		<div data-for='${eml.email}'>
-							    			${eml.email}
-							    			<span style="float:right;"><a href="javaScript:removeEmail('${eml.email}');">Remove</a></span>&nbsp;&nbsp;
-											<span style="float:right;"><a href="javaScript:makePrimary('${eml.email}');">Make primary</a>&nbsp;&nbsp;&nbsp;&nbsp;</span>
+							    			<div class="col-xs-5"><span>${eml.email}</span></div>
+							    			<div class="col-xs-3"><span style="float:right;"><a class="rm-mail" href="#" email="${eml.email}">Remove</a></span>
+							    			</div>
+											<div class="col-xs-4"><span style="float:right;"><a class="mk-primary" href="#" email="${eml.email}">Make primary</a></span>
+											</div>
 										</div>
 							    	#{/list}
 							    	#{/if}
 						    	</div>
-							<div id="addEmailBox" class="form-group" style="margin:20px 0px;display:none;">
-								<div>
+							<div id="addEmailBox" class="form-group" style="margin:20px 0px;display:none;float:left;width:100%;">
 							    	<div class="input-group">
 										<input type="email"  class="form-control" id="email" placeholder="Email" value="">
 										<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
@@ -60,7 +61,6 @@
 										<button style="float:right;" class="btn large" id="savenewEmail" >Save</button>
 										<a style="float:right;margin:10px;" href="javaScript:hideEmailBox();">Cancel</a>
 									</div>
-								</div>
 								<p class="help-block"></p>
 							</div>
 							<div style="margin-top:10px;"><a href="javaScript:showEmailBox();">Add email</a></div>
@@ -262,10 +262,15 @@
 							$("#errorGroup").html("<li class='list-group-item list-group-item-success'>Duplicate email</li>");
 						} else {
 							$("#addEmailBox").hide();
-							$("#emailList").append("<div  data-for='" + msg + "'>" + msg 
-								+ '<span style="float:right;"><a href="javaScript:removeEmail(\'' + msg +'\');">Remove</a></span>&nbsp;&nbsp;'
-								+ '<span style="float:right;"><a href="javaScript:makePrimary(\'' + msg +'\');">Make primary</a>&nbsp;&nbsp;&nbsp;&nbsp;</span>'
-								+ '</div>');
+// 							$("#emailList").append("<div  data-for='" + msg + "'>" + msg 
+// 								+ '<span style="float:right;"><a href="javaScript:removeEmail(\'' + msg +'\');">Remove</a></span>&nbsp;&nbsp;'
+// 								+ '<span style="float:right;"><a href="javaScript:makePrimary(\'' + msg +'\');">Make primary</a>&nbsp;&nbsp;&nbsp;&nbsp;</span>'
+// 								+ '</div>');
+							var str = '<div data-for="' + msg + '"><div class="col-xs-5"><span>'+ 
+							msg + '</span></div><div class="col-xs-3"><span style="float:right;"><a href="#" class="rm-mail" email="' +
+							msg + '">Remove</a></span></div><div class="col-xs-4"><span style="float:right;"><a href="#" class="mk-primary" email="' + 
+							msg + '">Make primary</a></span></div></div>';                            
+							$("#emailList").append(str);
 						}
 					},
 					error: function() {
@@ -276,6 +281,15 @@
 				$("#addEmailBox p.help-block").html('Please correct email'); 
 			}
     		return false;
+    	});
+    	
+    	$('body').on('click', 'a.mk-primary', function() {
+    		var email1 = $(this).attr('email');
+    		makePrimary(email1);
+    	});
+    	$('body').on('click', 'a.rm-mail', function() {
+    		var email1 = $(this).attr('email');
+    		removeEmail(email1);
     	});
 	});
 
@@ -293,7 +307,26 @@
 			url: "/profile/updateAditionalEmail",
 			data: {"email":email,"op":"mp"},
 			success: function(msg){
-				$("#errorGroup").html("<li class='list-group-item list-group-item-danger'>"+msg+"</li>");
+				if($.trim(msg) != 'Already used email') {
+					 var $primaryEmail = $('#primary_email');
+					//$("#errorGroup").html("<li class='list-group-item list-group-item-danger'>"+msg+"</li>");                
+	                var $email = $("#emailList").find("[data-for='" + msg + "']");
+	                var current_email = $primaryEmail.html();
+	                $primaryEmail.html(email);
+	                $email.attr('data-for', current_email);
+	                $email.find('div').eq(0).find('span').html(current_email);
+	                $email.find('div>span>a').attr('email', current_email);
+				} else {
+					$("#errorGroup").html("<li class='list-group-item list-group-item-danger'>"+msg+"</li>"); 
+					//alert(msg);
+				}
+				
+				
+// 				if(msg == 'Already used email') {
+// 					$("#errorGroup").html("<li class='list-group-item list-group-item-success'>"+msg+"</li>");
+// 				} else {
+// 					$("#errorGroup").html("<li class='list-group-item list-group-item-danger'>"+msg+"</li>");
+// 				}
 			},
 			error: function() {
 				$("#errorGroup").html("<li class='list-group-item list-group-item-danger'>Internal server error. Please try again.</li>"); 
