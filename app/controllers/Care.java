@@ -162,7 +162,7 @@ public class Care extends Controller {
 	}
 	
 	public static void sendInvitation(String email,String firstname,String lastname,String purposeText, String treatmentProcessStep, String time,String schDate,String center,int memberid, 
-			String address1,String city,String state,String zip) {
+			String address1,String city,String state,String zip,String membername,String purpose) {
 		 validation.clear();
 		System.out.println("email: "+ email);
 		System.out.println("firstname: "+ firstname);
@@ -202,9 +202,19 @@ public class Care extends Controller {
 			app.setEmail(email);
 			app.setFirstname(firstname);
 			app.setLastname(lastname);
-			app.setPurposeText(purposeText);
-			if(StringUtils.isNotBlank(treatmentProcessStep))
+			
+			if (Integer.valueOf(purpose) > 0) {
+				app.setPurpose(purpose);
+				Integer appIdInt = new Integer(purpose);
+				app.setAppointmentid(AppointmentMasterDAO.getAppointmentByField("id", appIdInt));
+			} else {
 				app.setTreatementStep(treatmentProcessStep);
+			}
+
+			app.setPurposeText(purposeText);
+
+//			if(StringUtils.isNotBlank(treatmentProcessStep))
+//				app.setTreatementStep(treatmentProcessStep);
 
 			app.setAppointmenttime(time);
 
@@ -213,8 +223,11 @@ public class Care extends Controller {
 
 			app.setAppointmentcenter(center);
 
-			UserDTO caremember = UserDAO.getUserBasicByField("id", memberid);
-			app.setCaremember(caremember);
+			if (memberid > 0) {
+				UserDTO caremember = UserDAO.getUserBasicByField("id", memberid);
+				app.setCaremember(caremember);
+			}
+			app.setCareMemberName(membername);
 
 			UserBean user = CommonUtil.loadCachedUser(session);
 			UserDTO addedby = UserDAO.getUserBasicByField("id",user.getId());

@@ -64,6 +64,16 @@ public class InvitedDTO implements Serializable {
 
 	@Column(name = "addedon")
 	private Date addedon;
+	
+	@Column(name="caremember_name")
+	private String careMemberName;
+	
+	@Column(name = "purpose")
+	private String purpose;
+	
+	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="appointmentid", insertable=true, updatable=true)
+	private AppointmentMasterDTO appointmentid;
 
 	public InvitedDTO() {
 	}
@@ -187,5 +197,29 @@ public class InvitedDTO implements Serializable {
 	public void setAddedon(Date addedon) {
 		this.addedon = addedon;
 	}
-	 
+
+	public String getCareMemberName() {
+		return careMemberName;
+	}
+
+	public void setCareMemberName(String careMemberName) {
+		this.careMemberName = careMemberName;
+	}
+
+	public String getPurpose() {
+		return purpose;
+	}
+
+	public void setPurpose(String purpose) {
+		this.purpose = purpose;
+	}
+
+	public AppointmentMasterDTO getAppointmentid() {
+		return appointmentid;
+	}
+
+	public void setAppointmentid(AppointmentMasterDTO appointmentid) {
+		this.appointmentid = appointmentid;
+	}
+	
 }

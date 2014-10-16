@@ -162,10 +162,24 @@ public class Application extends Controller {
     					app.setAppointmentcenter(invitationdto.getAppointmentcenter());
     					app.setAppointmentdate(invitationdto.getAppointmentdate());
     					app.setAppointmenttime(invitationdto.getAppointmenttime());
-    					app.setCaremember(invitationdto.getCaremember());
+    					
    						app.setPurposeText(invitationdto.getPurposeText());
    						app.setTreatementStep(invitationdto.getTreatementStep());
     					app.setPatientid(detailDto.getUser());
+
+    					if(invitationdto.getPurpose() != null) {
+    						app.setPurpose(invitationdto.getPurpose());	
+    					}
+
+    					if(invitationdto.getAppointmentid() != null) {
+    						app.setAppointmentid(invitationdto.getAppointmentid());
+    					}
+
+    					if(invitationdto.getCaremember() != null) {
+    						app.setCaremember(invitationdto.getCaremember());
+    					}
+    					app.setCareMemberName(invitationdto.getCareMemberName());
+
     					BaseDAO.save(app);
 
     					UserDTO usr = detailDto.getUser();
