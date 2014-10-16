@@ -25,7 +25,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
   <script src="/public/plugins//moment/moment.min.js"></script>
   <script src="/public/js/validator.min.js"></script>
   <script src="/public/js/devoops.js"></script>
-  <style type="text/css">    
+  <style type="text/css">
   </style>
 </head>
 <body>
@@ -197,11 +197,11 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
     </div><!-- nav -->
     <div class="content">
       #{doLayout /}
-    </div><!-- content -->     
+    </div><!-- content -->
   </div><!-- body -->
   <div class="footer-terms-policy">
         <div class="shadow"></div>
-        <div><small><a href="https://tvrhnavigator.com/static/tos" target="_blank">Terms of Service</a> - <a href="https://tvrhnavigator.com/static/privacy" target="_blank">Privacy Policy</a></small></div>            
+        <div><small><a href="https://tvrhnavigator.com/static/tos" target="_blank">Terms of Service</a> - <a href="https://tvrhnavigator.com/static/privacy" target="_blank">Privacy Policy</a></small></div>
         <div><small>Copyright ${new Date().format('yyyy')} TalkAboutHealth</small></div>
     </div>
 </div><!-- wrapper -->
@@ -289,8 +289,18 @@ $(document).ready(function(){
 		    $('a.distress-meter').click();
 		});
 	#{/if}
+  $('iframe').each(function()
+  {
+    var url = $(this).attr("src");
+    var char = "?";
+    if(url.indexOf("?") != -1) {
+      var char = "&";
+    }
+
+    $(this).attr("src",url+char+"wmode=transparent");
+  });
 });
-  </script>
-  #{ googleAnalytics /} 
+</script>
+  #{ googleAnalytics /}
 </body>
 </html>
