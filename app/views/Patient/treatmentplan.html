@@ -10,6 +10,7 @@
     </div>
     #{if radiationTreatments}
     <table class="radiation-treatment table table-bordered table-striped table-condensed table-hover">
+      <thead>
       <tr>
         <th class="type">Type</th>
         <th class="dates">Dates</th>
@@ -20,7 +21,10 @@
         <!--<th class="side-effects">Side Effects Experienced</th>-->
         <th class="notes">Notes</th>
       </tr>
+    </thead>
+    <tbody>
       #{list items:radiationTreatments, as:'rt'}
+
       <tr>
         <td class="type">${rt.rtDto.name}</td>
         <td class="dates">#{if rt.startDate} ${rt.startDate.format('MM/dd/yyyy')} #{/if}
@@ -50,6 +54,7 @@
         </td>
       </tr>
       #{/list}
+    </tbody>
     </table>
     #{/if}
     #{else}
@@ -70,33 +75,24 @@
     #{if surgeryInfo}
 
     <table class="surgery table table-bordered table-striped table-condensed table-hover">
+      <thead>
       <tr>
         <th class="surgery-name"></th>
-        <th class="date">Date</th>
+        <th class="dates">Date</th>
         <th class="region">Region Treated</th>
-        <!--<th class="side-effects">Side Effects Experienced</th>-->
         <th class="notes">Notes</th>
       </tr>
+      </thead>
+      <tbody>
       #{list items:surgeryInfo, as:'si'}
       <tr>
         <td class="surgery-name">${si.stDto.name}</td>
-        <td class="date">#{if si.surgeryDate} ${si.surgeryDate.format('MM/dd/yyyy')} #{/if}</td>
+        <td class="dates">#{if si.surgeryDate} ${si.surgeryDate.format('MM/dd/yyyy')} #{/if}</td>
         <td class="region">#{if si.trDto} ${si.trDto.region} #{/if}</td>
-        <!--<td class="side-effects">
-          #{if si.pstSeDtos}
-          #{list items: si.pstSeDtos, as:'pstSeDto'}
-          #{if pstSeDto_isFirst}
-          ${pstSeDto.seDto.description}
-          #{/if}
-          #{else}
-          , ${pstSeDto.seDto.description}
-          #{/else}
-          #{/list}
-          #{/if}
-        </td>-->
         <td class="notes"><div>#{if si.notes} ${si.notes} #{/if}</div></td>
       </tr>
       #{/list}
+    </tbody>
     </table>
 
     #{/if}
@@ -113,6 +109,7 @@
     </div>
     #{if chemoTreatments}
     <table class="chemotherapy table table-bordered table-striped table-condensed table-hover">
+      <thead>
       <tr>
         <th class="treatment-name"></th>
         <th class="dates">Dates</th>
@@ -123,7 +120,10 @@
         <!--<th class="side-effects">Side Effects Experienced</th>-->
         <th class="notes">Notes</th>
       </tr>
+    </thead>
+    <tbody>
       #{list items:chemoTreatments, as:'ct'}
+
       <tr>
         <td class="treatment-name">${ct.genericName} (${ct.brandName})</td>
         <td class="dates">#{if ct.startDate} ${ct.startDate.format('MM/dd/yyyy')} #{/if}
@@ -148,6 +148,7 @@
         <td class="notes"><div>#{if ct.notes} ${ct.notes} #{/if}</div></td>
       </tr>
       #{/list}
+    </tbody>
     </table>
     #{/if}
     #{else}

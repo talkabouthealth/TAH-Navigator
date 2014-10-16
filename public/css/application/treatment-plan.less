@@ -1,8 +1,7 @@
-@column-one: 20%;
-@column-two: 10%;
-@column-three: 15%;
-@column-four: 15%;
-@column-five: 40%;
+@column-one: 22%;
+@column-two: 12%;
+@column-three: 20%;
+@column-four: 46%;
 
 table.radiation-treatment, table.chemotherapy, table.surgery {
   width: 100%;
@@ -22,12 +21,8 @@ table.radiation-treatment, table.chemotherapy, table.surgery {
     width: @column-two;
   }
 
-  .side-effects {
-    width: @column-four;
-  }
-
   .notes {
-    width: @column-five;
+    width: @column-four;
   }
 
 }
@@ -46,7 +41,7 @@ table.chemotherapy {
 
 table.surgery {
   .region {
-    width: @column-three + @column-four;
+    width: @column-three;
 
   }
 }
