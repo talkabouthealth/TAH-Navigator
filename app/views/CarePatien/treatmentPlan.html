@@ -11,6 +11,7 @@
 
   #{if radiationTreatments}
   <table class="radiation-treatment table table-bordered table-striped table-condensed table-hover">
+    <thead>
     <tr>
       <th class="type">Type</th>
       <th class="dates">Dates</th>
@@ -20,6 +21,8 @@
       <!--<th class="side-effects">Side Effects Experienced</th>-->
       <th class="notes">Notes</th>
     </tr>
+  </thead>
+  <tbody>
     #{list items:radiationTreatments, as:'rt'}
     <tr>
       <td class="type"><a form_type="edit" patient_id="${rt.userId}" treatment_id="${rt.id}" onclick="careTeamController.evtMsgHandler('radiation_treatment_form', this);">${rt.rtDto.name}</a></td>
@@ -43,7 +46,9 @@
       </td>-->
       <td class="notes">#{if rt.notes} ${rt.notes} #{/if}</td>
     </tr>
+
     #{/list}
+  </tbody>
   </table>
   #{/if}
 
@@ -59,6 +64,7 @@
   </div>
   #{if surgeryInfo}
   <table class="surgery table table-bordered table-striped table-condensed table-hover">
+    <thead>
     <tr>
       <th class="surgery-name"></th>
       <th class="date">Date</th>
@@ -66,6 +72,8 @@
       <!--<th class="side-effects">Side Effects Experienced</th>-->
       <th class="notes">Notes</th>
     </tr>
+  </thead>
+  <tbody>
     #{list items:surgeryInfo, as:'si'}
     <tr>
       <td class="surgery-name"><a form_type="edit" patient_id="${si.userId}" treatment_id="${si.id}" onclick="careTeamController.evtMsgHandler('surgery_form', this);">${si.stDto.name}</a></td>
@@ -86,6 +94,7 @@
       <td class="notes">#{if si.notes} ${si.notes} #{/if}</td>
     </tr>
     #{/list}
+  </tbody>
   </table>
   #{/if}
 
@@ -103,6 +112,7 @@
 
   #{if chemoTreatments}
   <table class="chemotherapy table table-bordered table-striped table-condensed table-hover">
+    <thead>
     <tr>
       <th class="treatment-name"></th>
       <th class="dates">Dates</th>
@@ -112,6 +122,8 @@
       <!--<th class="side-effects">Side Effects Experienced</th>-->
       <th class="notes">Notes</th>
     </tr>
+  </thead>
+  <tbody>
     #{list items:chemoTreatments, as:'ct'}
     <tr>
       <td class="treatment-name"><a form_type="edit" patient_id="${ct.userId}" treatment_id="${ct.id}" onclick="careTeamController.evtMsgHandler('chemotherapy_treatment_form', this);">${ct.genericName} (${ct.brandName})</a></td>
@@ -136,6 +148,7 @@
       <td class="notes">#{if ct.notes} ${ct.notes} #{/if}</td>
     </tr>
     #{/list}
+  </tbody>
   </table>
   #{/if}
 </div>
