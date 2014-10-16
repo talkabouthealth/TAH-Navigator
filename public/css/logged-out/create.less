@@ -160,13 +160,30 @@
 	padding: @padding @padding*2;
 	background-color: @lightest-gray;
 
-			color: @dark-gray;
+	color: @dark-gray;
+
+	> div {
+		max-width: 840px;
+		margin-left: auto;
+		margin-right: auto;
+		padding-bottom: @padding;
+		margin-bottom: @padding;
+		border-bottom: 1px solid @light-gray;
+	}
+	.tos-input {
+		padding-top: @padding;
+		padding-bottom: @padding + 5px;
+		i {
+			margin-top: 3px + @padding;
+		}
+		label {
+			margin-left: @padding;
+
+		}
+	}
+
+	.list-group {
+		margin: 0;
+	}
 }
 
-.tos-input {
-	margin: @padding*3 0 @padding 0;
-}
-
-.list-group {
-	margin: 0;
-}
