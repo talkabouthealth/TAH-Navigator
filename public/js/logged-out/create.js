@@ -1,3 +1,4 @@
+/*
 (function($){
 	var steps;
 
@@ -127,3 +128,5 @@
 })(jQuery);
 
 
+
+*/

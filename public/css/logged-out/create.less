@@ -1,8 +1,8 @@
 @duration: .3s;
-.registration-steps {
+.registration-steps, .create-container {
 	margin: 0 -15px; /* Undo Bootstrap */
 
-	ul, li {
+	ul, li, .list-group {
 		margin: 0;
 		padding: 0;
 		list-style: none;
@@ -122,11 +122,9 @@
 
 	}
 
-	.form-group {
-		label, input, select {
+		label, input, select, a, .checkbox {
 			font-size: @large-font;
 		}
-	}
 
 
 	@danger-red-background : #f2dede;
@@ -156,4 +154,19 @@
 			padding: 0 @padding;
 		}
 	}
+}
+
+.create-container {
+	padding: @padding @padding*2;
+	background-color: @lightest-gray;
+
+			color: @dark-gray;
+}
+
+.tos-input {
+	margin: @padding*3 0 @padding 0;
+}
+
+.list-group {
+	margin: 0;
 }
