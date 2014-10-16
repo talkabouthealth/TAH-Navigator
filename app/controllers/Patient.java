@@ -50,7 +50,8 @@ public class Patient extends Controller {
 		}
 
 		//Load care team
-		List<PatienCareTeamDTO> careTeams = CareTeamDAO.getPatienCareTeamByField("patienid", user.getId());
+		Integer intUserId =  new Integer(user.getId());
+		List<PatienCareTeamDTO> careTeams = CareTeamDAO.getPatienCareTeamByField("patienid", intUserId);
 		UserDetailsDTO userDetails = null;
 		ExpertDetailDTO expertDetail = null;
 		ExpertBean expertBean =null;

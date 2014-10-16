@@ -100,7 +100,8 @@ public class CareTeamDAO {
 		List<PatienCareTeamDTO> dto = null;
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
-			TypedQuery<PatienCareTeamDTO> query = em.createQuery("SELECT c FROM PatienCareTeamDTO c WHERE c."+fieldName+" = :field and c.patien.isActive = true and c.patien.isverified = true order by id", PatienCareTeamDTO.class); 
+			TypedQuery<PatienCareTeamDTO> query = em.createQuery("SELECT c FROM PatienCareTeamDTO c WHERE c."+fieldName+" = :field and c.patien.isActive = true order by id", PatienCareTeamDTO.class);
+			// and c.patien.isverified = true
 			query.setParameter("field", value);
 			dto = query.getResultList();
 		} catch(Exception e) {

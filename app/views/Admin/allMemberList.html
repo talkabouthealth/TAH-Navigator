@@ -93,7 +93,11 @@
 					  			}*
 					  			</td>
 					  			<td><a href="javaScript:changePassword(${seq.id})">Change Password</a></td>
-					  			<td><a href="@{Admin.loginAsAnotherUser(seq.id)}">Login as user</a></td>
+					  			<td>
+					  				#{if seq.isActive}
+					  				<a href="@{Admin.loginAsAnotherUser(seq.id)}">Login as user</a>
+					  				#{/if}
+					  			</td>
 					  		</tr>
 						#{/list}
 					#{/if}
