@@ -129,11 +129,9 @@ var DistressMeter = function() {
       step1.hide();
       step2.hide();
       step3.show();
-    } else if ( page === 3 ) {
-    $.post(formURL, postData, function( data ) {
-//        distressModal.modal('hide');
-//nextPage();
-});
+      $.post(formURL, postData, function( data ) {
+      });
+    } else if ( page === 3 ) {    
     	 distressModal.modal('hide');
 
 } else if ( page === 4 ) {
