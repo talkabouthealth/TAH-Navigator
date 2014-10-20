@@ -1,9 +1,12 @@
 package models;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 
@@ -13,6 +16,8 @@ public class CareTeamMasterDTO {
 
 	@Id
 	@Column(name = "id")
+	@GeneratedValue(strategy= GenerationType.SEQUENCE, generator="careteammaster_id_seq")
+	@SequenceGenerator(allocationSize=1, schema="nav",  name="careteammaster_id_seq", sequenceName = "nav.careteammaster_id_seq")
 	private int id;
 
 	@Column(name = "name")
