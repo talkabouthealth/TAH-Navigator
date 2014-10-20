@@ -4,7 +4,9 @@ import java.io.Serializable;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Table(name = "nav.mailtemplate")
@@ -23,8 +25,9 @@ public class MailTemplateDTO implements Serializable {
 	  CONSTRAINT mailtemplate_pkey PRIMARY KEY (id)
 	 */
 	@Id 
-	@GeneratedValue
 	@Column(name = "id")
+	@GeneratedValue(strategy= GenerationType.SEQUENCE, generator="mailtemplate_id_seq")
+	@SequenceGenerator(allocationSize=1, schema="nav",  name="mailtemplate_id_seq", sequenceName = "nav.mailtemplate_id_seq")
 	private Long id;
 	
 	@Column(name = "mailtemplate")
