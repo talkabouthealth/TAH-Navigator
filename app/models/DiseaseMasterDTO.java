@@ -1,7 +1,10 @@
 package models;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 
@@ -11,6 +14,8 @@ public class DiseaseMasterDTO {
 
 	@Id
 	@Column(name = "id")
+	@GeneratedValue(strategy= GenerationType.SEQUENCE, generator="diseasemaster_id_seq")
+	@SequenceGenerator(allocationSize=1, schema="nav",  name="diseasemaster_id_seq", sequenceName = "nav.diseasemaster_id_seq")
 	private int id;
 
 	@Column(name = "name")
