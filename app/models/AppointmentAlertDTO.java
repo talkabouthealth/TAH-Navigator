@@ -7,13 +7,15 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="appointmentalert", schema="nav")
 public class AppointmentAlertDTO {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy= GenerationType.SEQUENCE, generator="appointmentalert_id_seq")
+	@SequenceGenerator(allocationSize=1, schema="nav",  name="appointmentalert_id_seq", sequenceName = "nav.appointmentalert_id_seq")
 	@Column(name="id")
 	private Integer id;
 	
