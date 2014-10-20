@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Table(name = "nav.usercertificate")
@@ -13,7 +14,8 @@ import javax.persistence.Table;
 public class UserCertificateDTO implements Serializable{
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy= GenerationType.SEQUENCE, generator="usercertificate_id_seq")
+	@SequenceGenerator(allocationSize=1, schema="nav",  name="usercertificate_id_seq", sequenceName = "nav.usercertificate_id_seq")
 	@Column(name = "id")
 	private int id;
 	

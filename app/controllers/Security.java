@@ -76,7 +76,7 @@ public class Security extends Secure.Security {
 	    if(historyDTO!=null)
 	    	lastLoginTime = smf.format(historyDTO.getLogintime());
 	    String isFirstTime =  LoginHistoryDAO.getIsFirstTime(sessionUser);
-	    
+	    isFirstTime ="false";
 	    session.put("showdistress", isFirstTime);
 	    session.put("lastLoginTime", lastLoginTime);
 	    LoginHistoryDAO.saveLogin(sessionUser, "login",false,session.getId());

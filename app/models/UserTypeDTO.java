@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.PostLoad;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Table(name = "nav.usertypemaster")
@@ -16,7 +17,8 @@ import javax.persistence.Table;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 public class UserTypeDTO implements Serializable {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy= GenerationType.SEQUENCE, generator="usertypemaster_id_seq")
+	@SequenceGenerator(allocationSize=1, schema="nav",  name="usertypemaster_id_seq", sequenceName = "nav.usertypemaster_id_seq")
 	@Column(name = "id")
 	private Long id;
 

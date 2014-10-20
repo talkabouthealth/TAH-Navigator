@@ -384,14 +384,16 @@ public class UserDAO {
 			UserDetailsDTO detailsDTO = new UserDetailsDTO();
 			detailsDTO.setId(dto.getId());
 			detailsDTO.setUser(dto);
-			detailsDTO.setContactMethod(ContactTypeDAO.getEntityById(memberBean.getContactMethod()));
+			if(StringUtils.isNotBlank(memberBean.getContactMethod())) {
+				detailsDTO.setContactMethod(ContactTypeDAO.getEntityById(memberBean.getContactMethod()));
+			} else {
+				detailsDTO.setContactMethod(ContactTypeDAO.getEntityById("1"));
+			}
 			detailsDTO.setCreatedate(cl.getTime());
 			detailsDTO.setEditdate(cl.getTime());
 			detailsDTO.setEditedBy(dto);
 			detailsDTO.setEmail(memberBean.getEmail());
-			
-			
-			
+
 			if(StringUtils.isNotBlank(memberBean.getDob())) {
 				detailsDTO.setDob(df.parse(memberBean.getDob()));
 			}
@@ -414,7 +416,9 @@ public class UserDAO {
 				detailsDTO.setSea2(memberBean.getSea2());
 			}*/
 			detailsDTO.setSsnLast4(memberBean.getSsnLast4());
-			detailsDTO.setSeq1(SecurityQuestionDAO.getEntityById(memberBean.getSeq1()));
+			if(StringUtils.isNotBlank(memberBean.getSeq1())) {
+				detailsDTO.setSeq1(SecurityQuestionDAO.getEntityById(memberBean.getSeq1()));
+			}
 			//detailsDTO.setSeq2(SecurityQuestionDAO.getEntityById(memberBean.getSeq2()));
 			detailsDTO.setTocflag(memberBean.isTosFlag());
 			detailsDTO.setTosflag(memberBean.isSmtFlag());
