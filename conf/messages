@@ -22,3 +22,5 @@ email.suspended = Sorry, This email is suspended
 
 password.currentbad = Current password is wrong.
 password.different = New and Confirm passwords are different.
+
+dob.wrong= Please enter correct date of birth.

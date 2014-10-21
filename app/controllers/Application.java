@@ -1,6 +1,7 @@
 package controllers;
 
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -263,6 +264,13 @@ public class Application extends Controller {
 //    		System.out.println("Is null");
 //    		validation.isTrue(true).message("Please agree to the TalkAboutHealth Terms of Service and Privacy Policy.");
     	}
+    	
+    	DateFormat df = new SimpleDateFormat("mm/dd/yyyy");
+		try {
+			df.parse(member.getDob());
+		} catch(Exception e) {
+			validation.addError("member.dob", "dob.wrong", "");
+		}
 	}
     
     public static void validateEmail(String email) {
