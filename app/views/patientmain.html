@@ -72,10 +72,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
             <h4>
               ${patientOtherDetails.disease.name}#{if breastCancerInfo != null && breastCancerInfo.bcStage}, ${breastCancerInfo.bcStage.name}#{/if}
             </h4>
-            #{/if}
-            #{else}
-            <h4>Disease, for Testing Purposes</h4>
-            #{/else}
+            #{/if}            
             #{if session.get("lastLoginTime") != null}
             <p class="last-login">Last Login: <span id="time-ago">${session.get("lastLoginTime")}</span></p>
             #{/if}
