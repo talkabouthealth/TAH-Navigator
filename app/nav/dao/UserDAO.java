@@ -468,4 +468,27 @@ public class UserDAO {
 		System.out.println("New ID id " + dto.getId());
 		return true;
 	}
+	
+	public static String getUserName(Integer id) {
+		String name="";
+		UserDetailsDTO details = UserDAO.getDetailsById(id);
+		if(StringUtils.isBlank(details.getFirstName()) && StringUtils.isBlank(details.getLastName())) {
+			name = details.getUser().getName();
+		} else {
+			if(StringUtils.isBlank(details.getFirstName()) && !StringUtils.isBlank(details.getLastName()))
+				name = details.getLastName();
+			else if(!StringUtils.isBlank(details.getFirstName()) && StringUtils.isBlank(details.getLastName()))
+				name = details.getFirstName();
+			else {
+				name = details.getFirstName() + " " + details.getLastName();
+			}
+		}
+		if(details.getUser().getUserType() == 'c') {
+			name = details.getFirstName();
+		}
+		if(StringUtils.isBlank(name)) {
+			name = "";
+		}
+		return name;
+	}
 }

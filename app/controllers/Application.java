@@ -202,7 +202,7 @@ public class Application extends Controller {
     	    		 Mail.activation(detailDto,url);
     			 }
     	   		 Map<String, Object> vars = new HashMap<String, Object>();
-    	   		 vars.put("username", TemplateExtensions.usreNameNew(user.getName(), new Integer(user.getId())));
+    	   		 vars.put("username", UserDAO.getUserName(new Integer(user.getId())));
     	   		 EmailUtil.sendEmail(EmailUtil.MOFFITT_THANKYOU_FOR_SIGNUP,vars,user.getEmail());
 
     			 Patient.index();
@@ -210,7 +210,7 @@ public class Application extends Controller {
     		 } else {
 
     			 Map<String, Object> vars = new HashMap<String, Object>();
-    	   		 vars.put("username", TemplateExtensions.usreNameNew(user.getName(), new Integer(user.getId())));
+    			 vars.put("username", UserDAO.getUserName(new Integer(user.getId())));
     	   		 EmailUtil.sendEmail(EmailUtil.MOFFITT_THANKYOU_FOR_SIGNUP,vars,user.getEmail());
 
     			 String url = "http://"+request.host;
