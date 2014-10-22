@@ -20,8 +20,9 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
 -->
 </style>
 <div id="content" class="index page">
+  #{if apt != null }
   <div class="row">
-    #{if apt != null }
+    
     <div class="preparation col-xs-6">
       <label><i class="fa fa-clock-o"></i>My Next Appointment is Scheduled for: </label>
       <div class="appointment"> <!-- row -->
@@ -86,16 +87,9 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
         #{/if}
       </div><!-- checklist -->
 
-    </div><!-- preparation checklist -->
-    #{/if}
-    #{else}
-    <div class="preparation col-xs-12">
-      <label><i class="fa fa-info-circle"></i>No appointment scheduled.</label>
-    </div>
-    #{/else}
-
+    </div><!-- preparation checklist -->   
   </div><!-- row -->
-
+#{/if}
   <div class="row">
     <div class="video-walk-through col-xs-6">
       <label class="block"><i class="fa fa-check-circle-o"></i>Welcome To Moffitt TVRH Video</label>
