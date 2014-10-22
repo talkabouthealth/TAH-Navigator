@@ -26,7 +26,7 @@ public class FollowUp {
 		EntityManager em = JPAUtil.getEntityManager();
 		List<PatientConcernDTO> concerns = null;
 		try {
-			TypedQuery<PatientConcernDTO> query = em.createQuery("FROM PatientConcernDTO p WHERE p.userId = :userId", PatientConcernDTO.class);
+			TypedQuery<PatientConcernDTO> query = em.createQuery("FROM PatientConcernDTO p WHERE p.userId = :userId ORDER BY p.concernDate DESC", PatientConcernDTO.class);
 			query.setParameter("userId", patientId);
 			concerns = query.getResultList();
 		} 
@@ -40,7 +40,7 @@ public class FollowUp {
 		EntityManager em = JPAUtil.getEntityManager();
 		List<PatientGoalDTO> goals = null;
 		try {
-			TypedQuery<PatientGoalDTO> query = em.createQuery("FROM PatientGoalDTO p WHERE p.userId = :userId", PatientGoalDTO.class);
+			TypedQuery<PatientGoalDTO> query = em.createQuery("FROM PatientGoalDTO p WHERE p.userId = :userId ORDER BY p.goalDeadline DESC", PatientGoalDTO.class);
 			query.setParameter("userId", patientId);
 			goals = query.getResultList();
 		} 
