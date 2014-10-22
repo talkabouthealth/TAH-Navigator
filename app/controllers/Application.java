@@ -38,6 +38,8 @@ import play.data.validation.Valid;
 import play.mvc.Before;
 import play.mvc.Controller;
 import util.CommonUtil;
+import util.EmailUtil;
+import util.TemplateExtensions;
 
 public class Application extends Controller {
 
@@ -101,7 +103,12 @@ public class Application extends Controller {
 	    	    String newpassword = CommonUtil.generateRandomPassword();
 	    	    detailDto.getUser().setPassword(CommonUtil.hashPassword(newpassword));
 	    	    UserDAO.updateUserDetails(detailDto);
-	    	    Mail.forgot(detailDto,newpassword);
+//	    	    Mail.forgot(detailDto,newpassword);
+
+	    	    Map<String, Object> vars = new HashMap<String, Object>();
+	   		 	vars.put("newpassword", newpassword);
+	   		 	EmailUtil.sendEmail(EmailUtil.MOFFITT_PASSWORDRECOVERY,vars,user.getEmail());
+
 	    		flash.success("ok");
 	    		forgot();
             }
@@ -194,9 +201,18 @@ public class Application extends Controller {
     				 String url = "http://"+request.host;
     	    		 Mail.activation(detailDto,url);
     			 }
+    	   		 Map<String, Object> vars = new HashMap<String, Object>();
+    	   		 vars.put("username", TemplateExtensions.usreNameNew(user.getName(), new Integer(user.getId())));
+    	   		 EmailUtil.sendEmail(EmailUtil.MOFFITT_THANKYOU_FOR_SIGNUP,vars,user.getEmail());
+
     			 Patient.index();
 //    			 render("Application/distress.html",userId,fromPage);
     		 } else {
+
+    			 Map<String, Object> vars = new HashMap<String, Object>();
+    	   		 vars.put("username", TemplateExtensions.usreNameNew(user.getName(), new Integer(user.getId())));
+    	   		 EmailUtil.sendEmail(EmailUtil.MOFFITT_THANKYOU_FOR_SIGNUP,vars,user.getEmail());
+
     			 String url = "http://"+request.host;
 	    		 Mail.activation(detailDto,url);
     			 Static.success();

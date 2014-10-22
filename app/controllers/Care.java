@@ -64,6 +64,7 @@ import org.apache.commons.lang.StringUtils;
 import play.mvc.Controller;
 import play.mvc.With;
 import util.CommonUtil;
+import util.EmailUtil;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -242,8 +243,14 @@ public class Care extends Controller {
 
 			BaseDAO.save(app);
    		 	String url = "http://"+request.host;
-   		 	Mail.invitation(firstname,lastname,email,app.getId(),url);
-   				 
+//   		 	Mail.invitation(firstname,lastname,email,app.getId(),url);
+
+   		 	Map<String, Object> vars = new HashMap<String, Object>();
+   		 	vars.put("username", firstname + " " + lastname);
+   		 	vars.put("signupurl", url + "/createinvited/"+app.getId());
+//   		 	EmailUtil.sendEmail(EmailUtil.MOFFITT_WELCOME,vars,"aawte.umesh@s5infotech.com");
+   		 	EmailUtil.sendEmail(EmailUtil.MOFFITT_WELCOME,vars,email);
+
 		} catch(Exception e) {
 			e.printStackTrace();
 			JsonObject obj = new JsonObject();
