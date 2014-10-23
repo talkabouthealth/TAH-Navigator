@@ -54,7 +54,7 @@ public class FollowUp {
 		EntityManager em = JPAUtil.getEntityManager();
 		List<PatientFollowUpCareItemDTO> careItems = null;
 		try {
-			TypedQuery<PatientFollowUpCareItemDTO> query = em.createQuery("FROM PatientFollowUpCareItemDTO p WHERE p.userId = :userId", PatientFollowUpCareItemDTO.class);
+			TypedQuery<PatientFollowUpCareItemDTO> query = em.createQuery("FROM PatientFollowUpCareItemDTO p WHERE p.userId = :userId ORDER BY p.endDate DESC", PatientFollowUpCareItemDTO.class);
 			query.setParameter("userId", patientId);
 			careItems = query.getResultList();
 		} 
