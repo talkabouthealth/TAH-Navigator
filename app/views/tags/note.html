@@ -8,7 +8,7 @@
 		    ${seq.noteTitle}
 		    #{/if}
 		    #{else}  
-			<a href="javaScript:operationNote('edit','${seq.id}','${seq.noteTitle}','${seq.noteDesc}')">
+			<a href="javaScript:operationNote('edit','${seq.id}','${seq.noteTitle}','${seq.noteDesc}', '${seq.noteBy.id}')">
 				${seq.noteTitle}
 			</a>
 			#{/else}

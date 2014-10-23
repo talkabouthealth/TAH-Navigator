@@ -1034,7 +1034,9 @@ operationMedication = function(operation,id) {
 		$('#addEditmedication').appendTo("body").modal();
 	}
 }
-operationNote = function(operation,id,title,desc) {
+operationNote = function(operation,id,title,desc, noteBy) {
+    var userId = '${user.id}';
+    $('#addEditNote').find('input[type="button"][name="deleteNote"]').hide();
 	if(operation == 'edit') {
 		$("#myModalLabel_note").html("EDIT NOTE");
 		$("#noteForm input[name='operation']").val("edit");
@@ -1047,6 +1049,9 @@ operationNote = function(operation,id,title,desc) {
 		});
 		$("#noteForm textarea[name='description']").val(desc);
 		$('#addEditNote').appendTo("body").modal();
+		if (noteBy != userId) {
+		  $('#addEditNote').find('input[type="button"][name="deleteNote"]').hide();
+		}
 	} else if(operation == 'delete') {
 		if(confirm('Do you want to delete the note')) {
 			$("#noteForm input[name='operation']").val("delete");
