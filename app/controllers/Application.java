@@ -198,8 +198,8 @@ public class Application extends Controller {
 						invitationdto.setActivateOnSignup(true);
 						BaseDAO.update(invitationdto);
     			 } else {
-    				 String url = "http://"+request.host;
-    	    		 Mail.activation(detailDto,url);
+//    				 String url = "http://"+request.host;
+//    	    		 Mail.activation(detailDto,url);
     			 }
     	   		 Map<String, Object> vars = new HashMap<String, Object>();
     	   		 vars.put("username", UserDAO.getUserName(new Integer(user.getId())));
@@ -213,8 +213,8 @@ public class Application extends Controller {
     			 vars.put("username", UserDAO.getUserName(new Integer(user.getId())));
     	   		 EmailUtil.sendEmail(EmailUtil.MOFFITT_THANKYOU_FOR_SIGNUP,vars,user.getEmail());
 
-    			 String url = "http://"+request.host;
-	    		 Mail.activation(detailDto,url);
+//    			 String url = "http://"+request.host;
+//	    		 Mail.activation(detailDto,url);
     			 Static.success();
     		 }
     	 }
@@ -265,7 +265,6 @@ public class Application extends Controller {
     
     private static void validateMember(SignUpMemberBean member) {
     	if(member != null) {
-    		System.out.println("Not null");
     		if (!validation.hasError("member.email")) {
     			System.out.println("Not null email");
     			System.out.println(member.getEmail());
@@ -276,9 +275,6 @@ public class Application extends Controller {
     		} else {
     			System.out.println("Not null email");
     		}
-    	} else {
-//    		System.out.println("Is null");
-//    		validation.isTrue(true).message("Please agree to the TalkAboutHealth Terms of Service and Privacy Policy.");
     	}
     	
     	DateFormat df = new SimpleDateFormat("mm/dd/yyyy");

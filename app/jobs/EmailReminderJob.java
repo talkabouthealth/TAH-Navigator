@@ -14,7 +14,7 @@ public class EmailReminderJob  extends Job {
 	
 	private boolean runEmailJob() {
 		System.out.println("Added job to send email to patient every 24 hrs or ");
-		Mail.morningNotification();
+//		Mail.morningNotification();
 		return true;
 	}
 }
