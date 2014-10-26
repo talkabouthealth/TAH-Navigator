@@ -25,14 +25,13 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
   <script src="/public/plugins//moment/moment.min.js"></script>
   <script src="/public/js/validator.min.js"></script>
   <script src="/public/js/devoops.js"></script>
-  <style type="text/css">
-  </style>
+  <script src="/public/js/application.js"></script>
 </head>
 <body>
 <div class="wrapper">
   <div class="header">
     <div class="hamburger">
-        <a type="button">
+        <a type="button" class="sidebar-toggle">
             <i class="fa fa-bars"></i>
         </a>
     </div>
@@ -124,6 +123,17 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
     <div class="body">
       <div class="sidebar">
         <ul class="nav main-menu">
+            <li class="mobile divider account-data">
+            <p class="username">#{userName userName: user.name, userId:user.id /}</p>
+            #{if patientOtherDetails != null && patientOtherDetails.disease != null}
+            <p class="disease">
+              ${patientOtherDetails.disease.name}#{if breastCancerInfo != null && breastCancerInfo.bcStage}, ${breastCancerInfo.bcStage.name}#{/if}
+              </p>
+            #{/if}            
+            </li>
+            <li class="mobile"><a class="distress-meter" patientId="${user.id}">Update Distress</a></li>
+            <li class="mobile"><a href="#">Settings <i class="fa fa-chevron-right"></i></a></li>
+            <li class="mobile divider">Pages</li>
           <li>
             #{if pageType == 'dashboard'}<a href="#" class="active">#{/if}
             #{else}<a href="@{Patient.index()}">#{/else}
