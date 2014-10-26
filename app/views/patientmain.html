@@ -29,31 +29,6 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
   </style>
 </head>
 <body>
-<!--
-<div id="screensaver">
-  <canvas id="canvas"></canvas>
-  <i class="fa fa-lock" id="screen_unlock"></i>
-</div>
-<div id="modalbox">
-  <div class="devoops-modal">
-    <div class="devoops-modal-header">
-      <div class="modal-header-name">
-        <span>Basic table</span>
-      </div>
-      <div class="box-icons">
-        <a class="close-link">
-          <i class="fa fa-times"></i>
-        </a>
-      </div>
-    </div>
-    <div class="devoops-modal-inner">
-    </div>
-    <div class="devoops-modal-bottom">
-    </div>
-  </div>
-</div>
--->
-
 <div class="wrapper">
   <div class="header">
     <div class="logo">
@@ -144,51 +119,51 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
             #{if pageType == 'dashboard'}<a href="#" class="active">#{/if}
             #{else}<a href="@{Patient.index()}">#{/else}
             <i class="fa fa-th-large"></i>
-            <span class="hidden-xs">My Dashboard</span>
+            <span>My Dashboard</span>
           </a>
         </li>
         #{if user.verifiedFlag}
         <li>  #{if pageType == 'appointment'}<a href="#" class="active">#{/if}
           #{else}<a href="@{Patient.appointment()}">#{/else}
-          <i class="fa fa-calendar-o"><span style="position: absolute; left: 22px; font-size: 7px; top: 24px;">5</span></i> <span class="hidden-xs">My Appointments</span></a>
+          <i class="fa fa-calendar-o"><span style="position: absolute; left: 22px; font-size: 7px; top: 24px;">5</span></i> <span>My Appointments</span></a>
         </li>
         <li>
           #{if pageType == 'careteam'}<a href="#" class="active">#{/if}
           #{else}<a href="@{Patient.careteam()}">#{/else}
-          <i class="fa fa-user-md"></i> <span class="hidden-xs">My Care Team</span></a>
+          <i class="fa fa-user-md"></i> <span>My Care Team</span></a>
         </li>
         <li>
           #{if pageType == 'medication'}<a href="#" class="active">#{/if}
           #{else}<a href="@{Patient.medication()}">#{/else}
-          <i class="fa fa-tint"></i> <span class="hidden-xs">My Medications</span></a>
+          <i class="fa fa-tint"></i> <span>My Medications</span></a>
         </li>
         <li>
           #{if pageType == 'treatmentplan'}<a href="#" class="active">#{/if}
           #{else}<a href="@{Patient.treatmentplan()}">#{/else}
-          <i class="fa fa-flag"></i> <span class="hidden-xs">My Treatment Plan</span></a>
+          <i class="fa fa-flag"></i> <span>My Treatment Plan</span></a>
         </li>
         <li>
           #{if pageType == 'thrivercareplan'}<a href="#" class="active">#{/if}
           #{else}<a href="@{Patient.thrivercareplan()}">#{/else}
-          <i class="fa fa-book"></i> <span class="hidden-xs">My Ongoing Care Plan</span></a>
+          <i class="fa fa-book"></i> <span>My Ongoing Care Plan</span></a>
         </li>
-        <!--                  <i class="fa fa-book"></i> <span class="hidden-xs">My Thriver Care Plan</span></a></li> -->
+        <!--                  <i class="fa fa-book"></i> <span>My Thriver Care Plan</span></a></li> -->
 
         <li>
           #{if pageType == 'diagnosis'}<a href="#" class="active">#{/if}
           #{else}<a href="@{Patient.diagnosis()}">#{/else}
-          <i class="fa fa-user"></i> <span class="hidden-xs">My Diagnosis</span></a>
+          <i class="fa fa-user"></i> <span>My Diagnosis</span></a>
         </li>
 
         #{/if}
         #{else}
-        <li class="disabled"><a disabled href="#"><i class="fa fa-calendar"></i> <span class="hidden-xs">My Appointments</span></a></li>
-        <li class="disabled"><a disabled href="#"><i class="fa fa-user-md"></i> <span class="hidden-xs">My Care Team</span></a></li>
-        <li class="disabled"><a disabled href="#"><i class="fa fa-medkit"></i> <span class="hidden-xs">My Medications</span></a></li>
-        <li class="disabled"><a disabled href="#"><i class="fa fa-flag"></i> <span class="hidden-xs">My Treatment Plan</span></a></li>
-        <!--                <li class="disabled"><a disabled href="#"><i class="fa fa-book"></i> <span class="hidden-xs">My Thriver Care Plan</span></a></li> -->
-        <li class="disabled"><a disabled href="#"><i class="fa fa-book"></i> <span class="hidden-xs">My Survivorship Care Plan</span></a></li>
-        <li class="disabled"><a disabled href="#"><i class="fa fa-user"></i> <span class="hidden-xs">My Diagnosis</span></a></li>
+        <li class="disabled"><a disabled href="#"><i class="fa fa-calendar"></i> <span>My Appointments</span></a></li>
+        <li class="disabled"><a disabled href="#"><i class="fa fa-user-md"></i> <span>My Care Team</span></a></li>
+        <li class="disabled"><a disabled href="#"><i class="fa fa-medkit"></i> <span>My Medications</span></a></li>
+        <li class="disabled"><a disabled href="#"><i class="fa fa-flag"></i> <span>My Treatment Plan</span></a></li>
+        <!--                <li class="disabled"><a disabled href="#"><i class="fa fa-book"></i> <span>My Thriver Care Plan</span></a></li> -->
+        <li class="disabled"><a disabled href="#"><i class="fa fa-book"></i> <span>My Survivorship Care Plan</span></a></li>
+        <li class="disabled"><a disabled href="#"><i class="fa fa-user"></i> <span>My Diagnosis</span></a></li>
         #{/else}
       </ul>
     </div><!-- nav -->
