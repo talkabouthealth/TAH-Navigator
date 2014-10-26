@@ -31,9 +31,18 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
 <body>
 <div class="wrapper">
   <div class="header">
+    <div class="hamburger">
+        <a type="button">
+            <i class="fa fa-bars"></i>
+        </a>
+    </div>
     <div class="logo">
       <img src="/public/images/moffitt-logo.png"  />
     </div><!-- logo -->
+    <div class="mobile-account">
+        <p>#{userName userName: user.name, userId:user.id /}</p> 
+        <a class="button rounded" href="/logout">Log Out</a>
+    </div>
     <div class="account">
       <div class="account-container">
         <div class="account-info">

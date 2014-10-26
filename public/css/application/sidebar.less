@@ -4,6 +4,7 @@
   -moz-transition: 0.2s;
   -o-transition: 0.2s;
   transition: 0.2s;
+  line-height: 30px;
 }
 .nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
   background:rgba(0, 0, 0, 0.1);
@@ -83,6 +84,11 @@
     width: 20px;
     display: inline-block;
   }
+
+  .hamburger {
+      display: none;
+
+  }
 @media (min-width: 992px) {
   .main-menu .dropdown-menu {
     position: relative;
@@ -103,4 +109,90 @@
   .page-404 .form-inline {
     width: 40%;
   }
+}
+
+
+
+
+@media (max-width: 769px) {
+    .wrapper {
+        padding-top: @mobile-header-height;
+
+    }
+    .sidebar {
+        top: @mobile-header-height;
+    }
+
+    .wrapper {
+        p {
+            line-height: @mobile-header-height;
+        }
+
+        .header {
+            padding: 0;
+            background: @dark-blue;
+            height: @mobile-header-height;
+            margin-top: -@mobile-header-height;
+
+            p, a, i {
+                color: white;
+            }
+        }
+
+        .account {
+            display: none;
+        }
+
+        .logo {
+            @image-height: 60px;
+            height: 40px;
+            overflow: hidden;
+            padding: 4px;
+            width: auto;
+
+            img {
+                margin: 0;
+                width: auto;
+                height: @image-height;
+            }
+        }
+
+        .mobile-account {
+            float: right;
+            padding-right: @padding;
+
+            p {
+                display: inline;
+                font-size: @tiny-font;
+            }
+
+        }
+
+        .account {
+            padding-left: 0;
+
+            .account-data {
+                .today-date, .last-login {
+                    display: none;
+                }
+            }
+
+            .account-share {
+                label {
+                    display: none;
+                }
+            }
+
+        }
+
+    }
+
+    .hamburger {
+        display: block;
+        padding: @padding;
+        float: left;
+
+    }
+
+
 }
