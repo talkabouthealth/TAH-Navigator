@@ -130,9 +130,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
               </p>
             #{/if}            
             </li>
-            <li class="mobile"><a class="distress-meter" patientId="${user.id}">Update Distress</a></li>
-            <li class="mobile"><a href="#">Settings <i class="fa fa-chevron-right"></i></a></li>
-            <li class="mobile divider">Pages</li>
+            <li class="mobile"><a class="distress-meter" patientId="${user.id}"><i class="fa fa-stethoscope"></i> <span>Update Distress</span></a></li>
           <li>
             #{if pageType == 'dashboard'}<a href="#" class="active">#{/if}
             #{else}<a href="@{Patient.index()}">#{/else}
@@ -183,6 +181,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
         <li class="disabled"><a disabled href="#"><i class="fa fa-book"></i> <span>My Survivorship Care Plan</span></a></li>
         <li class="disabled"><a disabled href="#"><i class="fa fa-user"></i> <span>My Diagnosis</span></a></li>
         #{/else}
+        <li class="mobile"><a href="#"><i class="fa fa-cog"></i> <span>Settings</span> <i class="fa fa-chevron-right"></i></a></li>
       </ul>
     </div><!-- nav -->
     <div class="content">
