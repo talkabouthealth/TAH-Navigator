@@ -1,7 +1,11 @@
 package nav.dao;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -9,10 +13,9 @@ import javax.persistence.TypedQuery;
 import com.google.gson.JsonObject;
 
 import nav.dto.DistressBean;
-
 import util.GlobalConstant;
 import util.JPAUtil;
-
+import models.DistressTypeMasterDTO;
 import models.PatientDistressDTO;
 import models.PatientDistressDetailDTO;
 import models.UserDTO;
@@ -152,4 +155,63 @@ public class DistressDAO {
 		}
 		return  json;
 	}
+	
+	public static Map<Long, Integer> distressValues(int patientId, int days) {
+		EntityManager em = JPAUtil.getEntityManager();
+		Map<Long, Integer> values = new HashMap<Long, Integer>();
+		List<PatientDistressDTO> list = new ArrayList<PatientDistressDTO>();
+		if (days > 0) {
+			Date curDate = new Date();
+			Date prevDays = new Date(curDate.getTime() - (days * 86400000L));
+			list = em.createQuery("SELECT p FROM PatientDistressDTO p WHERE p.user.id = ?1 AND p.daterecrded >= ?2 ORDER BY p.daterecrded ASC", PatientDistressDTO.class).setParameter(1, patientId).setParameter(2, prevDays).getResultList();
+		}
+		else {
+			list = em.createQuery("SELECT p FROM PatientDistressDTO p WHERE p.user.id = ?1  ORDER BY p.daterecrded ASC", PatientDistressDTO.class).setParameter(1, patientId).getResultList();
+		}
+		
+		
+		for (PatientDistressDTO pd : list) {
+			Date d = pd.getDaterecrded();
+			int distress = pd.getDistressvalue();
+			values.put(d.getTime(), distress);
+		}		
+		return values;		
+	}
+	
+	public static List<String> problemList(int patientId, int days) {
+		EntityManager em = JPAUtil.getEntityManager();				
+		List result = null;
+		List<String> problems = new ArrayList<String>();
+		if (days > 0) {
+			Date curDate = new Date();
+			Date prevDays = new Date(curDate.getTime() - (days * 86400000L));							
+			result  = em.createQuery("select dn.name, pdd.patiendistress.otherdetail from PatientDistressDetailDTO pdd JOIN pdd.distressName dn WHERE pdd.patiendistress.user.id = ?1 AND pdd.patiendistress.daterecrded >= ?2").setParameter(1, patientId).setParameter(2, prevDays).getResultList();	
+		}
+		else {			
+			result  = em.createQuery("select dn.name, pdd.patiendistress.otherdetail from PatientDistressDetailDTO pdd JOIN pdd.distressName dn WHERE pdd.patiendistress.user.id = ?1").setParameter(1, patientId).getResultList();  
+		}
+		Iterator i = result.iterator();		
+		while(i.hasNext()) {
+			Object[] values = (Object[]) i.next();
+			String value1 = values[0].toString();
+			String value2 = values[1].toString();			
+			boolean flag1 = false, flag2 = false;
+			for (String problem : problems) {
+				if(problem.equalsIgnoreCase(value1)) {
+					flag1 = true;
+				}
+				if (problem.equalsIgnoreCase(value2)) {
+					flag2 = true;
+				}
+			}
+			if (!value1.isEmpty() && !flag1) {
+				problems.add(value1);
+			}
+			if (!value2.isEmpty() && !flag2) {
+				problems.add(value2);
+			}
+		}
+		return problems;
+	}
+	
 }

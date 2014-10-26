@@ -294,7 +294,7 @@ public class Care extends Controller {
 		
 		DistressBean distress = DistressDAO.getLastDistress(patientDto.getUser());
 		
-		DistressBean lastDistress = DistressDAO.getLastDistress(patientDto.getUser(),1);
+		//DistressBean lastDistress = DistressDAO.getLastDistress(patientDto.getUser(),1);
 		
 		List<NoteDTO> noteList = NotesDAO.getPatientNotesList(patientId);
 		List<DiseaseMasterDTO> diseases = Disease.allDiseases();
@@ -305,8 +305,14 @@ public class Care extends Controller {
 		Map <String, Object> ps = PatientDetailDAO.patientSummary(Integer.valueOf(patientId));		
 		//Appointment masterData
 		List<AppointmentMasterDTO> appList = AppointmentMasterDAO.getAllAppointments();
+		List<String> lastWeekProblems = DistressDAO.problemList(Integer.valueOf(patientId), 7);
+		List<String> lastMonthProblems = DistressDAO.problemList(Integer.valueOf(patientId), 30);
+		List<String> lastThreeMonthProblems = DistressDAO.problemList(Integer.valueOf(patientId), 90);
+		List<String> lastSixMonthProblems = DistressDAO.problemList(Integer.valueOf(patientId), 180);
+		List<String> lastYearProblems = DistressDAO.problemList(Integer.valueOf(patientId), 365);
+		List<String> allProblems = DistressDAO.problemList(Integer.valueOf(patientId), 0);
 		
-        render(user,expertDetail,patientId,patientDto,patientOtherDetails,distress,noteList, diseases, stages, breastCancerId, ps,lastDistress,appList,drList);
+        render(user,expertDetail,patientId,patientDto,patientOtherDetails,distress,noteList, diseases, stages, breastCancerId, ps,appList,drList, lastWeekProblems, lastMonthProblems, lastThreeMonthProblems, lastSixMonthProblems, lastYearProblems, allProblems);
     }
 	
 	public static void appointmentForm() {

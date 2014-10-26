@@ -45,6 +45,7 @@ import nav.dao.AppointmentMasterDAO;
 import nav.dao.BaseDAO;
 import nav.dao.CareTeamDAO;
 import nav.dao.Disease;
+import nav.dao.DistressDAO;
 import nav.dao.FollowUp;
 import nav.dao.MedicationDAO;
 import nav.dao.NotesDAO;
@@ -74,7 +75,11 @@ public class CarePatien  extends Controller {
 		Map <String, Object> ps = PatientDetailDAO.patientSummary(patientId);
 		render(patientId,list,expList, ps);
 	}
-
+	public static void distressValues(int patientId, int days) {
+		Map<Long, Integer> values = DistressDAO.distressValues(patientId, days);
+		renderJSON(values);
+	}
+	
 	public static void careteam(int patientId) {
 		UserDetailsDTO userDto = UserDAO.getDetailsById(patientId);
 		PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", userDto.getId());

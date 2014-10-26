@@ -1,5 +1,7 @@
 package models;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,6 +30,10 @@ public class PatientDistressDetailDTO {
 
 	@Column(name = "distressvalue")
 	private boolean distressvalue;
+	
+	@OneToOne
+	@JoinColumn(name="distresstypeid", insertable=false, updatable=false)
+	private DistressTypeMasterDTO distressName;
 
 	public int getId() {
 		return id;
@@ -59,5 +65,9 @@ public class PatientDistressDetailDTO {
 
 	public void setDistressvalue(boolean distressvalue) {
 		this.distressvalue = distressvalue;
+	}
+
+	public DistressTypeMasterDTO getDistressName() {
+		return distressName;
 	}
 }

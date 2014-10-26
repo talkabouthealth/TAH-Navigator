@@ -10,8 +10,7 @@
   <link href="/public/css/styles.less" rel="stylesheet/less" />
   <link href="/public/css/care/styles.less" rel="stylesheet/less" />
   <script src="/public/js/lib/less-1.7.4.min.js"></script>
-  <link href="/public/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-
+  <link href="/public/css/bootstrap.min.css" rel="stylesheet" type="text/css" />    
 
   <!--End Container-->
   <script src="/public/plugins/jquery/jquery-2.1.0.min.js"></script>
@@ -29,6 +28,8 @@
   <script src="/public/plugins//moment/moment.min.js"></script>
   <script src="/public/js/tableTooltips.js"></script>
   <script src="/public/js/care/dashboard.js"></script>
+  <script type="text/javascript" src="@{'/public/plugins/flot/jquery.flot.js'}"></script>
+  <script type="text/javascript" src="@{'/public/plugins/flot/jquery.flot.time.js'}"></script>
   <script src="/public/js/careteamController.js"></script>
 
   <style>
@@ -111,6 +112,11 @@
   color: #F8F8F8;
   border: 5px solid #D8D8D8 !important;
   border-radius: 0 0 10px   10px ;
+}
+
+a.date-range.active {
+    font-weight: bold;
+    color: #000;
 }
   </style>
 

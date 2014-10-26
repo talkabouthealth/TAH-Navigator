@@ -1584,7 +1584,107 @@ var careTeamController = (function() {
         }
     };
     
-    $(function() {});
+    var distressGraph = function(patientId, days) {                
+        var url = '/distressvalues/' + patientId + '/' + days;
+        $.get(url, function(data) {
+            var $distressGraph = $('#patient_distress_graph');
+            var distressPoints = [];     
+            
+            for (date in data) {
+                var arr = [Number(date), Number(data[date])];
+                distressPoints[distressPoints.length] = arr;                
+            }
+            var length = distressPoints.length;
+            for (var i = 0; i < length; i++) {
+                for (var j = i+1; j < length; j++) {
+                    var timej = distressPoints[j][0];
+                    var timei = distressPoints[i][0];
+                    if (timej < timei) {
+                        var tmp = distressPoints[j];
+                        distressPoints[j] = distressPoints[i];
+                        distressPoints[i] = tmp;
+                    }
+                }
+            }            
+            var maxDate = new Date().getTime();
+            var ONE_DAY = 86400000;
+            var minDate;        
+            var weekTickSize = [2, 'day'];
+            var monthTickSize = [7, 'day'];
+            var threeMonthTickSize = [20, 'day'];
+            var sixMonthTickSize = [30, 'day'];
+            var yearTickSize = [60, 'day'];
+            var tickSize;
+            
+            if (days > 0 && days <= 7) {
+                tickSize = weekTickSize;
+                minDate = maxDate - ( 7 * ONE_DAY);
+            }
+            else if (days > 7 && days <= 30) {
+                tickSize = monthTickSize;
+                minDate = maxDate - ( 30 * ONE_DAY);
+            }
+            else if (days > 30 && days <= 90) {
+                tickSize = threeMonthTickSize;
+                minDate = maxDate - ( 90 * ONE_DAY);
+            }
+            else if (days > 90 && days <= 180) {
+                tickSize = sixMonthTickSize;
+                minDate = maxDate - ( 180 * ONE_DAY);
+            }
+            else if (days > 180 && days <= 366) {
+                tickSize = yearTickSize;
+                minDate = maxDate - ( 366 * ONE_DAY);
+            }
+            else {
+                tickSize = monthTickSize;   // need to calculate
+                maxDate = distressPoints[length-1][0];
+                minDate = distressPoints[0][0];
+            }
+            var plots = [
+              {              
+                  color: 'rgb(0, 0, 255)',
+                  lines: { show: true},
+                  points: { show: true },                  
+                  data: distressPoints
+              }
+            ];
+            
+            
+            var options = {            
+                xaxis: {
+                    mode: "time",                
+                    timeformat: "%m/%d/%Y",
+                    tickSize: tickSize,                    
+                    min: minDate,
+                    max: maxDate
+                },
+                
+                yaxis: {                
+                    max: 10,
+                    ticks: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+                    tickDecimals: 0,
+                    min: 0
+                }
+            };
+            $distressGraph.plot(plots, options);
+            
+        }, "json");
+    };
+    
+    $(function() {     
+        var $distressGraph = $('#patient_distress_graph');
+        var patientId = $distressGraph.attr("patient_id");
+        var days = $('.date-range.active').attr("days");        
+        distressGraph(patientId, days);
+        
+        $(document).on('click', 'a.date-range', function() {
+            $('a.date-range').removeClass("active");
+            $(this).addClass("active");
+            var days = $(this).attr("days");
+            distressGraph(patientId, days);
+        });
+    });
     
     var msgMap = {
         'diagnosis': diagnosis,

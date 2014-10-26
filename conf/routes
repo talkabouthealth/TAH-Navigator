@@ -11,6 +11,8 @@ GET		/api/*									API.index
 GET		/image/show/{userId}								Image.show
 GET		/image/showMedicine/{medId}								Image.showMedicine
 
+GET     /distressvalues/{patientId}/{days}          CarePatien.distressValues
+
 
 #Login Pages
 GET     /login                                  Login.index
