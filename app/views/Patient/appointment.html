@@ -19,7 +19,7 @@ div.green-title{cursor: pointer;}
             <p>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}<br/> <!-- THURSDAY MAY 10TH 2014 -->
             ${seq.appointmenttime} <a href="javaScript:void(0);">${seq.purposeText}</a></p>
           </div>
-          <div class="col-sm-5" style="padding-top: 10px;">
+          <div class="col-sm-6" style="padding-top: 10px;">
             <p>
             #{if seq.caremember != null}
             	 #{userName userName: seq.caremember.name, userId:seq.caremember.id /}

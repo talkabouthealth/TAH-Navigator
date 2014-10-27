@@ -13,7 +13,7 @@ member.verifyemail = Verify email
 username.empty = Please enter correct username.
 username.exists = Username is already taken. Please enter a different username.
 username.reserved = Username is reserved. Please enter a different username.
-
+invited.create.passwrod=Password must be 8 letters or longer and contain at least one number.
 email.exists = Email is already registered. Please enter a different email.
 email.nosuchemail = Sorry, there are no user with this email in our database.
 emails.incorrect = Please input correct emails

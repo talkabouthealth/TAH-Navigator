@@ -45,6 +45,7 @@ import nav.dao.DesignationMasterDAO;
 import nav.dao.Disease;
 import nav.dao.DistressDAO;
 import nav.dao.ExpertDetailDAO;
+import nav.dao.InvitationDAO;
 import nav.dao.NotesDAO;
 import nav.dao.PatientDetailDAO;
 import nav.dao.ProfileDAO;
@@ -269,7 +270,10 @@ public class Care extends Controller {
     			System.out.println("Not null email");
     			System.out.println(member);
     			UserBean user = UserDAO.getByUserEmail(member);
-    			if(user != null) {
+    			InvitedDTO invitationdto = InvitationDAO.getDetailsByField("email",member);
+    			if(invitationdto != null) {
+    				validation.addError("member.email", "email.exists", "");	
+    			} else if(user != null) {
     				validation.addError("member.email", "email.exists", "");
     			}
     		} else {

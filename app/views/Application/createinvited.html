@@ -1,0 +1,84 @@
+#{set pageType = 'login' /}
+#{extends 'outermain.html' /}
+<div id="log_contaner" class="myform">
+  <div class="log_center">
+    <div style="color: #cdcdcd;font-size: 40px;padding: 15px 0;text-align: center;">Welcome To Moffitt Cancer Center TVRH.</div>
+    <br/>
+
+    <div class="row">
+      #{ifErrors}
+      #{errors}
+      <!-- <p class="alert alert-danger">${error}</p> -->
+       <p class="alert alert-danger">
+      #{if 'email' == error.key}
+      ${error}
+      <a href="@{Application.create()}">Do you want to register?</a> 
+      #{/if}
+      #{else}
+	      ${error}
+      #{/else}
+      
+      </p>
+      #{/errors}
+      #{/ifErrors}
+      <div class="col-xs-6 col-sm-6 col-md-offset-3 col-sm-offset-3">
+        #{form @Application.registerinvited() , id:'signup' }
+        <input type="hidden" name="member.userType" value="1"/>
+        #{if invitationId}
+			<input type="hidden" name="member.invitationId" value="${invitationId}"/>
+		#{/if}
+		#{else}
+			<input type="hidden" name="member.invitationId" value="${flash['member.invitationId']}"/>
+		#{/else}
+		#{if fname}
+			<input type="hidden" name="member.firstName" value="${fname}">
+		#{/if}
+		#{else}
+			<input type="hidden" name="member.firstName" value="${flash['member.firstName']}">
+		#{/else}
+		#{if lname}
+			<input type="hidden" name="member.lastName" value="${lname}" placeholder="Enter last name">
+		#{/if}
+		#{else}
+			<input type="hidden" name="member.lastName" value="${flash['member.lastName']}">
+		#{/else}
+        <div class="input-group input-group-lg"> <span class="input-group-addon"><img alt="" src="/public/images/em-img.png" style="height: 14px;opacity:0.6;"></span>
+          	#{if email}
+				<input id="emailField" type="email" class="form-control" name="member.email" value="${email}" placeholder="Enter email" required>
+			#{/if}
+			#{else}
+				<input id="emailField" type="email" class="form-control" name="member.email" value="${flash['member.email']}" placeholder="Enter email" required>
+			#{/else}
+            <div class="help-block with-errors"></div>
+          </div>
+          <br/>
+          <div class="input-group input-group-lg"> <span class="input-group-addon"><img alt="" src="/public/images/lo-img.png" style="height: 20px;opacity:0.6"></span>
+            <input id="inputPassword" type="password" class="form-control" name="member.password" placeholder="Password" data-toggle="validator" data-minlength="8" required>
+            <div class="help-block with-errors"></div>
+          </div>
+          <br/>
+          <div class="checkbox tos-input" style="background: #CCC;; padding: 5px; margin: 10px -100px;">
+				  	<label>
+				  		<input name="member.tosFlag" type="checkbox" required> I agree to the Moffitt Cancer Center - TVRH<i class="fa fa-square-o"></i>
+				  	</label>
+				  	<a href="javascript:window.open('@{Static.tos()}','Terms of Service','width=700,height=700')" target="_blank">Terms of Service</a> and <a href="javascript:window.open('@{Static.privacy()}','Privacy Policy','width=700,height=700')" target="_blank">Privacy Policy</a>.
+				  	<div class="help-block with-errors"></div>
+				  </div>
+          <p class="text-center"> 
+<!--           	<a href="@{Application.create()}" class="btn btn-primary btn-lg btn-block my-btn-register">register now</a> -->
+          	<button type="submit" class="btn btn-primary btn-lg btn-block my-btn-register" >register now</button>
+          </p>
+         #{/form}
+        </div>
+      </div>
+      <div class="log_p">We'll guide you through your treatment journey step by step. What to expect, how to prepare, next steps, reminders, and notifications to stay on track with treatments.
+      <br />
+        <a href="@{Static.contact()}" class="btn btn-default btn-lg my-btn-cont contact-us">Contact Us</a>
+      </div>
+    </div>
+  </div>
+      <div class="footer" >
+        <p class="text-center" style="color:white;"><a href="@{Static.tos()}" style="color:white;" target="_blank">Terms of Service</a> - <a href="@{Static.privacy()}" style="color:white;" target="_blank">Privacy Policy</a> </br></br> Copyright 2014 TalkAboutHealth</p>
+
+      </div>
+  <script type="text/javascript" src="/public/js/logged-out/login.js" />

@@ -159,10 +159,10 @@ public class Application extends Controller {
     			 session.put("usertype", "user");
     			 session.put("showdistress", "true");
     			 
-    			 if(StringUtils.isNotBlank(member.getInvitationId()) && !member.getInvitationId().equalsIgnoreCase("0")) {
-    			    	Integer intId = new Integer(member.getInvitationId());
-    			    	InvitedDTO invitationdto = InvitationDAO.getDetailsByField("id",intId);
-
+    			
+//    			Integer intId = new Integer(member.getInvitationId());
+			    InvitedDTO invitationdto = InvitationDAO.getDetailsByEmail("email",member.getEmail());
+    			 if(invitationdto != null) {
     					AppointmentDTO app = new AppointmentDTO();
     					app.setAddedby(invitationdto.getAddedby());
     					app.setAddedon(invitationdto.getAddedon());
@@ -208,7 +208,6 @@ public class Application extends Controller {
     			 Patient.index();
 //    			 render("Application/distress.html",userId,fromPage);
     		 } else {
-
     			 Map<String, Object> vars = new HashMap<String, Object>();
     			 vars.put("username", UserDAO.getUserName(new Integer(user.getId())));
     	   		 EmailUtil.sendEmail(EmailUtil.MOFFITT_THANKYOU_FOR_SIGNUP,vars,user.getEmail());
@@ -276,13 +275,15 @@ public class Application extends Controller {
     			System.out.println("Not null email");
     		}
     	}
-    	
-    	DateFormat df = new SimpleDateFormat("mm/dd/yyyy");
-		try {
-			df.parse(member.getDob());
-		} catch(Exception e) {
-			validation.addError("member.dob", "dob.wrong", "");
-		}
+
+    	if(StringUtils.isNotBlank(member.getDob())) {
+	    	DateFormat df = new SimpleDateFormat("mm/dd/yyyy");
+			try {
+				df.parse(member.getDob());
+			} catch(Exception e) {
+				validation.addError("member.dob", "dob.wrong", "");
+			}
+    	}
 	}
     
     public static void validateEmail(String email) {
@@ -337,13 +338,97 @@ public class Application extends Controller {
 	    	String lname = invitationdto.getLastname();
 	    	String email = invitationdto.getEmail();
 	
-	    	List<SecurityQuestionDTO> securityQuestionList =  SecurityQuestionDAO.getSecurityQuestions();
-	    	List<UserTypeDTO> userTypelist = UserTypeDAO.getUserTypeList();
-	    	List<ContactTypeDTO> contactTypes =  ContactTypeDAO.getContactTypeList();
+//	    	List<SecurityQuestionDTO> securityQuestionList =  SecurityQuestionDAO.getSecurityQuestions();
+//	    	List<UserTypeDTO> userTypelist = UserTypeDAO.getUserTypeList();
+//	    	List<ContactTypeDTO> contactTypes =  ContactTypeDAO.getContactTypeList();
 	    	
-	    	render("Application/create.html",fname,lname,email,invitationId,securityQuestionList,userTypelist,contactTypes);
+	    	render("Application/createinvited.html",fname,lname,email,invitationId);
     	}
     }
+    
+    public static void registerinvited(@Valid SignUpMemberBean member) throws Throwable {
+//   	 validateMember(member);
+   	 System.out.println(validation.hasErrors());
+   	 
+   	 
+  	Integer intId = new Integer(member.getInvitationId());
+  	InvitedDTO invitationdto = InvitationDAO.getDetailsByField("id",intId);
+  	if(invitationdto!=null && member.getEmail().trim().equalsIgnoreCase(invitationdto.getEmail().trim())) {
+  		UserDTO userDto = Security.authenticate(member.getEmail(), member.getPassword());
+  	   	 if(userDto != null) {
+  	   		String hashed = CommonUtil.hashPassword(member.getPassword());
+  			if(userDto.getPassword().trim().equals(hashed.trim())) {
+  				Secure.authenticate(member.getEmail(), member.getPassword(), true);
+  			} else {
+  				validation.addError("password", "secure.error.password", "");
+  			}
+  	   	 }
+  	} else {
+  		validation.addError("email", "secure.error.email", "");
+  	}
+  	if(member.getPassword().trim().length()<8) {
+  		validation.addError("invited.create.passwrod", "invited.create.passwrod", "");
+  	}
+   	 if (validation.hasErrors()) {
+            params.flash();
+            validation.keep();
+            System.out.println(validation.errors().size());
+            System.out.println(validation.errors().get(0).message("username.empty"));
+            createinvited(member.getInvitationId());
+     }
+
+   	 if(UserDAO.parseAndSaveMember(member)) {
+   		UserBean user = UserDAO.getByUserEmail(member.getEmail());
+   		UserDetailsDTO detailDto = UserDAO.getDetailsById(user.getId()+"");
+   		System.out.println("Application.java - User email: " + detailDto.getEmail());
+   		LoginHistoryDAO.saveLogin(member.getEmail(),"local",false,session.getId());
+		session.put("username", user.getEmail());
+		CommonUtil.refreshCachedUser(session);
+		session.put("usertype", "user");
+		session.put("showdistress", "true");
+//    	intId = new Integer(member.getInvitationId());
+//    	invitationdto = InvitationDAO.getDetailsByField("id",intId);
+		AppointmentDTO app = new AppointmentDTO();
+		app.setAddedby(invitationdto.getAddedby());
+		app.setAddedon(invitationdto.getAddedon());
+		app.setAddressid(invitationdto.getAddressid());
+		app.setAppointmentcenter(invitationdto.getAppointmentcenter());
+		app.setAppointmentdate(invitationdto.getAppointmentdate());
+		app.setAppointmenttime(invitationdto.getAppointmenttime());
+		
+			app.setPurposeText(invitationdto.getPurposeText());
+			app.setTreatementStep(invitationdto.getTreatementStep());
+		app.setPatientid(detailDto.getUser());
+
+		if(invitationdto.getPurpose() != null) {
+			app.setPurpose(invitationdto.getPurpose());	
+		}
+
+		if(invitationdto.getAppointmentid() != null) {
+			app.setAppointmentid(invitationdto.getAppointmentid());
+		}
+
+		if(invitationdto.getCaremember() != null) {
+			app.setCaremember(invitationdto.getCaremember());
+		}
+		app.setCareMemberName(invitationdto.getCareMemberName());
+
+		BaseDAO.save(app);
+
+		UserDTO usr = detailDto.getUser();
+		usr.setIsverified(true);
+		usr.setActive(true);
+		BaseDAO.update(usr);
+
+		invitationdto.setActivateOnSignup(true);
+		BaseDAO.update(invitationdto);
+				
+   		Map<String, Object> vars = new HashMap<String, Object>();
+   		vars.put("username", UserDAO.getUserName(new Integer(user.getId())));
+   		EmailUtil.sendEmail(EmailUtil.MOFFITT_THANKYOU_FOR_SIGNUP,vars,user.getEmail());
+		Patient.index();
+   	 }
+   }
 
     public static void userName(String userId) {
     	render("Navigator demo User");

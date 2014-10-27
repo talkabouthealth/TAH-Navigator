@@ -193,8 +193,21 @@ public class DistressDAO {
 		Iterator i = result.iterator();		
 		while(i.hasNext()) {
 			Object[] values = (Object[]) i.next();
-			String value1 = values[0].toString();
-			String value2 = values[1].toString();			
+			String value1 = "";
+			String value2 = "";
+			if(values != null)
+			{
+				if(values.length==2) {
+					if(values[0] != null)
+						value1 = values[0].toString();
+					if(values[1] != null)
+						value2 = values[1].toString();
+				} else if(values.length==1) {
+					if(values[0] != null)
+					value1 = values[0].toString();
+				}
+			}
+						
 			boolean flag1 = false, flag2 = false;
 			for (String problem : problems) {
 				if(problem.equalsIgnoreCase(value1)) {
