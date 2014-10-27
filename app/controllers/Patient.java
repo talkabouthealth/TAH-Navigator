@@ -361,6 +361,10 @@ public class Patient extends Controller {
 		System.out.println(session.getId());
 		render(user,userDto,patientOtherDetails, breastCancerId, breastCancerInfo);
 	}
+	
+	public static void settings() {
+		render();
+	}
 
 	public static void password() {
 //		params.flash();

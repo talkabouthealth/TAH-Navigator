@@ -13,6 +13,11 @@ GET		/image/showMedicine/{medId}								Image.showMedicine
 
 GET     /distressvalues/{patientId}/{days}          CarePatien.distressValues
 
+GET     /patient/updateprofileimage                 Patient.setting
+GET     /patient/editcommunicationpreferences       Patient.profile
+GET     /patient/editpersonalinformation            Patient.editContact
+GET     /patient/editpassword                       Patient.password
+
 
 #Login Pages
 GET     /login                                  Login.index
