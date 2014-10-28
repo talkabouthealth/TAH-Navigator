@@ -28,6 +28,7 @@ GET		/createinvited/{id}						Application.createinvited
 # distress
 
 #Dashboard Pages
+GET     /distressthermometer                    Application.distressthermometer
 GET     /index                                  Application.index
 GET     /create/?                               Application.create
 GET     /createOther/?                               Application.createOther

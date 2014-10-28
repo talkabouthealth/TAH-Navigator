@@ -255,6 +255,10 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
 
 //           var d = moment(lastLogin.html(), 'YYYY-MM-DD h:m:s A');
 //           lastLogin.html(d.format('M/D/YYYY h:m A'));
+
+        #{if popupDistressThermometer}
+        $('a.distress-meter').click();
+        #{/if}
         });
       })(jQuery);
 

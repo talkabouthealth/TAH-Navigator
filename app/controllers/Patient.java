@@ -78,7 +78,10 @@ public class Patient extends Controller {
 			user.setVerifiedFlag(Boolean.parseBoolean(accesstoallpages.getPropertyvalue()));
 		}
 		List<AppointmentDTO> listOther = AppointmentDAO.getAppointmentListByField("patientid.id", userDto.getId(), curreDate, "upcoming" );
-		
+		if (session.get("requestPath") != null && session.get("requestPath").equalsIgnoreCase("/distressthermometer")) {
+			renderArgs.put("popupDistressThermometer", true);
+			session.remove("requestPath");
+		}
         render(user,userDto,patientOtherDetails, breastCancerId, breastCancerInfo,apt,careExpert,maxUsers,checlist,accesstoallpages, listOther);
     }
 

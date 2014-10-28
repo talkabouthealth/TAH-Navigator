@@ -47,7 +47,7 @@ public class Application extends Controller {
 	static void prepareParams() {
 		//used for Tw/Fb sharing and SEO
         String currentURL = "http://"+request.host+request.path;
-        renderArgs.put("currentURL", currentURL);
+        renderArgs.put("currentURL", currentURL);        
 	}
 
     public static void index() throws Throwable {
@@ -69,6 +69,10 @@ public class Application extends Controller {
     	}
     	System.out.println("Index");
         Secure.login();
+    }
+    public static void distressthermometer() {
+    	session.put("requestPath", request.path);    	
+    	Patient.index();
     }
 
     public static void home() throws Throwable {
