@@ -248,7 +248,7 @@ public class Care extends Controller {
 
    		 	Map<String, Object> vars = new HashMap<String, Object>();
    		 	vars.put("username", firstname + " " + lastname);
-   		 	vars.put("signupurl", url + "/createinvited/"+app.getId());
+   		 	vars.put("signupurl", url + "/invited-registration/"+app.getId());
 //   		 	EmailUtil.sendEmail(EmailUtil.MOFFITT_WELCOME,vars,"aawte.umesh@s5infotech.com");
    		 	EmailUtil.sendEmail(EmailUtil.MOFFITT_WELCOME,vars,email);
 
