@@ -159,13 +159,13 @@
                 <div class="form-group form-group-sm" id="treatment_step_process">
                         <label class="col-xs-3 control-label" for="rt_schedule">Step in the Treatment Process</label>
                         <div class="col-xs-8 form-group input-group">                           
-                            <select class="form-control nomargin" id="ts_process">
+                            <select class="form-control nomargin" id="ts_process" required="required">
                                 <option></option>
-                                <option>Prepare for First Appointment</option>
+                                <option>First Appointment</option>
                                 <option>Make Treatment Decision</option>
-                                <option>Prepare for First Treatment</option>
-                                <option>Ongoing Treatments</option>
-                                <option>Continue Follow-Ups</option>                                
+                                <option>Simulation</option>
+                                <option>Appointment During Treatments</option>
+                                <option>Post Treatment Appointment</option>                                
                             </select>
                         </div>
                 </div>
@@ -851,9 +851,9 @@ $(document).ready(function() {
                 break;
             }
         }
-        if (!definedPurpose) {
-            postData.push({name: "treatmentProcessStep", value: $("#ts_process option:selected").text()});    
-        }
+        //if (!definedPurpose) {
+        postData.push({name: "treatmentProcessStep", value: $("#ts_process option:selected").text()});    
+        //}
         postData.push({name: "purpose", value: purpose});
         
 		var formURL = $("#appointmentForm").attr("action");
@@ -869,7 +869,6 @@ $(document).ready(function() {
 
 	// Load Sparkline plugin and run callback for draw Sparkline charts for dashboard(top of dashboard + plot in tables)
 	LoadSparkLineScript(DrawSparklineDashboardNew);
-
 	LoadSelect2Script(selectExpert);
 
 });
@@ -972,7 +971,7 @@ operationNote = function(operation,id,title,desc, noteBy) {
 	}
 }
 operationAppointment = function(operation, id) {
-    $('#treatment_step_process').hide();
+    //$('#treatment_step_process').hide();
     var $avm = $('#appointment_verified_members');
     var $ap = $('#appointment_purpose');
     var initFlag = $avm.attr("init_flag");    
@@ -1000,7 +999,7 @@ operationAppointment = function(operation, id) {
                 source: purposeList,
                 minLength: 0,
                 updater: function(item) {
-                    $('#treatment_step_process').hide();
+                    //$('#treatment_step_process').hide();
                     return item;
                 }
             });
@@ -1015,7 +1014,7 @@ operationAppointment = function(operation, id) {
                     }
                 }
                 if (definedPurpose) {
-                    $('#treatment_step_process').hide();
+                    //$('#treatment_step_process').hide();
                 }
                 else if(purposetext.length > 0) {
                     $('#treatment_step_process').show();
@@ -1034,7 +1033,7 @@ operationAppointment = function(operation, id) {
 				//$("#appointmentFormPurpose").select2("val", data.purpose);
                 $ap.val(data.purposeText);
                 if ('treatementStep' in data) {
-                    $('#treatment_step_process').show();
+                    //$('#treatment_step_process').show();
                     $('#treatment_step_process option').each(function(index, elm) {
                         var text = $(elm).text();
                         if (text == data.treatmentStep) {
@@ -1071,6 +1070,7 @@ operationAppointment = function(operation, id) {
 			$("#appointmentForm").submit();
 		}
 	} else {
+        $('#treatment_step_process').val('');
 		$("#myModalLabel_appointment").html("ADD APPOINTMENT");
 		$("#appointmentForm input[name='operation']").val("add");
 		$("#appointmentForm input[name='id']").val("0");

@@ -648,9 +648,9 @@ public class CarePatien  extends Controller {
 					Integer appIdInt = new Integer(purpose);
 					app.setAppointmentid(AppointmentMasterDAO.getAppointmentByField("id", appIdInt));
 				}
-				else {
+				//else {
 					app.setTreatementStep(treatmentProcessStep);
-				}
+				//}
 				app.setPurposeText(purposeText);
 				
 				app.setPatientid(patient);				
@@ -665,9 +665,9 @@ public class CarePatien  extends Controller {
 					app.setAppointmentid(AppointmentMasterDAO.getAppointmentByField("id", appIdInt));
 					app.setTreatementStep(null);
 				}
-				else {
+				//else {
 					app.setTreatementStep(treatmentProcessStep);
-				}
+				//}
 				app.setPurposeText(purposeText);
 				
 				app.setAppointmenttime(time);

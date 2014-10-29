@@ -178,7 +178,7 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
           <tr>
             #{if apt != null}
             <td>
-              #{if (apt.appointmentid && (apt.appointmentid.id == 1 || apt.appointmentid.id == 2 || apt.appointmentid.id == 3)) || apt.treatementStep == 'Prepare for First Appointment'}
+              #{if (apt.appointmentid && (apt.appointmentid.id == 1 || apt.appointmentid.id == 2 || apt.appointmentid.id == 3)) || (apt.treatementStep == 'Prepare for First Appointment' || apt.treatementStep == 'First Appointment')}
               <div class="activeState">
                 <span>Prepare for<br/>First Appt.</span>
               </div>
@@ -191,7 +191,7 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
             </td><td>
               <span class="fa fa-arrow-right arrow">&nbsp;</span>
             </td><td>
-              #{if (apt.appointmentid && apt.appointmentid.id == 4) || apt.treatementStep == 'Make Treatment Decision'}
+              #{if (apt.appointmentid && apt.appointmentid.id == 4) || (apt.treatementStep == 'Make Treatment Decision')}
               <div class="activeState">
                 <span>Make<br>Treatment<br/>Decision</span>
               </div>
@@ -204,7 +204,7 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
             </td><td>
               <span class="fa fa-arrow-right arrow">&nbsp;</span>
             </td><td>
-              #{if (apt.appointmentid && apt.appointmentid.id == 5) || apt.treatementStep == 'Prepare for First Treatment'}
+              #{if (apt.appointmentid && apt.appointmentid.id == 5) || (apt.treatementStep == 'Prepare for First Treatment' || apt.treatementStep == 'Simulation')}
               <div class="activeState">
                 <span>Prepare<br/> for First<br/> Treatment</span>
               </div>
@@ -217,7 +217,7 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
             </td><td>
               <span class="fa fa-arrow-right arrow">&nbsp;</span>
             </td><td>
-              #{if (apt.appointmentid && (apt.appointmentid.id == 6 || apt.appointmentid.id == 7 || apt.appointmentid.id == 9 || apt.appointmentid.id == 10)) || apt.treatementStep == 'Ongoing Treatments'}
+              #{if (apt.appointmentid && (apt.appointmentid.id == 6 || apt.appointmentid.id == 7 || apt.appointmentid.id == 9 || apt.appointmentid.id == 10)) || (apt.treatementStep == 'Ongoing Treatments' || apt.treatementStep == 'Appointment During Treatments')}
               <div class="activeState">
                 <span>Ongoing<br/>Treatments</span>
               </div>
@@ -230,7 +230,7 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
             </td><td>
               <span class="fa fa-arrow-right arrow">&nbsp;</span>
             </td><td>
-              #{if (apt.appointmentid  && apt.appointmentid.id == 11) || apt.treatementStep == 'Continue Follow-Ups'}
+              #{if (apt.appointmentid  && apt.appointmentid.id == 11) || (apt.treatementStep == 'Continue Follow-Ups' || apt.treatementStep == 'Post Treatment Appointment')}
               <div class="activeState">
                 <span>Continue<br/>Follow-Ups</span>
               </div>
