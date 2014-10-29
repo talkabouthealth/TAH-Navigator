@@ -1638,8 +1638,13 @@ var careTeamController = (function() {
             }
             else {
                 tickSize = monthTickSize;   // need to calculate
-                maxDate = distressPoints[length-1][0];
-                minDate = distressPoints[0][0];
+                if (length > 0) {
+                    maxDate = distressPoints[length-1][0];
+                    minDate = distressPoints[0][0];
+                }
+                else {
+                    minDate = maxDate - ( 30 * ONE_DAY);
+                }
             }
             var plots = [
               {              
@@ -1670,15 +1675,11 @@ var careTeamController = (function() {
             $distressGraph.plot(plots, options);
             
         }, "json");
-    };
-    
-    $(function() {     
-        var $distressGraph = $('#patient_distress_graph');
-        var patientId = $distressGraph.attr("patient_id");
-        var days = $('.date-range.active').attr("days");        
-        distressGraph(patientId, days);
-        
+    };    
+    $(function() {                     
         $(document).on('click', 'a.date-range', function() {
+            var $distressGraph = $('#patient_distress_graph');
+            var patientId = $distressGraph.attr("patient_id");
             $('a.date-range').removeClass("active");
             $(this).addClass("active");
             var days = $(this).attr("days");
