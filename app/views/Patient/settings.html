@@ -1,4 +1,11 @@
-<a href="@{Patient.setting()}">Update Profile Image</a>
-<a href="@{Patient.profile()}">Edit Communication Preferences</a>
-<a href="@{Patient.editContact()}">Edit Personal Information</a>
-<a href="@{Patient.password()}">Edit Password</a>
+#{set pageType = 'setting' /}
+#{extends 'patientmain.html' /}
+<div id="content" class="col-xs-12 col-sm-10">
+    <div class="row">
+        <a href="@{Patient.setting()}">Update Profile Image</a>
+        <a href="@{Patient.profile()}">Edit Communication Preferences</a>
+        <a href="@{Patient.editContact()}">Edit Personal Information</a>
+        <a href="@{Patient.password()}">Edit Password</a>
+    </div>
+</div>
+<script>
