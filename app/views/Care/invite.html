@@ -206,6 +206,8 @@ $(document).ready(function() {
 				errorText = '<li class="list-group-item list-group-item-danger">Internal server error. Please try again.</li>';
 			} else if(data.status == '300') {
 				errorText = '<li class="list-group-item list-group-item-danger">Email already registred, Please try again.</li>';
+			} else {
+				errorText = '<li class="list-group-item list-group-item-danger">This account has been disabled. Please contact admin for further information or reactivate this account.</li>';
 			}
 			$("#errorUL").empty();
 			$("#errorUL").html(errorText);

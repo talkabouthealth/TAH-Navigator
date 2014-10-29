@@ -24,3 +24,4 @@ password.currentbad = Current password is wrong.
 password.different = New and Confirm passwords are different.
 
 dob.wrong= Please enter correct date of birth.
+email.exists.inactive=This account has been disabled. Please contact support@tvrhnavigator.com for further information and to reactivate this account.

@@ -5,6 +5,7 @@ var DistressMeter = function() {
   var indicator, indicatorAmount, indicatorText;
   var sliderRange;
   var labelExtreme, labelNone;
+  var isProblemList;
 
   var amount = 1;
   var postData;
@@ -103,7 +104,6 @@ var DistressMeter = function() {
       step2.show();
       step3.hide();
       distressAmountText.html(distressRange[amount]);
-      
       if (!$.isEmptyObject(lastDistress)) {
         var otherDetail = lastDistress.otherdetail;
         var distressList = otherDetail.split(",<br/>");        
@@ -112,16 +112,23 @@ var DistressMeter = function() {
           var $stext = $(elm).find("strong");
           var name = $stext.text();          
           for (var i = 0; i < distressList.length; i++) {
-            if (name == distressList[i]) {
+            if ( name == distressList[i]) {
               $checkbox.prop("checked", true);
               break;
-            }   
-          }          
+            }
+          }
         });
       }
-      
-      
     } else if ( page === 2 ) {
+    	isProblemList = false;
+    	 if (!$.isEmptyObject(lastDistress)) {
+            $('div.stepchecker').each(function(index, elm) {
+              var $checkbox = $(elm).find('input[type="checkbox"]');
+                if ($checkbox.prop("checked")) {
+                  isProblemList = true;
+              }          
+            });
+    	 }
       var d = moment(new Date());
       document.forms.distressForm.daterecrded.value = d.format('M/D/YYYY h:m A');
       postData = distressForm.serializeArray();
@@ -130,6 +137,12 @@ var DistressMeter = function() {
       step2.hide();
       step3.show();
       $.post(formURL, postData, function( data ) {
+    	  try{
+    		mixpanel.track("Distress level");
+    		if(isProblemList){
+    			mixpanel.track("Problem list");
+    		}
+    	  }catch(e){}    		
       });
     } else if ( page === 3 ) {    
     	 distressModal.modal('hide');
@@ -151,7 +164,6 @@ var previousPage = function() {
     step2.hide();
     step3.hide();
   }
-  
   page--;
 };
 

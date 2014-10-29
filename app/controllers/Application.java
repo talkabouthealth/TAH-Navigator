@@ -271,9 +271,13 @@ public class Application extends Controller {
     		if (!validation.hasError("member.email")) {
     			System.out.println("Not null email");
     			System.out.println(member.getEmail());
-    			UserBean user = UserDAO.getByUserEmail(member.getEmail());
+    			UserBean user = UserDAO.getUserVerified(member.getEmail());
     			if(user != null) {
-    				validation.addError("member.email", "email.exists", "");
+    				if(user.isActive()) {
+    					validation.addError("member.email", "email.exists", "");
+    				} else {
+    					validation.addError("member.email.inactive", "email.exists.inactive", "");
+    				}
     			}
     		} else {
     			System.out.println("Not null email");
@@ -373,7 +377,17 @@ public class Application extends Controller {
   	if(member.getPassword().trim().length()<8) {
   		validation.addError("invited.create.passwrod", "invited.create.passwrod", "");
   	}
-   	 if (validation.hasErrors()) {
+  	UserBean userBn = UserDAO.getUserVerified(member.getEmail());
+  	if(userBn != null) {
+		if(userBn.isActive()) {
+			validation.addError("member.email", "email.exists", "");
+		} else {
+			validation.addError("member.email.inactive", "email.exists.inactive", "");
+		}
+	} else {
+		System.out.println("There is no error");
+	}
+  	if (validation.hasErrors()) {
             params.flash();
             validation.keep();
             System.out.println(validation.errors().size());

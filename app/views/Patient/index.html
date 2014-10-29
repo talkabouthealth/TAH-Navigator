@@ -100,7 +100,8 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
     <div class="video-walk-through col-xs-6">
       <label class="block"><i class="fa fa-check-circle-o"></i>Welcome To Moffitt TVRH Video</label>
 
-      <iframe id="youTubeVideo" width="560" height="315" src="//www.youtube.com/embed/u-0P5hQP02k?rel=0" frameborder="0" allowfullscreen></iframe>
+<!--       <iframe id="youTubeVideo" width="560" height="315" src="//www.youtube.com/embed/u-0P5hQP02k?rel=0&enablejsapi=1" frameborder="0" allowfullscreen></iframe> -->
+      <div id="youTubeVideo"></div>
       <img id="youTubeVideoImage" width="560" height="315" src="//i.ytimg.com/vi/u-0P5hQP02k/default.jpg" style="display:none;">
 
     </div><!-- video walk through -->
@@ -285,5 +286,37 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
     <div class="expert-qa col-xs-6">
     </div><!-- Expert Q&A -->
   </div><!-- row -->
-
 </div>
+<script>
+<!--
+// 2. This code loads the IFrame Player API code asynchronously.
+var tag = document.createElement('script');
+tag.src = "https://www.youtube.com/iframe_api";
+var firstScriptTag = document.getElementsByTagName('script')[0];
+firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+var player;
+var isPlaying = false;
+function onYouTubeIframeAPIReady() {
+	// width="560" height="315"
+  player = new YT.Player('youTubeVideo', {
+    height: '315',
+    width: '560',
+    videoId: 'u-0P5hQP02k',
+    events: {
+      'onReady': onPlayerReady,
+      'onStateChange': onPlayerStateChange
+    }
+  });
+}
+onPlayerStateChange = function(e) {
+	if(isPlaying== false) {
+		try{
+		mixpanel.track("Play video");
+		}catch(e){}
+	}
+	isPlaying = true;
+}
+onPlayerReady = function(e) {
+}
+-->
+</script>

@@ -98,6 +98,9 @@
 <script>
 <!--
 $(document).ready(function() {
+	try{
+mixpanel.track("Register");
+	} catch(e){}
 $('#hasDatepicker').datepicker();
 var valid = $('#signup').validator();
 

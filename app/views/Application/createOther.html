@@ -264,6 +264,9 @@ table.table-condensed {
     <script>
 <!--
 $(document).ready(function() {
+	try{
+	mixpanel.track("Register");
+	}catch(e){}
 // 	$('.datepicker').datepicker();
 	$('#hasDatepicker').datepicker();
 	$('#signup').validator();

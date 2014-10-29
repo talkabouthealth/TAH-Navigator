@@ -185,11 +185,17 @@ public class Care extends Controller {
 	   	 if (validation.hasErrors()) {
 	            params.flash();
 	            validation.keep();
-	      
-	            JsonObject obj = new JsonObject();
-				obj.add("status", new JsonPrimitive("300"));
-				renderJSON(obj);
-	        } 
+	            if(validation.errorsMap().get("member.email.inactive") != null) {
+	            	JsonObject obj = new JsonObject();
+					obj.add("status", new JsonPrimitive("400"));
+					renderJSON(obj);	
+	            } else {
+	            	JsonObject obj = new JsonObject();
+					obj.add("status", new JsonPrimitive("300"));
+					renderJSON(obj);
+	            }
+	            
+	   	 } 
 		
 		try {
 			AddressDTO address = new AddressDTO();
@@ -269,12 +275,17 @@ public class Care extends Controller {
     		if (!validation.hasError("member.email")) {
     			System.out.println("Not null email");
     			System.out.println(member);
-    			UserBean user = UserDAO.getByUserEmail(member);
+    			UserBean user = UserDAO.getUserVerified(member);
     			InvitedDTO invitationdto = InvitationDAO.getDetailsByField("email",member);
     			if(invitationdto != null) {
     				validation.addError("member.email", "email.exists", "");	
     			} else if(user != null) {
-    				validation.addError("member.email", "email.exists", "");
+    				if(user.isActive()) {
+    					validation.addError("member.email", "email.exists", "");
+    				} else {
+    					validation.addError("member.email.inactive", "email.exists.inactive", "");
+    				}
+//    				validation.addError("member.email", "email.exists", "");
     			}
     		} else {
     			System.out.println("Not null email");

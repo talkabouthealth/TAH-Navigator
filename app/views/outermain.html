@@ -14,6 +14,7 @@
 
   <link href="/public/css/styles.less?v=1.1" rel="stylesheet/less" />
   <link href="/public/css/logged-out/styles.less?v=1.1" rel="stylesheet/less" />
+  #{ mixpanel /}
   <script src="/public/js/lib/less-1.7.4.min.js"></script>
 		<!--End Container-->
 		<script src="/public/plugins/jquery/jquery-2.1.0.min.js"></script>
@@ -26,7 +27,7 @@
 		<script src="/public/plugins//moment/moment.min.js"></script>
 		<script src="/public/js/validator.min.js"></script>
 		<script src="/public/js/devoops.js"></script>
-
+	
 </head>
 <body>
 	<div id="screensaver">
@@ -111,10 +112,11 @@
 
 	</div>
   </div>
-
 </div>
-
-
 #{ googleAnalytics /}
+<script><!--
+// mixpanel.track("Public page");
+-->
+</script>
 </body>
 </html>
