@@ -23,15 +23,15 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
   #{if apt != null }
   <div class="row">
     
-    <div class="preparation col-xs-6">
+    <div class="preparation col-xs-12 col-sm-6">
       <label><i class="fa fa-clock-o"></i>My Next Appointment is Scheduled for: </label>
       <div class="appointment"> <!-- row -->
-        <div class="appointment-location col-xs-3">
+        <div class="appointment-location col-sm-3 col-xs-0">
           <a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${apt.addressid.line1}+${apt.addressid.line2},${apt.addressid.city},${apt.addressid.state},${apt.addressid.country} - ${apt.addressid.zip}">
             <img width="100%" src="http://maps.googleapis.com/maps/api/staticmap?center=${apt.addressid.line1}+${apt.addressid.line2},${apt.addressid.city},${apt.addressid.state},${apt.addressid.country} - ${apt.addressid.zip}&maptype=roadmap&zoom=12&size=200x200&scale=false&&markers=color:red%7Csize:small%7C${apt.addressid.lat},${apt.addressid.lang}">
           </a>
         </div>
-        <div class="appointment-information col-xs-9">
+        <div class="appointment-information col-sm-9 col-xs-12">
           <h2> ${apt.appointmentdate.format('EEEE MMMM dd yyyy')} </h2>
           <h4><span class="time">${apt.appointmenttime} |</span>${apt.appointmentcenter}</h4>
 
@@ -82,7 +82,7 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
 	    
 	    #{/if} 
     </div><!-- preparation -->
-    <div class="preparation-checklist col-xs-6">
+    <div class="preparation-checklist col-xs-12 col-sm-6">
       <label><i class="fa fa-check-circle-o"></i>Do I have everything I need to ensure a successful visit on my next appointment?</label>
       <div class="checklist">
         #{if checlist != null }
@@ -97,7 +97,7 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
   </div><!-- row -->
 #{/if}
   <div class="row">
-    <div class="video-walk-through col-xs-6">
+    <div class="video-walk-through col-xs-12 col-sm-6">
       <label class="block"><i class="fa fa-check-circle-o"></i>Welcome To Moffitt TVRH Video</label>
 
 <!--       <iframe id="youTubeVideo" width="560" height="315" src="//www.youtube.com/embed/u-0P5hQP02k?rel=0&enablejsapi=1" frameborder="0" allowfullscreen></iframe> -->
@@ -105,7 +105,7 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
       <img id="youTubeVideoImage" width="560" height="315" src="//i.ytimg.com/vi/u-0P5hQP02k/default.jpg" style="display:none;">
 
     </div><!-- video walk through -->
-    <div class="my-care-team col-xs-6">
+    <div class="my-care-team col-xs-12 col-sm-6">
       #{if maxUsers>0}
       <label><i class="fa fa-check-circle-o"></i>My Current Care Team has (${maxUsers}) Members:</label>
       <ul class="care-team-members">
@@ -156,20 +156,6 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
       #{/if}
     </div><!-- my care team -->
   </div><!-- row -->
-  <!-- 
-        <div class="row">
-                <div class="whats-next">
-                        <h3>What's Next / Where Am I In the Process?</h3>
-                        <div class="whats-next-steps">
-                                <img src="/public/images/whats-next/whats-next-1.png"/>
-                                <img src="/public/images/whats-next/whats-next-2.png"/>
-                                <img src="/public/images/whats-next/whats-next-3.png"/>
-                                <img src="/public/images/whats-next/whats-next-4.png"/>
-                                <img src="/public/images/whats-next/whats-next-5.png"/>
-                        </div>
-
-                </div><!-- whats-next -- >
-        </div><!-- row -->
 
   <div class="row">
     <div class="whats-next">

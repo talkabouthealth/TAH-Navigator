@@ -157,3 +157,38 @@
     padding: 5px 5px 15px 0;
   }
 }
+
+@media (max-width: @tablet-max) {
+    body .page {
+        .row {
+            border-bottom: none;
+        }
+        .col-xs-12 {
+            margin-bottom: @padding;
+            > label {
+                margin-bottom: 10px;
+                padding-bottom: 5px;
+                border-bottom: 1px solid #EEE;
+            }
+        }
+        .preparation {
+            border-right: none;
+        }
+
+        .preparation-checklist {
+            padding-left: @padding;
+        }
+
+        .my-care-team {
+            padding-left: @padding;
+        }
+
+        .appointment {
+            padding: 0;
+            .appointment-information {
+                padding: 0;
+            }
+        }
+    }
+
+}

@@ -31,4 +31,35 @@
       margin-top: 10px;
     }
   }
+
+  .checkDiv {
+      border-right: 1px solid #CCC;
+      padding-top: 10px;
+  }
+}
+
+
+@media (max-width: @tablet-max) {
+
+    body .page {
+        .expend-list {
+            li {
+                margin-bottom: @padding;
+            }
+        }
+        .col-sm-6, .col-sm-5 {
+            padding: 0;
+            border: none;
+        }
+
+        &.my-appointments p {
+            font-size: @medium-font;
+        }
+        .green-title {
+            .toggle-text-container {
+                position: relative;
+                float: right;
+            }
+        }
+    }
 }
