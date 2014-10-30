@@ -366,7 +366,16 @@ public class Application extends Controller {
   	   	 if(userDto != null) {
   	   		String hashed = CommonUtil.hashPassword(member.getPassword());
   			if(userDto.getPassword().trim().equals(hashed.trim())) {
-  				Secure.authenticate(member.getEmail(), member.getPassword(), true);
+  				if(!userDto.isIsverified() && userDto.getUserType() == 'p') {
+        			System.out.println("User is not verified");
+        			validation.addError("email", "secure.verify", "");
+        		} else if(!userDto.isActive()) {
+        			System.out.println("User is not verified");
+        			validation.addError("email.exists.inactive", "email.exists.inactive", "");
+        		} else {
+        			Secure.authenticate(member.getEmail(), member.getPassword(), true);
+        		}
+  				
   			} else {
   				validation.addError("password", "secure.error.password", "");
   			}
@@ -377,16 +386,16 @@ public class Application extends Controller {
   	if(member.getPassword().trim().length()<8) {
   		validation.addError("invited.create.passwrod", "invited.create.passwrod", "");
   	}
-  	UserBean userBn = UserDAO.getUserVerified(member.getEmail());
-  	if(userBn != null) {
-		if(userBn.isActive()) {
-			validation.addError("member.email", "email.exists", "");
-		} else {
-			validation.addError("member.email.inactive", "email.exists.inactive", "");
-		}
-	} else {
-		System.out.println("There is no error");
-	}
+//  	UserBean userBn = UserDAO.getUserVerified(member.getEmail());
+//  	if(userBn != null) {
+//		if(userBn.isActive()) {
+//			validation.addError("member.email", "email.exists", "");
+//		} else {
+//			validation.addError("member.email.inactive", "email.exists.inactive", "");
+//		}
+//	} else {
+//		System.out.println("There is no error");
+//	}
   	if (validation.hasErrors()) {
             params.flash();
             validation.keep();

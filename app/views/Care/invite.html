@@ -6,7 +6,6 @@
   margin-bottom: 0; }
 </style>
 <div class="col-xs-12 col-sm-12">
- 	<ul class="list-group" id="errorUL"></ul>
 	<div class="modal-body" style="overflow: hidden;">
 		<div class="form-group form-group-sm">
 			<label class="col-xs-3 control-label" for="rt_schedule">Email</label>
@@ -123,6 +122,7 @@
 		</div>
 	</div>
 	<div class="modal-footer" style="text-align: center;">
+		<ul class="list-group" id="errorUL"></ul>
 		<button type="submit" class="btn btn-default">Send Invite Email</button>
 	</div>
 </div>
@@ -201,7 +201,7 @@ $(document).ready(function() {
 // 				alert('Invitation successfully sent to '+ $("#appointmentForm input[name='email']").val());
 				$("#alertEmail").html($("#appointmentForm input[name='email']").val());
 				$('#welcome').appendTo("body").modal();
-				
+				$('#errorUL').empty();
 			} else if(data.status == '100') {
 				errorText = '<li class="list-group-item list-group-item-danger">Internal server error. Please try again.</li>';
 			} else if(data.status == '300') {
@@ -211,7 +211,7 @@ $(document).ready(function() {
 			}
 			$("#errorUL").empty();
 			$("#errorUL").html(errorText);
-			setTimeout(function(){$('#errorUL').empty();}, 2000);
+// 			setTimeout(function(){$('#errorUL').empty();}, 5000);
 		}, "json");
 	});
 
