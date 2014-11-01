@@ -1,6 +1,14 @@
+
+@danger-red-background :#a94442 ;
+@danger-red : #f2dede;
+@danger-red: white;
 @duration: .3s;
 .registration-steps, .create-container {
 	margin: 0 -15px; /* Undo Bootstrap */
+
+    .input-group {
+        margin-bottom: 0;
+    }
 
 	ul, li, .list-group {
 		margin: 0;
@@ -10,6 +18,9 @@
 
 	.help-block {
 		font-size: @large-font;
+        background: @danger-red-background;
+        color: white;
+        padding: 0 13px;
 	}
 
 	.complete {
@@ -127,19 +138,19 @@
 		}
 
 
-	@danger-red-background : #f2dede;
-	@danger-red : #a94442;
-	ul.list-group {
+	.list-group {
 		background: @danger-red-background;
 		color: @danger-red;
 		padding: 0 @padding;
+        margin-bottom: @padding;
+        border-radius: 5px;
 
 		li:first-child {
-			padding-top: @padding;
+			margin-top: @padding;
 		}
 
 		li:last-child {
-			padding-bottom: @padding;
+			margin-bottom: @padding;
 		}
 
 		li.list-group-item {
@@ -186,4 +197,16 @@
 		margin: 0;
 	}
 }
+
+
+
+.error-submit {
+    background: @danger-red-background;
+    color: @danger-red;
+    padding: 5px @padding;
+    margin-bottom: @padding;
+    border-radius: 5px;
+    font-size: @large-font;
+}
+
 

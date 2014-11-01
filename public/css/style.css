@@ -1050,16 +1050,16 @@ td.beauty-hover {
   color: #6AA6D6 !important;
 }
 .txt-success, .has-success .help-block, .has-success .control-label, .has-success .radio, .has-success .checkbox, .has-success .radio-inline, .has-success .checkbox-inline {
-  color: #63CC9E !important;
+  color: #63CC9E;
 }
 .txt-info {
-  color: #7BC5D3 !important;
+  color: #7BC5D3;
 }
 .txt-warning, .has-warning .help-block, .has-warning .control-label, .has-warning .radio, .has-warning .checkbox, .has-warning .radio-inline, .has-warning .checkbox-inline {
-  color: #DFD271 !important;
+  color: #DFD271;
 }
 .txt-danger, .has-error .help-block, .has-error .control-label, .has-error .radio, .has-error .checkbox, .has-error .radio-inline, .has-error .checkbox-inline {
-  color: #D15E5E !important;
+  color: #D15E5E;
 }
 .has-success .form-control {
   border-color:#63CC9E;
