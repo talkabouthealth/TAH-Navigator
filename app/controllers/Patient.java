@@ -366,6 +366,8 @@ public class Patient extends Controller {
 	}
 	
 	public static void settings() {
+		UserBean user = CommonUtil.loadCachedUser(session);
+		renderArgs.put("user", user);
 		render();
 	}
 

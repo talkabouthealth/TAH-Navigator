@@ -27,6 +27,7 @@ public class EmailUtil {
 	public static final String MOFFITT_WELCOME = "Moffitt-Welcome";
 	public static final String MOFFITT_THANKYOU_FOR_SIGNUP = "Moffitt-Thankyou-For-Signing-Up";
 	public static final String MOFFITT_PASSWORDRECOVERY = "Moffitt-PasswordRecovery";
+	public static final String MOFFITT_WELCOMEREMINDER = "Moffitt-Welcome-Reminder";
 	
 	public static boolean sendEmail(String template,Map<String, Object> vars,String to ){
         SailthruClient client = new SailthruClient(SAILTHRU_APIKEY, SAILTHRU_SECRET);

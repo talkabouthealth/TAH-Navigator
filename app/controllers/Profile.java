@@ -86,7 +86,7 @@ public class Profile extends Controller {
         	oldpassword = CommonUtil.hashPassword(oldpassword);
         	System.out.println("Old : " + oldpassword);
         	UserDTO userDto = AdminDAO.getAdminAuth(user.getEmail(), oldpassword);
-        	if(userDto != null) {
+        	if(userDto != null && userDto.isActive()) {
         		userDto.setPassword(CommonUtil.hashPassword(password));
             	UserDAO.updateUserBasic(userDto);
         	} else {
