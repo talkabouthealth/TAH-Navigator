@@ -75,7 +75,7 @@ public class Distress  extends Controller {
 		if (obj != null) {
 			Date now = new Date();
 			long diff = now.getTime() -obj.getDistressDate().getTime();
-			if (diff <= PatientAlert.ONE_DAY) {
+			if (diff <= 86400000L) {
 				flag = true;
 			}
 		}
