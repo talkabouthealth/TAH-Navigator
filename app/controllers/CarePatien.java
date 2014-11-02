@@ -49,6 +49,7 @@ import nav.dao.DistressDAO;
 import nav.dao.FollowUp;
 import nav.dao.MedicationDAO;
 import nav.dao.NotesDAO;
+import nav.dao.PatientAlert;
 import nav.dao.PatientDetailDAO;
 import nav.dao.ProfileDAO;
 import nav.dao.Treatment;
@@ -655,6 +656,17 @@ public class CarePatien  extends Controller {
 				
 				app.setPatientid(patient);				
 				BaseDAO.save(app);
+				if (treatmentProcessStep.equalsIgnoreCase(PatientAlert.APPOINTMENT_STEP_FIRST_APPOINTMENT)) {
+					UserDetailsDTO userDetails = UserDAO.getDetailsById(patient.getId());
+					String email = patient.getEmail();
+					String firstName = userDetails.getFirstName();
+					boolean success = PatientAlert.emailAppointmentReminder_asSoonAsScheduled(email, firstName, schDate, time);
+					System.out.println(email + ": " + firstName + " : " + schDate + " : " + time);					
+					if (success) {
+						int appointmentId = app.getId();
+						PatientAlert.logEmailAppointmentReminder(appointmentId, PatientAlert.EMAIL, PatientAlert.AR_FIRST_APPOINTMENT_AS_SOON_AS_SCHEDULED, new Date());
+					}					
+				}
 			} else if("edit".equalsIgnoreCase(operation)) {
 				//Need to code this.
 				Integer appId =  new Integer(id);
