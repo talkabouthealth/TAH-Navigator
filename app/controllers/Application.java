@@ -364,6 +364,17 @@ public class Application extends Controller {
   	if(invitationdto!=null && member.getEmail().trim().equalsIgnoreCase(invitationdto.getEmail().trim())) {
   		UserDTO userDto = Security.authenticate(member.getEmail(), member.getPassword());
   	   	 if(userDto != null) {
+	  	   	String hashed = CommonUtil.hashPassword(member.getPassword());
+			if(!userDto.isActive()) {
+				System.out.println("User is not verified");
+				validation.addError("email.exists.inactive", "email.exists.inactive", "");
+			} else if(!userDto.getPassword().trim().equals(hashed.trim())) {
+				System.out.println("This user is not usefull");
+				validation.addError("password", "secure.error.password", "");
+			} else {
+				Secure.authenticate(member.getEmail(), member.getPassword(), true);
+			}
+  	   		/*
   	   		String hashed = CommonUtil.hashPassword(member.getPassword());
   			if(userDto.getPassword().trim().equals(hashed.trim())) {
   				if(!userDto.isIsverified() && userDto.getUserType() == 'p') {
@@ -375,10 +386,10 @@ public class Application extends Controller {
         		} else {
         			Secure.authenticate(member.getEmail(), member.getPassword(), true);
         		}
-  				
   			} else {
   				validation.addError("password", "secure.error.password", "");
   			}
+  	   	 */
   	   	 }
   	} else {
   		validation.addError("email", "secure.error.email", "");
@@ -386,22 +397,12 @@ public class Application extends Controller {
   	if(member.getPassword().trim().length()<8) {
   		validation.addError("invited.create.passwrod", "invited.create.passwrod", "");
   	}
-//  	UserBean userBn = UserDAO.getUserVerified(member.getEmail());
-//  	if(userBn != null) {
-//		if(userBn.isActive()) {
-//			validation.addError("member.email", "email.exists", "");
-//		} else {
-//			validation.addError("member.email.inactive", "email.exists.inactive", "");
-//		}
-//	} else {
-//		System.out.println("There is no error");
-//	}
   	if (validation.hasErrors()) {
-            params.flash();
-            validation.keep();
-            System.out.println(validation.errors().size());
-            System.out.println(validation.errors().get(0).message("username.empty"));
-            createinvited(member.getInvitationId());
+  		params.flash();
+  		validation.keep();
+  		System.out.println(validation.errors().size());
+  		System.out.println(validation.errors().get(0).message("username.empty"));
+  		createinvited(member.getInvitationId());
      }
 
    	 if(UserDAO.parseAndSaveMember(member)) {

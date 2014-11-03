@@ -31,7 +31,7 @@ public class Disease {
 		List<BreastCancerStageDTO> stages = null;
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
-			TypedQuery<BreastCancerStageDTO> query = em.createQuery("FROM BreastCancerStageDTO", BreastCancerStageDTO.class); 
+			TypedQuery<BreastCancerStageDTO> query = em.createQuery("SELECT c FROM BreastCancerStageDTO c order by c.name", BreastCancerStageDTO.class); 
 			stages = query.getResultList();
 		} 
 		catch(Exception e) {

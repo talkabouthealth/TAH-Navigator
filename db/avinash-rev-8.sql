@@ -1,0 +1,1 @@
+INSERT INTO nav.bcsinfo (stage) VALUES ('Stage 1C'),('Stage 2C');
