@@ -29,9 +29,10 @@ public class EmailReminderJob  extends Job {
 			System.out.println("Email: "+invitedDTO.getEmail());
 			String url = "http://tvrhnavigator.com/";
    		 	Map<String, Object> vars = new HashMap<String, Object>();
-   		 	vars.put("username", invitedDTO.getFirstname() + " " + invitedDTO.getLastname());
+   		 	vars.put("username", invitedDTO.getFirstname() + " " + invitedDTO.getLastname() + "[" + invitedDTO.getEmail() + "]");
    		 	vars.put("signupurl", url + "/invited-registration/" + invitedDTO.getId());
-   		 	EmailUtil.sendEmail(EmailUtil.MOFFITT_WELCOMEREMINDER,vars,invitedDTO.getEmail());
+//   		EmailUtil.sendEmail(EmailUtil.MOFFITT_WELCOMEREMINDER,vars,invitedDTO.getEmail());
+   		 	EmailUtil.sendEmail(EmailUtil.MOFFITT_WELCOMEREMINDER,vars,"murray@talkabouthealth.com");
 		}
 		return true;
 	}
