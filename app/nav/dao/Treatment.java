@@ -129,6 +129,7 @@ public class Treatment {
 		String surgeryDate = siInfo.get("surgeryDate");
 		String region = siInfo.get("region");
 		String notes = siInfo.get("notes");
+		String doctor = siInfo.get("doctor");
 		Integer stId = null;
 		Integer trId = null;
 		PatientSurgeryInfoDTO psiDto = null;
@@ -199,6 +200,7 @@ public class Treatment {
 		if (notes != null && !notes.isEmpty()) {
 			psiDto.setNotes(notes);
 		}
+		psiDto.setDoctor(doctor);
 		em.getTransaction().begin();
 		em.persist(psiDto);
 		em.getTransaction().commit();
@@ -242,6 +244,7 @@ public class Treatment {
 		String startDate = ctInfo.get("startDate");
 		String endDate = ctInfo.get("endDate");
 		String notes = ctInfo.get("notes");
+		String doctor = ctInfo.get("doctor");
 		
 		Integer csId = null;
 		PatientChemoTreatmentDTO pctDto = null;
@@ -326,6 +329,7 @@ public class Treatment {
 		if (notes != null && !notes.isEmpty()) {
 			pctDto.setNotes(notes);
 		}
+		pctDto.setDoctor(doctor);
 		em.getTransaction().begin();
 		em.persist(pctDto);
 		em.getTransaction().commit();
@@ -407,6 +411,7 @@ public class Treatment {
 		String endDate = rtInfo.get("endDate");
 		String region = rtInfo.get("region");
 		String notes = rtInfo.get("notes");
+		String doctor = rtInfo.get("doctor");
 		
 		Integer rtId = null;
 		Integer rsId = null;
@@ -480,6 +485,7 @@ public class Treatment {
 		prtDto.setTrId(trId);
 		prtDto.setDose(dose);
 		prtDto.setNotes(notes);
+		prtDto.setDoctor(doctor);
 		if (!startDate.isEmpty()) {
 			SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
 			Date date;

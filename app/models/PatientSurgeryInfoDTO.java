@@ -28,6 +28,9 @@ public class PatientSurgeryInfoDTO {
 	@Column(name="notes")
 	private String notes;
 	
+	@Column(name="doctor")
+	private String doctor;
+	
 	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="st_id", insertable=false, updatable=false)
 	private SurgeryTypeDTO stDto;
@@ -110,6 +113,14 @@ public class PatientSurgeryInfoDTO {
 
 	public void setPstSeDtos(List<PatientStSideEffectDTO> pstSeDtos) {
 		this.pstSeDtos = pstSeDtos;
+	}
+
+	public String getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(String doctor) {
+		this.doctor = doctor;
 	}
 	
 	

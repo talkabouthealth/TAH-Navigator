@@ -40,6 +40,9 @@ public class PatientChemoTreatmentDTO {
 	@Column(name="notes")
 	private String notes;
 	
+	@Column(name="doctor")
+	private String doctor;
+	
 	@OneToOne
 	@JoinColumn(name="cs_id", insertable=false, updatable=false)
 	private ChemoScheduleDTO csDto;
@@ -142,5 +145,13 @@ public class PatientChemoTreatmentDTO {
 
 	public void setDoseReduction(String doseReduction) {
 		this.doseReduction = doseReduction;
+	}
+
+	public String getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(String doctor) {
+		this.doctor = doctor;
 	}
 }

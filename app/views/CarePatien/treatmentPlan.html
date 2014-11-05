@@ -18,6 +18,7 @@
       <th class="dose">Dose</th>
       <th class="schedule">Schedule</th>
       <th class="region">Region Treated</th>
+      <th>Doctor</th>
       <!--<th class="side-effects">Side Effects Experienced</th>-->
       <th class="notes">Notes</th>
     </tr>
@@ -32,6 +33,7 @@
       <td class="dose">#{if rt.dose} ${rt.dose} #{/if}</td>
       <td class="schedule">#{if rt.rsDto} ${rt.rsDto.timePeriod} #{/if}</td>
       <td class="region">#{if rt.trDto} ${rt.trDto.region} #{/if}</td>
+      <td>#{if rt.doctor} ${rt.doctor} #{/if}</td>
       <!--<td class="side-effects">
         #{if rt.prtSeDtos}
         #{list items: rt.prtSeDtos, as:'prtSeDto'}
@@ -70,6 +72,7 @@
       <th class="date">Date</th>
       <th class="region-treated">Region Treated</th>
       <!--<th class="side-effects">Side Effects Experienced</th>-->
+      <th>Doctor</th>
       <th class="notes">Notes</th>
     </tr>
   </thead>
@@ -91,6 +94,7 @@
         #{/list}
         #{/if}
       </td>-->
+      <td>#{if si.doctor} ${si.doctor} #{/if}</td>
       <td class="notes">#{if si.notes} ${si.notes} #{/if}</td>
     </tr>
     #{/list}
@@ -120,6 +124,7 @@
       <th class="schedule">Schedule</th>
       <th class="dose-reduction">% Dose Reduction</th>
       <!--<th class="side-effects">Side Effects Experienced</th>-->
+      <th>Doctor</th>
       <th class="notes">Notes</th>
     </tr>
   </thead>
@@ -145,6 +150,7 @@
         #{/list}
         #{/if}
       </td>-->
+      <td>#{if ct.doctor} ${ct.doctor} #{/if}</td>
       <td class="notes">#{if ct.notes} ${ct.notes} #{/if}</td>
     </tr>
     #{/list}

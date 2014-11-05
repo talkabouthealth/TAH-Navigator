@@ -37,6 +37,9 @@ public class PatientRadiationTreatmentDTO {
 	@Column(name="notes")
 	private String notes;
 	
+	@Column(name="doctor")
+	private String doctor;
+	
 	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name = "rt_id", insertable=false, updatable=false)
 	private RadiationTypeDTO rtDto;
@@ -155,6 +158,14 @@ public class PatientRadiationTreatmentDTO {
 
 	public void setPrtSeDtos(List<PatientRtSideEffectDTO> prtSeDtos) {
 		this.prtSeDtos = prtSeDtos;
+	}
+
+	public String getDoctor() {
+		return doctor;
+	}
+
+	public void setDoctor(String doctor) {
+		this.doctor = doctor;
 	}
 
 	

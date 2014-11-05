@@ -754,7 +754,7 @@ var careTeamController = (function() {
     	var region = $('#rt_region').val();
         var sideEffects = $('#rt_side_effects_div').data('rt-see');
     	var notes = $('#rt_notes').val();
-    	
+    	var doctor = $('#rt_doctor').val();
         var params = {
             'patientId': patientId,
             'rtInfo.radiationType': radiationType,
@@ -763,7 +763,8 @@ var careTeamController = (function() {
             'rtInfo.startDate': startDate,
             'rtInfo.endDate': endDate,
             'rtInfo.region': region,
-            'rtInfo.notes': notes
+            'rtInfo.notes': notes,
+            'rtInfo.doctor': doctor
         };
         
         if (typeof sideEffects != "undefined") {
@@ -797,6 +798,7 @@ var careTeamController = (function() {
         var endDate = $('#ctt_end_date').val();
         var sideEffects = $('#ctt_side_effects_div').data('ctt-see');
         var notes = $('#ctt_notes').val();
+        var doctor = $('#ctt_doctor').val();
         var params = {
             'patientId': patientId,
             'ctInfo.genericName': genericName,
@@ -805,7 +807,8 @@ var careTeamController = (function() {
             'ctInfo.schedule': schedule,
             'ctInfo.startDate': startDate,
             'ctInfo.endDate': endDate,
-            'ctInfo.notes': notes
+            'ctInfo.notes': notes,
+            'ctInfo.doctor': doctor
         };        
         params['ctInfo.doseReduction'] = doseReduction;        
         if (typeof sideEffects != "undefined") {
@@ -836,12 +839,14 @@ var careTeamController = (function() {
         var region = $('#si_region').val();
         var sideEffects = $('#si_side_effects_div').data('si-see');
         var notes = $('#si_notes').val();
+        var doctor = $('#si_doctor').val();
         var params = {
             'patientId': patientId,
             'siInfo.surgeryType': surgeryType,
             'siInfo.surgeryDate': surgeryDate,
             'siInfo.region': region,
-            'siInfo.notes': notes
+            'siInfo.notes': notes,
+            'siInfo.doctor': doctor
         };
         if (typeof sideEffects != "undefined") {
             for (var i = 0; i < sideEffects.length; i++) {
@@ -926,7 +931,7 @@ var careTeamController = (function() {
                 e.preventDefault();
             }
         });
-        $('#add-surgery-treatment').click(function() {
+        $(document).on('click', '#add-surgery-treatment', function() {
             if (saveSurgeryData()) {
                 $('#surgery-treatment-form').modal("hide");
             }
@@ -994,6 +999,9 @@ var careTeamController = (function() {
         }
         if (pctDto.notes) {
             $('#ctt_notes').val(pctDto.notes);
+        }
+        if ('doctor' in pctDto) {
+            $('#ctt_doctor').val(pctDto.doctor);
         }
     };
     var initializeChemoTreatmentForm = function(data) {
@@ -1114,7 +1122,7 @@ var careTeamController = (function() {
             }
         });
         
-        $('#add-chemotherapy-treatment').click(function() {
+        $(document).on('click', '#add-chemotherapy-treatment', function() {
             if (saveChemoTreatmentData()) {
                 $('#chemotherapy-treatment-form').modal("hide");
             }
@@ -1218,7 +1226,7 @@ var careTeamController = (function() {
                 e.preventDefault();
             }
         });
-        $('#add-radiation-treatment').click(function() {
+        $(document).on('click', '#add-radiation-treatment', function() {
             if (saveRadiationTreatmentData()) {
                 $('#radiation-treatment-form').modal('hide');
             }
@@ -1270,6 +1278,9 @@ var careTeamController = (function() {
         if (psiDto.notes) {
             $('#si_notes').val(psiDto.notes);
         }
+        if ('doctor' in psiDto) {
+            $('#si_doctor').val(psiDto.doctor);
+        }
     };
     var addRadiationTreatmentToForm = function(prtDto) {
         $('#rt_type').val(prtDto.rtDto.name);
@@ -1304,6 +1315,9 @@ var careTeamController = (function() {
             $('#' + elmId).data(key, arr);
         }
         $('#rt_notes').val(prtDto.notes);
+        if ('doctor' in prtDto) {
+            $('#rt_doctor').val(prtDto.doctor);
+        }
     };
     var triggerRadiationFormEvents = function() {
         var str = $('#rt_type').val();
