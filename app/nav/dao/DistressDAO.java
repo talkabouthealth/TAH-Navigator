@@ -95,7 +95,16 @@ public class DistressDAO {
 			bean = new DistressBean();
 			bean.setCurDist(dto.getDistressvalue());
 			bean.setDistressDate(dto.getDaterecrded());
-			bean.setOtherdetail(getDistressList(dto.getId()));
+//			bean.setOtherdetail(getDistressList(dto.getId()));
+			List<String> problemList = problemList(patientId.getId(),7);
+			String rep = "";
+			for (String string : problemList) {
+				rep += string +",<br/>";
+			}
+			if(rep.endsWith(",<br/>")) {
+				rep = rep.substring(0,rep.lastIndexOf(",<br/>"));
+			}
+			bean.setOtherdetail(rep);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 		} finally {
