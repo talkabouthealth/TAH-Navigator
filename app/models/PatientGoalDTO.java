@@ -7,9 +7,11 @@ import javax.persistence.*;
 @Entity
 @Table(name="pgoal", schema="nav")
 public class PatientGoalDTO {
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="pgoal_id")
+	@GeneratedValue(strategy= GenerationType.SEQUENCE, generator="pgoal_pgoal_id_seq")
+	@SequenceGenerator(allocationSize=1, schema="nav",  name="pgoal_pgoal_id_seq", sequenceName = "nav.pgoal_pgoal_id_seq")
+	@Column(name = "pgoal_id")
 	private Integer id;
 	
 	@Column(name="user_id")
