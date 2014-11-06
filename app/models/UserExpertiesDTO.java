@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Table(name = "nav.userexpertise")
@@ -13,17 +14,18 @@ import javax.persistence.Table;
 public class UserExpertiesDTO implements Serializable {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy= GenerationType.SEQUENCE, generator="userexpertise_id_seq")
+	@SequenceGenerator(allocationSize=1, schema="nav",  name="userexpertise_id_seq", sequenceName = "nav.userexpertise_id_seq")
 	@Column(name = "id")
 	private int id;
-	
+
 	@Id
 	@Column(name = "userid")
 	private int userid;
-	
+
 	@Column(name = "name")
 	private String name;
-	
+
 	@Column(name = "description")
 	private String description;
 
