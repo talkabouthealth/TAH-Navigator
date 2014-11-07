@@ -1,0 +1,11 @@
+secure.title=
+secure.username=Username:
+secure.password=Password:
+secure.remember=Remember me
+secure.signin=Sign in
+secure.error=It looks like this email doesn't exist.
+secure.error.email=It looks like this email doesn't exist.
+secure.error.password=Incorrect password.
+secure.logout=You have been logged out.
+secure.verify=Please verify your email address to be able to log in to the Moffitt - TVRH Navigator.
+secure.verified=Thank you for verification. Please login using your login credentials.

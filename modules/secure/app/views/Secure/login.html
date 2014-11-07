@@ -11,11 +11,11 @@
       #{errors}
       <!-- <p class="alert alert-danger">${error}</p> -->
        <p class="alert alert-danger">
-      #{if 'password' == error.key}
-      ${error}
+      #{if 'email' == error.key}
+      ${error} <a href="@{Application.create()}">Do you want to register?</a>
       #{/if}
       #{else}
-      ${error} <a href="@{Application.create()}">Do you want to register?</a>
+      ${error} 
       #{/else}
       </p>
       <!-- <p class="alert alert-danger">Incorrect password. <a href="@{Application.forgot()}">Would you like to reset it?</a></p> -->
@@ -48,8 +48,8 @@
           </div>
           <br/>
           <p class="text-center"><button type="submit" type="button" id="signin" class="btn btn-lg btn-primary btn-block my-btn-log">Login</button></p>
-          <!--          <br/> -->
-          <!--          <br/> -->
+          <!-- <br/> -->
+          <!-- <br/> -->
           <div class="col-xs-12 col-sm-12" style="padding: 10px 0;">
             <div class="col-sm-6 save_id">
               <input name="remember" id="remember" value="true" ${flash.remember ? 'checked="true"' : ''} type="checkbox">
@@ -65,8 +65,15 @@
       </div>
     </div >
   </div>
-      <div class="footer" >
-        <p class="text-center" style="color:white;"><a href="@{Static.tos()}" style="color:white;" target="_blank">Terms of Service</a> - <a href="@{Static.privacy()}" style="color:white;" target="_blank">Privacy Policy</a> </br></br> Copyright 2014 TalkAboutHealth</p>
-
-      </div>
-  <script type="text/javascript" src="/public/js/logged-out/login.js" />
+  <!--  
+  	<div class="footer" >
+		<p class="text-center" style="color:white;"><a href="@{Static.tos()}" style="color:white;" target="_blank">Terms of Service</a> - <a href="@{Static.privacy()}" style="color:white;" target="_blank">Privacy Policy</a> </br></br> Copyright 2014 TalkAboutHealth</p>
+  </div> 
+ -->
+<script type="text/javascript" src="/public/js/logged-out/login.js" ></script>
+<script><!--
+try{
+mixpanel.track("Login");
+}catch(e){}
+-->
+</script>

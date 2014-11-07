@@ -1,0 +1,17 @@
+# import these default routes as :
+# *         /               module:secure
+# ~~~~
+
+GET			/login			Secure.login(ut:'p')
+POST        /login          Secure.authenticate(ut:'p')
+
+GET			/admin/login			Secure.login(ut:'a')
+POST        /admin/login          Secure.authenticate(ut:'a')
+
+GET			/care/login			Secure.login(ut:'c')
+POST        /care/login          Secure.authenticate(ut:'c')
+
+GET			/patient/login			Secure.login(ut:'p')
+POST        /patient/login          Secure.authenticate(ut:'p')
+
+GET         /logout         Secure.logout

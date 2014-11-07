@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Date;
 
-import controllers.Patient;
 import models.UserDTO;
 import nav.dto.UserBean;
 import play.Play;
@@ -18,11 +17,12 @@ import util.CommonUtil;
 public class Secure extends Controller {
 
     @Before(unless={"login", "authenticate", "logout"})
-    static void checkAccess() throws Throwable {    	
+    static void checkAccess() throws Throwable {
         // Authent
     	session.put("requestPath", request.path);
         if(!session.contains("username")) {
-            flash.put("url", "GET".equals(request.method) ? request.url : Play.ctxPath + "/"); // seems a good default
+//            flash.put("url", "GET".equals(request.method) ? callbackURL+request.url : callbackURL+Play.ctxPath + "/");
+            flash.put("url", Play.ctxPath + "/"); 
             login();
         } 
         // Checks
@@ -66,7 +66,7 @@ public class Secure extends Controller {
                     redirectToOriginalURL(userType);
                 }
             }
-        }        
+        }
         flash.keep("url");
         render();
     }
@@ -78,15 +78,21 @@ public class Secure extends Controller {
         try {
         	allowed = (UserDTO)Security.invoke("authenticate", email, password);
         	if(allowed != null) {
-        		if(!allowed.isActive() && allowed.getUserType() == 'p') {
-        			System.out.println("User is not verified");
-        			validation.addError("email", "secure.verify", "");
+        		String hashed = CommonUtil.hashPassword(password);
+        		if(!allowed.getPassword().trim().equals(hashed.trim())) {
+        			validation.addError("password", "secure.error.password", "");
         		} else {
-        			System.out.println("User verified");
+	        		if(!allowed.isIsverified() && allowed.getUserType() == 'p') {
+	        			validation.addError("email", "secure.verify", "");
+	        		} else if(!allowed.isActive()) {
+	        			validation.addError("email.exists.inactive", "email.exists.inactive", "");
+	        		} else {
+	        			System.out.println("User verified");
+	        		}
         		}
         	} else {
         		System.out.println("There is no user");
-        		validation.addError("email", "secure.error", "");
+        		validation.addError("email", "secure.error.email", "");
         	}
         } catch (UnsupportedOperationException e ) {
         	e.printStackTrace();
@@ -99,8 +105,8 @@ public class Secure extends Controller {
             session.remove("username");
             login();
         } else {
-        	  session.put("username", email);
-        	  user = CommonUtil.loadCachedUser(session);
+        	session.put("username", allowed.getEmail());
+        	user = CommonUtil.loadCachedUser(session);
         }
         // Mark user as connected
         // Remember if needed
@@ -131,21 +137,25 @@ public class Secure extends Controller {
         }
         if('a' == ut) {
         	session.put("usertype", "admin");
-        	Admin.index();
+//        	Admin.index();
+        	url = url + "admin/index";
         } else if('c' == ut) {
         	 session.put("usertype", "care");
-        	Care.index();
+//        	Care.index();
+        	url = url + "care/index";
         } else if('p' == ut) {
        	 	session.put("usertype", "user");
-       	 	String requestPath = session.get("requestPath");
-       	 	if (requestPath != null && requestPath.equalsIgnoreCase("/patient/appointment")) {
-       	 		session.remove("requestPath");
-       	 		Patient.appointment();
-       	 	}
-       	 	else {
-       	 		Patient.index();
-       	 	}
+//       	 	Patient.index();
+     	String requestPath = session.get("requestPath");
+   	 	if (requestPath != null && requestPath.equalsIgnoreCase("/patient/appointment")) {
+   	 		session.remove("requestPath");
+//   	 		Patient.appointment();
+   	 	 url = url + "patient/appointment";
+   	 	} else {
+   	 		url = url + "patient/index";
+   	 	}
        }
+        redirect(url);
     }
 
     static void redirectToOriginalURL() throws Throwable {
