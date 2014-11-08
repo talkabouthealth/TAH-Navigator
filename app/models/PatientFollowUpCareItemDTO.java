@@ -8,7 +8,8 @@ import javax.persistence.*;
 @Table(name="pfupci", schema="nav")
 public class PatientFollowUpCareItemDTO {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy= GenerationType.SEQUENCE, generator="pfupci_pfup_id_seq")
+	@SequenceGenerator(allocationSize=1, schema="nav",  name="pfupci_pfup_id_seq", sequenceName = "nav.pfupci_pfup_id_seq")	
 	@Column(name="pfup_id")
 	private Integer id;
 	

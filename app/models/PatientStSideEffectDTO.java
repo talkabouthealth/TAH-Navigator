@@ -6,7 +6,8 @@ import javax.persistence.*;
 @Table(name="patientses", schema="nav")
 public class PatientStSideEffectDTO {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy= GenerationType.SEQUENCE, generator="patientses_pse_id_seq")
+	@SequenceGenerator(allocationSize=1, schema="nav",  name="patientses_pse_id_seq", sequenceName = "nav.patientses_pse_id_seq")
 	@Column(name="pse_id")
 	private Integer id;
 	

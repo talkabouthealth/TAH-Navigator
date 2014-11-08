@@ -9,7 +9,8 @@ import javax.persistence.*;
 public class PatientRtSideEffectDTO {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy= GenerationType.SEQUENCE, generator="patientrtse_pse_id_seq")
+	@SequenceGenerator(allocationSize=1, schema="nav",  name="patientrtse_pse_id_seq", sequenceName = "nav.patientrtse_pse_id_seq")
 	@Column(name="pse_id")
 	private Integer id;
 	

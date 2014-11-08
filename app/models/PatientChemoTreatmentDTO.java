@@ -9,7 +9,8 @@ import javax.persistence.*;
 @Table(name="patientctt", schema="nav")
 public class PatientChemoTreatmentDTO {
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy= GenerationType.SEQUENCE, generator="patientctt_pct_id_seq")
+	@SequenceGenerator(allocationSize=1, schema="nav",  name="patientctt_pct_id_seq", sequenceName = "nav.patientctt_pct_id_seq")	
 	@Column(name="pct_id")
 	private Integer id;
 	

@@ -7,7 +7,8 @@ import javax.persistence.*;
 public class TreatmentRegionDTO {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy= GenerationType.SEQUENCE, generator="treatment_region_tr_id_seq")
+	@SequenceGenerator(allocationSize=1, schema="nav",  name="treatment_region_tr_id_seq", sequenceName = "nav.treatment_region_tr_id_seq")
 	@Column(name="tr_id")
 	private Integer id;
 	
