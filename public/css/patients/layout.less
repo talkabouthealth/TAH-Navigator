@@ -1,8 +1,25 @@
+
+h3, h4 {
+    text-transform: uppercase;
+}
+p {
+    span {
+        font-weight: bold;
+        text-transform: uppercase;
+    }
+}
+h3 {
+    font-size: @header-font-size;
+    color: @dark-gray;
+    margin-top: 5px;
+}
+
 table.table>tbody>tr>td {
   padding: 0;
 }
 .table{
   font-size: @body-font;
+  margin-top: @padding;
 
   th {
     padding: @table-cell-padding;
@@ -41,3 +58,21 @@ table.table>tbody>tr>td {
 }
 }
 
+.mobile {
+    display: none;
+}
+
+
+@media (max-width: @tablet-max) {
+    .mobile {
+        display: block;
+    }
+    .radiation-treatment, .surgery, .chemotherapy, .concerns, .care-items, .goals {
+        margin: @padding*2 0;
+        border-bottom: 1px solid #CCC;
+        padding-bottom: @padding;
+        p {
+            margin: 0;
+        }
+    }
+}

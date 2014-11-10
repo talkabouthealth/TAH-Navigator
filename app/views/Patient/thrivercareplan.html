@@ -6,10 +6,21 @@
         
         <!-------------   Care Item -------------------->
         <div class="title">
-            <h3>Follow-Up Care</h3>         
+            <h1>Follow-Up Care</h1>
         </div>
         #{if careItems}
-        <table class="table table-bordered table-striped table-condensed table-hover table-fixed">
+        <div class="mobile care-items">
+            #{list items:careItems, as:'ci'}
+            <div class="follow-up-care-item">
+                <h3>${ci.activity}</h3>
+                <p><span>Concern: </span>#{if ci.frequency} ${ci.frequency} #{/if}<p>
+                <p><span>Frequency: </span>#{if ci.endDate} ${ci.endDate.format('MM/dd/yyyy')} #{/if}#{if ci.ongoing}Ongoing#{/if}<p>
+                <p><span>End-Date: </span>#{if ci.purpose} ${ci.purpose} #{/if}<p>
+                <p><span>Doctor: </span>#{if ci.doctor} ${ci.doctor} #{/if}</p>
+            </div>
+            #{/list}
+        </div>
+        <table class="desktop table table-bordered table-striped table-condensed table-hover table-fixed">
             <tr>
                 <th>CONCERN</th>
                 <th>FREQUENCY</th>
@@ -32,15 +43,25 @@
         
         <!-------------   Concern -------------------->
         <div class="title">
-	        <h3>Needs / Concerns</h3>	        
+	        <h1>Needs / Concerns</h1>
 	    </div>
 	    #{if concerns}
-	    <table class="table table-bordered table-striped table-condensed table-hover table-fixed">
+	    <div class="concerns mobile">
+	        #{list items:concerns, as:'concern'}
+	        <div class="concern-item">
+                <h3>${concern.concern}</h3>
+                <p><span>Action Plan: </span>#{if concern.nextStep} ${concern.nextStep} #{/if}</p>
+                <p><span>Date of Concern: </span>#{if concern.concernDate} ${concern.concernDate.format('MM/dd/yyyy')} #{/if}</p>
+                <p><span>Updates: </span>#{if concern.notes} ${concern.notes} #{/if}</p>
+	        </div>
+	        #{/list}
+	    </div>
+	    <table class="table desktop table-bordered table-striped table-condensed table-hover table-fixed">
 	        <tr>
 	            <th>CONCERN</th>
 	            <th>ACTION PLAN</th>
 	            <th>DATE OF CONCERN</th>
-	            <th>UDPATES</th>
+	            <th>UPDATES</th>
 	        </tr>
 	        #{list items:concerns, as:'concern'}
 	        <tr>
@@ -56,10 +77,20 @@
 	    
 	    <!-------------   Goal -------------------->
 	    <div class="title">
-	        <h3>Goals</h3>	        
+	        <h1>Goals</h1>
 	    </div>
 	    #{if goals}
-	    <table class="table table-bordered table-striped table-condensed table-hover table-fixed">
+	    <div class="mobile goals">
+	        #{list items:goals, as:'goal'}
+            <div class="goal-item">
+	            <h3>${goal.goal}</h3>
+                <p><span>Action Plan: </span>#{if goal.nextStep} ${goal.nextStep} #{/if}</p>
+                <p><span>Goal Start Date: </span>#{if goal.goalDeadline} ${goal.goalDeadline.format('MM/dd/yyyy')} #{/if}</p>
+                <p><span>Updates: </span>#{if goal.notes} ${goal.notes} #{/if}</p>
+            </div>
+	        #{/list}
+	    </div>
+	    <table class="table desktop table-bordered table-striped table-condensed table-hover table-fixed">
 	        <tr>
 	            <th>GOAL</th>
 	            <th>ACTION PLAN</th>

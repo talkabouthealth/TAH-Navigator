@@ -6,10 +6,27 @@
   <div class="container-fluid treatment-plan">
     <!-- Raidation Treatment -->
     <div class="title">
-      <h3>Radiation Treatment</h3>
+      <h1>Radiation Treatment</h1>
     </div>
     #{if radiationTreatments}
-    <table class="radiation-treatment table table-bordered table-striped table-condensed table-hover">
+    
+    <div class="mobile radiation-treatment">
+      #{list items:radiationTreatments, as:'rt'}
+      <div class="treatment-item">
+        <h3>${rt.rtDto.name}</h3>
+        <p><span>Dates: </span> #{if rt.startDate} ${rt.startDate.format('MM/dd/yyyy')} #{/if}
+          #{if rt.endDate} - ${rt.endDate.format('MM/dd/yyyy')} #{/if}</p>
+          <p><span>Dose: </span>#{if rt.dose} ${rt.dose} #{/if}</p>
+          <p><span>Schedule: </span>#{if rt.rsDto} ${rt.rsDto.timePeriod} #{/if}</p>
+          <p><span>Region Treated: </span>:#{if rt.trDto} ${rt.trDto.region} #{/if}</p>
+
+          <p><span>Doctor: </span>#{if rt.doctor} ${rt.doctor} #{/if}<p>
+          <p><span>Notes: </span> #{if rt.notes} ${rt.notes} #{/if}</p>
+      </div>
+      #{/list}
+  </div>
+    <table class="desktop radiation-treatment table table-bordered table-striped table-condensed table-hover">
+
       <thead>
       <tr>
         <th class="type">Type</th>
@@ -70,13 +87,24 @@
 
     <!-- Surgery -->
     <div class="title">
-      <h3>Surgery</h3>
+      <h1>Surgery</h1>
 
 
     </div>
     #{if surgeryInfo}
 
-    <table class="surgery table table-bordered table-striped table-condensed table-hover">
+    <div class="surgery mobile">
+      #{list items:surgeryInfo, as:'si'}
+      <div class="surgery-item">
+          <h3>${si.stDto.name}</h3>
+          <p><span>Date: </span>#{if si.surgeryDate} ${si.surgeryDate.format('MM/dd/yyyy')} #{/if}</p>
+          <p><span>Region: </span>#{if si.trDto} ${si.trDto.region} #{/if}</p>
+          <p><span>Doctor: </span>#{if si.doctor} ${si.doctor} #{/if}</p>
+          <p><span>Notes: </span>#{if si.notes} ${si.notes} #{/if}</p>
+      </div>
+      #{/list}
+    </div>
+    <table class="surgery desktop table table-bordered table-striped table-condensed table-hover">
       <thead>
       <tr>
         <th class="surgery-name"></th>
@@ -108,11 +136,26 @@
 
     <!-- Chemotherapy Treatment -->
     <div class="title">
-      <h3>Chemotherapy</h3>
+      <h1>Chemotherapy</h1>
 
     </div>
     #{if chemoTreatments}
-    <table class="chemotherapy table table-bordered table-striped table-condensed table-hover">
+    <div class="chemotherapy mobile">
+      #{list items:chemoTreatments, as:'ct'}
+      <div class="chemotherapy-item">
+        <h3>${ct.genericName} (${ct.brandName})</h3>
+        <p><span>Dates: </span>#{if ct.startDate} ${ct.startDate.format('MM/dd/yyyy')} #{/if}
+          #{if ct.endDate} - ${ct.endDate.format('MM/dd/yyyy')} #{/if}
+        </p>
+        <p><span># of Cycles: </span>>#{if ct.cycleNo} ${ct.cycleNo} #{/if}</p>
+        <p><span>Schedule: </span>#{if ct.csDto} ${ct.csDto.timePeriod} #{/if}</p>
+        <p><span>% Dose Reduction: </span>#{if ct.doseReduction} ${ct.doseReduction} #{/if}</p>
+        <p><span>Doctor: </span>#{if ct.doctor} ${ct.doctor} #{/if}</p>
+        <p><span>Notes: </span>#{if ct.notes} ${ct.notes} #{/if}</p>
+    </div>
+      #{/list}
+  </div>
+    <table class="chemotherapy desktop table table-bordered table-striped table-condensed table-hover">
       <thead>
       <tr>
         <th class="treatment-name"></th>
