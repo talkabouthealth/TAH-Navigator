@@ -56,59 +56,67 @@ public class PatientAlert {
 	public static final String AR_AFTER_TREATMENTS_ONE_WEEK_BEFORE = "after_treatments_reminder_1_week_before";
 	
 	
+	public static final long ONE_DAY = 86400000L;
+	public static final long ONE_HOUR = 3600000L;
 	
 	
 	
-	public static boolean sendEmail (Send send) {
+	public static boolean sendEmail (Send send) {		
 		SailthruClient client = new SailthruClient(SAILTHRU_API_KEY, SAILTHRU_API_SECRET);
 		JsonResponse response;
 		try {
 			response = client.send(send);
 			if (response.isOK()) {
 	        	//System.out.println(response.getResponse());
-	        	return true;
-	            
+	        	return true;	            
 	        } else {
 	            //System.out.println(response.getResponse().get("error").toString());	        	
 	        }
 		} catch (IOException e) {			
 			e.printStackTrace();
 		}
-		return false;        
+		return false;		
 	}
 	
 	
 	public static void firstAppointmentAlerts() {
 		EntityManager em = JPAUtil.getEntityManager();
 		List<AppointmentDTO> appointments = new ArrayList<AppointmentDTO>();
-		List<AppointmentAlertDTO> sentAlerts = new ArrayList<AppointmentAlertDTO>();
-		TypedQuery<AppointmentDTO> appointmentQuery = em.createQuery("SELECT a FROM AppointmentDTO a WHERE a.treatementStep = :treatementStep AND current_timestamp between (a.appointmentdate - interval '24 hours') AND (a.appointmentdate - interval '12 hours') AND a.deleteflag = false", AppointmentDTO.class);
+		List<AppointmentAlertDTO> sentAlerts = new ArrayList<AppointmentAlertDTO>();			
+		TypedQuery<AppointmentDTO> appointmentQuery = em.createQuery("SELECT a FROM AppointmentDTO a WHERE a.treatementStep = :treatementStep AND a.appointmentdate > current_timestamp AND a.deleteflag = false", AppointmentDTO.class);
 		TypedQuery<AppointmentAlertDTO> alertQuery = em.createQuery("SELECT a FROM AppointmentAlertDTO a WHERE a.alertDetail = :alertDetail", AppointmentAlertDTO.class);
+		Date now = new Date();
+		long curTime = now.getTime();
 		try {
-			appointmentQuery.setParameter("treatementStep", APPOINTMENT_STEP_FIRST_APPOINTMENT);
+			appointmentQuery.setParameter("treatementStep", APPOINTMENT_STEP_FIRST_APPOINTMENT);			
 			alertQuery.setParameter("alertDetail", AR_FIRST_APPOINTMENT_ONE_DAY_BEFORE);
 			appointments = appointmentQuery.getResultList();
 			sentAlerts = alertQuery.getResultList();
 		} catch (NoResultException e) {
 			e.printStackTrace();
-		}
+		}		
 		for (AppointmentDTO appointment : appointments) {
-			boolean mailAlreadySent = false;
-			for (AppointmentAlertDTO alert: sentAlerts) {
-				if (alert.getAppointmentId().intValue() == appointment.getId()) {
-					mailAlreadySent = true;
-					break;
+			Date appointmentDate = appointment.getAppointmentdate();
+			long minTime = appointmentDate.getTime() - ONE_DAY;
+			long maxTime = appointmentDate.getTime() - (12 * ONE_HOUR);			
+			if (curTime >= minTime && curTime <= maxTime ) {				
+				boolean mailAlreadySent = false;
+				for (AppointmentAlertDTO alert: sentAlerts) {
+					if (alert.getAppointmentId().intValue() == appointment.getId()) {
+						mailAlreadySent = true;
+						break;
+					}
 				}
-			}
-			if (!mailAlreadySent) {
-				String userId = String.valueOf(appointment.getPatientid().getId());
-				UserDetailsDTO userDetails = UserDAO.getDetailsById(userId);
-				String email = userDetails.getUser().getEmail();
-				String firstName = userDetails.getFirstName();
-				String appointmentTime = appointment.getAppointmenttime();
-				boolean success = emailAppointmentReminder_oneDayBefore(email, firstName, appointmentTime);
-				if (success) {
-					logEmailAppointmentReminder(appointment.getId(), EMAIL, AR_FIRST_APPOINTMENT_ONE_DAY_BEFORE, new Date());
+				if (!mailAlreadySent) {
+					String userId = String.valueOf(appointment.getPatientid().getId());
+					UserDetailsDTO userDetails = UserDAO.getDetailsById(userId);
+					String email = userDetails.getUser().getEmail();
+					String firstName = userDetails.getFirstName();
+					String appointmentTime = appointment.getAppointmenttime();
+					boolean success = emailAppointmentReminder_oneDayBefore(email, firstName, appointmentTime);
+					if (success) {
+						logEmailAppointmentReminder(appointment.getId(), EMAIL, AR_FIRST_APPOINTMENT_ONE_DAY_BEFORE, new Date());
+					}
 				}
 			}
 		}
@@ -117,11 +125,13 @@ public class PatientAlert {
 	public static void treatmentDecisionAlerts() {
 		EntityManager em = JPAUtil.getEntityManager();
 		List<AppointmentDTO> appointments = new ArrayList<AppointmentDTO>();
-		List<AppointmentAlertDTO> sentAlerts = new ArrayList<AppointmentAlertDTO>();
-		TypedQuery<AppointmentDTO> appointmentQuery = em.createQuery("SELECT a FROM AppointmentDTO a WHERE a.treatementStep = :treatementStep AND current_timestamp between (a.appointmentdate - interval '24 hours') AND (a.appointmentdate - interval '12 hours') AND a.deleteflag = false", AppointmentDTO.class);
+		List<AppointmentAlertDTO> sentAlerts = new ArrayList<AppointmentAlertDTO>();			
+		TypedQuery<AppointmentDTO> appointmentQuery = em.createQuery("SELECT a FROM AppointmentDTO a WHERE a.treatementStep = :treatementStep AND a.appointmentdate > current_timestamp AND a.deleteflag = false", AppointmentDTO.class);
 		TypedQuery<AppointmentAlertDTO> alertQuery = em.createQuery("SELECT a FROM AppointmentAlertDTO a WHERE a.alertDetail = :alertDetail", AppointmentAlertDTO.class);
+		Date now = new Date();
+		long curTime = now.getTime();
 		try {
-			appointmentQuery.setParameter("treatementStep", APPOINTMENT_STEP_TREATMENT_DECISION);
+			appointmentQuery.setParameter("treatementStep", APPOINTMENT_STEP_TREATMENT_DECISION);			
 			alertQuery.setParameter("alertDetail", AR_TREATMENT_DECISION_ONE_DAY_BEFORE);
 			appointments = appointmentQuery.getResultList();
 			sentAlerts = alertQuery.getResultList();
@@ -129,22 +139,27 @@ public class PatientAlert {
 			e.printStackTrace();
 		}
 		for (AppointmentDTO appointment : appointments) {
-			boolean mailAlreadySent = false;
-			for (AppointmentAlertDTO alert: sentAlerts) {
-				if (alert.getAppointmentId().intValue() == appointment.getId()) {
-					mailAlreadySent = true;
-					break;
+			Date appointmentDate = appointment.getAppointmentdate();
+			long minTime = appointmentDate.getTime() - ONE_DAY;
+			long maxTime = appointmentDate.getTime() - (12 * ONE_HOUR);
+			if (curTime >= minTime && curTime <= maxTime ) {
+				boolean mailAlreadySent = false;
+				for (AppointmentAlertDTO alert: sentAlerts) {
+					if (alert.getAppointmentId().intValue() == appointment.getId()) {
+						mailAlreadySent = true;
+						break;
+					}
 				}
-			}
-			if (!mailAlreadySent) {
-				String userId = String.valueOf(appointment.getPatientid().getId());
-				UserDetailsDTO userDetails = UserDAO.getDetailsById(userId);
-				String email = userDetails.getUser().getEmail();
-				String firstName = userDetails.getFirstName();
-				String appointmentTime = appointment.getAppointmenttime();
-				boolean success = emailAppointmentReminder_oneDayBefore(email, firstName, appointmentTime);
-				if (success) {
-					logEmailAppointmentReminder(appointment.getId(), EMAIL, AR_TREATMENT_DECISION_ONE_DAY_BEFORE, new Date());
+				if (!mailAlreadySent) {
+					String userId = String.valueOf(appointment.getPatientid().getId());
+					UserDetailsDTO userDetails = UserDAO.getDetailsById(userId);
+					String email = userDetails.getUser().getEmail();
+					String firstName = userDetails.getFirstName();
+					String appointmentTime = appointment.getAppointmenttime();
+					boolean success = emailAppointmentReminder_oneDayBefore(email, firstName, appointmentTime);
+					if (success) {
+						logEmailAppointmentReminder(appointment.getId(), EMAIL, AR_TREATMENT_DECISION_ONE_DAY_BEFORE, new Date());
+					}
 				}
 			}
 		}
@@ -154,8 +169,10 @@ public class PatientAlert {
 		EntityManager em = JPAUtil.getEntityManager();
 		List<AppointmentDTO> appointments = new ArrayList<AppointmentDTO>();
 		List<AppointmentAlertDTO> sentAlerts = new ArrayList<AppointmentAlertDTO>();
-		TypedQuery<AppointmentDTO> appointmentQuery = em.createQuery("SELECT a FROM AppointmentDTO a WHERE a.treatementStep = :treatementStep AND current_timestamp between (a.appointmentdate - interval '24 hours') AND (a.appointmentdate - interval '12 hours') AND a.deleteflag = false", AppointmentDTO.class);
+		TypedQuery<AppointmentDTO> appointmentQuery = em.createQuery("SELECT a FROM AppointmentDTO a WHERE a.treatementStep = :treatementStep AND a.appointmentdate > current_timestamp AND a.deleteflag = false", AppointmentDTO.class);
 		TypedQuery<AppointmentAlertDTO> alertQuery = em.createQuery("SELECT a FROM AppointmentAlertDTO a WHERE a.alertDetail = :alertDetail", AppointmentAlertDTO.class);
+		Date now = new Date();
+		long curTime = now.getTime();
 		try {
 			appointmentQuery.setParameter("treatementStep", APPOINTMENT_STEP_SIMULATION);
 			alertQuery.setParameter("alertDetail", AR_SIMULATION_ONE_DAY_BEFORE);
@@ -165,22 +182,27 @@ public class PatientAlert {
 			e.printStackTrace();
 		}
 		for (AppointmentDTO appointment : appointments) {
-			boolean mailAlreadySent = false;
-			for (AppointmentAlertDTO alert: sentAlerts) {
-				if (alert.getAppointmentId().intValue() == appointment.getId()) {
-					mailAlreadySent = true;
-					break;
+			Date appointmentDate = appointment.getAppointmentdate();
+			long minTime = appointmentDate.getTime() - ONE_DAY;
+			long maxTime = appointmentDate.getTime() - (12 * ONE_HOUR);
+			if (curTime >= minTime && curTime <= maxTime ) {
+				boolean mailAlreadySent = false;
+				for (AppointmentAlertDTO alert: sentAlerts) {
+					if (alert.getAppointmentId().intValue() == appointment.getId()) {
+						mailAlreadySent = true;
+						break;
+					}
 				}
-			}
-			if (!mailAlreadySent) {
-				String userId = String.valueOf(appointment.getPatientid().getId());
-				UserDetailsDTO userDetails = UserDAO.getDetailsById(userId);
-				String email = userDetails.getUser().getEmail();
-				String firstName = userDetails.getFirstName();
-				String appointmentTime = appointment.getAppointmenttime();
-				boolean success = emailAppointmentReminder_oneDayBefore(email, firstName, appointmentTime);
-				if (success) {
-					logEmailAppointmentReminder(appointment.getId(), EMAIL, AR_SIMULATION_ONE_DAY_BEFORE, new Date());
+				if (!mailAlreadySent) {
+					String userId = String.valueOf(appointment.getPatientid().getId());
+					UserDetailsDTO userDetails = UserDAO.getDetailsById(userId);
+					String email = userDetails.getUser().getEmail();
+					String firstName = userDetails.getFirstName();
+					String appointmentTime = appointment.getAppointmenttime();
+					boolean success = emailAppointmentReminder_oneDayBefore(email, firstName, appointmentTime);
+					if (success) {
+						logEmailAppointmentReminder(appointment.getId(), EMAIL, AR_SIMULATION_ONE_DAY_BEFORE, new Date());
+					}
 				}
 			}
 		}
@@ -190,8 +212,10 @@ public class PatientAlert {
 		EntityManager em = JPAUtil.getEntityManager();
 		List<AppointmentDTO> appointments = new ArrayList<AppointmentDTO>();
 		List<AppointmentAlertDTO> sentAlerts = new ArrayList<AppointmentAlertDTO>();
-		TypedQuery<AppointmentDTO> appointmentQuery = em.createQuery("SELECT a FROM AppointmentDTO a WHERE a.treatementStep = :treatementStep AND current_timestamp between (a.appointmentdate - interval '24 hours') AND (a.appointmentdate - interval '12 hours') AND a.deleteflag = false", AppointmentDTO.class);
+		TypedQuery<AppointmentDTO> appointmentQuery = em.createQuery("SELECT a FROM AppointmentDTO a WHERE a.treatementStep = :treatementStep AND a.appointmentdate > current_timestamp AND a.deleteflag = false", AppointmentDTO.class);
 		TypedQuery<AppointmentAlertDTO> alertQuery = em.createQuery("SELECT a FROM AppointmentAlertDTO a WHERE a.alertDetail = :alertDetail", AppointmentAlertDTO.class);
+		Date now = new Date();
+		long curTime = now.getTime();
 		try {
 			appointmentQuery.setParameter("treatementStep", APPOINTMENT_STEP_DURING_TREATMENTS);
 			alertQuery.setParameter("alertDetail", AR_DURING_TREATMENTS_ONE_DAY_BEFORE);
@@ -201,22 +225,27 @@ public class PatientAlert {
 			e.printStackTrace();
 		}
 		for (AppointmentDTO appointment : appointments) {
-			boolean mailAlreadySent = false;
-			for (AppointmentAlertDTO alert: sentAlerts) {
-				if (alert.getAppointmentId().intValue() == appointment.getId()) {
-					mailAlreadySent = true;
-					break;
+			Date appointmentDate = appointment.getAppointmentdate();
+			long minTime = appointmentDate.getTime() - ONE_DAY;
+			long maxTime = appointmentDate.getTime() - (12 * ONE_HOUR);
+			if (curTime >= minTime && curTime <= maxTime ) {
+				boolean mailAlreadySent = false;
+				for (AppointmentAlertDTO alert: sentAlerts) {
+					if (alert.getAppointmentId().intValue() == appointment.getId()) {
+						mailAlreadySent = true;
+						break;
+					}
 				}
-			}
-			if (!mailAlreadySent) {
-				String userId = String.valueOf(appointment.getPatientid().getId());
-				UserDetailsDTO userDetails = UserDAO.getDetailsById(userId);
-				String email = userDetails.getUser().getEmail();
-				String firstName = userDetails.getFirstName();
-				String appointmentTime = appointment.getAppointmenttime();
-				boolean success = emailAppointmentReminder_oneDayBefore(email, firstName, appointmentTime);
-				if (success) {
-					logEmailAppointmentReminder(appointment.getId(), EMAIL, AR_DURING_TREATMENTS_ONE_DAY_BEFORE, new Date());
+				if (!mailAlreadySent) {
+					String userId = String.valueOf(appointment.getPatientid().getId());
+					UserDetailsDTO userDetails = UserDAO.getDetailsById(userId);
+					String email = userDetails.getUser().getEmail();
+					String firstName = userDetails.getFirstName();
+					String appointmentTime = appointment.getAppointmenttime();
+					boolean success = emailAppointmentReminder_oneDayBefore(email, firstName, appointmentTime);
+					if (success) {
+						logEmailAppointmentReminder(appointment.getId(), EMAIL, AR_DURING_TREATMENTS_ONE_DAY_BEFORE, new Date());
+					}
 				}
 			}
 		}
@@ -226,8 +255,10 @@ public class PatientAlert {
 		EntityManager em = JPAUtil.getEntityManager();
 		List<AppointmentDTO> appointments = new ArrayList<AppointmentDTO>();
 		List<AppointmentAlertDTO> sentAlerts = new ArrayList<AppointmentAlertDTO>();
-		TypedQuery<AppointmentDTO> appointmentQuery = em.createQuery("SELECT a FROM AppointmentDTO a WHERE a.treatementStep = :treatementStep AND current_timestamp between (a.appointmentdate - interval '24 hours') AND (a.appointmentdate - interval '12 hours') AND a.deleteflag = false", AppointmentDTO.class);
+		TypedQuery<AppointmentDTO> appointmentQuery = em.createQuery("SELECT a FROM AppointmentDTO a WHERE a.treatementStep = :treatementStep AND a.appointmentdate > current_timestamp AND a.deleteflag = false", AppointmentDTO.class);
 		TypedQuery<AppointmentAlertDTO> alertQuery = em.createQuery("SELECT a FROM AppointmentAlertDTO a WHERE a.alertDetail = :alertDetail", AppointmentAlertDTO.class);
+		Date now = new Date();
+		long curTime = now.getTime();
 		try {
 			appointmentQuery.setParameter("treatementStep", APPOINTMENT_STEP_AFTER_TREATMENTS);
 			alertQuery.setParameter("alertDetail", AR_AFTER_TREATMENTS_ONE_DAY_BEFORE);
@@ -237,22 +268,27 @@ public class PatientAlert {
 			e.printStackTrace();
 		}
 		for (AppointmentDTO appointment : appointments) {
-			boolean mailAlreadySent = false;
-			for (AppointmentAlertDTO alert: sentAlerts) {
-				if (alert.getAppointmentId().intValue() == appointment.getId()) {
-					mailAlreadySent = true;
-					break;
+			Date appointmentDate = appointment.getAppointmentdate();
+			long minTime = appointmentDate.getTime() - ONE_DAY;
+			long maxTime = appointmentDate.getTime() - (12 * ONE_HOUR);
+			if (curTime >= minTime && curTime <= maxTime ) {
+				boolean mailAlreadySent = false;
+				for (AppointmentAlertDTO alert: sentAlerts) {
+					if (alert.getAppointmentId().intValue() == appointment.getId()) {
+						mailAlreadySent = true;
+						break;
+					}
 				}
-			}
-			if (!mailAlreadySent) {
-				String userId = String.valueOf(appointment.getPatientid().getId());
-				UserDetailsDTO userDetails = UserDAO.getDetailsById(userId);
-				String email = userDetails.getUser().getEmail();
-				String firstName = userDetails.getFirstName();
-				String appointmentTime = appointment.getAppointmenttime();
-				boolean success = emailAppointmentReminder_oneDayBefore(email, firstName, appointmentTime);
-				if (success) {
-					logEmailAppointmentReminder(appointment.getId(), EMAIL, AR_AFTER_TREATMENTS_ONE_DAY_BEFORE, new Date());
+				if (!mailAlreadySent) {
+					String userId = String.valueOf(appointment.getPatientid().getId());
+					UserDetailsDTO userDetails = UserDAO.getDetailsById(userId);
+					String email = userDetails.getUser().getEmail();
+					String firstName = userDetails.getFirstName();
+					String appointmentTime = appointment.getAppointmenttime();
+					boolean success = emailAppointmentReminder_oneDayBefore(email, firstName, appointmentTime);
+					if (success) {
+						logEmailAppointmentReminder(appointment.getId(), EMAIL, AR_AFTER_TREATMENTS_ONE_DAY_BEFORE, new Date());
+					}
 				}
 			}
 		}
@@ -261,9 +297,11 @@ public class PatientAlert {
 	public static void afterTreatmentBeforeOneWeekAlerts() {
 		EntityManager em = JPAUtil.getEntityManager();
 		List<AppointmentDTO> appointments = new ArrayList<AppointmentDTO>();
-		List<AppointmentAlertDTO> sentAlerts = new ArrayList<AppointmentAlertDTO>();
-		TypedQuery<AppointmentDTO> appointmentQuery = em.createQuery("SELECT a FROM AppointmentDTO a WHERE a.treatementStep = :treatementStep AND current_timestamp between (a.appointmentdate - interval '7 day') AND (a.appointmentdate - interval '6 day') AND a.deleteflag = false", AppointmentDTO.class);
+		List<AppointmentAlertDTO> sentAlerts = new ArrayList<AppointmentAlertDTO>();		
+		TypedQuery<AppointmentDTO> appointmentQuery = em.createQuery("SELECT a FROM AppointmentDTO a WHERE a.treatementStep = :treatementStep AND a.appointmentdate > current_timestamp AND a.deleteflag = false", AppointmentDTO.class);
 		TypedQuery<AppointmentAlertDTO> alertQuery = em.createQuery("SELECT a FROM AppointmentAlertDTO a WHERE a.alertDetail = :alertDetail", AppointmentAlertDTO.class);
+		Date now = new Date();
+		long curTime = now.getTime();
 		try {
 			appointmentQuery.setParameter("treatementStep", APPOINTMENT_STEP_AFTER_TREATMENTS);
 			alertQuery.setParameter("alertDetail", AR_AFTER_TREATMENTS_ONE_WEEK_BEFORE);
@@ -273,22 +311,27 @@ public class PatientAlert {
 			e.printStackTrace();
 		}
 		for (AppointmentDTO appointment : appointments) {
-			boolean mailAlreadySent = false;
-			for (AppointmentAlertDTO alert: sentAlerts) {
-				if (alert.getAppointmentId().intValue() == appointment.getId()) {
-					mailAlreadySent = true;
-					break;
+			Date appointmentDate = appointment.getAppointmentdate();
+			long minTime = appointmentDate.getTime() - (7 * ONE_DAY);
+			long maxTime = appointmentDate.getTime() - (6 * ONE_DAY);
+			if (curTime >= minTime && curTime <= maxTime ) {
+				boolean mailAlreadySent = false;
+				for (AppointmentAlertDTO alert: sentAlerts) {
+					if (alert.getAppointmentId().intValue() == appointment.getId()) {
+						mailAlreadySent = true;
+						break;
+					}
 				}
-			}
-			if (!mailAlreadySent) {
-				String userId = String.valueOf(appointment.getPatientid().getId());
-				UserDetailsDTO userDetails = UserDAO.getDetailsById(userId);
-				String email = userDetails.getUser().getEmail();
-				String firstName = userDetails.getFirstName();
-				String appointmentTime = appointment.getAppointmenttime();
-				boolean success = emailAppointmentReminder_oneDayBefore(email, firstName, appointmentTime);
-				if (success) {
-					logEmailAppointmentReminder(appointment.getId(), EMAIL, AR_AFTER_TREATMENTS_ONE_WEEK_BEFORE, new Date());
+				if (!mailAlreadySent) {
+					String userId = String.valueOf(appointment.getPatientid().getId());
+					UserDetailsDTO userDetails = UserDAO.getDetailsById(userId);
+					String email = userDetails.getUser().getEmail();
+					String firstName = userDetails.getFirstName();
+					String appointmentTime = appointment.getAppointmenttime();
+					boolean success = emailAppointmentReminder_oneDayBefore(email, firstName, appointmentTime);
+					if (success) {
+						logEmailAppointmentReminder(appointment.getId(), EMAIL, AR_AFTER_TREATMENTS_ONE_WEEK_BEFORE, new Date());
+					}
 				}
 			}
 		}
