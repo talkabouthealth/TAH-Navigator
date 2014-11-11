@@ -30,94 +30,91 @@
 				<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
 			</div>
 		</div>
+		
+		<div class="form-group form-group-sm">
+			<label class="col-xs-3 control-label" for="rt_schedule">&nbsp;</label>
+			<div class="col-xs-8 form-group input-group">
+				<input  id="appointmentBtn" type="checkbox"/>Add appointment
+			</div>
+		</div>
 
-		<div class="form-group form-group-sm">
-			<label class="col-xs-3 control-label" for="rt_schedule">Time</label>
-			<div class="col-xs-8 form-group input-group">
-				<input type="text" class="form-control timeField nomargin" name="time" required="required"> 
-				<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+		<div id="appointmentBlock" style="display:none;width:100%;float: left;">
+			<div class="form-group form-group-sm">
+				<label class="col-xs-3 control-label" for="rt_schedule">Time</label>
+				<div class="col-xs-8 form-group input-group">
+					<input type="text" class="form-control timeField nomargin" name="time"><!--  required="required" --> 
+					<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+				</div>
 			</div>
-		</div>
-		<div class="form-group form-group-sm">
-			<label class="col-xs-3 control-label" for="rt_schedule">Date</label>
-			<div class="col-xs-8 form-group input-group">
-				<input type="text" class="form-control nomargin" id="hasDatepicker" name="schDate" required="required">
-				<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+			<div class="form-group form-group-sm">
+				<label class="col-xs-3 control-label" for="rt_schedule">Date</label>
+				<div class="col-xs-8 form-group input-group">
+					<input type="text" class="form-control nomargin" id="hasDatepicker" name="schDate"><!--  required="required" --> 
+					<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+				</div>
 			</div>
-		</div>
-		<div class="form-group form-group-sm">
-			<label class="col-xs-3 control-label" for="rt_schedule">Physician/Nurse</label>
-			<div class="col-xs-8 form-group input-group">
-			<input type="text" id="appointment_verified_members" name="membername" class="form-control nomargin" placeholder="i.e. Ryan Belen" required="required">
-			*{
-				#{if drList != null}
-					<select class="memberselect" name="memberid">
-					#{list drList, as:'seq'}
-						<option value="${seq.id}"> ${seq.name.usreNameNew(seq.id)} </option>
-					#{/list}
+			<div class="form-group form-group-sm">
+				<label class="col-xs-3 control-label" for="rt_schedule">Physician/Nurse</label>
+				<div class="col-xs-8 form-group input-group">
+				<input type="text" id="appointment_verified_members" name="membername" class="form-control nomargin" placeholder="i.e. Ryan Belen"><!--  required="required" --> 
+				</div>
+			</div>
+			
+			<div class="form-group form-group-sm">
+				<label class="col-xs-3 control-label" for="rt_schedule">Purpose of Appointment</label>
+				<div class="col-xs-8 form-group input-group">
+					<input type="text" id="appointment_purpose"  name="purposeText" class="form-control nomargin appointment_purpose"  value="1st Appointment With Radiation Oncologist" ><!--  required="required" -->  
+					<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+				</div>
+			</div>
+			<div class="form-group form-group-sm" id="treatment_step_process">
+				<label class="col-xs-3 control-label" for="rt_schedule">Step in the Treatment Process</label>
+				<div class="col-xs-8 form-group input-group">
+					<select class="form-control nomargin" id="ts_process">
+						<option></option>
+						<option>Prepare for First Appointment</option>
+						<option>Make Treatment Decision</option>
+						<option>Prepare for First Treatment</option>
+						<option>Ongoing Treatments</option>
+						<option>Continue Follow-Ups</option>    
 					</select>
-				#{/if}
-				#{else} No expert assigned #{/else}
-				}*
+				</div>
 			</div>
-		</div>
-		
-		<div class="form-group form-group-sm">
-			<label class="col-xs-3 control-label" for="rt_schedule">Purpose of Appointment</label>
-			<div class="col-xs-8 form-group input-group">
-				<input type="text" id="appointment_purpose"  name="purposeText" class="form-control nomargin appointment_purpose"  value="1st Appointment With Radiation Oncologist" required="required"> 
-				<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+			<div class="form-group form-group-sm">
+				<label class="col-xs-3 control-label" for="rt_schedule">Center</label>
+				<div class="col-xs-8 form-group input-group">
+					<input type="text" class="form-control nomargin" value="Moffitt Cancer Center TVRH" name="center"><!--  required="required" -->  
+					<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+				</div>
 			</div>
-		</div>
-		<div class="form-group form-group-sm" id="treatment_step_process">
-			<label class="col-xs-3 control-label" for="rt_schedule">Step in the Treatment Process</label>
-			<div class="col-xs-8 form-group input-group">
-				<select class="form-control nomargin" id="ts_process">
-					<option></option>
-					<option>Prepare for First Appointment</option>
-					<option>Make Treatment Decision</option>
-					<option>Prepare for First Treatment</option>
-					<option>Ongoing Treatments</option>
-					<option>Continue Follow-Ups</option>    
-				</select>
+			
+			<div class="form-group form-group-sm">
+				<label class="col-xs-3 control-label" for="rt_schedule">Address1</label>
+				<div class="col-xs-8 form-group input-group">
+					<input type="text" class="form-control nomargin" value="1400 US Highway 441, Suite 540" name="address1"><!--  required="required" -->  
+					<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+				</div>
 			</div>
-		</div>
-		
-		
-		<div class="form-group form-group-sm">
-			<label class="col-xs-3 control-label" for="rt_schedule">Center</label>
-			<div class="col-xs-8 form-group input-group">
-				<input type="text" class="form-control nomargin" value="Moffitt Cancer Center TVRH" name="center" required="required"> 
-				<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+			<div class="form-group form-group-sm">
+				<label class="col-xs-3 control-label" for="rt_schedule">City</label>
+				<div class="col-xs-8 form-group input-group">
+					<input type="text" class="form-control nomargin" value="The Villages" name="city"><!--  required="required" --> 
+					<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+				</div>
 			</div>
-		</div>
-		
-		<div class="form-group form-group-sm">
-			<label class="col-xs-3 control-label" for="rt_schedule">Address1</label>
-			<div class="col-xs-8 form-group input-group">
-				<input type="text" class="form-control nomargin" value="1400 US Highway 441, Suite 540" name="address1" required="required"> 
-				<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+			<div class="form-group form-group-sm">
+				<label class="col-xs-3 control-label" for="rt_schedule">State</label>
+				<div class="col-xs-8 form-group input-group">
+					<input type="text" class="form-control nomargin" value="FL" name="state"><!--  required="required" -->  
+					<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+				</div>
 			</div>
-		</div>
-		<div class="form-group form-group-sm">
-			<label class="col-xs-3 control-label" for="rt_schedule">City</label>
-			<div class="col-xs-8 form-group input-group">
-				<input type="text" class="form-control nomargin" value="The Villages" name="city" required="required">
-				<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
-			</div>
-		</div>
-		<div class="form-group form-group-sm">
-			<label class="col-xs-3 control-label" for="rt_schedule">State</label>
-			<div class="col-xs-8 form-group input-group">
-				<input type="text" class="form-control nomargin" value="FL" name="state" required="required"> 
-				<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
-			</div>
-		</div>
-		<div class="form-group form-group-sm">
-			<label class="col-xs-3 control-label" for="rt_schedule">Zip Code</label>
-			<div class="col-xs-8 form-group input-group">
-				<input type="text" class="form-control nomargin" value="32159" name="zip" required="required"> 
-				<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+			<div class="form-group form-group-sm">
+				<label class="col-xs-3 control-label" for="rt_schedule">Zip Code</label>
+				<div class="col-xs-8 form-group input-group">
+					<input type="text" class="form-control nomargin" value="32159" name="zip"><!--  required="required" -->  
+					<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -149,70 +146,90 @@
 </div>
 #{/form}
 <script>
-<!--
+
 var timeArray = ["8 AM","8.15 AM","8.30 AM","8.45 AM","9 AM","9.15 AM","9.30 AM","9.45 AM","10 AM","10.15 AM","10.30 AM","10.45 AM","11 AM","11.15 AM","11.30 AM","11.45 AM","12 noon","12.15 PM","12.30 PM",
  				"12.45 PM","1 PM","1.15 PM","1.30 PM","1.45 PM","2 PM","2.15 PM","2.30 PM","2.45 PM","3 PM","3.15 PM","3.30 PM","3.45 PM","4 PM","5.15 PM","5.30 PM","5.45 PM","6 PM"];
 $(document).ready(function() {
+	if($("#appointmentBtn").prop('checked')==true) {
+		$("#appointmentBlock").show();	
+	} else {
+		$("#appointmentBlock").hide();
+	}
 	
-	
+	$("#appointmentBtn").click(function(){
+		if($("#appointmentBtn").prop('checked')==true) {
+			$("#appointmentBlock").show();	
+		} else {
+			$("#appointmentBlock").hide();
+		}
+	});
 	LoadSelect2Script(selectExpert);
     $('#treatment_step_process').hide();
 	$('#appointmentForm').submit(function(event) {
 		event.preventDefault();
-		var postData = $("#appointmentForm").serializeArray();
-        var $avm = $('#appointment_verified_members');
-        var $ap = $('#appointment_purpose');
-        var membername = $avm.val();
-        var members = $avm.data("careMembers");
-        var verified = false;
-        for (var id in members) {
-            if(members[id] == membername) {
-                $avm.attr("careMemberId", id); 
-                verified = true;
-                break;
-            }
-        }
-        if (!verified) {
-            $avm.removeAttr("careMemberId");
-        }        
-        postData.push({name: "memberid", value: $avm.attr("careMemberId") || 0});
-        
-        var purposes = $ap.data("purposes");
-        var purpose_text = $.trim($ap.val());
-        var definedPurpose = false;
-        var purpose = 0;
-	     for (var i = 0; i < purposes.length; i++) {
-	            if (purposes[i].name == purpose_text) {
-	                definedPurpose = true;
-	                purpose = purposes[i].id;
-	                break;
-	            }
-	     }
-        if (!definedPurpose) {
-            postData.push({name: "treatmentProcessStep", value: $("#ts_process option:selected").text()});    
-        }
-		postData.push({name: "purpose", value: purpose});
-        
-		var formURL = $("#appointmentForm").attr("action");
-		$.post(formURL, postData, function( data ) {
-			var errorText = '';
-			if(data.status == '200') {
-// 				errorText = '<li class="list-group-item list-group-item-success">Invitation successfully sent to '+ $("#appointmentForm input[name='email']").val()+'</li>';
-// 				alert('Invitation successfully sent to '+ $("#appointmentForm input[name='email']").val());
-				$("#alertEmail").html($("#appointmentForm input[name='email']").val());
-				$('#welcome').appendTo("body").modal();
-				$('#errorUL').empty();
-			} else if(data.status == '100') {
-				errorText = '<li class="list-group-item list-group-item-danger">Internal server error. Please try again.</li>';
-			} else if(data.status == '300') {
-				errorText = '<li class="list-group-item list-group-item-danger">Email already registred, Please try again.</li>';
+		var isValid = true;
+		if($("#appointmentBtn").prop('checked') == true) {
+			isValid = validateOtherData();
+		}
+		
+		if(isValid) {
+			var postData = $("#appointmentForm").serializeArray();
+			if($("#appointmentBtn").prop('checked') == true) {
+		        var $avm = $('#appointment_verified_members');
+		        var $ap = $('#appointment_purpose');
+		        var membername = $avm.val();
+		        var members = $avm.data("careMembers");
+		        var verified = false;
+		        for (var id in members) {
+		            if(members[id] == membername) {
+		                $avm.attr("careMemberId", id); 
+		                verified = true;
+		                break;
+		            }
+		        }
+		        if (!verified) {
+		            $avm.removeAttr("careMemberId");
+		        }        
+		        postData.push({name: "memberid", value: $avm.attr("careMemberId") || 0});
+		        
+		        var purposes = $ap.data("purposes");
+		        var purpose_text = $.trim($ap.val());
+		        var definedPurpose = false;
+		        var purpose = 0;
+			     for (var i = 0; i < purposes.length; i++) {
+			            if (purposes[i].name == purpose_text) {
+			                definedPurpose = true;
+			                purpose = purposes[i].id;
+			                break;
+			            }
+			     }
+		        if (!definedPurpose) {
+		            postData.push({name: "treatmentProcessStep", value: $("#ts_process option:selected").text()});    
+		        }
+				postData.push({name: "purpose", value: purpose});
+				postData.push({name: "withapp", value: 1});
 			} else {
-				errorText = '<li class="list-group-item list-group-item-danger">This account has been disabled. Please contact admin for further information or reactivate this account.</li>';
+				postData.push({name: "withapp", value: 0});
 			}
-			$("#errorUL").empty();
-			$("#errorUL").html(errorText);
-// 			setTimeout(function(){$('#errorUL').empty();}, 5000);
-		}, "json");
+	
+			var formURL = $("#appointmentForm").attr("action");
+			$.post(formURL, postData, function( data ) {
+				var errorText = '';
+				if(data.status == '200') {
+					$("#alertEmail").html($("#appointmentForm input[name='email']").val());
+					$('#welcome').appendTo("body").modal();
+					$('#errorUL').empty();
+				} else if(data.status == '100') {
+					errorText = '<li class="list-group-item list-group-item-danger">Internal server error. Please try again.</li>';
+				} else if(data.status == '300') {
+					errorText = '<li class="list-group-item list-group-item-danger">Email already registred, Please try again.</li>';
+				} else {
+					errorText = '<li class="list-group-item list-group-item-danger">This account has been disabled. Please contact admin for further information or reactivate this account.</li>';
+				}
+				$("#errorUL").empty();
+				$("#errorUL").html(errorText);
+			}, "json");
+		}
 	});
 
 	$('#welcome button.cont').click(function(e){
@@ -233,11 +250,60 @@ $(document).ready(function() {
 	
 	$('#appointmentForm').validator();
 });
+
+validateOtherData = function() {
+	var valid = true;
+	$("#appointmentForm input[name='time']").parent().removeClass("has-error");
+	$("#appointmentForm input[name='schDate']").parent().removeClass("has-error");
+	$("#appointmentForm input[name='membername']").parent().removeClass("has-error");
+	$("#appointmentForm input[name='purposeText']").parent().removeClass("has-error");
+	$("#appointmentForm input[name='center']").parent().removeClass("has-error");
+	$("#appointmentForm input[name='address1']").parent().removeClass("has-error");
+	$("#appointmentForm input[name='city']").parent().removeClass("has-error");
+	$("#appointmentForm input[name='state']").parent().removeClass("has-error");
+	$("#appointmentForm input[name='zip']").parent().removeClass("has-error");
+
+	if($("#appointmentForm input[name='time']").val().trim() == '' ) {
+		valid = false;
+		$("#appointmentForm input[name='time']").parent().addClass("has-error");
+	}
+	if($("#appointmentForm input[name='schDate']").val().trim() == '') {
+		valid = false;
+		$("#appointmentForm input[name='schDate']").parent().addClass("has-error");
+	}
+	if($("#appointmentForm input[name='membername']").val().trim() == '') {
+		valid = false;
+		$("#appointmentForm input[name='membername']").parent().addClass("has-error");
+	}
+	if($("#appointmentForm input[name='purposeText']").val().trim() == '') {
+		valid = false;
+		$("#appointmentForm input[name='purposeText']").parent().addClass("has-error");		
+	}
+	if($("#appointmentForm input[name='center']").val().trim() == '') {
+		valid = false;
+		$("#appointmentForm input[name='center']").parent().addClass("has-error");
+	}
+	if($("#appointmentForm input[name='address1']").val().trim() == '') {
+		valid = false;
+		$("#appointmentForm input[name='address1']").parent().addClass("has-error");
+	}
+	if($("#appointmentForm input[name='city']").val().trim() == '') {
+		valid = false;
+		$("#appointmentForm input[name='city']").parent().addClass("has-error");
+	}
+	if($("#appointmentForm input[name='state']").val().trim() == '') {
+		valid = false;
+		$("#appointmentForm input[name='state']").parent().addClass("has-error");
+	}
+	if($("#appointmentForm input[name='zip']").val().trim() == '') {
+		valid = false;
+		$("#appointmentForm input[name='zip']").parent().addClass("has-error");
+	}
+}
 selectExpert = function() {
-// 	$('.memberselect').select2();
  	var $avm = $('#appointment_verified_members');
  	 var $ap = $('#appointment_purpose');
-	$("input.timeField").autocomplete({source: timeArray,minLenght:1 });
+	$("input.timeField").autocomplete({source: timeArray,minLenght:0 });
 	$('#hasDatepicker').datepicker({defaultDate: +1 ,minDate:"+1d"});
 	var initFlag = $avm.attr("init_flag");
 	 if (!initFlag) {
@@ -294,5 +360,5 @@ selectExpert = function() {
 	}, "json");
 	 }
 }
--->
+<!-- -->
 </script>

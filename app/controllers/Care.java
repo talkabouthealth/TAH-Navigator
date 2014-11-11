@@ -159,12 +159,11 @@ public class Care extends Controller {
 		UserBean user = CommonUtil.loadCachedUser(session);
 		System.out.println(session.getId());
 		ExpertDetailDTO expertDetail = ProfileDAO.getExpertByField("id", user.getId());
-		List<UserDTO> drList = UserDAO.getAll("5","");
-        render(user,expertDetail,drList);
+        render(user,expertDetail);
 	}
 	
 	public static void sendInvitation(String email,String firstname,String lastname,String purposeText, String treatmentProcessStep, String time,String schDate,String center,int memberid, 
-			String address1,String city,String state,String zip,String membername,String purpose) {
+			String address1,String city,String state,String zip,String membername,String purpose,int withapp) {
 		 validation.clear();
 		System.out.println("email: "+ email);
 		System.out.println("firstname: "+ firstname);
@@ -180,9 +179,9 @@ public class Care extends Controller {
 		System.out.println("city: "+ city);
 		System.out.println("state: "+ state);
 		System.out.println("zip: "+ zip);
-	   	 validateMember(email);
-	   	 System.out.println(validation.hasErrors());
-	   	 if (validation.hasErrors()) {
+		validateMember(email);
+		System.out.println(validation.hasErrors());
+	   	if (validation.hasErrors()) {
 	            params.flash();
 	            validation.keep();
 	            if(validation.errorsMap().get("member.email.inactive") != null) {
@@ -194,68 +193,54 @@ public class Care extends Controller {
 					obj.add("status", new JsonPrimitive("300"));
 					renderJSON(obj);
 	            }
-	            
-	   	 } 
-		
+	   	} 
 		try {
-			AddressDTO address = new AddressDTO();
-			address.setCity(city);
-			address.setLine1(address1);
-			address.setState(state);
-			address.setZip(zip);
-
-			BaseDAO.save(address);
-
 			InvitedDTO app = new InvitedDTO();
-			app.setEmail(email);
-			app.setFirstname(firstname);
-			app.setLastname(lastname);
-			
-			if (Integer.valueOf(purpose) > 0) {
-				app.setPurpose(purpose);
-				Integer appIdInt = new Integer(purpose);
-				app.setAppointmentid(AppointmentMasterDAO.getAppointmentByField("id", appIdInt));
-			} else {
-				app.setTreatementStep(treatmentProcessStep);
+			if(withapp == 1) {
+				AddressDTO address = new AddressDTO();
+				address.setCity(city);
+				address.setLine1(address1);
+				address.setState(state);
+				address.setZip(zip);
+				BaseDAO.save(address);
+				app.setAddressid(address);
+				
+				if (Integer.valueOf(purpose) > 0) {
+					app.setPurpose(purpose);
+					Integer appIdInt = new Integer(purpose);
+					app.setAppointmentid(AppointmentMasterDAO.getAppointmentByField("id", appIdInt));
+				} else {
+					app.setTreatementStep(treatmentProcessStep);
+				}
+	
+				app.setPurposeText(purposeText);
+				app.setAppointmenttime(time);
+
+				Date appointmentDate = new SimpleDateFormat("MM/dd/yyyy").parse(schDate);
+				app.setAppointmentdate(appointmentDate);
+				app.setAppointmentcenter(center);
+				if (memberid > 0) {
+					UserDTO caremember = UserDAO.getUserBasicByField("id", memberid);
+					app.setCaremember(caremember);
+				}
+				app.setCareMemberName(membername);
 			}
-
-			app.setPurposeText(purposeText);
-
-//			if(StringUtils.isNotBlank(treatmentProcessStep))
-//				app.setTreatementStep(treatmentProcessStep);
-
-			app.setAppointmenttime(time);
-
-			Date appointmentDate = new SimpleDateFormat("MM/dd/yyyy").parse(schDate);
-			app.setAppointmentdate(appointmentDate);
-
-			app.setAppointmentcenter(center);
-
-			if (memberid > 0) {
-				UserDTO caremember = UserDAO.getUserBasicByField("id", memberid);
-				app.setCaremember(caremember);
-			}
-			app.setCareMemberName(membername);
 
 			UserBean user = CommonUtil.loadCachedUser(session);
 			UserDTO addedby = UserDAO.getUserBasicByField("id",user.getId());
 			app.setAddedby(addedby);
-
-			app.setAddressid(address);
-
 			app.setActivateOnSignup(false);
 			app.setInvitationSent(false);
-
 			app.setAddedon(new Date());
-
+			app.setEmail(email);
+			app.setFirstname(firstname);
+			app.setLastname(lastname);
 			BaseDAO.save(app);
    		 	String url = "http://"+request.host;
-//   		 	Mail.invitation(firstname,lastname,email,app.getId(),url);
 
    		 	Map<String, Object> vars = new HashMap<String, Object>();
    		 	vars.put("username", firstname + " " + lastname);
    		 	vars.put("signupurl", url + "/invited-registration/"+app.getId());
-//   		 	EmailUtil.sendEmail(EmailUtil.MOFFITT_WELCOME,vars,"aawte.umesh@s5infotech.com");
    		 	EmailUtil.sendEmail(EmailUtil.MOFFITT_WELCOME,vars,email);
 
 		} catch(Exception e) {

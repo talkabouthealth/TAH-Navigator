@@ -355,7 +355,6 @@ public class Application extends Controller {
     }
     
     public static void registerinvited(@Valid SignUpMemberBean member) throws Throwable {
-//   	 validateMember(member);
    	 System.out.println(validation.hasErrors());
    	 
    	 
@@ -374,22 +373,6 @@ public class Application extends Controller {
 			} else {
 				Secure.authenticate(member.getEmail(), member.getPassword(), true);
 			}
-  	   		/*
-  	   		String hashed = CommonUtil.hashPassword(member.getPassword());
-  			if(userDto.getPassword().trim().equals(hashed.trim())) {
-  				if(!userDto.isIsverified() && userDto.getUserType() == 'p') {
-        			System.out.println("User is not verified");
-        			validation.addError("email", "secure.verify", "");
-        		} else if(!userDto.isActive()) {
-        			System.out.println("User is not verified");
-        			validation.addError("email.exists.inactive", "email.exists.inactive", "");
-        		} else {
-        			Secure.authenticate(member.getEmail(), member.getPassword(), true);
-        		}
-  			} else {
-  				validation.addError("password", "secure.error.password", "");
-  			}
-  	   	 */
   	   	 }
   	} else {
   		validation.addError("email", "secure.error.email", "");
@@ -416,32 +399,35 @@ public class Application extends Controller {
 		session.put("showdistress", "true");
 //    	intId = new Integer(member.getInvitationId());
 //    	invitationdto = InvitationDAO.getDetailsByField("id",intId);
-		AppointmentDTO app = new AppointmentDTO();
-		app.setAddedby(invitationdto.getAddedby());
-		app.setAddedon(invitationdto.getAddedon());
-		app.setAddressid(invitationdto.getAddressid());
-		app.setAppointmentcenter(invitationdto.getAppointmentcenter());
-		app.setAppointmentdate(invitationdto.getAppointmentdate());
-		app.setAppointmenttime(invitationdto.getAppointmenttime());
+		if(StringUtils.isNotBlank(invitationdto.getAppointmenttime())) {
+			AppointmentDTO app = new AppointmentDTO();
+			app.setAddedby(invitationdto.getAddedby());
+			app.setAddedon(invitationdto.getAddedon());
+			app.setAddressid(invitationdto.getAddressid());
+			app.setAppointmentcenter(invitationdto.getAppointmentcenter());
+			app.setAppointmentdate(invitationdto.getAppointmentdate());
+			app.setAppointmenttime(invitationdto.getAppointmenttime());
+			
+				app.setPurposeText(invitationdto.getPurposeText());
+				app.setTreatementStep(invitationdto.getTreatementStep());
+			app.setPatientid(detailDto.getUser());
+
+			if(invitationdto.getPurpose() != null) {
+				app.setPurpose(invitationdto.getPurpose());	
+			}
+
+			if(invitationdto.getAppointmentid() != null) {
+				app.setAppointmentid(invitationdto.getAppointmentid());
+			}
+
+			if(invitationdto.getCaremember() != null) {
+				app.setCaremember(invitationdto.getCaremember());
+			}
+			app.setCareMemberName(invitationdto.getCareMemberName());
+
+			BaseDAO.save(app);
+		}
 		
-			app.setPurposeText(invitationdto.getPurposeText());
-			app.setTreatementStep(invitationdto.getTreatementStep());
-		app.setPatientid(detailDto.getUser());
-
-		if(invitationdto.getPurpose() != null) {
-			app.setPurpose(invitationdto.getPurpose());	
-		}
-
-		if(invitationdto.getAppointmentid() != null) {
-			app.setAppointmentid(invitationdto.getAppointmentid());
-		}
-
-		if(invitationdto.getCaremember() != null) {
-			app.setCaremember(invitationdto.getCaremember());
-		}
-		app.setCareMemberName(invitationdto.getCareMemberName());
-
-		BaseDAO.save(app);
 
 		UserDTO usr = detailDto.getUser();
 		usr.setIsverified(true);
