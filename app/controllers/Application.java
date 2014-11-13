@@ -22,6 +22,7 @@ import nav.dao.ContactTypeDAO;
 import nav.dao.DistressDAO;
 import nav.dao.InvitationDAO;
 import nav.dao.LoginHistoryDAO;
+import nav.dao.PatientAlert;
 import nav.dao.SecurityQuestionDAO;
 import nav.dao.UserDAO;
 import nav.dao.UserTypeDAO;
@@ -47,7 +48,7 @@ public class Application extends Controller {
 	static void prepareParams() {
 		//used for Tw/Fb sharing and SEO
         String currentURL = "http://"+request.host+request.path;
-        renderArgs.put("currentURL", currentURL);        
+        renderArgs.put("currentURL", currentURL);           
 	}
 
     public static void index() throws Throwable {
@@ -69,10 +70,25 @@ public class Application extends Controller {
     	}
     	System.out.println("Index");
         Secure.login();
-    }
-    public static void distressthermometer() {
-    	session.put("requestPath", request.path);    	
-    	Patient.index();
+    }    
+    public static void distressCheckIn(String userId, String checkSum) {    	
+    	if (Security.isConnected()) {    		
+    		Patient.distressmeter();
+    	}
+    	else {    		
+    		if (userId != null && checkSum != null) {
+    			String generatedChecksum = PatientAlert.getChecksum(userId);
+    			if(checkSum.equalsIgnoreCase(generatedChecksum)) {
+    				UserBean user = UserDAO.getByUserId(userId);    				
+    				session.put("username", user.getEmail());
+    				session.put("usertype", "user");
+    				session.put("showdistress", false);
+    				session.put("hashLogin", true);
+    				Patient.distressmeter();
+    			}    			
+    		}		
+    		Patient.index();    		
+    	}
     }
 
     public static void home() throws Throwable {

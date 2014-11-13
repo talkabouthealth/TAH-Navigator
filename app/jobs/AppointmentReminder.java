@@ -21,5 +21,8 @@ public class AppointmentReminder extends Job {
 		PatientAlert.duringTreatmentAlerts();
 		PatientAlert.afterTreatmentBeforeOneDayAlerts();
 		PatientAlert.afterTreatmentBeforeOneWeekAlerts();
+		PatientAlert.treatmentDecision_beforeThreeDayAlerts();
+		PatientAlert.simulation_beforeThreeDayAlerts();
+		PatientAlert.duringTreatment_beforeThreeDayAlerts();
 	}
 }

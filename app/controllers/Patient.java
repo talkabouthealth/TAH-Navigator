@@ -11,13 +11,14 @@ import java.util.Map;
 import models.*;
 import nav.dao.*;
 import nav.dto.*;
+import play.mvc.Before;
 import play.mvc.Controller;
 import play.mvc.With;
 import util.*;
 
 @Check({"user","user"})
 @With( { Secure.class } )
-public class Patient extends Controller {
+public class Patient extends Controller {	
 	public static void index() {
 		UserBean user = CommonUtil.loadCachedUser(session);
 		//UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());
@@ -77,14 +78,16 @@ public class Patient extends Controller {
 		if(!user.isVerifiedFlag() && accesstoallpages != null) {
 			user.setVerifiedFlag(Boolean.parseBoolean(accesstoallpages.getPropertyvalue()));
 		}
-		List<AppointmentDTO> listOther = AppointmentDAO.getAppointmentListByField("patientid.id", userDto.getId(), curreDate, "upcoming" );
-		if (session.get("requestPath") != null && session.get("requestPath").equalsIgnoreCase("/distressthermometer")) {
-			renderArgs.put("popupDistressThermometer", true);
-			session.remove("requestPath");
-		}
+		List<AppointmentDTO> listOther = AppointmentDAO.getAppointmentListByField("patientid.id", userDto.getId(), curreDate, "upcoming" );		
         render(user,userDto,patientOtherDetails, breastCancerId, breastCancerInfo,apt,careExpert,maxUsers,checlist,accesstoallpages, listOther);
     }
 
+	
+	public static void distressmeter() {
+		UserBean user = CommonUtil.loadCachedUser(session);
+		renderArgs.put("user", user);
+		render();
+	}
 	public static void appointment() {
 		UserBean user = CommonUtil.loadCachedUser(session);
 		

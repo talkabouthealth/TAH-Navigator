@@ -1,0 +1,205 @@
+.distress-meter-form  h4{
+    font-size: 18px;
+    color: rgb(42, 100, 150);
+}
+
+.distress-meter-form .other-details {
+    color: rgb(42, 100, 150);
+}
+
+.distress-meter-form  .modal-content,
+.distress-meter-form  .page-content {
+    min-width: 790px;
+}
+
+.distress-meter-form  .page-body {
+    padding: 20px;        
+}
+
+.distress-meter-form  .page-footer {
+    border-top: 1px solid #ccc;    
+    padding-top: 15px;
+    text-align: right;
+}
+
+
+.distress-meter-form .form-panel {
+    position: relative;    
+    min-height:330px; 
+    padding:30px 20px;
+}
+
+.distress-meter-form .step1-panel-left {         
+    width:48%;
+    min-height:310px;    
+    padding-right: 20px;
+}
+
+.distress-meter-form .step2-panel-left {         
+    width:35%;
+    min-height:610px;    
+    padding-right: 20px;
+}
+
+.distress-meter-form .step1-panel-right {    
+    float: right;
+    width: 48%;
+    
+    border-left: 1px solid #ccc;
+}
+
+.distress-meter-form .step2-panel-right {    
+    float: right;
+    width: 63%;    
+    padding-left: 20px; 
+    border-left: 1px solid #ccc;
+}
+.distress-meter-form .thank-you-page-1{
+    padding: 10px 100px;
+    text-align: left;
+}
+
+.distress-meter-form .thank-you-page-1 h4{
+    margin-top: 10px;
+    margin-bottom: 30px;    
+}
+
+.distress-meter-form .step1-panel-left .p1,
+.distress-meter-form .step2-panel-left .p1 {
+    font-size:12px;
+    margin-bottom: 30px;
+}
+.distress-meter-form .step1-panel-left .p1 span,
+.distress-meter-form .step2-panel-left .p1 span {
+    padding: 5px 10px; 
+    border-radius: 15px;
+    font-size:12px;
+    background-color: #428BCA;
+    color: #FFF;
+}
+.distress-meter-form .step1-panel-left .p3,
+.distress-meter-form .step2-panel-left .p3 {
+    margin-top: 30px;
+}
+
+.distress-meter-form #distressSlider {
+    height:300px;    
+    margin:0px 10px 0px 50px;    
+}
+.distress-meter-form #distressSlider label{
+    position: absolute;
+    left: 80px;
+    font-size: 12px;
+    width: 180px;
+}
+
+.distress-meter-form #distressSlider label.low{
+    bottom: 0px;
+    margin-bottom: -15px;
+}
+
+.distress-meter-form #distressSlider label.high{
+    top: 0px;
+    margin-top: -10px;
+}
+
+.distress-meter-form #distressSlider.ui-widget-content {
+    background: #eee;
+    border: 0;
+}
+
+.distress-meter-form #distressSlider.ui-slider-vertical {    
+    width: 20px;
+    border-radius: 15px;
+    background-image: -webkit-gradient(linear,right bottom,right top,color-stop(0, #FFFFFF),color-stop(1, #FF6429));
+    background-image: -o-linear-gradient(top, #FFFFFF 0%, #FF6429 100%);
+    background-image: -moz-linear-gradient(top, #FFFFFF 0%, #FF6429 100%);
+    background-image: -webkit-linear-gradient(top, #FFFFFF 0%, #FF6429 100%);
+    background-image: -ms-linear-gradient(top, #ccc 0%, #FF6429 100%);
+    background-image: linear-gradient(to top, #FFFFFF 0%, #FF6429 100%);
+}
+
+.distress-meter-form #distressSlider .ui-slider-handle {
+    background: none repeat scroll 0 0 #FFF;
+    border-radius: 15px;
+    height: 30px;
+    width: 30px;
+    border: 5px solid #428BCA;
+    box-shadow: 13px 0 4px 0 #CCC;        
+}
+
+.distress-meter-form #distressSlider .ui-slider-range {
+    background: url("/public/plugins/jquery-ui/images/animated-overlay.gif") repeat scroll 0 0;    
+    border: 5px solid #D8D8D8;
+    border-radius: 0 0 10px 10px;
+}
+
+.distress-meter-form .distress-amount {
+    position: absolute; 
+    margin-left: 60px; 
+    width: 300px; 
+    color: #000000;
+    font-weight:normal; 
+    text-align: left;
+}
+
+.distress-meter-form .step2-distress-amount {    
+    margin-bottom: 20px;    
+}
+
+
+.distress-meter-form .distress-amount-value {
+    padding:  20px;    
+    line-height: normal;    
+}
+.distress-meter-form  .distress-amount-text {    
+    display: inline-block;
+    font-size: 12px;    
+    width: 200px;    
+    margin-left: 10px;    
+}
+ 
+.distress-meter-form #distressSlider .ui-slider-range.medium-distress {
+    background-color: #bd8a1b;
+ }
+ 
+.distress-meter-form #distressSlider .ui-slider-range.high-distress {
+    background-color: #ec2b17;
+ }
+ 
+.distress-meter-form #distressSlider .ui-slider-range.low-distress {
+    background-color: #428BCA;
+ }
+ 
+ .distress-meter-form  .problem-list-right {    
+    
+ }
+ 
+ .distress-meter-form  .problem-list-left {    
+    
+ }
+ 
+ .distress-meter-form .problem-title {
+    font-size: 12px;
+    color:#B3B3B3;
+    text-decoration: underline;
+    line-height: 20px;
+    text-transform: uppercase;
+ }
+ 
+ .distress-meter-form .visual {
+  color: rgb(42, 100, 150);
+  width: 240px;
+  margin: 0 auto 30px;
+  background: #eee;
+  padding: 20px;
+  text-align: center;
+}
+
+.distress-meter-form .visual h5 {
+    text-transform: uppercase;
+}
+
+.distress-meter-form .visual  .buttons .button {
+    background: white;
+}
