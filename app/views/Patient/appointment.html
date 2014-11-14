@@ -7,178 +7,182 @@ div.green-title{cursor: pointer;}
 <!--Start Content-->
 <div id="content" class="page my-appointments">
   <div class="col-xs-12 col-sm-12">
+      <div class="upcoming-appointments">
 
-    <h2>Upcoming Appointments</h2>
-    #{if list != null && list.size()>0}
-    <ul class="expend-list">
-      #{list list, as:'seq'}
-      <li>
-      <div class="green-title">
-        <div class="col-xs-12 col-sm-12 nopadding" style="display:block;">
-          <div class="col-sm-6 checkDiv">
-            <p>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}<br/> <!-- THURSDAY MAY 10TH 2014 -->
-            ${seq.appointmenttime} <a href="javaScript:void(0);">${seq.purposeText}</a></p>
-          </div>
-          <div class="col-sm-6" style="padding-top: 10px;">
-            <p>
-            #{if seq.caremember != null}
-            	 #{userName userName: seq.caremember.name, userId:seq.caremember.id /}
-            #{/if}
-            #{else}
-            ${seq.careMemberName}
-            #{/else}
-            <br/>
-            ${seq.appointmentcenter}</p>
-          </div>
-        </div>
-          <div class="toggle-text-container">
-            <span class="toggleText button"><span class="text">See More</span> <span class="ui-accordion-header-icon ui-icon ui-accordion-header-icon1 ui-icon-triangle-1-e"></span></span>
-          </div>
-      </div>
-      <div class="show-div-list" style="display: none;">
-        <div > <!-- class="row" -->
-          <div class="col-sm-6">
-
-            <div class="secont-l-p-f text-center">
-              <p class="large-f"><span>Appointment is Scheduled for:</span></p>
-              <h1 class="g-mmm">${seq.appointmentdate.format('EEEE MMMM dd yyyy')}</h1>
-              <p class="large-f"><span>${seq.appointmenttime} </span></p>
-        <h3 class="title-2 purpose-of-appointment">Purpose of appointment: <span>${seq.purposeText}</span></h3>
-            </div>
-          </div>
-          <div class="col-sm-6 line-right">
-            <p class="green-title"><i class="fa fa-map-marker"></i> APPOINTMENT LOCATION/SPECIFICS </p>
-            <div class="row">
-              <div class="col-sm-4">
-                <img width="100%" src="http://maps.googleapis.com/maps/api/staticmap?center=${seq.addressid.line1}+${seq.addressid.line2},${seq.addressid.city},${seq.addressid.state},${seq.addressid.country} - ${seq.addressid.zip}&maptype=roadmap&zoom=12&size=200x100&scale=false&&markers=color:red%7Csize:small%7C${seq.addressid.lat},${seq.addressid.lang}">
+        <h2>Upcoming Appointments</h2>
+        #{if list != null && list.size()>0}
+        <ul class="expend-list">
+          #{list list, as:'seq'}
+          <li>
+          <div class="green-title">
+            <div class="col-xs-12 col-sm-12 nopadding" style="display:block;">
+              <div class="col-sm-6 checkDiv">
+                <p>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}<br/> <!-- THURSDAY MAY 10TH 2014 -->
+                ${seq.appointmenttime} <a href="javaScript:void(0);">${seq.purposeText}</a></p>
               </div>
-              <div class="col-sm-8 map-div">
-                <div class="secont-l-p-f">
-                  <p class="large-f">
-                  ${seq.addressid.line1} ${seq.addressid.line2}</p>
-                  <p>${seq.addressid.city}, ${seq.addressid.state}, ${seq.addressid.zip}</p>
+              <div class="col-sm-6" style="padding-top: 10px;">
+                <p>
+                #{if seq.caremember != null}
+                     #{userName userName: seq.caremember.name, userId:seq.caremember.id /}
+                #{/if}
+                #{else}
+                ${seq.careMemberName}
+                #{/else}
+                <br/>
+                ${seq.appointmentcenter}</p>
+              </div>
+            </div>
+              <div class="toggle-text-container">
+                <span class="toggleText button"><span class="text">See More</span> <span class="ui-accordion-header-icon ui-icon ui-accordion-header-icon1 ui-icon-triangle-1-e"></span></span>
+              </div>
+          </div>
+          <div class="show-div-list" style="display: none;">
+            <div > <!-- class="row" -->
+              <div class="col-sm-6">
 
-                  <p style="margin:5px 0 0 0">
-                  <a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${seq.addressid.line1}+${seq.addressid.line2},${seq.addressid.city},${seq.addressid.state},${seq.addressid.country} - ${seq.addressid.zip}" class="btn btn-default-small">GET DIRECTIONS</a>
-                  </p>
+                <div class="secont-l-p-f text-center">
+                  <p class="large-f"><span>Appointment is Scheduled for:</span></p>
+                  <h1 class="g-mmm">${seq.appointmentdate.format('EEEE MMMM dd yyyy')}</h1>
+                  <p class="large-f"><span>${seq.appointmenttime} </span></p>
+            <h3 class="title-2 purpose-of-appointment">Purpose of appointment: <span>${seq.purposeText}</span></h3>
+                </div>
+              </div>
+              <div class="col-sm-6 line-right">
+                <p class="green-title"><i class="fa fa-map-marker"></i> APPOINTMENT LOCATION/SPECIFICS </p>
+                <div class="row">
+                  <div class="col-sm-4">
+                    <img width="100%" src="http://maps.googleapis.com/maps/api/staticmap?center=${seq.addressid.line1}+${seq.addressid.line2},${seq.addressid.city},${seq.addressid.state},${seq.addressid.country} - ${seq.addressid.zip}&maptype=roadmap&zoom=12&size=200x100&scale=false&&markers=color:red%7Csize:small%7C${seq.addressid.lat},${seq.addressid.lang}">
+                  </div>
+                  <div class="col-sm-8 map-div">
+                    <div class="secont-l-p-f">
+                      <p class="large-f">
+                      ${seq.addressid.line1} ${seq.addressid.line2}</p>
+                      <p>${seq.addressid.city}, ${seq.addressid.state}, ${seq.addressid.zip}</p>
+
+                      <p style="margin:5px 0 0 0">
+                      <a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${seq.addressid.line1}+${seq.addressid.line2},${seq.addressid.city},${seq.addressid.state},${seq.addressid.country} - ${seq.addressid.zip}" class="btn btn-default-small">GET DIRECTIONS</a>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                #{if seq.caremember}
+                <div class="caretaker-image"> <a href="#"> <img src="@{Image.show(seq.caremember.id)}"> </a></div>
+                #{/if}
+                  <div class="media-body main-l-p">
+                    <p>MY APPOINTMENT IS WITH</p>
+                    <div class="secont-l-p-f">
+                      <p class="large-f"><span>            #{if seq.caremember != null}
+                     #{userName userName: seq.caremember.name, userId:seq.caremember.id /}
+                #{/if}
+                #{else}
+                ${seq.careMemberName}
+                #{/else} </span></p>
+                      <p> ${seq.expertMobile}
+                    </div>
                 </div>
               </div>
             </div>
-            #{if seq.caremember}
-            <div class="caretaker-image"> <a href="#"> <img src="@{Image.show(seq.caremember.id)}"> </a></div>
-            #{/if}
-              <div class="media-body main-l-p">
-                <p>MY APPOINTMENT IS WITH</p>
-                <div class="secont-l-p-f">
-                  <p class="large-f"><span>            #{if seq.caremember != null}
-            	 #{userName userName: seq.caremember.name, userId:seq.caremember.id /}
-            #{/if}
-            #{else}
-            ${seq.careMemberName}
-            #{/else} </span></p>
-                  <p> ${seq.expertMobile}
-                </div>
-            </div>
+    <!--         <div class="line-h"></div> -->
           </div>
-        </div>
-<!--         <div class="line-h"></div> -->
-      </div>
-      </li>
-      #{/list}
-    </ul>
+          </li>
+          #{/list}
+        </ul>
 
-    #{/if}
-    #{else}
-    <div class="col-xs-12 col-sm-12 nopadding"></br>No upcoming appointments.</div>
-    #{/else}
-    <br/><br/><br/>
-    <h2>Past Appointments</h2>
-    #{if listOld != null && listOld.size()>0}
-    <ul class="expend-list">
-      #{list listOld, as:'seq'}
-      <li>
-      <div class="green-title">
-        <div class="col-xs-12 col-sm-12 nopadding">
-          <div class="col-sm-6 checkDiv">
-            <p>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}<br/> <!-- THURSDAY MAY 10TH 2014 -->
-            ${seq.appointmenttime} <a href="javaScript:void(0);">${seq.purposeText}</a></p>
-          </div>
-          <div class="col-sm-5" style="padding-top: 10px;">
-            <p>
-            	            #{if seq.caremember != null}
-            	 #{userName userName: seq.caremember.name, userId:seq.caremember.id /}
-            #{/if}
-            #{else}
-            ${seq.careMemberName}
-            #{/else}
-            	<br/> ${seq.appointmentcenter}</p>
-          </div>
-        </div>
-          <div class="toggle-text-container">
-            <span class="toggleText button"><span class="text">See More</span>  <span class="ui-accordion-header-icon ui-icon ui-accordion-header-icon1 ui-icon-triangle-1-e"></span></span>
-          </div>
-      </div>
-      <div class="show-div-list" style="display: none;">
-        <div><!--  class="row" -->
-          <div class="col-sm-6">
-            <div class="secont-l-p-f text-center">
-              <p class="large-f"><span>Appointment is Scheduled for:</span></p>
-              <h1 class="g-mmm">${seq.appointmentdate.format('EEEE MMMM dd yyyy')}</h1>
-              <p class="large-f"><span>${seq.appointmenttime} </span></p>
-        <h3 class="title-2 purpose-of-appointment">Purpose of appointment: <span>${seq.purposeText}</span></h3>
-            </div>
-          </div>
-          <div class="col-sm-6 line-right">
-            <p class="green-title"><i class="fa fa-map-marker"></i> APPOINTMENT LOCATION/SPECIFICS </p>
-            <div class="row">
-              <div class="col-sm-4">
-                <img width="100%" src="http://maps.googleapis.com/maps/api/staticmap?center=${seq.addressid.line1}+${seq.addressid.line2},${seq.addressid.city},${seq.addressid.state},${seq.addressid.country} - ${seq.addressid.zip}&maptype=roadmap&zoom=12&size=200x100&scale=false&&markers=color:red%7Csize:small%7C${seq.addressid.lat},${seq.addressid.lang}">
+        #{/if}
+        #{else}
+        <div class="col-xs-12 col-sm-12 nopadding"></br>No upcoming appointments.</div>
+        #{/else}
+        <div class="clear"></div>
+    </div>
+    <div class="past-appointments">
+        <h2>Past Appointments</h2>
+        #{if listOld != null && listOld.size()>0}
+        <ul class="expend-list">
+          #{list listOld, as:'seq'}
+          <li>
+          <div class="green-title">
+            <div class="col-xs-12 col-sm-12 nopadding">
+              <div class="col-sm-6 checkDiv">
+                <p>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}<br/> <!-- THURSDAY MAY 10TH 2014 -->
+                ${seq.appointmenttime} <a href="javaScript:void(0);">${seq.purposeText}</a></p>
               </div>
-              <div class="col-sm-8 map-div">
-                <div class="secont-l-p-f">
-                  <p class="large-f">
-                  ${seq.addressid.line1} ${seq.addressid.line2}</p>
-                  <p>${seq.addressid.city}, ${seq.addressid.state}, ${seq.addressid.zip}</p>
-
-                  <p style="margin:5px 0 0 0">
-                  <a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${seq.addressid.line1}+${seq.addressid.line2},${seq.addressid.city},${seq.addressid.state},${seq.addressid.country} - ${seq.addressid.zip}" class="btn btn-default-small">GET DIRECTIONS</a>
-                  </p>
-                </div>
+              <div class="col-sm-5" style="padding-top: 10px;">
+                <p>
+                                #{if seq.caremember != null}
+                     #{userName userName: seq.caremember.name, userId:seq.caremember.id /}
+                #{/if}
+                #{else}
+                ${seq.careMemberName}
+                #{/else}
+                    <br/> ${seq.appointmentcenter}</p>
               </div>
             </div>
+              <div class="toggle-text-container">
+                <span class="toggleText button"><span class="text">See More</span>  <span class="ui-accordion-header-icon ui-icon ui-accordion-header-icon1 ui-icon-triangle-1-e"></span></span>
+              </div>
+          </div>
+          <div class="show-div-list" style="display: none;">
+            <div><!--  class="row" -->
+              <div class="col-sm-6">
+                <div class="secont-l-p-f text-center">
+                  <p class="large-f"><span>Appointment is Scheduled for:</span></p>
+                  <h1 class="g-mmm">${seq.appointmentdate.format('EEEE MMMM dd yyyy')}</h1>
+                  <p class="large-f"><span>${seq.appointmenttime} </span></p>
+            <h3 class="title-2 purpose-of-appointment">Purpose of appointment: <span>${seq.purposeText}</span></h3>
+                </div>
+              </div>
+              <div class="col-sm-6 line-right">
+                <p class="green-title"><i class="fa fa-map-marker"></i> APPOINTMENT LOCATION/SPECIFICS </p>
+                <div class="row">
+                  <div class="col-sm-4">
+                    <img width="100%" src="http://maps.googleapis.com/maps/api/staticmap?center=${seq.addressid.line1}+${seq.addressid.line2},${seq.addressid.city},${seq.addressid.state},${seq.addressid.country} - ${seq.addressid.zip}&maptype=roadmap&zoom=12&size=200x100&scale=false&&markers=color:red%7Csize:small%7C${seq.addressid.lat},${seq.addressid.lang}">
+                  </div>
+                  <div class="col-sm-8 map-div">
+                    <div class="secont-l-p-f">
+                      <p class="large-f">
+                      ${seq.addressid.line1} ${seq.addressid.line2}</p>
+                      <p>${seq.addressid.city}, ${seq.addressid.state}, ${seq.addressid.zip}</p>
 
-            <div class="media">
-            #{if seq.caremember}
-            	<a class="pull-left" href="#"> <img src="@{Image.show(seq.caremember.id)}" class=""> </a>
-            #{/if}
-              <div class="media-body main-l-p">
-                <p>MY APPOINTMENT IS WITH</p>
-                <div class="secont-l-p-f">
-                  <p class="large-f">
-                  	<span>
-                  	            #{if seq.caremember != null}
-            	 #{userName userName: seq.caremember.name, userId:seq.caremember.id /}
-            #{/if}
-            #{else}
-            ${seq.careMemberName}
-            #{/else}
-                  	</span></p>
-                  <p> ${seq.expertMobile}
-                 *{ &nbsp; |&nbsp; ${seq.caremember.email} }*</p>
+                      <p style="margin:5px 0 0 0">
+                      <a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${seq.addressid.line1}+${seq.addressid.line2},${seq.addressid.city},${seq.addressid.state},${seq.addressid.country} - ${seq.addressid.zip}" class="btn btn-default-small">GET DIRECTIONS</a>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="media">
+                #{if seq.caremember}
+                    <a class="pull-left" href="#"> <img src="@{Image.show(seq.caremember.id)}" class=""> </a>
+                #{/if}
+                  <div class="media-body main-l-p">
+                    <p>MY APPOINTMENT IS WITH</p>
+                    <div class="secont-l-p-f">
+                      <p class="large-f">
+                        <span>
+                                    #{if seq.caremember != null}
+                     #{userName userName: seq.caremember.name, userId:seq.caremember.id /}
+                #{/if}
+                #{else}
+                ${seq.careMemberName}
+                #{/else}
+                        </span></p>
+                      <p> ${seq.expertMobile}
+                     *{ &nbsp; |&nbsp; ${seq.caremember.email} }*</p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
+    <!--         <div class="line-h"></div> -->
           </div>
-        </div>
-<!--         <div class="line-h"></div> -->
-      </div>
-      </li>
-      #{/list}
-    </ul>
-    #{/if}
-    #{else}
-    <div class="col-xs-12 col-sm-12 nopadding"></br>No past appointments.</div>
-    #{/else}
+          </li>
+          #{/list}
+        </ul>
+        #{/if}
+        #{else}
+        <div class="col-xs-12 col-sm-12 nopadding"></br>No past appointments.</div>
+        #{/else}
+    </div>
   </div>
 </div>
 <script type="text/javascript">
