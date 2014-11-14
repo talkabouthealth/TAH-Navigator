@@ -1,12 +1,8 @@
 #{set pageType = 'setting' /}
 #{extends 'patientmain.html' /}
 	<!--Start Content-->
-<div id="content" class="col-xs-12 col-sm-10">
-	<div class="row">&nbsp;</div>
-	<div class="row">
- 		<div class="col-xs-12 col-sm-12">
- 			<h4 class="page-header">Update Profile</h4>
- 		</div>
+<div id="content" class="page settings">
+    <h2>Update Profile</h2>
  		<div class="col-xs-12 col-sm-12">
 			#{form @Profile.updateProfile() , id:'passForm' }
  			<table class="col-xs-10 col-sm-5 table-condensed">	
@@ -219,7 +215,6 @@
  			</table>
  			#{/form}
  			</div>
- 		</div>
 	</div>
 <!-- <div id="ajax-content"></div> -->
    <script>

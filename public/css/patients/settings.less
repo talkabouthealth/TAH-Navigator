@@ -1,0 +1,42 @@
+.page.settings {
+    ul, li {
+        list-style: none;
+        padding: 0;
+    }
+
+    ul {
+        margin-top: @padding;
+        padding-top: @padding;
+        border-top: 1px solid @light-gray;
+
+        &#errorGroup {
+            margin: 0;
+            padding: 0;
+            border: none;
+        }
+    }
+
+    li {
+        margin-bottom: @padding;
+        float: none;
+
+        &:before {
+            margin-right: 10px;
+            content: "\f054";
+            display: inline-block;
+            font: normal normal normal 14px/1 FontAwesome;
+            font-size: inherit;
+            text-rendering: auto;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+    }
+
+    .full-uploader {
+        margin-top: @padding*2;
+    }
+
+    .table-responsive {
+        border: none;
+    }
+}
