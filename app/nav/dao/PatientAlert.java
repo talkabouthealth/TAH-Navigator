@@ -16,6 +16,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
+import nav.dto.DistressBean;
 import play.db.jpa.JPA;
 import util.JPAUtil;
 import models.AppointmentAlertDTO;
@@ -189,9 +190,19 @@ public class PatientAlert {
 			e.printStackTrace();
 		}
 		for (AppointmentDTO appointment : appointments) {
-			Date appointmentDate = appointment.getAppointmentdate();
+			Date appointmentDate = appointment.getAppointmentdate();						
 			long minTime = appointmentDate.getTime() - (3 * ONE_DAY);
 			long maxTime = appointmentDate.getTime() - (2 * ONE_DAY);
+			
+			UserDTO patient = appointment.getPatientid();
+			DistressBean distress = DistressDAO.getLastDistress(patient);
+			Date distressLastChecked = distress.getDistressDate();						
+			long lastTime = distressLastChecked.getTime();
+			// if distress reported in last 3 days before appointment, then email should not be sent
+			if (lastTime >= minTime && lastTime <= appointmentDate.getTime()) {
+				continue;
+			}
+			
 			if (curTime >= minTime && curTime <= maxTime ) {
 				boolean mailAlreadySent = false;
 				for (AppointmentAlertDTO alert: sentAlerts) {
@@ -279,6 +290,16 @@ public class PatientAlert {
 			Date appointmentDate = appointment.getAppointmentdate();
 			long minTime = appointmentDate.getTime() - (3 * ONE_DAY);
 			long maxTime = appointmentDate.getTime() - (2 * ONE_DAY);
+			
+			UserDTO patient = appointment.getPatientid();
+			DistressBean distress = DistressDAO.getLastDistress(patient);
+			Date distressLastChecked = distress.getDistressDate();						
+			long lastTime = distressLastChecked.getTime();
+			// if distress reported in last 3 days before appointment, then email should not be sent
+			if (lastTime >= minTime && lastTime <= appointmentDate.getTime()) {
+				continue;
+			}
+			
 			if (curTime >= minTime && curTime <= maxTime ) {
 				boolean mailAlreadySent = false;
 				for (AppointmentAlertDTO alert: sentAlerts) {
@@ -366,6 +387,16 @@ public class PatientAlert {
 			Date appointmentDate = appointment.getAppointmentdate();
 			long minTime = appointmentDate.getTime() - (3 * ONE_DAY);
 			long maxTime = appointmentDate.getTime() - (2 * ONE_DAY);
+			
+			UserDTO patient = appointment.getPatientid();
+			DistressBean distress = DistressDAO.getLastDistress(patient);
+			Date distressLastChecked = distress.getDistressDate();						
+			long lastTime = distressLastChecked.getTime();
+			// if distress reported in last 3 days before appointment, then email should not be sent
+			if (lastTime >= minTime && lastTime <= appointmentDate.getTime()) {
+				continue;
+			}
+			
 			if (curTime >= minTime && curTime <= maxTime ) {
 				boolean mailAlreadySent = false;
 				for (AppointmentAlertDTO alert: sentAlerts) {
