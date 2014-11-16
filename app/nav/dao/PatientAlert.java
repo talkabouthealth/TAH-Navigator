@@ -594,7 +594,7 @@ public class PatientAlert {
 		Send send = new Send(); 
 		send.setTemplate(TPL);
 		vars.put(PH1, ph1);
-		vars.put(PH1, ph2);
+		vars.put(PH2, ph2);
 		send.setEmail(email);
         send.setVars(vars);            
         return sendEmail(send); 		
