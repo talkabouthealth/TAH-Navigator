@@ -31,6 +31,7 @@ import models.PatientDetailDTO;
 import models.PatientFollowUpCareItemDTO;
 import models.PatientGoalDTO;
 import models.PatientMedicationDTO;
+import models.PatientMutationDTO;
 import models.PatientRadiationTreatmentDTO;
 import models.PatientSurgeryInfoDTO;
 import models.RadiationScheduleDTO;
@@ -338,9 +339,10 @@ public class CarePatien  extends Controller {
 		UserDetailsDTO userDetails = (UserDetailsDTO) patientInfo.get("userDetails");
 		PatientDetailDTO patientDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
 		BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
+		List<PatientMutationDTO> mutations = PatientDetailDAO.getMutations(new Integer(patientId));
 		int breastCancerId = Disease.BREAST_CANCER_ID;
 		Map <String, Object> ps = PatientDetailDAO.patientSummary(patientId);
-		render(patientId, breastCancerId, userDetails, patientDetails, breastCancerInfo, ps);
+		render(patientId, breastCancerId, userDetails, patientDetails, breastCancerInfo, ps,mutations);
 	}
 	
 	public static void diagnosisJSON(int patientId) {
@@ -371,9 +373,10 @@ public class CarePatien  extends Controller {
 		UserDetailsDTO userDetails = (UserDetailsDTO) patientInfo.get("userDetails");
 		PatientDetailDTO patientDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
 		BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
+		List<PatientMutationDTO> mutations = PatientDetailDAO.getMutations(new Integer(patientId));
 		int breastCancerId = Disease.BREAST_CANCER_ID;
 		Map <String, Object> ps = PatientDetailDAO.patientSummary(patientId);
-		renderTemplate("CarePatien/diagnosis.html", patientId, breastCancerId, userDetails, patientDetails, breastCancerInfo, ps);
+		renderTemplate("CarePatien/diagnosis.html", patientId, breastCancerId, userDetails, patientDetails, breastCancerInfo, ps,mutations);
 	}
 
 	

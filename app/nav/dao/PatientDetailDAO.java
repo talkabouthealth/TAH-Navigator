@@ -2,6 +2,7 @@ package nav.dao;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -16,8 +17,11 @@ import models.AddressDTO;
 import models.AppointmentDTO;
 import models.BreastCancerInfoDTO;
 import models.BreastCancerStageDTO;
+import models.CancerMutationDTO;
+import models.CancerTypeDTO;
 import models.DiseaseMasterDTO;
 import models.PatientDetailDTO;
+import models.PatientMutationDTO;
 import models.UserDTO;
 import models.UserDetailsDTO;
 import util.CommonUtil;
@@ -103,10 +107,10 @@ public class PatientDetailDAO {
 			if (dmDto != null) {
 				em.refresh(dmDto);
 				disease = dmDto.getName();
-				if (dmDto.getId() == Disease.BREAST_CANCER_ID) {
 					TypedQuery<BreastCancerInfoDTO> bcQuery = em.createQuery("SELECT c FROM BreastCancerInfoDTO c WHERE c.id = :id", BreastCancerInfoDTO.class);
 					bcQuery.setParameter("id", patientId);
 					BreastCancerInfoDTO bcDto = bcQuery.getSingleResult();
+					if (dmDto.getId() == Disease.BREAST_CANCER_ID) {
 					if (bcDto.getEr() != null) {
 						er = bcDto.getEr().toString();
 					}
@@ -119,13 +123,13 @@ public class PatientDetailDAO {
 					if (bcDto.getBrca() != null) {
 						brca = bcDto.getBrca().toString();
 					}
-					
+					}
 					BreastCancerStageDTO stageDto = bcDto.getBcStage();
 					if (stageDto != null) {
 						em.refresh(stageDto);
 						stage = stageDto.getName();
 					}
-				}
+				
 			}
 		} catch (NoResultException e) {
 			
@@ -233,8 +237,30 @@ public class PatientDetailDAO {
 			bcStage = query4.getSingleResult();
 			breastCancerInfo.setBcStage(bcStage);
 			/****          Eliminate Cache Problem (not sure) **************/
+		} catch(NoResultException e) {
+			e.printStackTrace();
+		}
 			
-		} catch(NoResultException e) {}
+		if(breastCancerInfo != null ) {
+			breastCancerInfo.setType(null);
+			breastCancerInfo.setSubtype(null);
+			try {
+				TypedQuery<CancerTypeDTO> query5 = em.createQuery("SELECT c FROM CancerTypeDTO c WHERE c.id = :id", CancerTypeDTO.class);
+				query5.setParameter("id", breastCancerInfo.getTypeid());
+				CancerTypeDTO type = query5.getSingleResult();
+				breastCancerInfo.setType(type);
+			} catch(NoResultException e) {
+				e.printStackTrace();
+			}
+			try {
+				TypedQuery<CancerTypeDTO> query5 = em.createQuery("SELECT c FROM CancerTypeDTO c WHERE c.id = :id", CancerTypeDTO.class);
+				query5.setParameter("id", breastCancerInfo.getSubtypeid());
+				CancerTypeDTO type = query5.getSingleResult();
+				breastCancerInfo.setSubtype(type);
+			} catch(NoResultException e) {
+				e.printStackTrace();
+			}
+		}
 		
 		/****          Eliminate Cache Problem (not sure) **************/
 		if (breastCancerInfo != null && breastCancerInfo.getStageId() == null) {
@@ -248,6 +274,24 @@ public class PatientDetailDAO {
 		return patientInfo;
 	}
 	
+	public static List<PatientMutationDTO> getMutations(Integer patientId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		List<PatientMutationDTO> mutations = null;
+		try {
+			TypedQuery<PatientMutationDTO> query5 = em.createQuery("SELECT c FROM PatientMutationDTO c WHERE c.patientid = :id", PatientMutationDTO.class);
+			query5.setParameter("id", patientId);
+			mutations = query5.getResultList();
+			for (PatientMutationDTO patientMutationDTO : mutations) {
+				TypedQuery<CancerMutationDTO> query6 = em.createQuery("SELECT c FROM CancerMutationDTO c WHERE c.id = :id", CancerMutationDTO.class);
+				query6.setParameter("id", patientMutationDTO.getMutationid());
+				CancerMutationDTO pmDtos = query6.getSingleResult();
+				patientMutationDTO.setPmDto(pmDtos);
+			}
+		} catch(NoResultException e) {
+			e.printStackTrace();
+		}
+		return mutations;
+	}
 	public static Map<String, Object> getDiagnosisJSON(int patientId) {
 		Map<String, Object> patientInfo = getDiagnosis(patientId);
 		Map<String, Object> jsonData = new HashMap<String, Object>();
@@ -257,8 +301,14 @@ public class PatientDetailDAO {
 		List<DiseaseMasterDTO> diseases = Disease.allDiseases();
 		List<BreastCancerStageDTO> bcStages = Disease.breastCancerStages();
 		
+		List<CancerMutationDTO> mutations =  Disease.cancerMutations();
+		List<CancerTypeDTO> rootTypeList = Disease.getCancerTypes(true);
+		List<CancerTypeDTO> subTypeList = Disease.getCancerTypes(false);
 		jsonData.put("diseases", diseases);
 		jsonData.put("bcStages", bcStages);
+		jsonData.put("mutations", mutations);
+		jsonData.put("roottype", rootTypeList);
+		jsonData.put("subtype", subTypeList);
 		if (patientDetails != null) {
 			Integer diseaseId = patientDetails.getDiseaseId();
 			if (diseaseId != null) {
@@ -294,7 +344,30 @@ public class PatientDetailDAO {
 			if (stageId != null) {
 				jsonData.put("stageId", stageId.toString());
 			}
+			if(breastCancerInfo.getRisklevel() != null) {
+				jsonData.put("risklevel", breastCancerInfo.getRisklevel());
+			}
+			if(breastCancerInfo.getPsascore() != null) {
+				jsonData.put("psascore", breastCancerInfo.getPsascore());
+			}
+			if(breastCancerInfo.getGleasonscore() != null) {
+				jsonData.put("gleasonscore", breastCancerInfo.getGleasonscore());
+			}
+			if(breastCancerInfo.getTypeid() != null) {
+				jsonData.put("csrtype", breastCancerInfo.getTypeid().intValue());
+			}
+			if(breastCancerInfo.getSubtypeid() != null) {
+				jsonData.put("csrsubtype", breastCancerInfo.getSubtypeid().intValue());
+			}
 		}
+		List<PatientMutationDTO> genetics = PatientDetailDAO.getMutations(new Integer(patientId));
+		ArrayList<String> gen = new ArrayList<String>();
+		if(genetics != null && !genetics.isEmpty()) {
+			for (PatientMutationDTO patientMutationDTO : genetics) {
+				gen.add(patientMutationDTO.getMutationid().intValue() + "");	
+			}
+		}
+		jsonData.put("genetics", gen.toArray());
 		jsonData.put("breastCancerId", new Integer(Disease.BREAST_CANCER_ID).toString());
 		
 		return jsonData;
@@ -307,6 +380,16 @@ public class PatientDetailDAO {
 		BreastCancerInfoDTO breastCancerInfo;
 		boolean bcEntryExist;
 		// update 'patientdetails' table
+		try {
+			TypedQuery<PatientMutationDTO> query5 = em.createQuery("SELECT c FROM PatientMutationDTO c WHERE c.patientid = :id", PatientMutationDTO.class);
+			query5.setParameter("id", new Integer(patientId));
+			List<PatientMutationDTO> mutations = query5.getResultList();
+			for (PatientMutationDTO patientMutationDTO : mutations) {
+				BaseDAO.remove(patientMutationDTO);
+			}
+		} catch(NoResultException e) {
+			e.printStackTrace();
+		}
 		
 		TypedQuery<PatientDetailDTO> query1 = em.createQuery("SELECT c FROM PatientDetailDTO c WHERE c.id = :id", PatientDetailDTO.class); 
 		query1.setParameter("id", patientId);
@@ -385,31 +468,84 @@ public class PatientDetailDAO {
 			bcEntryExist = false;
 		}
 		
-		if (diseaseId != null && diseaseId == Disease.BREAST_CANCER_ID) {
 			String str = diseaseInfo.get("stage_id");
 			Integer stageId;
 			if (str.isEmpty()) {
 				stageId = null;
-			}
-			else {
+		} else {
 				stageId = new Integer(str);
 				
 			}
+		breastCancerInfo.setStageId(stageId);
+		breastCancerInfo.setTypeid(null);
+		breastCancerInfo.setSubtypeid(null);
+		if (diseaseId != null && diseaseId == Disease.BREAST_CANCER_ID) {
 			Character er = CommonUtil.getHormoneStatus(diseaseInfo.get("er"));
 			Character pr = CommonUtil.getHormoneStatus(diseaseInfo.get("pr"));
 			Character her2 = CommonUtil.getHormoneStatus(diseaseInfo.get("her2"));
 			Character brca = CommonUtil.getHormoneStatus(diseaseInfo.get("brca"));
 			
-			breastCancerInfo.setStageId(stageId);
 			breastCancerInfo.setEr(er);
 			breastCancerInfo.setPr(pr);
 			breastCancerInfo.setHer2(her2);
 			breastCancerInfo.setBrca(brca);
+		} 
+		if (diseaseId != null && (diseaseId == Disease.LUNG_CANCER_ID)) {
+			str = diseaseInfo.get("typeid");
+			if (str.isEmpty()) {
+				breastCancerInfo.setTypeid(null);
+			} else {
+				breastCancerInfo.setTypeid( new Integer(str));
+			}
+			str = diseaseInfo.get("subtypeid");
+			if (str.isEmpty()) {
+				breastCancerInfo.setSubtypeid(null);
+			} else {
+				breastCancerInfo.setSubtypeid( new Integer(str));
+			}
+		} else {
+		}
+		if (diseaseId != null && (diseaseId == Disease.ESOPHAGEAL_CANCER_ID)) {
+			str = diseaseInfo.get("subtypeid");
+			if (str.isEmpty()) {
+				breastCancerInfo.setSubtypeid(null);
+			} else {
+				breastCancerInfo.setSubtypeid( new Integer(str));
+			}
+		}
+		if (diseaseId != null && (diseaseId == Disease.LUNG_CANCER_ID || diseaseId == Disease.COLON_CANCER_ID || diseaseId == Disease.RECTAL_CANCER_ID)) {
+			breastCancerInfo.setEr(null);
+			breastCancerInfo.setPr(null);
+			breastCancerInfo.setHer2(null);
+			breastCancerInfo.setBrca(null);
+			String mustr = diseaseInfo.get("mutation_id");
+			String muIds [] = mustr.split(",");
+			Integer muId;
+			for (String string : muIds) {
+				string = string.trim();
+				if (!string.isEmpty()) {
+					muId = new Integer(string);
+					PatientMutationDTO pmDto = new PatientMutationDTO();
+					pmDto.setMutationid(muId);
+					pmDto.setPatientid(new Integer(patientId));
+					BaseDAO.save(pmDto);
+				}
+			}
+		}
+		if (diseaseId != null && diseaseId == Disease.PROSTATE_CANCER_ID){
+			breastCancerInfo.setRisklevel(diseaseInfo.get("risklevel"));
+			breastCancerInfo.setPsascore(diseaseInfo.get("psascore"));
+			breastCancerInfo.setGleasonscore(diseaseInfo.get("gleasonscore"));	
+		} else {
+			breastCancerInfo.setRisklevel(null);
+			breastCancerInfo.setPsascore(null);
+			breastCancerInfo.setGleasonscore(null);
+		}
+		if(diseaseId != null) {
 			em.getTransaction().begin();
 			em.persist(breastCancerInfo);
 			em.getTransaction().commit();
-		}
-		else {
+		} else {
 			if (bcEntryExist) {
 				em.getTransaction().begin();
 				em.remove(breastCancerInfo);

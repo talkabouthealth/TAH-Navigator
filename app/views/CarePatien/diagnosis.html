@@ -43,7 +43,15 @@
  </div>
 </div><!-- row -->
 #{/if}
-
+#{/if}
+ #{if breastCancerInfo.type}
+     	<div class="row">
+  <div class="col-sm-12">
+   <label><i class="fa fa-file-text-o"></i> CANCER TYPE INFORMATION</label>
+   <h1>${breastCancerInfo.type.name}</h1>
+ </div>
+</div><!-- row -->
+     #{/if}
 #{if breastCancerInfo.bcStage}
 <div class="row">
   <div class="col-sm-12">
@@ -53,6 +61,39 @@
 </div><!-- row -->
 #{/if}
 
+     #{if breastCancerInfo.subtype}
+     	<div class="row">
+  <div class="col-sm-12">
+   <label><i class="fa fa-file-text-o"></i> SUBTYPE</label>
+   <h1>${breastCancerInfo.subtype.name}	</h1>
+ </div>
+</div><!-- row -->
+     #{/if}
+ #{if breastCancerInfo.risklevel}
+<div class="row">
+  <div class="col-sm-12">
+   <label><i class="fa fa-file-text-o"></i> RISK LEVEL</label>
+   <h1>${breastCancerInfo.risklevel}</h1>
+ </div>
+</div><!-- row -->
+#{/if}     
+#{if breastCancerInfo.psascore}
+<div class="row">
+  <div class="col-sm-12">
+   <label><i class="fa fa-file-text-o"></i> PSA SCORE</label>
+   <h1>${breastCancerInfo.psascore}</h1>
+ </div>
+</div><!-- row -->
+#{/if}     
+#{if breastCancerInfo.gleasonscore}
+<div class="row">
+  <div class="col-sm-12">
+   <label><i class="fa fa-file-text-o"></i> GLEASON SCORE</label>
+   <h1>${breastCancerInfo.gleasonscore}</h1>
+ </div>
+</div><!-- row -->
+#{/if}   
+#{if patientDetails != null && breastCancerInfo != null}
 #{if breastCancerInfo.brca}
 <div class="row">
   <div class="col-sm-12">
@@ -61,38 +102,20 @@
  </div>
 </div><!-- row -->
 #{/if}
-
-#{/if}
-
-
-<!--
-#{if (patientDetails && (patientDetails.dateofdiagnosis || patientDetails.ec1name || patientDetails.ec1number)) || (userDetails && (userDetails.dob || userDetails.homePhone))}
+#{if mutations != null && mutations.size()>0 }
 <div class="row">
-  <div class="col-sm-12 patient-information">
+  <div class="col-sm-12">
+   <label><i class="fa fa-file-text-o"></i> Genetics</label>
+   #{set topicSize = mutations.size() /}
+#{list mutations, as:'seq'}
 
-    <label><i class="fa fa-file-text-o"></i> Patient Information</label>
-    #{if patientDetails && patientDetails.dateofdiagnosis}
-    <p><span>Date of Diagnosis:</span> ${patientDetails.dateofdiagnosis.format('MM/dd/yyyy')}</p>
-    #{/if}
-    #{if patientDetails && (patientDetails.ec1name || patientDetails.ec1number)}
-    <p><span>Support Contact:</span>
-      #{if patientDetails.ec1name && patientDetails.ec1number}
-      ${patientDetails.ec1name} - ${patientDetails.ec1number}
-      #{/if}
-      #{elseif patientDetails.ec1name}
-      ${patientDetails.ec1name}
-      #{/elseif}
-      #{else}
-      ${patientDetails.ec1number}
-      #{/else}
-    </p>
-    #{/if}
-    #{if userDetails.dob}
-    <p><span>DOB:</span> ${userDetails.dob.format('MM/dd/yyyy')}</p>
-    #{/if}
-    #{if userDetails.homePhone}
-    <p><span>Phone:</span> ${userDetails.homePhone}</p>
-    #{/if}
-  </div>
+#{if seq.pmDto != null}
+<h1>${seq.pmDto.mutation}#{if mutations.size() > 1 && topicSize > 1 },&nbsp;&nbsp;#{/if}</h1>
+#{set topicSize = topicSize -1 /}
+#{/if}
+#{/list}
+</div>
 </div><!-- row -->
+    #{/if}
+    #{/if}
 <!-- #{/if}-->

@@ -16,6 +16,8 @@ public class BreastCancerStageDTO {
 	@GeneratedValue(strategy= GenerationType.SEQUENCE, generator="bcsinfo_stage_id_seq")
 	@SequenceGenerator(allocationSize=1, schema="nav",  name="bcsinfo_stage_id_seq", sequenceName = "nav.bcsinfo_stage_id_seq")
 	private Integer id;
+	@Column(name="diseaseid")
+	private Integer diseaseid;
 
 	@Column(name="stage")
 	private String name;
@@ -38,4 +40,10 @@ public class BreastCancerStageDTO {
 		this.id = id;
 	}
 
+	public Integer getDiseaseid() {
+		return diseaseid;
+	}
+	public void setDiseaseid(Integer diseaseid) {
+		this.diseaseid = diseaseid;
+	}
 }

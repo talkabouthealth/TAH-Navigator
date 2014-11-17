@@ -1,10 +1,12 @@
 package models;
 
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -30,9 +32,40 @@ public class BreastCancerInfoDTO {
 	@Column(name="her2")
 	private Character her2;
 	
+	@Column(name="typeid")
+	private Integer typeid;	
+	@Column(name="subtypeid")
+	private Integer subtypeid;	
 	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="stage_id", insertable=false, updatable=false)
 	private BreastCancerStageDTO bcStage;
+	@OneToMany
+	@JoinColumn(name="pct_id")
+	private List<PatientCttSideEffectDTO> pctSeDtos;
+	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="typeid", insertable=false, updatable=false)
+	private CancerTypeDTO type;
+	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="subtypeid", insertable=false, updatable=false)
+	private CancerTypeDTO subtype;
+	@Column(name="risklevel")
+	private String risklevel;
+	@Column(name="psascore")
+	private String psascore;
+	@Column(name="gleasonscore")
+	private String gleasonscore;
+	public CancerTypeDTO getType() {
+		return type;
+	}
+	public void setType(CancerTypeDTO type) {
+		this.type = type;
+	}
+	public CancerTypeDTO getSubtype() {
+		return subtype;
+	}
+	public void setSubtype(CancerTypeDTO subtype) {
+		this.subtype = subtype;
+	}
 
 	public Integer getId() {
 		return id;
@@ -90,4 +123,34 @@ public class BreastCancerInfoDTO {
 		this.bcStage = bcStage;
 	}
 
+	public Integer getTypeid() {
+		return typeid;
+	}
+	public void setTypeid(Integer typeid) {
+		this.typeid = typeid;
+	}
+	public Integer getSubtypeid() {
+		return subtypeid;
+	}
+	public void setSubtypeid(Integer subtypeid) {
+		this.subtypeid = subtypeid;
+	}
+	public String getRisklevel() {
+		return risklevel;
+	}
+	public void setRisklevel(String risklevel) {
+		this.risklevel = risklevel;
+	}
+	public String getPsascore() {
+		return psascore;
+	}
+	public void setPsascore(String psascore) {
+		this.psascore = psascore;
+	}
+	public String getGleasonscore() {
+		return gleasonscore;
+	}
+	public void setGleasonscore(String gleasonscore) {
+		this.gleasonscore = gleasonscore;
+	}
 }
