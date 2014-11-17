@@ -268,7 +268,7 @@ public class Treatment {
 			pctDto = new PatientChemoTreatmentDTO();
 		}
 		
-		
+		/*
 		TypedQuery<MedicineCatlogDTO> mQuery = em.createQuery("FROM MedicineCatlogDTO m WHERE m.label = :label AND m.brandname LIKE :brandname", MedicineCatlogDTO.class); 
 		mQuery.setParameter("label", genericName);
 		mQuery.setParameter("brandname", "%" + brandName + "%");
@@ -282,7 +282,7 @@ public class Treatment {
 			em.persist(mDto);
 			em.getTransaction().commit();
 		}
-		
+		*/
 		pctDto.setUserId(patientId);
 		pctDto.setGenericName(genericName);
 		pctDto.setBrandName(brandName);
@@ -615,7 +615,7 @@ public class Treatment {
 		EntityManager em = JPAUtil.getEntityManager();
 		List<PatientRadiationTreatmentDTO> radiationTreatments = null;
 		try {
-			TypedQuery<PatientRadiationTreatmentDTO> query = em.createQuery("FROM PatientRadiationTreatmentDTO c WHERE c.userId = :userId", PatientRadiationTreatmentDTO.class);
+			TypedQuery<PatientRadiationTreatmentDTO> query = em.createQuery("FROM PatientRadiationTreatmentDTO p WHERE p.userId = :userId ORDER BY p.startDate ASC", PatientRadiationTreatmentDTO.class);
 			query.setParameter("userId", patientId);
 			radiationTreatments = query.getResultList();
 		} 
@@ -675,7 +675,7 @@ public class Treatment {
 		EntityManager em = JPAUtil.getEntityManager();
 		List<PatientChemoTreatmentDTO> chemoTreatments = null;
 		try {
-			TypedQuery<PatientChemoTreatmentDTO> query = em.createQuery("FROM PatientChemoTreatmentDTO c WHERE c.userId = :userId", PatientChemoTreatmentDTO.class);
+			TypedQuery<PatientChemoTreatmentDTO> query = em.createQuery("FROM PatientChemoTreatmentDTO p WHERE p.userId = :userId ORDER BY p.startDate ASC", PatientChemoTreatmentDTO.class);
 			query.setParameter("userId", patientId);
 			chemoTreatments = query.getResultList();
 		} 
@@ -692,7 +692,7 @@ public class Treatment {
 		EntityManager em = JPAUtil.getEntityManager();
 		List<PatientSurgeryInfoDTO> surgeryInfo = null;
 		try {
-			TypedQuery<PatientSurgeryInfoDTO> query = em.createQuery("FROM PatientSurgeryInfoDTO c WHERE c.userId = :userId", PatientSurgeryInfoDTO.class);
+			TypedQuery<PatientSurgeryInfoDTO> query = em.createQuery("FROM PatientSurgeryInfoDTO p WHERE p.userId = :userId ORDER BY p.surgeryDate ASC", PatientSurgeryInfoDTO.class);
 			query.setParameter("userId", patientId);
 			surgeryInfo = query.getResultList();
 		} 

@@ -55,6 +55,7 @@ import nav.dao.PatientDetailDAO;
 import nav.dao.ProfileDAO;
 import nav.dao.Treatment;
 import nav.dao.UserDAO;
+import nav.dto.CareMember;
 import nav.dto.ExpertBean;
 import nav.dto.UserBean;
 import play.mvc.Controller;
@@ -125,6 +126,18 @@ public class CarePatien  extends Controller {
 			List<MedicineCatlogDTO> medications = Treatment.getAllMedications();
 			List<ChemoScheduleDTO> chemoSchedules = Treatment.allChemoSchedules();
 			List<SideEffectDTO> sideEffects = Treatment.allSideEffects();
+			
+			List<CareMember> doctors = UserDAO.verifiedDoctors();
+			Map<Integer, String> doctorNames = new HashMap<Integer, String>();
+			for(CareMember doctor : doctors) {			
+				StringBuilder name = new StringBuilder("");
+				if (doctor.getFirstName() != null) {
+					name.append(doctor.getFirstName());
+				}				
+				doctorNames.put(doctor.getId(), name.toString());
+			}
+			jsonData.put("doctors", doctorNames);
+			
 			jsonData.put("medications", medications);
 			jsonData.put("chemoSchedules", chemoSchedules);
 			jsonData.put("sideEffects", sideEffects);
@@ -166,6 +179,19 @@ public class CarePatien  extends Controller {
 			List<SurgeryTypeDTO> surgeryTypes = Treatment.allSurgeryTypes();
 			List<TreatmentRegionDTO> treatmentRegions = Treatment.allTreatementRegions();
 			List<SideEffectDTO> sideEffects = Treatment.allSideEffects();
+			
+			
+			List<CareMember> doctors = UserDAO.verifiedDoctors();
+			Map<Integer, String> doctorNames = new HashMap<Integer, String>();
+			for(CareMember doctor : doctors) {			
+				StringBuilder name = new StringBuilder("");
+				if (doctor.getFirstName() != null) {
+					name.append(doctor.getFirstName());
+				}				
+				doctorNames.put(doctor.getId(), name.toString());
+			}
+			jsonData.put("doctors", doctorNames);
+			
 			jsonData.put("surgeryTypes", surgeryTypes);
 			jsonData.put("treatmentRegions", treatmentRegions);
 			jsonData.put("sideEffects", sideEffects);
@@ -297,10 +323,23 @@ public class CarePatien  extends Controller {
 			List<RadiationScheduleDTO> radiationSchedules = Treatment.allRadiationSchedules();
 			List<TreatmentRegionDTO> treatmentRegions = Treatment.allTreatementRegions();
 			List<SideEffectDTO> sideEffects = Treatment.allSideEffects();
+			
+			List<CareMember> doctors = UserDAO.verifiedDoctors();
+			Map<Integer, String> doctorNames = new HashMap<Integer, String>();
+			for(CareMember doctor : doctors) {			
+				StringBuilder name = new StringBuilder("");
+				if (doctor.getFirstName() != null) {
+					name.append(doctor.getFirstName());
+				}				
+				doctorNames.put(doctor.getId(), name.toString());
+			}
+			jsonData.put("doctors", doctorNames);
+			
 			jsonData.put("radiationTypes", radiationTypes);
 			jsonData.put("radiationSchedules", radiationSchedules);
 			jsonData.put("treatmentRegions", treatmentRegions);
 			jsonData.put("sideEffects", sideEffects);
+			
 		}
 		if (formType.equalsIgnoreCase("edit") && treatmentId != null) {
 			PatientRadiationTreatmentDTO prtDto = Treatment.getRadiationTreatment(treatmentId);

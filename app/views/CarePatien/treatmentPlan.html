@@ -1,5 +1,5 @@
 #{include '/tags/patientSummary.html' /}
-<div class="container-fluid treatment-plan">
+<div class="container-fluid">
   <!-- Radiation Treatment -->
 
   <div class="title">
@@ -10,43 +10,30 @@
 
 
   #{if radiationTreatments}
-  <table class="radiation-treatment table table-bordered table-striped table-condensed table-hover">
+  <table class="table table-bordered table-striped table-condensed table-hover">
     <thead>
     <tr>
-      <th class="type">Type</th>
-      <th class="dates">Dates</th>
-      <th class="dose">Dose</th>
-      <th class="schedule">Schedule</th>
-      <th class="region">Region Treated</th>
-      <th>Doctor</th>
-      <!--<th class="side-effects">Side Effects Experienced</th>-->
-      <th class="notes">Notes</th>
+      <th class="col-sm-3">Type</th>
+      <th class="col-sm-1">Dates</th>
+      <th class="col-sm-1">Dose</th>
+      <th class="col-sm-1">Schedule</th>
+      <th class="col-sm-1">Region Treated</th>
+      <th class="col-sm-2">Doctor</th>      
+      <th class="col-sm-3">Notes</th>
     </tr>
   </thead>
   <tbody>
     #{list items:radiationTreatments, as:'rt'}
     <tr>
-      <td class="type"><a form_type="edit" patient_id="${rt.userId}" treatment_id="${rt.id}" onclick="careTeamController.evtMsgHandler('radiation_treatment_form', this);">${rt.rtDto.name}</a></td>
-      <td class="dates">#{if rt.startDate} ${rt.startDate.format('MM/dd/yyyy')} #{/if}
+      <td><a form_type="edit" patient_id="${rt.userId}" treatment_id="${rt.id}" onclick="careTeamController.evtMsgHandler('radiation_treatment_form', this);">${rt.rtDto.name}</a></td>
+      <td>#{if rt.startDate} ${rt.startDate.format('MM/dd/yyyy')} #{/if}
         #{if rt.endDate} - ${rt.endDate.format('MM/dd/yyyy')} #{/if}
       </td>
-      <td class="dose">#{if rt.dose} ${rt.dose} #{/if}</td>
-      <td class="schedule">#{if rt.rsDto} ${rt.rsDto.timePeriod} #{/if}</td>
-      <td class="region">#{if rt.trDto} ${rt.trDto.region} #{/if}</td>
-      <td>#{if rt.doctor} ${rt.doctor} #{/if}</td>
-      <!--<td class="side-effects">
-        #{if rt.prtSeDtos}
-        #{list items: rt.prtSeDtos, as:'prtSeDto'}
-        #{if prtSeDto_isFirst}
-        ${prtSeDto.seDto.description}
-        #{/if}
-        #{else}
-        , ${prtSeDto.seDto.description}
-        #{/else}
-        #{/list}
-        #{/if}
-      </td>-->
-      <td class="notes">#{if rt.notes} ${rt.notes} #{/if}</td>
+      <td>#{if rt.dose} ${rt.dose} #{/if}</td>
+      <td>#{if rt.rsDto} ${rt.rsDto.timePeriod} #{/if}</td>
+      <td>#{if rt.trDto} ${rt.trDto.region} #{/if}</td>
+      <td>#{if rt.doctor} ${rt.doctor} #{/if}</td>      
+      <td>#{if rt.notes} ${rt.notes} #{/if}</td>
     </tr>
 
     #{/list}
@@ -65,37 +52,24 @@
 
   </div>
   #{if surgeryInfo}
-  <table class="surgery table table-bordered table-striped table-condensed table-hover">
+  <table class="table table-bordered table-striped table-condensed table-hover">
     <thead>
     <tr>
-      <th class="surgery-name"></th>
-      <th class="date">Date</th>
-      <th class="region-treated">Region Treated</th>
-      <!--<th class="side-effects">Side Effects Experienced</th>-->
-      <th>Doctor</th>
-      <th class="notes">Notes</th>
+      <th class="col-sm-3"></th>
+      <th class="col-sm-1">Date</th>
+      <th class="col-sm-3">Region Treated</th>      
+      <th class="col-sm-2">Doctor</th>
+      <th class="col-sm-3">Notes</th>
     </tr>
   </thead>
   <tbody>
     #{list items:surgeryInfo, as:'si'}
     <tr>
-      <td class="surgery-name"><a form_type="edit" patient_id="${si.userId}" treatment_id="${si.id}" onclick="careTeamController.evtMsgHandler('surgery_form', this);">${si.stDto.name}</a></td>
-      <td class="date">#{if si.surgeryDate} ${si.surgeryDate.format('MM/dd/yyyy')} #{/if}</td>
-      <td class="region-treated">#{if si.trDto} ${si.trDto.region} #{/if}</td>
-      <!--<td class="side-effects">
-        #{if si.pstSeDtos}
-        #{list items: si.pstSeDtos, as:'pstSeDto'}
-        #{if pstSeDto_isFirst}
-        ${pstSeDto.seDto.description}
-        #{/if}
-        #{else}
-        , ${pstSeDto.seDto.description}
-        #{/else}
-        #{/list}
-        #{/if}
-      </td>-->
+      <td><a form_type="edit" patient_id="${si.userId}" treatment_id="${si.id}" onclick="careTeamController.evtMsgHandler('surgery_form', this);">${si.stDto.name}</a></td>
+      <td>#{if si.surgeryDate} ${si.surgeryDate.format('MM/dd/yyyy')} #{/if}</td>
+      <td>#{if si.trDto} ${si.trDto.region} #{/if}</td>
       <td>#{if si.doctor} ${si.doctor} #{/if}</td>
-      <td class="notes">#{if si.notes} ${si.notes} #{/if}</td>
+      <td>#{if si.notes} ${si.notes} #{/if}</td>
     </tr>
     #{/list}
   </tbody>
@@ -115,43 +89,30 @@
 
 
   #{if chemoTreatments}
-  <table class="chemotherapy table table-bordered table-striped table-condensed table-hover">
+  <table class="table table-bordered table-striped table-condensed table-hover">
     <thead>
     <tr>
-      <th class="treatment-name"></th>
-      <th class="dates">Dates</th>
-      <th class="cycles"># of Cycles</th>
-      <th class="schedule">Schedule</th>
-      <th class="dose-reduction">% Dose Reduction</th>
-      <!--<th class="side-effects">Side Effects Experienced</th>-->
-      <th>Doctor</th>
-      <th class="notes">Notes</th>
+      <th class="col-sm-3"></th>
+      <th class="col-sm-1">Dates</th>
+      <th class="col-sm-1"># of Cycles</th>
+      <th class="col-sm-1">Schedule</th>
+      <th class="col-sm-1">% Dose Reduction</th>      
+      <th class="col-sm-2">Doctor</th>
+      <th class="col-sm-3">Notes</th>
     </tr>
   </thead>
   <tbody>
     #{list items:chemoTreatments, as:'ct'}
     <tr>
-      <td class="treatment-name"><a form_type="edit" patient_id="${ct.userId}" treatment_id="${ct.id}" onclick="careTeamController.evtMsgHandler('chemotherapy_treatment_form', this);">${ct.genericName} (${ct.brandName})</a></td>
-      <td class="dates">#{if ct.startDate} ${ct.startDate.format('MM/dd/yyyy')} #{/if}
+      <td><a form_type="edit" patient_id="${ct.userId}" treatment_id="${ct.id}" onclick="careTeamController.evtMsgHandler('chemotherapy_treatment_form', this);">${ct.genericName} (${ct.brandName})</a></td>
+      <td>#{if ct.startDate} ${ct.startDate.format('MM/dd/yyyy')} #{/if}
         #{if ct.endDate} - ${ct.endDate.format('MM/dd/yyyy')} #{/if}
       </td>
-      <td class="cycles">#{if ct.cycleNo} ${ct.cycleNo} #{/if}</td>
-      <td class="schedule">#{if ct.csDto} ${ct.csDto.timePeriod} #{/if}</td>
-      <td class="dose-reduction">#{if ct.doseReduction} ${ct.doseReduction} #{/if}</td>
-      <!--<td class="side-effects">
-        #{if ct.pctSeDtos}
-        #{list items: ct.pctSeDtos, as:'pctSeDto'}
-        #{if pctSeDto_isFirst}
-        ${pctSeDto.seDto.description}
-        #{/if}
-        #{else}
-        , ${pctSeDto.seDto.description}
-        #{/else}
-        #{/list}
-        #{/if}
-      </td>-->
+      <td>#{if ct.cycleNo} ${ct.cycleNo} #{/if}</td>
+      <td>#{if ct.csDto} ${ct.csDto.timePeriod} #{/if}</td>
+      <td>#{if ct.doseReduction} ${ct.doseReduction} #{/if}</td>     
       <td>#{if ct.doctor} ${ct.doctor} #{/if}</td>
-      <td class="notes">#{if ct.notes} ${ct.notes} #{/if}</td>
+      <td>#{if ct.notes} ${ct.notes} #{/if}</td>
     </tr>
     #{/list}
   </tbody>
