@@ -62,7 +62,7 @@ CREATE TABLE nav.cancermutationmaster (
   mutation character varying(50),
   diseaseid integer,
   CONSTRAINT cancermutationmaster_pk PRIMARY KEY (id)
-)
+);
 
 INSERT INTO nav.cancermutationmaster(mutation, diseaseid) 
 VALUES ('KRAS', 4),
@@ -89,7 +89,7 @@ CREATE TABLE nav.patientmutation
   CONSTRAINT "patinetmutaion_patient_FK" FOREIGN KEY (patientid)
       REFERENCES nav."user" (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
-)
+);
 
 CREATE TABLE nav.cancertypemaster
 (
@@ -101,7 +101,7 @@ CREATE TABLE nav.cancertypemaster
   CONSTRAINT "cancertypemaster_diseaseid_FK" FOREIGN KEY (diseaseid)
       REFERENCES nav.diseasemaster (id) MATCH SIMPLE
       ON UPDATE NO ACTION ON DELETE NO ACTION
-)
+);
 
 INSERT INTO nav.cancertypemaster(type, name, diseaseid) 
 VALUES (true, 'NSCLC', 3),
