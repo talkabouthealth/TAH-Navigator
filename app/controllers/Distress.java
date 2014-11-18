@@ -28,7 +28,7 @@ import util.CommonUtil;
 @With( { Secure.class } )
 public class Distress  extends Controller {
 
-	public static void save(String curDist,String [] distressType,String otherDetail,String daterecrded, Integer updateBy, Integer patientId) {
+	public static void save(String curDist,String [] distressType,String otherDetail,String daterecrded, Integer updateBy, Integer patientId, Integer distressId) {
 
 //		System.out.println("dist : " + curDist);
 //		System.out.println("otherDetail : " + otherDetail);
@@ -53,7 +53,12 @@ public class Distress  extends Controller {
 		else {
 			user = CommonUtil.loadCachedUser(session);
 			userDto = UserDAO.getDetailsById(user.getId());
-			dto = DistressDAO.savePatientDistress(distInt,userDto.getUser(),otherDetail,dtCreated);
+			if (distressId != null) {				
+				dto = DistressDAO.updatePatientDistress(distInt,userDto.getUser(),otherDetail,dtCreated, distressId.intValue());
+			}
+			else {
+				dto = DistressDAO.savePatientDistress(distInt,userDto.getUser(),otherDetail,dtCreated);
+			}
 		}
 		if(distressType != null) {
 			for (String string : distressType) {
@@ -64,6 +69,8 @@ public class Distress  extends Controller {
 			}
 		}
 		JsonObject obj = new JsonObject();
+		
+		obj.add("distressId", new JsonPrimitive(String.valueOf(dto.getId())));
 		obj.add("status", new JsonPrimitive("200"));
 		renderJSON(obj);
 	}

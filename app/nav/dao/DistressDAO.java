@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import com.google.gson.JsonObject;
@@ -16,6 +18,7 @@ import nav.dto.DistressBean;
 import util.GlobalConstant;
 import util.JPAUtil;
 import models.DistressTypeMasterDTO;
+import models.PatientChemoTreatmentDTO;
 import models.PatientDistressDTO;
 import models.PatientDistressDetailDTO;
 import models.UserDTO;
@@ -42,6 +45,40 @@ public class DistressDAO {
 		}
 		return distressDTO;
 	}
+	
+	public static PatientDistressDTO updatePatientDistress(int distressValue,UserDTO user,String otherDetail,Date daterecrded, int distressId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		PatientDistressDTO distressDTO = new PatientDistressDTO();
+		TypedQuery<PatientDistressDTO> query = em.createQuery("SELECT p FROM PatientDistressDTO p WHERE p.id = :id", PatientDistressDTO.class); 
+		query.setParameter("id", distressId);
+		try {
+			distressDTO = query.getSingleResult();
+		} catch (NoResultException e) {
+			
+		}		
+		
+		Query deleteQuery = em.createQuery("DELETE FROM PatientDistressDetailDTO p WHERE p.patiendistress.id = :id");
+		deleteQuery.setParameter("id", distressId);
+		em.getTransaction().begin();
+		deleteQuery.executeUpdate();
+		em.getTransaction().commit();
+		
+		distressDTO.setDaterecrded(daterecrded);
+		distressDTO.setDistressvalue(distressValue);
+		distressDTO.setThrough(GlobalConstant.DISTRESS_MODE_WEB);
+		distressDTO.setUser(user);
+		distressDTO.setOtherdetail(otherDetail);		
+		try {
+			em.getTransaction().begin();
+			em.persist(distressDTO);
+			em.getTransaction().commit();
+		} catch(Exception e) {
+			System.out.println(e.getMessage());
+		} finally {
+			em.close();
+		}
+		return distressDTO;
+	} 
 	
 	public static PatientDistressDTO updateDistressByCareTeam(int distressValue, UserDTO user, Integer updateBy, Date daterecrded, String otherDetail) {
 		PatientDistressDTO distressDTO = new PatientDistressDTO();

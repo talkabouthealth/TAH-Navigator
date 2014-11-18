@@ -149,6 +149,7 @@
 $(function() {           
     $('head').append('<link rel="stylesheet" type="text/css" href="@{'/public/css/distressMeter.css'}">');
     var distressMeter = function(options) {
+        var distressId;
         var $container;
         var $slider;
         options = options || {};
@@ -347,8 +348,13 @@ $(function() {
             if (otherList.length > 0) {
                 params['otherDetail'] = otherList;
             }
-            $.post('/distress/save', params);
-        };
+            if (typeof distressId != 'undefined') {
+                params['distressId'] = distressId;
+            }
+            $.post('/distress/save', params, function(data) {
+                distressId = data.distressId;
+            }, "json");
+        };        
         var renderProblems = function() {
             var tpl = $('#dm_templates #tpl_problem').html();
             var listHtml = listRows(tpl, practical_problems);
@@ -488,10 +494,12 @@ $(function() {
             $container.html('<div class="distress-meter-form">' + html + '</div>'); 
             renderNonModalPage1();
             $container.on("click", ".page1-continue", function(e) {
+                submitData();
                 renderNonModalPage2();
             });
             $container.on("click", ".page2-back", function(e) {
                 readProblemValues();
+                submitData();
                 renderNonModalPage1();
             });
             $container.on("click", ".page2-submit", function(e) {
