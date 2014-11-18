@@ -124,7 +124,7 @@ public class DistressDAO {
 		DistressBean bean = null;
 		try {
 			Integer in = new Integer(patientId.getId());
-			TypedQuery<PatientDistressDTO> query = em.createQuery("SELECT c FROM PatientDistressDTO c WHERE c.user.id = :field order by daterecrded desc", PatientDistressDTO.class);
+			TypedQuery<PatientDistressDTO> query = em.createQuery("SELECT c FROM PatientDistressDTO c WHERE c.user.id = :field order by daterecrded desc, id desc", PatientDistressDTO.class);
 			query.setFirstResult(offset);
 			query.setMaxResults(1);
 			query.setParameter("field", in);
