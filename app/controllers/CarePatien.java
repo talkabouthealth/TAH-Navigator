@@ -323,7 +323,6 @@ public class CarePatien  extends Controller {
 			List<RadiationScheduleDTO> radiationSchedules = Treatment.allRadiationSchedules();
 			List<TreatmentRegionDTO> treatmentRegions = Treatment.allTreatementRegions();
 			List<SideEffectDTO> sideEffects = Treatment.allSideEffects();
-			
 			List<CareMember> doctors = UserDAO.verifiedDoctors();
 			Map<Integer, String> doctorNames = new HashMap<Integer, String>();
 			for(CareMember doctor : doctors) {			
@@ -334,12 +333,10 @@ public class CarePatien  extends Controller {
 				doctorNames.put(doctor.getId(), name.toString());
 			}
 			jsonData.put("doctors", doctorNames);
-			
 			jsonData.put("radiationTypes", radiationTypes);
 			jsonData.put("radiationSchedules", radiationSchedules);
 			jsonData.put("treatmentRegions", treatmentRegions);
 			jsonData.put("sideEffects", sideEffects);
-			
 		}
 		if (formType.equalsIgnoreCase("edit") && treatmentId != null) {
 			PatientRadiationTreatmentDTO prtDto = Treatment.getRadiationTreatment(treatmentId);
@@ -349,23 +346,6 @@ public class CarePatien  extends Controller {
 	}
 	
 	public static void saveRadiationData(Integer patientId, Integer treatmentId, Map<String, String> rtInfo, Map<Integer, String> sideEffects) {
-		/*
-		System.out.println("------------ Radiation ------------------");
-		System.out.println("Patient ID: " + patientId.toString());
-		if (treatmentId != null) {
-			System.out.println("Treatment ID: " + treatmentId.toString());
-		}
-		for (String key: rtInfo.keySet()) {
-			System.out.println(key + ": " + rtInfo.get(key));
-		}
-		if (sideEffects != null) {
-			System.out.print("Side Effects: ");
-			for (Integer key: sideEffects.keySet()) {
-				System.out.print(sideEffects.get(key) + ", ");
-			}
-		}
-		System.out.println("\n-------------------------------------");
-		*/
 		Treatment.saveRadiationTreatment(patientId, treatmentId, rtInfo, sideEffects);
 		treatmentPlan(patientId);
 	}

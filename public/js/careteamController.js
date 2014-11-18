@@ -24,17 +24,14 @@ var careTeamController = (function() {
 		'default': '#'    // nothing 
 	};
     var BREAST_CANCER_ID = 1;
-    var COLON_CANCER_ID = 4;
-	var ESOPHAGEAL_CANCER_ID = 6;
-	var LUNG_CANCER_ID = 3;
 	var PROSTATE_CANCER_ID = 2; 	
-	var RECTAL_CANCER_ID = 5;
+	var OVARIAN_CANCER_ID = 22;
 	var psaScoreArray = ["0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30"];
     
 	var curStageId ='' ;
 	var csrtype,csrsubtype;
 	var genetics;
-//	var mutationId = '';
+	
     var concernForm = {
         followUpDiv: '#followupplan',
         formId: '#follow-up-concern-form',
@@ -547,8 +544,7 @@ var careTeamController = (function() {
                         backdrop: 'static'
                     });
                     self.init();
-                }
-                else {
+                } else {
                     $(self.formId).modal('show');
                 }
                 self.empty();
@@ -598,10 +594,12 @@ var careTeamController = (function() {
         		$('#disease').change(function() {
         			var disease_id = $(this).val();
         		var bcStages = data.bcStages;
-        		length = bcStages.length;
+        			length = 0;
+
             		$('#stage').html('');
-        		for (var i = 0; i < length; i++) {
+            		for (var i = 0; i < bcStages.length; i++) {
             			if(disease_id == bcStages[i].diseaseid) {
+            				length = length + 1;
             				if(bcStages[i].id == curStageId) {
             					$('#stage').append('<option value="' + bcStages[i].id + '" selected="">' + bcStages[i].name + '</option>');
             				} else {
@@ -609,52 +607,45 @@ var careTeamController = (function() {
         		}
             			}
             		}
+            		if(length>0){
+            			$('#stage_div').show();
+            		} else {
+            			$('#stage_div').hide();	
+            		}
+            		try {
+            			$('#mutations').multiselect('destroy');
+            		} catch(e){}
             		var mutations = data.mutations;
             		$('#mutations').html('');
+            		var mutationLength = 0;
             		for (var i = 0; i < mutations.length; i++) {
             			if(disease_id == mutations[i].diseaseid) {
+            				mutationLength = mutationLength + 1;
            					$('#mutations').append('<option value="' + mutations[i].id + '">' + mutations[i].mutation + '</option>');
             			}
             		}
+        	        if (mutationLength>0) {
             		$('#mutations').val(genetics);
+        	        	$("#mutation_div").show();
+        	        	$('#mutations').multiselect({enableFiltering: false, buttonWidth: '310px',buttonClass: 'inputdropdown'});
+        	        } else {
+        	        	$("#mutation_div").hide();
+        	        }
 
         	        if (disease_id != BREAST_CANCER_ID) {  
         	            $('#er_div').hide();
         	            $('#pr_div').hide();
         	            $('#her2_div').hide();
-        	            $('#brca_div').hide();
         	        } else {
         	            $('#er_div').show();
         	            $('#pr_div').show();
         	            $('#her2_div').show();
-        	            $('#brca_div').show();
         	        }
-        	        if (disease_id != LUNG_CANCER_ID && disease_id != ESOPHAGEAL_CANCER_ID) {
-        	        	$('#cancersubtype_div').hide();
-        	        } else {
-        	        	var roottype = data.subtype;
-                		$('#cancersubtype').html('');
-                		for (var i = 0; i < roottype.length; i++) {
-                			if(disease_id == roottype[i].diseaseid) {
-               					$('#cancersubtype').append('<option value="' + roottype[i].id + '">' + roottype[i].name + '</option>');
-                			}
-                		}
-                		$('#cancersubtype_div').show();
-        	        }
-        	        if (disease_id != LUNG_CANCER_ID) {
-        	        	$('#cancertype_div').hide();
-        	        } else {
-        	        	var roottype = data.roottype;
-                		$('#cancertype').html('');
-                		for (var i = 0; i < roottype.length; i++) {
-                			if(disease_id == roottype[i].diseaseid) {
-               					$('#cancertype').append('<option value="' + roottype[i].id + '">' + roottype[i].name + '</option>');
-                			}
-                		}
-        	        	$('#cancertype_div').show();
-        	        }
-        	        $('#cancertype').val(csrtype);
-                   	$('#cancersubtype').val(csrsubtype);
+        	        if(disease_id != OVARIAN_CANCER_ID && disease_id != BREAST_CANCER_ID)
+        	        	$('#brca_div').hide();
+        	        else
+        	        	$('#brca_div').show();
+        	        
         	        if (disease_id != PROSTATE_CANCER_ID) {
         	        	 $('#risklevel_div').hide();
         	        	 $('#psascore_div').hide();
@@ -664,10 +655,36 @@ var careTeamController = (function() {
         	        	 $('#psascore_div').show();
         	        	 $('#gleasonscore_div').show();
         	        }
-        	        if (disease_id != LUNG_CANCER_ID && disease_id != COLON_CANCER_ID && disease_id != RECTAL_CANCER_ID) {
-        	        	$("#mutation_div").hide();
+
+    	        	var subTypeLenght = 0;
+    	        	var roottype = data.subtype;
+            		$('#cancersubtype').html('');
+            		for (var i = 0; i < roottype.length; i++) {
+            			if(disease_id == roottype[i].diseaseid) {
+            				subTypeLenght = subTypeLenght +1;
+           					$('#cancersubtype').append('<option value="' + roottype[i].id + '">' + roottype[i].name + '</option>');
+            			}
+            		}
+            		if(subTypeLenght>0) {
+            			$('#cancersubtype').val(csrsubtype);
+            			$('#cancersubtype_div').show();
         	        } else {
-        	        	$("#mutation_div").show();
+            			$('#cancersubtype_div').hide();
+            		}
+    	        	var roottype = data.roottype;
+            		$('#cancertype').html('');
+            		var rootTypeLenght = 0;
+            		for (var i = 0; i < roottype.length; i++) {
+            			if(disease_id == roottype[i].diseaseid) {
+            				rootTypeLenght = rootTypeLenght +1 ;
+           					$('#cancertype').append('<option value="' + roottype[i].id + '">' + roottype[i].name + '</option>');
+            			}
+            		}
+            		if(rootTypeLenght>0) {
+            		    $('#cancertype').val(csrtype);
+            			$('#cancertype_div').show();
+            		} else {
+            			$('#cancertype_div').hide();
         	        }
         	    });
         		$('#save-diagnosis-data').click(function(e) {
@@ -682,11 +699,15 @@ var careTeamController = (function() {
                   $('#er').val(data.er);
                   $('#pr').val(data.pr);
                   $('#her2').val(data.her2);
-                  $('#brca').val(data.brca);
+                  
             	} else {
             	  $('#er').val('');
                   $('#pr').val('');
                   $('#her2').val('');
+            	}
+            	if (BREAST_CANCER_ID == data.diseaseId || OVARIAN_CANCER_ID == data.diseaseId) {
+            		$('#brca').val(data.brca);
+            	} else {
                   $('#brca').val('');
               }
            	  	if ("stageId" in data) {
@@ -709,32 +730,27 @@ var careTeamController = (function() {
             }
             if ("firstDiagnosed" in data) {                
                 $('#first-diagnosed').val(formatDate(new Date(data.firstDiagnosed), 'mm/dd/yyyy'));
-            }
-            else {
+            } else {
             	$('#first-diagnosed').val('');
             }
             if ("dateOfBirth" in data) {                
                 $('#dob').val(formatDate(new Date(data.dateOfBirth), 'mm/dd/yyyy'));
-            }
-            else {
+            } else {
             	$('#dob').val('');
             }
             if ("Phone" in data) {
                 $("#phone").val(data.Phone);
-            }
-            else {
+            } else {
             	$("#phone").val('');
             }
             if ("supportName" in data) {
                 $('#ec1name').val(data.supportName);
-            }
-            else {
+            } else {
             	$('#ec1name').val('');
             }
             if ("supportNumber" in data) {
                 $('#ec1number').val(data.supportNumber);
-            }
-            else {
+            } else {
             	$('#ec1number').val('');
             }
             
@@ -768,24 +784,32 @@ var careTeamController = (function() {
             params['diseaseInfo.er'] = $('#er').val();
             params['diseaseInfo.pr'] = $('#pr').val();
             params['diseaseInfo.her2'] = $('#her2').val();
+        }
+        if (diseaseId == BREAST_CANCER_ID || diseaseId == OVARIAN_CANCER_ID) {
             params['diseaseInfo.brca'] = $('#brca').val();
-        }
-            params['diseaseInfo.stage_id'] = $('#stage').val();
-       	if (diseaseId == LUNG_CANCER_ID || diseaseId == COLON_CANCER_ID || diseaseId == RECTAL_CANCER_ID) {
-       		params['diseaseInfo.mutation_id'] = $('#mutations').val();
-       	}
-       	if (diseaseId == LUNG_CANCER_ID || diseaseId == ESOPHAGEAL_CANCER_ID) {  
-        	params['diseaseInfo.subtypeid'] = $('#cancersubtype').val();
-        }
-        if (diseaseId == LUNG_CANCER_ID) {
-        	params['diseaseInfo.typeid'] = $('#cancertype').val();
         }
         if (diseaseId == PROSTATE_CANCER_ID) {
         	params['diseaseInfo.risklevel'] = $('#risklevel').val();
         	params['diseaseInfo.psascore'] = $('#psascore').val();
         	params['diseaseInfo.gleasonscore'] = $('#gleasonscore').val();
         }
-        $('#ui-tabs-6').html()
+            params['diseaseInfo.stage_id'] = $('#stage').val();
+
+       	var mutationValue = $('#mutations').val();
+       	if(mutationValue != null && mutationValue != '') {
+       		params['diseaseInfo.mutation_id'] = $('#mutations').val();
+       	}
+
+    	var subTypeValue = $('#cancersubtype').val();
+    	if(subTypeValue != null && subTypeValue != '') {
+        	params['diseaseInfo.subtypeid'] = $('#cancersubtype').val();
+        }
+
+       	var rootTypeValue = $('#cancertype').val();
+       	if(rootTypeValue != null && rootTypeValue != '') {
+        	params['diseaseInfo.typeid'] = $('#cancertype').val();
+        }
+
         $.post(actions['ctp_diagnosis_update'], params, function(htmlText) {
             $('#diagnosis').html(htmlText);
         }, "html");

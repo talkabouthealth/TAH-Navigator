@@ -103,9 +103,9 @@ CREATE TABLE nav.cancertypemaster
       ON UPDATE NO ACTION ON DELETE NO ACTION
 );
 
-INSERT INTO nav.cancertypemaster(type, name, diseaseid) 
-VALUES (true, 'NSCLC', 3),
-(true, 'SCLC', 3),
+INSERT INTO nav.cancertypemaster(roottype, name, diseaseid) 
+VALUES (true, 'NSCLC (Small-cell lung cancer)', 3),
+(true, 'SCLC (Small cell lung caner)', 3),
 (false, 'Adenocarcinoma', 3),
 (false, 'Squamous Cell', 3),
 (false, 'Large Cell', 3),

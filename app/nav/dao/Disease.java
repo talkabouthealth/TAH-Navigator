@@ -13,16 +13,36 @@ import util.JPAUtil;
 
 public class Disease {
 	public final static int BREAST_CANCER_ID = 1; 
-	public final static int COLON_CANCER_ID = 4;
-	public final static int ESOPHAGEAL_CANCER_ID = 6;
+	public final static int PROSTATE_CANCER_ID = 2;
 	public final static int LUNG_CANCER_ID = 3;
-	public final static int PROSTATE_CANCER_ID = 2; 	
+	public final static int COLON_CANCER_ID = 4;
 	public final static int RECTAL_CANCER_ID = 5;
+	public final static int ESOPHAGEAL_CANCER_ID = 6;
+	public final static int ENDOMETRIAL_CANCER_ID = 7;
+	public final static int BLADDER_CANCER_ID = 8;
+	public final static int NON_HODGKIN_LYMPHOMA_ID = 9;
+	public final static int MELANOMA_ID = 10;
+	public final static int AML_ID = 11;
+	public final static int ALL_ID = 12;
+	public final static int CLL_ID = 13;
+	public final static int CML_ID = 14;
+	public final static int CERVICAL_CANCER_ID = 15;
+	public final static int STOMACH_CANCER_ID = 16;
+	public final static int LIVER_CANCER_ID = 17;
+	public final static int PANCREATIC_CANCER_ID = 18;
+	public final static int LARYNGEAL_CANCER_ID = 19;
+	public final static int PHARYNGEAL_CANCER_ID = 20;
+	public final static int MULTIPLE_MYELOMA_ID = 21;
+	public final static int OVARIAN_CANCER_ID = 22;
+	public final static int KIDNEY_RENAL_CANCER_ID = 23;
+	public final static int BRAIN_CANCER_ID = 24;
+	public final static int THYROID_CANCER_ID = 25;
+	public final static int HODGKIN_LYMPHOMA_CANCER_ID = 26;
 	public static List<DiseaseMasterDTO> allDiseases() {
 		List<DiseaseMasterDTO> diseases = null;
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
-			TypedQuery<DiseaseMasterDTO> query = em.createQuery("FROM DiseaseMasterDTO order by name", DiseaseMasterDTO.class); 
+			TypedQuery<DiseaseMasterDTO> query = em.createQuery("FROM DiseaseMasterDTO where diseaseactive = true order by name", DiseaseMasterDTO.class); 
 			diseases = query.getResultList();
 		} 
 		catch(Exception e) {
@@ -75,8 +95,6 @@ public class Disease {
 		catch(Exception e) {
 			e.printStackTrace();
 		} 
-		finally {
-		}
 		return stages;
 	}
 	public static List<CancerTypeDTO> getCancerTypes(boolean isRoot) {

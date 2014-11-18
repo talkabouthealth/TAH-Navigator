@@ -13,6 +13,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.sound.midi.MidiDevice.Info;
 
+import org.apache.commons.lang.StringUtils;
 import models.AddressDTO;
 import models.AppointmentDTO;
 import models.BreastCancerInfoDTO;
@@ -470,7 +471,7 @@ public class PatientDetailDAO {
 		
 			String str = diseaseInfo.get("stage_id");
 			Integer stageId;
-			if (str.isEmpty()) {
+		if (StringUtils.isBlank(str)) {
 				stageId = null;
 		} else {
 				stageId = new Integer(str);
@@ -483,55 +484,23 @@ public class PatientDetailDAO {
 			Character er = CommonUtil.getHormoneStatus(diseaseInfo.get("er"));
 			Character pr = CommonUtil.getHormoneStatus(diseaseInfo.get("pr"));
 			Character her2 = CommonUtil.getHormoneStatus(diseaseInfo.get("her2"));
-			Character brca = CommonUtil.getHormoneStatus(diseaseInfo.get("brca"));
+
 			
 			breastCancerInfo.setEr(er);
 			breastCancerInfo.setPr(pr);
 			breastCancerInfo.setHer2(her2);
-			breastCancerInfo.setBrca(brca);
-		} 
-		if (diseaseId != null && (diseaseId == Disease.LUNG_CANCER_ID)) {
-			str = diseaseInfo.get("typeid");
-			if (str.isEmpty()) {
-				breastCancerInfo.setTypeid(null);
-			} else {
-				breastCancerInfo.setTypeid( new Integer(str));
-			}
-			str = diseaseInfo.get("subtypeid");
-			if (str.isEmpty()) {
-				breastCancerInfo.setSubtypeid(null);
-			} else {
-				breastCancerInfo.setSubtypeid( new Integer(str));
-			}
 		} else {
-		}
-		if (diseaseId != null && (diseaseId == Disease.ESOPHAGEAL_CANCER_ID)) {
-			str = diseaseInfo.get("subtypeid");
-			if (str.isEmpty()) {
-				breastCancerInfo.setSubtypeid(null);
-			} else {
-				breastCancerInfo.setSubtypeid( new Integer(str));
-			}
-		}
-		if (diseaseId != null && (diseaseId == Disease.LUNG_CANCER_ID || diseaseId == Disease.COLON_CANCER_ID || diseaseId == Disease.RECTAL_CANCER_ID)) {
 			breastCancerInfo.setEr(null);
 			breastCancerInfo.setPr(null);
 			breastCancerInfo.setHer2(null);
-			breastCancerInfo.setBrca(null);
-			String mustr = diseaseInfo.get("mutation_id");
-			String muIds [] = mustr.split(",");
-			Integer muId;
-			for (String string : muIds) {
-				string = string.trim();
-				if (!string.isEmpty()) {
-					muId = new Integer(string);
-					PatientMutationDTO pmDto = new PatientMutationDTO();
-					pmDto.setMutationid(muId);
-					pmDto.setPatientid(new Integer(patientId));
-					BaseDAO.save(pmDto);
-				}
-			}
 		}
+		if (diseaseId != null && (diseaseId == Disease.OVARIAN_CANCER_ID || diseaseId == Disease.BREAST_CANCER_ID)) {
+			Character brca = CommonUtil.getHormoneStatus(diseaseInfo.get("brca"));
+			breastCancerInfo.setBrca(brca);
+		} else {
+			breastCancerInfo.setBrca(null);
+				}
+
 		if (diseaseId != null && diseaseId == Disease.PROSTATE_CANCER_ID){
 			breastCancerInfo.setRisklevel(diseaseInfo.get("risklevel"));
 			breastCancerInfo.setPsascore(diseaseInfo.get("psascore"));
@@ -540,6 +509,33 @@ public class PatientDetailDAO {
 			breastCancerInfo.setRisklevel(null);
 			breastCancerInfo.setPsascore(null);
 			breastCancerInfo.setGleasonscore(null);
+		}
+		str = diseaseInfo.get("typeid");
+		if (StringUtils.isBlank(str)) {
+			breastCancerInfo.setTypeid(null);
+		} else {
+			breastCancerInfo.setTypeid( new Integer(str));
+		}
+		str = diseaseInfo.get("subtypeid");
+		if (StringUtils.isBlank(str)) {
+			breastCancerInfo.setSubtypeid(null);
+		} else {
+			breastCancerInfo.setSubtypeid( new Integer(str));
+		}
+		String mustr = diseaseInfo.get("mutation_id");
+		if (StringUtils.isNotBlank(mustr)) {
+			String muIds [] = mustr.split(",");
+			Integer muId;
+			for (String string : muIds) {
+				string = string.trim();
+				if (StringUtils.isNotBlank(string)) {
+					muId = new Integer(string);
+					PatientMutationDTO pmDto = new PatientMutationDTO();
+					pmDto.setMutationid(muId);
+					pmDto.setPatientid(new Integer(patientId));
+					BaseDAO.save(pmDto);
+				}
+			}
 		}
 		if(diseaseId != null) {
 			em.getTransaction().begin();
@@ -568,11 +564,10 @@ public class PatientDetailDAO {
 					date = df.parse(dob);
 					userDetails.setDob(date);
 				} catch (ParseException e1) {
-					//e.printStackTrace();
+					e1.printStackTrace();
 				}
-			}
-			else {
-				userDetails.setDob(null);
+//			} else {
+//				userDetails.setDob(null);
 			}
 		}
 		

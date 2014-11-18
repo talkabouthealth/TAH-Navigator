@@ -21,6 +21,9 @@ public class DiseaseMasterDTO {
 	@Column(name = "name")
 	private String name;
 
+	@Column(name = "diseaseactive") 
+	private boolean diseaseactive;
+	
 	public int getId() {
 		return id;
 	}
@@ -35,5 +38,13 @@ public class DiseaseMasterDTO {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public boolean isDiseaseactive() {
+		return diseaseactive;
+	}
+
+	public void setDiseaseactive(boolean diseaseactive) {
+		this.diseaseactive = diseaseactive;
 	}
 }
