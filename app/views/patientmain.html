@@ -260,6 +260,24 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
       })(jQuery);
 
 // KEVIN: I don't know what this is for.
+
+var makeModalUncloseable = function(el) {
+    $('.modal .close').hide();
+    el.on('hide.bs.modal', function (e) {
+        e.preventDefault(); 
+    });
+};
+var showWelcome = function() {
+    $('#welcome').modal({ keyboard: false });
+    makeModalUncloseable($('#welcome'));
+
+    $('#welcome button.cont').click(function(e) {
+        $('#welcome').unbind('hide.bs.modal')
+        $('#welcome').modal('hide');
+        $('a.distress-meter').click();
+        makeModalUncloseable($('a.distress-meter'));
+    });
+};
 $(document).ready(function(){
 	$("a.disabled").click(function(e){
 		$("#verificationAlert").modal({ keyboard: false });
@@ -273,11 +291,7 @@ $(document).ready(function(){
 		#{set session.put("showdistress",'false') /}
 	#{/elseif}
 	#{ if showPopup == 'true'}
-		$('#welcome').modal({ keyboard: false });
-		$('#welcome button.cont').click(function(e){
-			$('#welcome').modal('hide');
-		    $('a.distress-meter').click();
-		});
+        showWelcome();
 	#{/if}
   $('iframe').each(function()
   {
