@@ -25,11 +25,13 @@ var careTeamController = (function() {
 	};
     var BREAST_CANCER_ID = 1;
 	var PROSTATE_CANCER_ID = 2; 	
+	var BLADDER_CANCER_ID = 8;
 	var OVARIAN_CANCER_ID = 22;
+
 	var psaScoreArray = ["0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30"];
-    
+
 	var curStageId ='' ;
-	var csrtype,csrsubtype;
+	var csrtype,csrsubtype,invasionVal,gradeVal;
 	var genetics;
 	
     var concernForm = {
@@ -135,7 +137,7 @@ var careTeamController = (function() {
                 'patientId': patientId,
                 'concernId': concernId
             };
-            
+
             $.post(actions['fup_remove_concern'], params, function(htmlText) {
                 $(self.followUpDiv).html(htmlText);
             }, "html");
@@ -576,7 +578,9 @@ var careTeamController = (function() {
         	curStageId = data.stageId;
         	var initFlag = $('#diagnosis-edit-form').attr('init-flag');
         	if (initFlag == '0') {
+        		
         		$("#psascore").autocomplete({source: psaScoreArray,minLenght:1 });
+        		
         		$('#diagnosis-edit-form').attr('init-flag', '1');
         		var diseases = data.diseases;
         		var length = diseases.length;
@@ -591,9 +595,10 @@ var careTeamController = (function() {
         			format: 'mm/dd/yyyy',
                     autoclose: true
         		});
+
         		$('#disease').change(function() {
         			var disease_id = $(this).val();
-        		var bcStages = data.bcStages;
+        			var bcStages = data.bcStages;
         			length = 0;
 
             		$('#stage').html('');
@@ -603,8 +608,8 @@ var careTeamController = (function() {
             				if(bcStages[i].id == curStageId) {
             					$('#stage').append('<option value="' + bcStages[i].id + '" selected="">' + bcStages[i].name + '</option>');
             				} else {
-        			$('#stage').append('<option value="' + bcStages[i].id + '">' + bcStages[i].name + '</option>');
-        		}
+            					$('#stage').append('<option value="' + bcStages[i].id + '">' + bcStages[i].name + '</option>');
+            				}
             			}
             		}
             		if(length>0){
@@ -625,14 +630,14 @@ var careTeamController = (function() {
             			}
             		}
         	        if (mutationLength>0) {
-            		$('#mutations').val(genetics);
+        	        	$('#mutations').val(genetics);
         	        	$("#mutation_div").show();
         	        	$('#mutations').multiselect({enableFiltering: false, buttonWidth: '310px',buttonClass: 'inputdropdown'});
         	        } else {
         	        	$("#mutation_div").hide();
         	        }
 
-        	        if (disease_id != BREAST_CANCER_ID) {  
+        	        if (disease_id != BREAST_CANCER_ID) {
         	            $('#er_div').hide();
         	            $('#pr_div').hide();
         	            $('#her2_div').hide();
@@ -641,20 +646,21 @@ var careTeamController = (function() {
         	            $('#pr_div').show();
         	            $('#her2_div').show();
         	        }
+        	        
         	        if(disease_id != OVARIAN_CANCER_ID && disease_id != BREAST_CANCER_ID)
         	        	$('#brca_div').hide();
         	        else
         	        	$('#brca_div').show();
         	        
         	        if (disease_id != PROSTATE_CANCER_ID) {
-        	        	 $('#risklevel_div').hide();
-        	        	 $('#psascore_div').hide();
-        	        	 $('#gleasonscore_div').hide();
-        	        } else {
-        	        	 $('#risklevel_div').show();
-        	        	 $('#psascore_div').show();
-        	        	 $('#gleasonscore_div').show();
-        	        }
+	       	        	 $('#risklevel_div').hide();
+	       	        	 $('#psascore_div').hide();
+	       	        	 $('#gleasonscore_div').hide();
+	       	        } else {
+	       	        	 $('#risklevel_div').show();
+	       	        	 $('#psascore_div').show();
+	       	        	 $('#gleasonscore_div').show();
+	       	        }
 
     	        	var subTypeLenght = 0;
     	        	var roottype = data.subtype;
@@ -668,9 +674,10 @@ var careTeamController = (function() {
             		if(subTypeLenght>0) {
             			$('#cancersubtype').val(csrsubtype);
             			$('#cancersubtype_div').show();
-        	        } else {
+            		} else {
             			$('#cancersubtype_div').hide();
             		}
+            		
     	        	var roottype = data.roottype;
             		$('#cancertype').html('');
             		var rootTypeLenght = 0;
@@ -685,8 +692,42 @@ var careTeamController = (function() {
             			$('#cancertype_div').show();
             		} else {
             			$('#cancertype_div').hide();
-        	        }
+            		}
+            		
+            		
+            		var invasion = data.invasion;
+            		$('#invasiveness').html('');
+            		rootTypeLenght = 0;
+            		for (var i = 0; i < invasion.length; i++) {
+            			if(disease_id == invasion[i].diseaseid) {
+            				rootTypeLenght = rootTypeLenght +1 ;
+           					$('#invasiveness').append('<option value="' + invasion[i].id + '">' + invasion[i].invname + '</option>');
+            			}
+            		}
+            		if(rootTypeLenght>0) {
+            		    $('#invasiveness').val(invasionVal);
+            			$("#invasiveness_div").show();
+            		} else {
+            			$("#invasiveness_div").hide();
+            		}
+
+            		var grade = data.grade;
+            		$('#grade').html('');
+            		rootTypeLenght = 0;
+            		for (var i = 0; i < grade.length; i++) {
+            			if(disease_id == grade[i].diseaseid) {
+            				rootTypeLenght = rootTypeLenght +1 ;
+           					$('#grade').append('<option value="' + grade[i].id + '">' + grade[i].gradename + '</option>');
+            			}
+            		}
+            		if(rootTypeLenght>0) {
+            		    $('#grade').val(gradeVal);
+            			$("#grade_div").show();
+            		} else {
+            			$("#grade_div").hide();
+            		}
         	    });
+
         		$('#save-diagnosis-data').click(function(e) {
         			updateDiagnosisData();
         			$('#diagnosis-edit-form').modal('hide');
@@ -694,8 +735,8 @@ var careTeamController = (function() {
         	}
         	$('#diagnosis-edit-form').attr('patient_id', patientId);
             if ("diseaseId" in data) {
-              $('#disease').val(data.diseaseId);
-              if (BREAST_CANCER_ID == data.diseaseId) {
+            	$('#disease').val(data.diseaseId);
+            	if (BREAST_CANCER_ID == data.diseaseId) {
                   $('#er').val(data.er);
                   $('#pr').val(data.pr);
                   $('#her2').val(data.her2);
@@ -705,17 +746,30 @@ var careTeamController = (function() {
                   $('#pr').val('');
                   $('#her2').val('');
             	}
+            	if (data.diseaseId == BLADDER_CANCER_ID) { 
+    	        	$("#invasiveness").val(data.invasiveness);
+    	        	$("#grade").val(data.gread);
+    	        	invasionVal = data.csrinvasion;
+    	        	gradeVal = data.csrgrade;
+    	        } else {
+    	        	$("#invasiveness").val('');
+    	        	$("#grade").val('');
+    	        	invasionVal = null;
+    	        	gradeVal = null;
+    	        }
+
             	if (BREAST_CANCER_ID == data.diseaseId || OVARIAN_CANCER_ID == data.diseaseId) {
             		$('#brca').val(data.brca);
             	} else {
-                  $('#brca').val('');
-              }
+            		$('#brca').val('');
+            	}
            	  	if ("stageId" in data) {
                   $('#stage').val(data.stageId);
                   $('#stage option[value="' + data.stageId + '"]').prop('selected', true);
            	  	} else {
                	  $('#stage').val('');
-            }
+           	  	}
+
            	  	$('#risklevel').val(data.risklevel);
            	  	$('#psascore').val(data.psascore);
            	  	$('#gleasonscore').val(data.gleasonscore);
@@ -723,8 +777,11 @@ var careTeamController = (function() {
            	  	csrtype = data.csrtype;
            	  	csrsubtype = data.csrsubtype;
            	  	genetics = data.genetics;
+           	  	
+           	 
            	  	$('#cancertype').val(data.csrtype);
            	  	$('#cancersubtype').val(data.csrsubtype);
+           	
             } else {
             	$('#diseaseId').val('');
             }
@@ -753,7 +810,6 @@ var careTeamController = (function() {
             } else {
             	$('#ec1number').val('');
             }
-            
             $('#disease').change(); 
         	$('#diagnosis-edit-form').modal({
         		keyboard: false,
@@ -786,16 +842,27 @@ var careTeamController = (function() {
             params['diseaseInfo.her2'] = $('#her2').val();
         }
         if (diseaseId == BREAST_CANCER_ID || diseaseId == OVARIAN_CANCER_ID) {
-            params['diseaseInfo.brca'] = $('#brca').val();
+        	params['diseaseInfo.brca'] = $('#brca').val();
         }
+        
         if (diseaseId == PROSTATE_CANCER_ID) {
         	params['diseaseInfo.risklevel'] = $('#risklevel').val();
         	params['diseaseInfo.psascore'] = $('#psascore').val();
         	params['diseaseInfo.gleasonscore'] = $('#gleasonscore').val();
         }
-            params['diseaseInfo.stage_id'] = $('#stage').val();
 
-       	var mutationValue = $('#mutations').val();
+        var invasivenessValue = $('#invasiveness').val();
+    	if(invasivenessValue != null && invasivenessValue != '') {
+    		params['diseaseInfo.invasiveness'] = $("#invasiveness").val();
+    	}
+    	
+    	var gradeValue = $('#grade').val();
+    	if(gradeValue != null && gradeValue != '') {
+    		params['diseaseInfo.grade'] = $("#grade").val();
+    	}
+    	
+       	
+    	var mutationValue = $('#mutations').val();
        	if(mutationValue != null && mutationValue != '') {
        		params['diseaseInfo.mutation_id'] = $('#mutations').val();
        	}
@@ -808,13 +875,15 @@ var careTeamController = (function() {
        	var rootTypeValue = $('#cancertype').val();
        	if(rootTypeValue != null && rootTypeValue != '') {
         	params['diseaseInfo.typeid'] = $('#cancertype').val();
-        }
+       	}
+       	
+       	params['diseaseInfo.stage_id'] = $('#stage').val();
 
         $.post(actions['ctp_diagnosis_update'], params, function(htmlText) {
             $('#diagnosis').html(htmlText);
         }, "html");
     };
-    
+
     var removeRadiationTreatmentData = function() {
         var patientId = $('#radiation-treatment-form').attr('patient_id'); 
         var treatmentId = $('#remove-radiation-treatment').attr("treatment_id");
@@ -822,7 +891,7 @@ var careTeamController = (function() {
             'patientId': patientId,
             'treatmentId': treatmentId
         };
-        
+
         $.post(actions['ctpt_remove_radiation_data'], params, function(htmlText) {
             $('#treatmentplan').html(htmlText);
         }, "html");
@@ -1051,7 +1120,6 @@ var careTeamController = (function() {
             removeSurgeryTreatmentData();
             $('#surgery-treatment-form').modal('hide');
         });
-        
         $('#si_doctor').data("doctors", doctors);
         tmp = [];
         for (var id in doctors) {
@@ -1255,7 +1323,6 @@ var careTeamController = (function() {
             removeChemotherapyData();
             $('#chemotherapy-treatment-form').modal('hide');
         });
-        
         $('#ctt_doctor').data("doctors", doctors);
         tmp = [];
         for (var id in doctors) {
@@ -1361,7 +1428,6 @@ var careTeamController = (function() {
                 e.preventDefault();
             }
         });
-        
         $('#rt_doctor').data("doctors", doctors);
         tmp = [];
         for (var id in doctors) {
@@ -1371,7 +1437,6 @@ var careTeamController = (function() {
             source: tmp,
             minLength: 0                
         });
-        
         $(document).on('click', '#add-radiation-treatment', function() {
             if (saveRadiationTreatmentData()) {
                 $('#radiation-treatment-form').modal('hide');

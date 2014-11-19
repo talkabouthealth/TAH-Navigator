@@ -6,6 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import models.BreastCancerStageDTO;
+import models.CancerGradeDTO;
+import models.CancerInvasiveDTO;
 import models.CancerMutationDTO;
 import models.CancerTypeDTO;
 import models.DiseaseMasterDTO;
@@ -104,6 +106,52 @@ public class Disease {
 			TypedQuery<CancerTypeDTO> query = em.createQuery("SELECT c FROM CancerTypeDTO c where c.roottype = :f2  order by c.name", CancerTypeDTO.class);
 			query.setParameter("f2", isRoot);
 			types = query.getResultList();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return types;
+	}
+	public static List<CancerInvasiveDTO> getCancerInvasive() {
+		List<CancerInvasiveDTO> types = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			TypedQuery<CancerInvasiveDTO> query = em.createQuery("SELECT c FROM CancerInvasiveDTO c order by c.invname", CancerInvasiveDTO.class);
+			types = query.getResultList();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return types;
+	}
+	public static List<CancerGradeDTO> getCancerGrade() {
+		List<CancerGradeDTO> types = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			TypedQuery<CancerGradeDTO> query = em.createQuery("SELECT c FROM CancerGradeDTO c order by c.gradename", CancerGradeDTO.class);
+			types = query.getResultList();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return types;
+	}
+	public static CancerGradeDTO getCancerGradeById(Integer greadId) {
+		CancerGradeDTO types = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			TypedQuery<CancerGradeDTO> query = em.createQuery("SELECT c FROM CancerGradeDTO c  where id = :f1", CancerGradeDTO.class);
+			query.setParameter("f1", greadId);
+			types = query.getSingleResult();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return types;
+	}
+	public static CancerInvasiveDTO getCancerInvasiveById(Integer greadId) {
+		CancerInvasiveDTO types = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			TypedQuery<CancerInvasiveDTO> query = em.createQuery("SELECT c FROM CancerInvasiveDTO c where id = :f1", CancerInvasiveDTO.class);
+			query.setParameter("f1", greadId);
+			types = query.getSingleResult();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

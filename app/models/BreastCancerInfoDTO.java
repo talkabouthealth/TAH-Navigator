@@ -54,6 +54,12 @@ public class BreastCancerInfoDTO {
 	private String psascore;
 	@Column(name="gleasonscore")
 	private String gleasonscore;
+	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="invasion", insertable=true, updatable=true)
+	private CancerInvasiveDTO invasion;
+	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="grade", insertable=true, updatable=true)
+	private CancerGradeDTO grade;
 	public CancerTypeDTO getType() {
 		return type;
 	}
@@ -152,5 +158,17 @@ public class BreastCancerInfoDTO {
 	}
 	public void setGleasonscore(String gleasonscore) {
 		this.gleasonscore = gleasonscore;
+	}
+	public CancerInvasiveDTO getInvasion() {
+		return invasion;
+	}
+	public void setInvasion(CancerInvasiveDTO invasion) {
+		this.invasion = invasion;
+	}
+	public CancerGradeDTO getGrade() {
+		return grade;
+	}
+	public void setGrade(CancerGradeDTO grade) {
+		this.grade = grade;
 	}
 }

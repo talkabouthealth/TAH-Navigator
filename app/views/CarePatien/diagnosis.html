@@ -60,7 +60,22 @@
  </div>
 </div><!-- row -->
 #{/if}
-
+ #{if breastCancerInfo != null && breastCancerInfo.invasion}
+     	<div class="row">
+  <div class="col-sm-12">
+   <label><i class="fa fa-file-text-o"></i> INVASION</label>
+   <h1>${breastCancerInfo.invasion.invname}</h1>
+ </div>
+</div><!-- row -->
+#{/if}
+#{if breastCancerInfo != null && breastCancerInfo.grade}
+     	<div class="row">
+  <div class="col-sm-12">
+   <label><i class="fa fa-file-text-o"></i> GRADE</label>
+   <h1>${breastCancerInfo.grade.gradename}</h1>
+ </div>
+</div><!-- row -->
+#{/if}
      #{if breastCancerInfo != null && breastCancerInfo.subtype}
      	<div class="row">
   <div class="col-sm-12">

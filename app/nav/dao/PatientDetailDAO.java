@@ -18,6 +18,8 @@ import models.AddressDTO;
 import models.AppointmentDTO;
 import models.BreastCancerInfoDTO;
 import models.BreastCancerStageDTO;
+import models.CancerGradeDTO;
+import models.CancerInvasiveDTO;
 import models.CancerMutationDTO;
 import models.CancerTypeDTO;
 import models.DiseaseMasterDTO;
@@ -305,11 +307,15 @@ public class PatientDetailDAO {
 		List<CancerMutationDTO> mutations =  Disease.cancerMutations();
 		List<CancerTypeDTO> rootTypeList = Disease.getCancerTypes(true);
 		List<CancerTypeDTO> subTypeList = Disease.getCancerTypes(false);
+		List<CancerInvasiveDTO> invasionList = Disease.getCancerInvasive();
+		List<CancerGradeDTO> gradeList = Disease.getCancerGrade();
 		jsonData.put("diseases", diseases);
 		jsonData.put("bcStages", bcStages);
 		jsonData.put("mutations", mutations);
 		jsonData.put("roottype", rootTypeList);
 		jsonData.put("subtype", subTypeList);
+		jsonData.put("invasion", invasionList);
+		jsonData.put("grade", gradeList);
 		if (patientDetails != null) {
 			Integer diseaseId = patientDetails.getDiseaseId();
 			if (diseaseId != null) {
@@ -354,11 +360,19 @@ public class PatientDetailDAO {
 			if(breastCancerInfo.getGleasonscore() != null) {
 				jsonData.put("gleasonscore", breastCancerInfo.getGleasonscore());
 			}
+			
 			if(breastCancerInfo.getTypeid() != null) {
 				jsonData.put("csrtype", breastCancerInfo.getTypeid().intValue());
 			}
 			if(breastCancerInfo.getSubtypeid() != null) {
 				jsonData.put("csrsubtype", breastCancerInfo.getSubtypeid().intValue());
+			}
+			
+			if(breastCancerInfo.getGrade() != null) {
+				jsonData.put("csrgrade", breastCancerInfo.getGrade().getId());
+			}
+			if(breastCancerInfo.getInvasion() != null) {
+				jsonData.put("csrinvasion", breastCancerInfo.getInvasion().getId());
 			}
 		}
 		List<PatientMutationDTO> genetics = PatientDetailDAO.getMutations(new Integer(patientId));
@@ -469,23 +483,43 @@ public class PatientDetailDAO {
 			bcEntryExist = false;
 		}
 		
-			String str = diseaseInfo.get("stage_id");
-			Integer stageId;
+		String str = diseaseInfo.get("stage_id");
+		Integer stageId;
 		if (StringUtils.isBlank(str)) {
-				stageId = null;
+			stageId = null;
 		} else {
-				stageId = new Integer(str);
-				
-			}
+			stageId = new Integer(str);
+		}
 		breastCancerInfo.setStageId(stageId);
+		
+		
+		str = diseaseInfo.get("grade");
+		Integer grade;
+		if (StringUtils.isBlank(str)) {
+			grade = null;
+		} else {
+			grade = new Integer(str);
+		}
+		breastCancerInfo.setGrade( Disease.getCancerGradeById(grade));
+		
+		str = diseaseInfo.get("invasiveness");
+		Integer invasiveness;
+		if (StringUtils.isBlank(str)) {
+			invasiveness = null;
+		} else {
+			invasiveness = new Integer(str);
+		}
+		breastCancerInfo.setInvasion(Disease.getCancerInvasiveById(invasiveness));
+		
 		breastCancerInfo.setTypeid(null);
 		breastCancerInfo.setSubtypeid(null);
+
+		//Cancer specifics start
 		if (diseaseId != null && diseaseId == Disease.BREAST_CANCER_ID) {
 			Character er = CommonUtil.getHormoneStatus(diseaseInfo.get("er"));
 			Character pr = CommonUtil.getHormoneStatus(diseaseInfo.get("pr"));
 			Character her2 = CommonUtil.getHormoneStatus(diseaseInfo.get("her2"));
 
-			
 			breastCancerInfo.setEr(er);
 			breastCancerInfo.setPr(pr);
 			breastCancerInfo.setHer2(her2);
@@ -494,14 +528,15 @@ public class PatientDetailDAO {
 			breastCancerInfo.setPr(null);
 			breastCancerInfo.setHer2(null);
 		}
+		
 		if (diseaseId != null && (diseaseId == Disease.OVARIAN_CANCER_ID || diseaseId == Disease.BREAST_CANCER_ID)) {
 			Character brca = CommonUtil.getHormoneStatus(diseaseInfo.get("brca"));
 			breastCancerInfo.setBrca(brca);
 		} else {
 			breastCancerInfo.setBrca(null);
-				}
+		}
 
-		if (diseaseId != null && diseaseId == Disease.PROSTATE_CANCER_ID){
+		if (diseaseId != null && diseaseId == Disease.PROSTATE_CANCER_ID) {
 			breastCancerInfo.setRisklevel(diseaseInfo.get("risklevel"));
 			breastCancerInfo.setPsascore(diseaseInfo.get("psascore"));
 			breastCancerInfo.setGleasonscore(diseaseInfo.get("gleasonscore"));	
@@ -510,6 +545,8 @@ public class PatientDetailDAO {
 			breastCancerInfo.setPsascore(null);
 			breastCancerInfo.setGleasonscore(null);
 		}
+		//Cancer specifics end
+
 		str = diseaseInfo.get("typeid");
 		if (StringUtils.isBlank(str)) {
 			breastCancerInfo.setTypeid(null);
@@ -553,9 +590,6 @@ public class PatientDetailDAO {
 		TypedQuery<UserDetailsDTO> query2 = em.createQuery("SELECT c FROM UserDetailsDTO c WHERE c.id = :id", UserDetailsDTO.class); 
 		query2.setParameter("id", patientId);
 		userDetails = query2.getSingleResult();
-		
-		//userDetails.setDob(dob);
-		
 		if (dob != null) {
 			if (!dob.isEmpty()) {					
 				SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
