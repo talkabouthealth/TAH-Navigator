@@ -31,8 +31,9 @@ var careTeamController = (function() {
 	var psaScoreArray = ["0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30"];
 
 	var curStageId ='' ;
-	var csrtype,csrsubtype,invasionVal,gradeVal;
+	var csrtype,csrsubtype,invasionVal,gradeVal,csrphase;
 	var genetics;
+	var chromosomesIds;
 	
     var concernForm = {
         followUpDiv: '#followupplan',
@@ -726,6 +727,40 @@ var careTeamController = (function() {
             		} else {
             			$("#grade_div").hide();
             		}
+            		var phase = data.phase;
+            		$('#phase').html('');
+            		rootTypeLenght = 0;
+            		for (var i = 0; i < phase.length; i++) {
+            			if(disease_id == phase[i].diseaseid) {
+            				rootTypeLenght = rootTypeLenght +1 ;
+           					$('#phase').append('<option value="' + phase[i].id + '">' + phase[i].name + '</option>');
+            			}
+            		}
+            		if(rootTypeLenght>0) {
+            		    $('#phase').val(csrphase);
+            			$("#phase_div").show();
+            		} else {
+            			$("#phase_div").hide();
+            		}
+            		var chromosome = data.chromosome;
+            		try {
+            			$('#chromosome').multiselect('destroy');
+            		} catch(e){}
+            		$('#chromosome').html('');
+            		rootTypeLenght = 0;
+            		for (var i = 0; i < chromosome.length; i++) {
+            			if(disease_id == chromosome[i].diseaseid) {
+            				rootTypeLenght = rootTypeLenght +1 ;
+           					$('#chromosome').append('<option value="' + chromosome[i].id + '">' + chromosome[i].chromosomename + '</option>');
+            			}
+            		}
+            		if(rootTypeLenght>0) {
+            		    $('#chromosome').val(chromosomesIds);
+            			$("#chromosome_div").show();
+            			$('#chromosome').multiselect({enableFiltering: false, buttonWidth: '310px',buttonClass: 'inputdropdown'});
+            		} else {
+            			$("#chromosome_div").hide();
+            		}
         	    });
 
         		$('#save-diagnosis-data').click(function(e) {
@@ -777,8 +812,8 @@ var careTeamController = (function() {
            	  	csrtype = data.csrtype;
            	  	csrsubtype = data.csrsubtype;
            	  	genetics = data.genetics;
-           	  	
-           	 
+           	  	csrphase = data.phaseId;
+           	  	chromosomesIds = data.chromosomesIds;
            	  	$('#cancertype').val(data.csrtype);
            	  	$('#cancersubtype').val(data.csrsubtype);
            	
@@ -861,10 +896,19 @@ var careTeamController = (function() {
     		params['diseaseInfo.grade'] = $("#grade").val();
     	}
     	
+    	var gradeValue = $('#phase').val();
+    	if(gradeValue != null && gradeValue != '') {
+    		params['diseaseInfo.phase'] = $("#phase").val();
+    	}
        	
     	var mutationValue = $('#mutations').val();
        	if(mutationValue != null && mutationValue != '') {
        		params['diseaseInfo.mutation_id'] = $('#mutations').val();
+       	}
+       	
+       	var chromosomeValue = $('#chromosome').val();
+       	if(chromosomeValue != null && chromosomeValue != '') {
+       		params['diseaseInfo.chromosome_id'] = $('#chromosome').val();
        	}
 
     	var subTypeValue = $('#cancersubtype').val();

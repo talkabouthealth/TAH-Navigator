@@ -6,9 +6,11 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import models.BreastCancerStageDTO;
+import models.CancerChromosomeDTO;
 import models.CancerGradeDTO;
 import models.CancerInvasiveDTO;
 import models.CancerMutationDTO;
+import models.CancerPhaseDTO;
 import models.CancerTypeDTO;
 import models.DiseaseMasterDTO;
 import util.JPAUtil;
@@ -156,5 +158,55 @@ public class Disease {
 			e.printStackTrace();
 		}
 		return types;
+	}
+	public static List<CancerChromosomeDTO> getCancerChromosome() {
+		List<CancerChromosomeDTO> types = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			TypedQuery<CancerChromosomeDTO> query = em.createQuery("SELECT c FROM CancerChromosomeDTO c order by c.chromosomename", CancerChromosomeDTO.class);
+			types = query.getResultList();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return types;
+	}
+	public static CancerChromosomeDTO getCancerChromosomeById(Integer greadId) {
+		CancerChromosomeDTO types = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			TypedQuery<CancerChromosomeDTO> query = em.createQuery("SELECT c FROM CancerChromosomeDTO c  where id = :f1", CancerChromosomeDTO.class);
+			query.setParameter("f1", greadId);
+			types = query.getSingleResult();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return types;
+	}
+	public static List<CancerPhaseDTO> getCancerPhases() {
+		List<CancerPhaseDTO> stages = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			TypedQuery<CancerPhaseDTO> query = em.createQuery("SELECT c FROM CancerPhaseDTO c order by c.name", CancerPhaseDTO.class); 
+			stages = query.getResultList();
+		} 
+		catch(Exception e) {
+			e.printStackTrace();
+		} 
+		finally {
+			em.close();
+		}
+		return stages;
+	}
+	public static CancerPhaseDTO getCancerPhaseById(Integer greadId) {
+		CancerPhaseDTO stages = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			TypedQuery<CancerPhaseDTO> query = em.createQuery("SELECT c FROM CancerPhaseDTO c where id = :f1", CancerPhaseDTO.class); 
+			query.setParameter("f1", greadId);
+			stages = query.getSingleResult();
+		} catch(Exception e) {
+			System.out.println("NO PHASE: " + greadId);
+		} 
+		return stages;
 	}
 }

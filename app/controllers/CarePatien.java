@@ -26,6 +26,7 @@ import models.MedicineMasterDTO;
 import models.NoteDTO;
 import models.PatienCareTeamDTO;
 import models.PatientChemoTreatmentDTO;
+import models.PatientChromosomeDTO;
 import models.PatientConcernDTO;
 import models.PatientDetailDTO;
 import models.PatientFollowUpCareItemDTO;
@@ -359,9 +360,10 @@ public class CarePatien  extends Controller {
 		PatientDetailDTO patientDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
 		BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
 		List<PatientMutationDTO> mutations = PatientDetailDAO.getMutations(new Integer(patientId));
+		List<PatientChromosomeDTO> chromosomes =  PatientDetailDAO.getChromosome(new Integer(patientId));
 		int breastCancerId = Disease.BREAST_CANCER_ID;
 		Map <String, Object> ps = PatientDetailDAO.patientSummary(patientId);
-		render(patientId, breastCancerId, userDetails, patientDetails, breastCancerInfo, ps,mutations);
+		render(patientId, breastCancerId, userDetails, patientDetails, breastCancerInfo, ps,mutations,chromosomes);
 	}
 	
 	public static void diagnosisJSON(int patientId) {
@@ -370,32 +372,16 @@ public class CarePatien  extends Controller {
 	}
 	
 	public static void updateDiagnosis(int patientId, Integer diseaseId, String dateOfDiagnosis, String dob, String phone, String supportName, String supportNumber, Map<String, String> diseaseInfo) {
-		/*
-		System.out.println("-------------------------------------");
-		System.out.println("Pateint ID: " + patientId);
-		System.out.println("Disease ID: " + diseaseId);
-		System.out.println("First Diagnosed:"  + new SimpleDateFormat("YYYY-MM-dd").format(dateOfDiagnosis));
-		System.out.println("DOB: " + new SimpleDateFormat("YYYY-MM-dd").format(dob));
-		System.out.println("Phone: " + phone);
-		System.out.println("Support Name: " + supportName);
-		System.out.println("Support Number: " + supportNumber);
-		if (diseaseId != null && diseaseId == Disease.BREAST_CANCER_ID) {
-			System.out.println("*************************************");
-			for (String key : diseaseInfo.keySet()) {
-				System.out.println(key + ": " + diseaseInfo.get(key));
-			}
-		}
-		System.out.println("-------------------------------------");
-		*/
 		PatientDetailDAO.updateDiagnosis(patientId, diseaseId, dateOfDiagnosis, dob, phone, supportName, supportNumber, diseaseInfo);
 		Map<String, Object> patientInfo = PatientDetailDAO.getDiagnosis(patientId);
 		UserDetailsDTO userDetails = (UserDetailsDTO) patientInfo.get("userDetails");
 		PatientDetailDTO patientDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
 		BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
 		List<PatientMutationDTO> mutations = PatientDetailDAO.getMutations(new Integer(patientId));
+		List<PatientChromosomeDTO> chromosomes =  PatientDetailDAO.getChromosome(new Integer(patientId));
 		int breastCancerId = Disease.BREAST_CANCER_ID;
 		Map <String, Object> ps = PatientDetailDAO.patientSummary(patientId);
-		renderTemplate("CarePatien/diagnosis.html", patientId, breastCancerId, userDetails, patientDetails, breastCancerInfo, ps,mutations);
+		renderTemplate("CarePatien/diagnosis.html", patientId, breastCancerId, userDetails, patientDetails, breastCancerInfo, ps,mutations,chromosomes);
 	}
 
 	

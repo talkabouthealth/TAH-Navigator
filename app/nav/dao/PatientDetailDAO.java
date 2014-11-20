@@ -18,11 +18,14 @@ import models.AddressDTO;
 import models.AppointmentDTO;
 import models.BreastCancerInfoDTO;
 import models.BreastCancerStageDTO;
+import models.CancerChromosomeDTO;
 import models.CancerGradeDTO;
 import models.CancerInvasiveDTO;
 import models.CancerMutationDTO;
+import models.CancerPhaseDTO;
 import models.CancerTypeDTO;
 import models.DiseaseMasterDTO;
+import models.PatientChromosomeDTO;
 import models.PatientDetailDTO;
 import models.PatientMutationDTO;
 import models.UserDTO;
@@ -295,6 +298,24 @@ public class PatientDetailDAO {
 		}
 		return mutations;
 	}
+	public static List<PatientChromosomeDTO> getChromosome(Integer patientId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		List<PatientChromosomeDTO> mutations = null;
+		try {
+			TypedQuery<PatientChromosomeDTO> query5 = em.createQuery("SELECT c FROM PatientChromosomeDTO c WHERE c.patientid = :id", PatientChromosomeDTO.class);
+			query5.setParameter("id", patientId);
+			mutations = query5.getResultList();
+			for (PatientChromosomeDTO patientMutationDTO : mutations) {
+				TypedQuery<CancerChromosomeDTO> query6 = em.createQuery("SELECT c FROM CancerChromosomeDTO c WHERE c.id = :id", CancerChromosomeDTO.class);
+				query6.setParameter("id", patientMutationDTO.getChromosomeid());
+				CancerChromosomeDTO pmDtos = query6.getSingleResult();
+				patientMutationDTO.setPmDto(pmDtos);
+			}
+		} catch(NoResultException e) {
+			e.printStackTrace();
+		}
+		return mutations;
+	}
 	public static Map<String, Object> getDiagnosisJSON(int patientId) {
 		Map<String, Object> patientInfo = getDiagnosis(patientId);
 		Map<String, Object> jsonData = new HashMap<String, Object>();
@@ -309,6 +330,8 @@ public class PatientDetailDAO {
 		List<CancerTypeDTO> subTypeList = Disease.getCancerTypes(false);
 		List<CancerInvasiveDTO> invasionList = Disease.getCancerInvasive();
 		List<CancerGradeDTO> gradeList = Disease.getCancerGrade();
+		List<CancerChromosomeDTO> chromosomeList = Disease.getCancerChromosome();
+		List<CancerPhaseDTO> phaseList = Disease.getCancerPhases();
 		jsonData.put("diseases", diseases);
 		jsonData.put("bcStages", bcStages);
 		jsonData.put("mutations", mutations);
@@ -316,6 +339,8 @@ public class PatientDetailDAO {
 		jsonData.put("subtype", subTypeList);
 		jsonData.put("invasion", invasionList);
 		jsonData.put("grade", gradeList);
+		jsonData.put("chromosome", chromosomeList);
+		jsonData.put("phase", phaseList);
 		if (patientDetails != null) {
 			Integer diseaseId = patientDetails.getDiseaseId();
 			if (diseaseId != null) {
@@ -351,6 +376,10 @@ public class PatientDetailDAO {
 			if (stageId != null) {
 				jsonData.put("stageId", stageId.toString());
 			}
+			CancerPhaseDTO phase = breastCancerInfo.getPhase();
+			if (phase != null) {
+				jsonData.put("phaseId", phase.getId());
+			}
 			if(breastCancerInfo.getRisklevel() != null) {
 				jsonData.put("risklevel", breastCancerInfo.getRisklevel());
 			}
@@ -375,6 +404,14 @@ public class PatientDetailDAO {
 				jsonData.put("csrinvasion", breastCancerInfo.getInvasion().getId());
 			}
 		}
+		List<PatientChromosomeDTO> chromosomes =  PatientDetailDAO.getChromosome(new Integer(patientId));
+		ArrayList<String> chrom = new ArrayList<String>();
+		if(chromosomes != null && !chromosomes.isEmpty()) {
+			for (PatientChromosomeDTO patientMutationDTO : chromosomes) {
+				chrom.add(patientMutationDTO.getChromosomeid().intValue() + "");
+			}
+		}
+		jsonData.put("chromosomesIds", chrom.toArray());
 		List<PatientMutationDTO> genetics = PatientDetailDAO.getMutations(new Integer(patientId));
 		ArrayList<String> gen = new ArrayList<String>();
 		if(genetics != null && !genetics.isEmpty()) {
@@ -406,6 +443,16 @@ public class PatientDetailDAO {
 			e.printStackTrace();
 		}
 		
+		try {
+			TypedQuery<PatientChromosomeDTO> query5 = em.createQuery("SELECT c FROM PatientChromosomeDTO c WHERE c.patientid = :id", PatientChromosomeDTO.class);
+			query5.setParameter("id", new Integer(patientId));
+			List<PatientChromosomeDTO> mutations = query5.getResultList();
+			for (PatientChromosomeDTO patientMutationDTO : mutations) {
+				BaseDAO.remove(patientMutationDTO);
+			}
+		} catch(NoResultException e) {
+			e.printStackTrace();
+		}
 		TypedQuery<PatientDetailDTO> query1 = em.createQuery("SELECT c FROM PatientDetailDTO c WHERE c.id = :id", PatientDetailDTO.class); 
 		query1.setParameter("id", patientId);
 		try {
@@ -502,6 +549,14 @@ public class PatientDetailDAO {
 		}
 		breastCancerInfo.setGrade( Disease.getCancerGradeById(grade));
 		
+		str = diseaseInfo.get("phase");
+		Integer phase;
+		if (StringUtils.isBlank(str)) {
+			phase = null;
+		} else {
+			phase = new Integer(str);
+		}
+		breastCancerInfo.setPhase(Disease.getCancerPhaseById(phase));
 		str = diseaseInfo.get("invasiveness");
 		Integer invasiveness;
 		if (StringUtils.isBlank(str)) {
@@ -569,6 +624,21 @@ public class PatientDetailDAO {
 					muId = new Integer(string);
 					PatientMutationDTO pmDto = new PatientMutationDTO();
 					pmDto.setMutationid(muId);
+					pmDto.setPatientid(new Integer(patientId));
+					BaseDAO.save(pmDto);
+				}
+			}
+		}
+		mustr = diseaseInfo.get("chromosome_id");
+		if (StringUtils.isNotBlank(mustr)) {
+			String muIds [] = mustr.split(",");
+			Integer muId;
+			for (String string : muIds) {
+				string = string.trim();
+				if (StringUtils.isNotBlank(string)) {
+					muId = new Integer(string);
+					PatientChromosomeDTO pmDto = new PatientChromosomeDTO();
+					pmDto.setChromosomeid(muId);
 					pmDto.setPatientid(new Integer(patientId));
 					BaseDAO.save(pmDto);
 				}

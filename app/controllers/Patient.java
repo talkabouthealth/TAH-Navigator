@@ -261,9 +261,10 @@ public class Patient extends Controller {
 			PatientDetailDTO patientOtherDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
 			BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
 			List<PatientMutationDTO> mutations = PatientDetailDAO.getMutations(new Integer(user.getId()));
+			List<PatientChromosomeDTO> chromosomes =  PatientDetailDAO.getChromosome(new Integer(user.getId()));
 			int breastCancerId = Disease.BREAST_CANCER_ID;
 			
-	        render(user,breastCancerId, userDto,patientOtherDetails, breastCancerInfo,mutations);
+	        render(user,breastCancerId, userDto,patientOtherDetails, breastCancerInfo,mutations,chromosomes);
 		} else {
 			index();
 		}

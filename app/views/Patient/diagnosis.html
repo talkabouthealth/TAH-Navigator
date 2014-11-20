@@ -114,6 +114,30 @@
         </div>
     </div>
     #{/if}
+#{if breastCancerInfo != null && breastCancerInfo.phase}
+<div class="row">
+  <div class="col-sm-12">
+   <label><i class="fa fa-file-text-o"></i> Phase</label>
+   <h1>${breastCancerInfo.phase.name}</h1>
+ </div>
+</div><!-- row -->
+#{/if}
+
+#{if chromosomes != null && chromosomes.size()>0 }
+	<div class="row">
+	  <div class="col-sm-12">
+	   <label><i class="fa fa-file-text-o"></i> Chromosome Abnormalities</label>
+	   #{set topicSize = chromosomes.size() /}
+	#{list chromosomes, as:'seq'}
+	
+	#{if seq.pmDto != null}
+	<h1>${seq.pmDto.chromosomename}#{if chromosomes.size() > 1 && topicSize > 1 },&nbsp;&nbsp;#{/if}</h1>
+	#{set topicSize = topicSize -1 /}
+	#{/if}
+	#{/list}
+	</div>
+	</div><!-- row -->
+#{/if}
 #{if mutations != null && mutations.size()>0 }
 <div class="row">
   <div class="col-sm-12">

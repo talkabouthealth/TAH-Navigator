@@ -60,6 +60,9 @@ public class BreastCancerInfoDTO {
 	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="grade", insertable=true, updatable=true)
 	private CancerGradeDTO grade;
+	@OneToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="phaseid", insertable=true, updatable=true)
+	private CancerPhaseDTO phase;
 	public CancerTypeDTO getType() {
 		return type;
 	}
@@ -170,5 +173,11 @@ public class BreastCancerInfoDTO {
 	}
 	public void setGrade(CancerGradeDTO grade) {
 		this.grade = grade;
+	}
+	public CancerPhaseDTO getPhase() {
+		return phase;
+	}
+	public void setPhase(CancerPhaseDTO phase) {
+		this.phase = phase;
 	}
 }
