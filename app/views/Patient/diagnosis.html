@@ -122,7 +122,23 @@
  </div>
 </div><!-- row -->
 #{/if}
+#{if breastCancerInfo != null && breastCancerInfo.fabclass}
+<div class="row">
+  <div class="col-sm-12">
+   <label><i class="fa fa-file-text-o"></i> FAB Classification</label>
+   <h1>${breastCancerInfo.fabclass.fabname}</h1>
+ </div>
+</div><!-- row -->
+#{/if}
 
+#{if breastCancerInfo != null && breastCancerInfo.whoclass}
+<div class="row">
+  <div class="col-sm-12">
+   <label><i class="fa fa-file-text-o"></i> WHO Classification</label>
+   <h1>${breastCancerInfo.whoclass.whoname}</h1>
+ </div>
+</div><!-- row -->
+#{/if}
 #{if chromosomes != null && chromosomes.size()>0 }
 	<div class="row">
 	  <div class="col-sm-12">

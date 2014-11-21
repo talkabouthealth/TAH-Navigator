@@ -7,15 +7,18 @@ import javax.persistence.TypedQuery;
 
 import models.BreastCancerStageDTO;
 import models.CancerChromosomeDTO;
+import models.CancerFabClassificationDTO;
 import models.CancerGradeDTO;
 import models.CancerInvasiveDTO;
 import models.CancerMutationDTO;
 import models.CancerPhaseDTO;
 import models.CancerTypeDTO;
+import models.CancerWhoClassificationDTO;
 import models.DiseaseMasterDTO;
 import util.JPAUtil;
 
 public class Disease {
+
 	public final static int BREAST_CANCER_ID = 1; 
 	public final static int PROSTATE_CANCER_ID = 2;
 	public final static int LUNG_CANCER_ID = 3;
@@ -23,6 +26,7 @@ public class Disease {
 	public final static int RECTAL_CANCER_ID = 5;
 	public final static int ESOPHAGEAL_CANCER_ID = 6;
 	public final static int ENDOMETRIAL_CANCER_ID = 7;
+	
 	public final static int BLADDER_CANCER_ID = 8;
 	public final static int NON_HODGKIN_LYMPHOMA_ID = 9;
 	public final static int MELANOMA_ID = 10;
@@ -42,6 +46,7 @@ public class Disease {
 	public final static int BRAIN_CANCER_ID = 24;
 	public final static int THYROID_CANCER_ID = 25;
 	public final static int HODGKIN_LYMPHOMA_CANCER_ID = 26;
+
 	public static List<DiseaseMasterDTO> allDiseases() {
 		List<DiseaseMasterDTO> diseases = null;
 		EntityManager em = JPAUtil.getEntityManager();
@@ -57,7 +62,7 @@ public class Disease {
 		}
 		return diseases;
 	}
-	
+
 	public static List<BreastCancerStageDTO> breastCancerStages() {
 		List<BreastCancerStageDTO> stages = null;
 		EntityManager em = JPAUtil.getEntityManager();
@@ -73,6 +78,7 @@ public class Disease {
 		}
 		return stages;
 	}
+
 	public static List<CancerMutationDTO> cancerMutations() {
 		List<CancerMutationDTO> mutations = null;
 		EntityManager em = JPAUtil.getEntityManager();
@@ -88,6 +94,7 @@ public class Disease {
 		}
 		return mutations;
 	}
+
 	public static List<BreastCancerStageDTO> getCancerStages(Integer cancerId) {
 		List<BreastCancerStageDTO> stages = null;
 		EntityManager em = JPAUtil.getEntityManager();
@@ -101,6 +108,7 @@ public class Disease {
 		} 
 		return stages;
 	}
+
 	public static List<CancerTypeDTO> getCancerTypes(boolean isRoot) {
 		List<CancerTypeDTO> types = null;
 		EntityManager em = JPAUtil.getEntityManager();
@@ -113,6 +121,7 @@ public class Disease {
 		}
 		return types;
 	}
+
 	public static List<CancerInvasiveDTO> getCancerInvasive() {
 		List<CancerInvasiveDTO> types = null;
 		EntityManager em = JPAUtil.getEntityManager();
@@ -124,6 +133,7 @@ public class Disease {
 		}
 		return types;
 	}
+
 	public static List<CancerGradeDTO> getCancerGrade() {
 		List<CancerGradeDTO> types = null;
 		EntityManager em = JPAUtil.getEntityManager();
@@ -135,6 +145,7 @@ public class Disease {
 		}
 		return types;
 	}
+	
 	public static CancerGradeDTO getCancerGradeById(Integer greadId) {
 		CancerGradeDTO types = null;
 		EntityManager em = JPAUtil.getEntityManager();
@@ -147,6 +158,7 @@ public class Disease {
 		}
 		return types;
 	}
+
 	public static CancerInvasiveDTO getCancerInvasiveById(Integer greadId) {
 		CancerInvasiveDTO types = null;
 		EntityManager em = JPAUtil.getEntityManager();
@@ -159,6 +171,7 @@ public class Disease {
 		}
 		return types;
 	}
+
 	public static List<CancerChromosomeDTO> getCancerChromosome() {
 		List<CancerChromosomeDTO> types = null;
 		EntityManager em = JPAUtil.getEntityManager();
@@ -170,6 +183,7 @@ public class Disease {
 		}
 		return types;
 	}
+
 	public static CancerChromosomeDTO getCancerChromosomeById(Integer greadId) {
 		CancerChromosomeDTO types = null;
 		EntityManager em = JPAUtil.getEntityManager();
@@ -182,6 +196,7 @@ public class Disease {
 		}
 		return types;
 	}
+	
 	public static List<CancerPhaseDTO> getCancerPhases() {
 		List<CancerPhaseDTO> stages = null;
 		EntityManager em = JPAUtil.getEntityManager();
@@ -197,6 +212,7 @@ public class Disease {
 		}
 		return stages;
 	}
+	
 	public static CancerPhaseDTO getCancerPhaseById(Integer greadId) {
 		CancerPhaseDTO stages = null;
 		EntityManager em = JPAUtil.getEntityManager();
@@ -206,6 +222,64 @@ public class Disease {
 			stages = query.getSingleResult();
 		} catch(Exception e) {
 			System.out.println("NO PHASE: " + greadId);
+		} 
+		return stages;
+	}
+	
+	public static List<CancerFabClassificationDTO> getCancerFABClasses() {
+		List<CancerFabClassificationDTO> stages = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			TypedQuery<CancerFabClassificationDTO> query = em.createQuery("SELECT c FROM CancerFabClassificationDTO c order by fabname", CancerFabClassificationDTO.class); 
+			stages = query.getResultList();
+		} 
+		catch(Exception e) {
+			e.printStackTrace();
+		} 
+		finally {
+			em.close();
+		}
+		return stages;
+	}
+	
+	public static CancerFabClassificationDTO getCancerFABClasseById(Integer greadId) {
+		CancerFabClassificationDTO stages = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			TypedQuery<CancerFabClassificationDTO> query = em.createQuery("SELECT c FROM CancerFabClassificationDTO c where id = :f1", CancerFabClassificationDTO.class); 
+			query.setParameter("f1", greadId);
+			stages = query.getSingleResult();
+		} catch(Exception e) {
+			System.out.println("NO FAB CLASS: " + greadId);
+		} 
+		return stages;
+	}
+
+	public static List<CancerWhoClassificationDTO> getCancerWHOClasses() {
+		List<CancerWhoClassificationDTO> stages = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			TypedQuery<CancerWhoClassificationDTO> query = em.createQuery("SELECT c FROM CancerWhoClassificationDTO c order by c.whoname", CancerWhoClassificationDTO.class); 
+			stages = query.getResultList();
+		} 
+		catch(Exception e) {
+			e.printStackTrace();
+		} 
+		finally {
+			em.close();
+		}
+		return stages;
+	}
+
+	public static CancerWhoClassificationDTO getCancerWHOClasseById(Integer greadId) {
+		CancerWhoClassificationDTO stages = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			TypedQuery<CancerWhoClassificationDTO> query = em.createQuery("SELECT c FROM CancerWhoClassificationDTO c where id = :f1", CancerWhoClassificationDTO.class); 
+			query.setParameter("f1", greadId);
+			stages = query.getSingleResult();
+		} catch(Exception e) {
+			System.out.println("NO FAB CLASS: " + greadId);
 		} 
 		return stages;
 	}

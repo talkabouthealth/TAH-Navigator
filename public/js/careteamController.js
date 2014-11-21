@@ -34,6 +34,7 @@ var careTeamController = (function() {
 	var csrtype,csrsubtype,invasionVal,gradeVal,csrphase;
 	var genetics;
 	var chromosomesIds;
+	var fabId, whoId;
 	
     var concernForm = {
         followUpDiv: '#followupplan',
@@ -761,6 +762,37 @@ var careTeamController = (function() {
             		} else {
             			$("#chromosome_div").hide();
             		}
+    	        	roottype = data.fab;
+            		$('#fab').html('');
+            		rootTypeLenght = 0;
+            		for (var i = 0; i < roottype.length; i++) {
+            			if(disease_id == roottype[i].diseaseid) {
+            				rootTypeLenght = rootTypeLenght +1 ;
+           					$('#fab').append('<option value="' + roottype[i].id + '">' + roottype[i].fabname + '</option>');
+            			}
+            		}
+            		if(rootTypeLenght>0) {
+            		    $('#fab').val(fabId);
+            			$('#fab_div').show();
+            		} else {
+            			$('#fab_div').hide();
+            		}
+            		
+            		roottype = data.who;
+            		$('#who').html('');
+            		rootTypeLenght = 0;
+            		for (var i = 0; i < roottype.length; i++) {
+            			if(disease_id == roottype[i].diseaseid) {
+            				rootTypeLenght = rootTypeLenght +1 ;
+           					$('#who').append('<option value="' + roottype[i].id + '">' + roottype[i].whoname + '</option>');
+            			}
+            		}
+            		if(rootTypeLenght>0) {
+            		    $('#who').val(whoId);
+            			$('#who_div').show();
+            		} else {
+            			$('#who_div').hide();
+            		}
         	    });
 
         		$('#save-diagnosis-data').click(function(e) {
@@ -814,6 +846,8 @@ var careTeamController = (function() {
            	  	genetics = data.genetics;
            	  	csrphase = data.phaseId;
            	  	chromosomesIds = data.chromosomesIds;
+           	  	fabId = data.fabId;
+           	  	whoId = data.fabId;
            	  	$('#cancertype').val(data.csrtype);
            	  	$('#cancersubtype').val(data.csrsubtype);
            	
@@ -896,6 +930,15 @@ var careTeamController = (function() {
     		params['diseaseInfo.grade'] = $("#grade").val();
     	}
     	
+    	gradeValue = $('#fab').val();
+    	if(gradeValue != null && gradeValue != '') {
+    		params['diseaseInfo.fab_id'] = $("#fab").val();
+    	}
+    	gradeValue = $('#who').val();
+    	if(gradeValue != null && gradeValue != '') {
+    		params['diseaseInfo.who_id'] = $("#who").val();
+    	}
+
     	var gradeValue = $('#phase').val();
     	if(gradeValue != null && gradeValue != '') {
     		params['diseaseInfo.phase'] = $("#phase").val();

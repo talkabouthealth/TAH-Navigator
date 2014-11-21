@@ -19,11 +19,13 @@ import models.AppointmentDTO;
 import models.BreastCancerInfoDTO;
 import models.BreastCancerStageDTO;
 import models.CancerChromosomeDTO;
+import models.CancerFabClassificationDTO;
 import models.CancerGradeDTO;
 import models.CancerInvasiveDTO;
 import models.CancerMutationDTO;
 import models.CancerPhaseDTO;
 import models.CancerTypeDTO;
+import models.CancerWhoClassificationDTO;
 import models.DiseaseMasterDTO;
 import models.PatientChromosomeDTO;
 import models.PatientDetailDTO;
@@ -332,6 +334,8 @@ public class PatientDetailDAO {
 		List<CancerGradeDTO> gradeList = Disease.getCancerGrade();
 		List<CancerChromosomeDTO> chromosomeList = Disease.getCancerChromosome();
 		List<CancerPhaseDTO> phaseList = Disease.getCancerPhases();
+		List<CancerFabClassificationDTO> fabClassList = Disease.getCancerFABClasses();
+		List<CancerWhoClassificationDTO> whoClassList = Disease.getCancerWHOClasses();
 		jsonData.put("diseases", diseases);
 		jsonData.put("bcStages", bcStages);
 		jsonData.put("mutations", mutations);
@@ -341,6 +345,8 @@ public class PatientDetailDAO {
 		jsonData.put("grade", gradeList);
 		jsonData.put("chromosome", chromosomeList);
 		jsonData.put("phase", phaseList);
+		jsonData.put("fab", fabClassList);
+		jsonData.put("who", whoClassList);
 		if (patientDetails != null) {
 			Integer diseaseId = patientDetails.getDiseaseId();
 			if (diseaseId != null) {
@@ -402,6 +408,14 @@ public class PatientDetailDAO {
 			}
 			if(breastCancerInfo.getInvasion() != null) {
 				jsonData.put("csrinvasion", breastCancerInfo.getInvasion().getId());
+			}
+			CancerFabClassificationDTO fab = breastCancerInfo.getFabclass();
+			if (fab != null) {
+				jsonData.put("fabId", fab.getId());
+			}
+			CancerWhoClassificationDTO who = breastCancerInfo.getWhoclass();
+			if(who != null) {
+				jsonData.put("whoId", who.getId());
 			}
 		}
 		List<PatientChromosomeDTO> chromosomes =  PatientDetailDAO.getChromosome(new Integer(patientId));
@@ -539,7 +553,21 @@ public class PatientDetailDAO {
 		}
 		breastCancerInfo.setStageId(stageId);
 		
+		str = diseaseInfo.get("fab_id");
+		if (StringUtils.isBlank(str)) {
+			stageId = null;
+		} else {
+			stageId = new Integer(str);
+		}
+		breastCancerInfo.setFabclass(Disease.getCancerFABClasseById(stageId));
 		
+		str = diseaseInfo.get("who_id");
+		if (StringUtils.isBlank(str)) {
+			stageId = null;
+		} else {
+			stageId = new Integer(str);
+		}
+		breastCancerInfo.setWhoclass(Disease.getCancerWHOClasseById(stageId));
 		str = diseaseInfo.get("grade");
 		Integer grade;
 		if (StringUtils.isBlank(str)) {
