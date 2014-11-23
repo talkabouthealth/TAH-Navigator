@@ -1,0 +1,130 @@
+#{if _patients != null}
+#{list _patients, as:'patient'}
+
+*{*************  rowClass ************}*
+%{ 
+    rowClass = "";
+    if (patient.distress) {
+        if (patient.distress.curDist > 7) {
+            rowClass = "high-distress";
+        }
+        else if (patient.distress.curDist > 4) {
+            rowClass = "medium-distress";
+        }
+    }    
+}%
+
+*{*************  disease ************}*
+%{ 
+    disease = "-"; 
+    if (patient.patientOtherDetails) {
+        if (patient.patientOtherDetails.disease) {
+            disease = patient.patientOtherDetails.disease.name;
+        }
+        if (patient.breastCancerInfo && patient.breastCancerInfo.bcStage) {
+            disease += " " + patient.breastCancerInfo.bcStage.name;
+        }
+        if (patient.breastCancerInfo) {
+            disease += "\n";
+            if (patient.breastCancerInfo.er || patient.breastCancerInfo.pr || patient.breastCancerInfo.her2) {
+                if (patient.breastCancerInfo.er) {
+                    disease += "Er" + patient.breastCancerInfo.er;
+                }
+                if (patient.breastCancerInfo.er && patient.breastCancerInfo.pr) {
+                    disease += ", Pr" + patient.breastCancerInfo.pr;
+                }
+                else if (patient.breastCancerInfo.pr) {
+                    disease += "Pr" + patient.breastCancerInfo.pr;
+                }
+                if ((patient.breastCancerInfo.er || patient.breastCancerInfo.pr) && patient.breastCancerInfo.her2) {
+                    disease += ", HER2" + patient.breastCancerInfo.her2;
+                }
+                else if (patient.breastCancerInfo.her2) {
+                    disease += "HER2" + patient.breastCancerInfo.her2;
+                }
+            }
+        }
+    }    
+}%
+
+*{*************  lastDistress ************}*
+%{ 
+    lastDistress = "-"; 
+    if (patient.distress) {
+        lastDistress = patient.distress.curDist;
+    }
+}%
+
+
+*{*************  lastVisit, nextVisit, lastMD ************}*
+%{
+    lastVisit = "-";
+    nextVisit = "-";
+    lastMD = "";
+    if (patient.appointmentInfo) {
+        lastVisit = patient.appointmentInfo.appointmentdate.format("M/dd/yyyy");
+        if (patient.nextAppointment) {
+            nextVisit = patient.nextAppointment.appointmentdate.format("M/dd/yyyy");
+        }
+        if (patient.appointmentInfo.caremember) {
+            userName = patient.appointmentInfo.caremember.name;
+            lastMD = userName.usreName(patient.appointmentInfo.caremember.id);
+        }
+        else {
+            lastMD = patient.appointmentInfo.careMemberName;
+        }
+    }    
+}%
+
+*{*************  lastDistressCheckIn ************}*
+%{
+    lastDistressCheckIn = "-";
+    if (patient.distress) {
+		lastDistressCheckIn = patient.distress.distressDate.format("M/dd/yyyy");							        
+    }
+}%
+
+*{*************  problemList ************}*
+%{
+    problemList = "N/A";
+    if (patient.distress && patient.distress.otherdetail) {
+        problemList = patient.distress.otherdetail.printMessage();
+	}						
+}%
+*{*************  notes ************}*
+%{
+    notes = "None";
+    if (patient.note) {
+        notes = patient.note.noteTitle;
+	}		
+}%
+
+
+<tr class="${rowClass}">
+    <td class="patient-name">
+        <div>
+            <a href="@{Care.patient(patient.userDetails.id)}">${patient.userDetails.user.name.usreNameNew(patient.userDetails.id)}</a>
+        </div>
+    </td>
+    <td>
+        <div>${disease}</div>
+    </td>
+    <td><div>${lastVisit}</div></td>
+    <td><div>${nextVisit}</div></td>
+    <td><div>${lastMD}</div></td>
+    <td class="current-distress">${lastDistress}</td>
+    <td>
+        <div>
+        #{if lastDistressCheckIn != "-"}
+        <span class="timeAgo" title="${lastDistressCheckIn}">${lastDistressCheckIn}</span>
+        #{/if}
+        #{else}${lastDistressCheckIn}#{/else}
+        </div></td>
+    <td><div>${problemList}</div></td>
+    <td><div>${notes}</div></td>
+</tr>
+#{/list}
+#{/if}
+#{else}
+<tr><td colspan="9" align="center">No record found</td></tr>
+#{/else}

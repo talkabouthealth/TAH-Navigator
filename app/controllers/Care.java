@@ -74,87 +74,22 @@ import com.google.gson.JsonPrimitive;
 @With( { Secure.class } )
 public class Care extends Controller {
 
-	public static void index() {
-		
+	public static void index() {		
 		UserBean user = CommonUtil.loadCachedUser(session);
-		ExpertDetailDTO expertDetail = ProfileDAO.getExpertByField("id", user.getId());
-		CareTeamMemberDTO careTeam =  CareTeamDAO.getCareTeamMembersByMemberId(user.getId()); // memberid
-//		System.out.println(careTeam.getCareteamid());
-		List<PatienCareTeamDTO> patientList = null;
-		if(careTeam != null) {
-			patientList = CareTeamDAO.getPatienCareTeamByField("careteamid",careTeam.getCareteamid());
-		}
-		ArrayList<PatientBean> patients = null;
-		if(patientList != null) {
-			patients = new ArrayList<PatientBean>(); 
-			PatientBean patient =null;
-			UserDetailsDTO userDetails = null;
-			PatientDetailDTO patientDetail = null;
-			
-			for (PatienCareTeamDTO patienCareTeamDTO : patientList) {
-				patient = new PatientBean();
-				userDetails = UserDAO.getDetailsById(patienCareTeamDTO.getPatienid());
-				patient.setUserDetails(userDetails);
-	
-				patientDetail  = ProfileDAO.getPatientByField("id", patienCareTeamDTO.getPatienid());
-				patient.setPatientOtherDetails(patientDetail);
-				
-				/* need to refactor - getDiagnosis method performing unnecessary queries for this call. This method is good for the MyDiagnosis page though - Murray */
-				Map<String, Object> patientInfo = PatientDetailDAO.getDiagnosis(patienCareTeamDTO.getPatienid());
-				BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
-//				int breastCancerId = Disease.BREAST_CANCER_ID;
-				patient.setBreastCancerInfo(breastCancerInfo);
-				
-				DistressBean distress = DistressDAO.getLastDistress(patienCareTeamDTO.getPatien());
-				if(distress !=null) {
-					patient.setDistress(distress);
-				}
-				AppointmentDTO appointment=AppointmentDAO.getLastAppointment(patienCareTeamDTO.getPatien(),new Date());				
-				AppointmentDTO nextAppointment = AppointmentDAO.nextAppointment(patienCareTeamDTO.getPatienid());
-				if (nextAppointment != null) {
-					patient.setNextAppointment(nextAppointment);
-				}
-				
-				if(appointment !=null) {
-					patient.setAppointmentInfo(appointment);
-				}
-				
-				NoteDTO noteFor = NotesDAO.getLastNoteFor(patienCareTeamDTO.getPatien());
-				if(noteFor!=null){
-					patient.setNote(noteFor);
-				}
-				patients.add(patient);
-			}
-			// Descending Order of Last Distress check Date
-			Collections.sort(patients, new Comparator<PatientBean>() {
-				@Override
-				public int compare(PatientBean o1, PatientBean o2) {
-					Date o1Date = null;
-					Date o2Date = null;
-					if (o1.getDistress() != null) {
-						o1Date = o1.getDistress().getDistressDate();
-					}
-					if (o2.getDistress() != null) {
-						o2Date = o2.getDistress().getDistressDate();
-					}
-					if (o1Date != null && o2Date != null) {
-						return o2Date.compareTo(o1Date);
-					}
-					else if (o2Date != null) {
-						return 1;
-					}
-					else if (o1Date != null) {
-						return -1;
-					}				
-					else {
-						return 0;
-					}				
-				}
-			});
-		}
-        render(user,expertDetail,patients);
+		ExpertDetailDTO expertDetail = ProfileDAO.getExpertByField("id", user.getId());		
+		List<PatientBean> patientBeans = CareTeamDAO.patientsOfCareTeam(user.getId());
+		Map<String, String> sortBy = new HashMap<String, String>();
+		sortBy.put("lastDistressCheckDate", "desc");
+		List<PatientBean> patients = CareTeamDAO.sortPatients(patientBeans, sortBy);		
+        render(user, expertDetail, patients);
     }
 	
+	public static void sortPatients(Map<String, String> filterMap) {
+		UserBean user = CommonUtil.loadCachedUser(session);
+		List<PatientBean> patientBeans = CareTeamDAO.patientsOfCareTeam(user.getId());
+		List<PatientBean> patients = CareTeamDAO.sortPatients(patientBeans, filterMap);
+		render(patients);	   
+	}
 	public static void invite() {
 		UserBean user = CommonUtil.loadCachedUser(session);
 		System.out.println(session.getId());
