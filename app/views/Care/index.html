@@ -51,6 +51,7 @@
         $.post('@{Care.sortPatients}', params, function(html) {
 	        $('#care-patients').html(html);
             $('#care-patients').fadeTo("fast", 1);
+            $("#care-patients tr td div").addTooltipsToTable();
 	    }, "html");
         $('#care-patients').fadeTo("slow", 0.2);
     };    
