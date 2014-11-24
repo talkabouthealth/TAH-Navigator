@@ -77,19 +77,23 @@ public class Care extends Controller {
 	public static void index() {		
 		UserBean user = CommonUtil.loadCachedUser(session);
 		ExpertDetailDTO expertDetail = ProfileDAO.getExpertByField("id", user.getId());		
-		List<PatientBean> patientBeans = CareTeamDAO.patientsOfCareTeam(user.getId());
+		List<PatientBean> patientBeans = CareTeamDAO.patientsOfCareTeam(user.getId(), new HashMap<String, String>());
 		Map<String, String> sortBy = new HashMap<String, String>();
 		sortBy.put("lastDistressCheckDate", "desc");
-		List<PatientBean> patients = CareTeamDAO.sortPatients(patientBeans, sortBy);		
-        render(user, expertDetail, patients);
+		List<PatientBean> patients = CareTeamDAO.sortPatients(patientBeans, sortBy);
+		List<DiseaseMasterDTO> diseases = Disease.allDiseases();
+        render(user, expertDetail, patients, diseases);
     }
 	
 	public static void sortPatients(Map<String, String> filterMap) {
-		UserBean user = CommonUtil.loadCachedUser(session);
-		List<PatientBean> patientBeans = CareTeamDAO.patientsOfCareTeam(user.getId());
+		UserBean user = CommonUtil.loadCachedUser(session);		
+		List<PatientBean> patientBeans = CareTeamDAO.patientsOfCareTeam(user.getId(), filterMap);
 		List<PatientBean> patients = CareTeamDAO.sortPatients(patientBeans, filterMap);
 		render(patients);	   
 	}
+	
+	
+	
 	public static void invite() {
 		UserBean user = CommonUtil.loadCachedUser(session);
 		System.out.println(session.getId());

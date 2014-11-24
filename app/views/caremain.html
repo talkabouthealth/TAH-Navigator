@@ -144,7 +144,9 @@ a.date-range.active {
               <p class="last-login">Last Login: <span id="time-ago">${session.get("lastLoginTime")}</span></p>
             </div>
           </div><!-- account-info -->
-
+          #{if searchPatient}
+            <div style="padding-top: 20px;margin-left: 35%;"><input type="text" id="care-search-patients" class="form-control input-sm" style="width: 200px;" placeholder="Search Patients"></div>
+          #{/if}
           <div class="account-actions">
             <ul class="btngroup">
                     	<li>
@@ -920,8 +922,6 @@ a.date-range.active {
       */
   -->
 </script>
-
-
 
 <script type='text/javascript' src="/public/js/patient/distressMeter.js"></script>
 #{ googleAnalytics /}

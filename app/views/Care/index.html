@@ -1,18 +1,35 @@
 #{set pageType = 'dashboard' /}
 #{extends 'caremain.html' /}
+
+#{set searchPatient : true /}
  
 <div class="col-xs-12 col-sm-12">
     <div class="table-responsive">
         <table class="table table-striped table-bordered table-hover table-heading no-border-bottom patient-dashboard">
             <thead>
                 <tr id="care-patients-header-row">
-                    <th><a href="#" class="filter-column" id="care-patient-names">NAME</a></th>
-                    <th>DIAGNOSIS</th>
-                    <th><a href="#" class="filter-column" id="care-patient-last-visit">LAST VISIT</a></th>
+                    <th>
+                        <a href="#" class="filter-column" id="care-patient-names">NAME</a>
+                    </th>
+                    <th>DIAGNOSIS
+                        <select id="care-patient-disease" class="form-control input-sm">
+                            <option value="0"></option>
+                            #{list diseases, as: 'disease'}
+                            <option value="${disease.id}">${disease.name}</option>
+                            #{/list}
+                        </select>
+                    </th>
+                    <th>
+                        <a href="#" class="filter-column" id="care-patient-last-visit" sort-by="desc">LAST VISIT</a>
+                    </th>
                     <th>NEXT VISIT</th>
                     <th>LAST MD</th>
-                    <th><a href="#" class="filter-column" id="care-patient-last-distress-level">LAST DISTRESS LEVEL</a></th>
-                    <th><a href="#" class="filter-column" id="care-patient-last-distress-check-date">LAST DISTRESS CHECK-IN</a></th>
+                    <th>
+                        <a href="#" class="filter-column" id="care-patient-last-distress-level" sort-by="desc">LAST DISTRESS LEVEL</a>
+                    </th>
+                    <th>
+                        <a href="#" class="filter-column" id="care-patient-last-distress-check-date" sort-by="desc">LAST DISTRESS CHECK-IN</a>
+                    </th>
                     <th>PROBLEM LIST</th>
                     <th>LAST NOTE</th>
                 </tr>
@@ -28,50 +45,55 @@
 
 (function() {
 
-	var colorActiveFilter = function(activeColumn) {
-        $('#care-patients-header-row a.filter-column').css({'color': 'rgb(0, 80, 155)'});
-        $(activeColumn).css({'color': 'rgb(255, 0, 0)'});
-        $('#care-patients').fadeTo("fast", 1);
-	};
-	
-	$(document).on("click", '#care-patient-names', function(e) {        
-	    $.post('@{Care.sortPatients}', {
-	        'filterMap.patientName' : 'asc'
-	    }, function(html) {
+    var filterPatients = function(params) {        
+        params['filterMap.disease'] = $('#care-patient-disease').val();
+        params['filterMap.searchPatient']  = $('#care-search-patients').val();
+        $.post('@{Care.sortPatients}', params, function(html) {
 	        $('#care-patients').html(html);
-            colorActiveFilter(e.target);
+            $('#care-patients').fadeTo("fast", 1);
 	    }, "html");
         $('#care-patients').fadeTo("slow", 0.2);
+    };    
+    var colorActiveFilter = function(target) {
+        $('.filter-column').css({'color': 'rgb(0, 80, 155)'});
+        $(target).css({'color': 'red'});
+    };
+    
+	$(document).on('click', '#care-patient-names', function(e) {        
+	    filterPatients({'filterMap.patientName': 'asc'});
+        colorActiveFilter(e.target);
 	});
 	
-	$(document).on("click", '#care-patient-last-visit', function(e) {        
-	    $.post('@{Care.sortPatients}', {
-	        'filterMap.lastVisit' : 'desc'
-	    }, function(html) {
-	        $('#care-patients').html(html);
-            colorActiveFilter(e.target);
-	    }, "html");
-        $('#care-patients').fadeTo("slow", 0.2);
+	$(document).on('click', '#care-patient-last-visit', function(e) {        
+	    filterPatients({'filterMap.lastVisit': 'desc'});
+        colorActiveFilter(e.target);
 	});
 	
-	$(document).on("click", '#care-patient-last-distress-level', function(e) {        
-	    $.post('@{Care.sortPatients}', {
-	        'filterMap.lastDistressLevel' : 'desc'
-	    }, function(html) {
-	        $('#care-patients').html(html);
-            colorActiveFilter(e.target);
-	    }, "html");
-        $('#care-patients').fadeTo("slow", 0.2);
+	$(document).on('click', '#care-patient-last-distress-level', function(e) {        
+	    filterPatients({'filterMap.lastDistressLevel': 'desc'});
+        colorActiveFilter(e.target);
 	});
 	
-	$(document).on("click", '#care-patient-last-distress-check-date', function(e) {        
-	    $.post('@{Care.sortPatients}', {
-	        'filterMap.lastDistressCheckDate' : 'desc'
-	    }, function(html) {
-            $('#care-patients').html(html);
-            colorActiveFilter(e.target);
-        }, "html");
-        $('#care-patients').fadeTo("slow", 0.2);
+	$(document).on('click', '#care-patient-last-distress-check-date', function(e) {        
+	    filterPatients({'filterMap.lastDistressCheckDate': 'desc'});
+        colorActiveFilter(e.target);
     });
+    $(document).on("change", '#care-patient-disease', function(e) {
+        filterPatients({});
+        $('.filter-column').css({'color': 'rgb(0, 80, 155)'});
+    });    
+    
+    $(document).on("keyup", '#care-search-patients', function(e){
+        if (e.keyCode == 13) {
+            filterPatients({});
+            $('.filter-column').css({'color': 'rgb(0, 80, 155)'});
+        }
+        var searchStr = $('#care-search-patients').val();
+        if (searchStr.length == 0) {
+            filterPatients({});
+            $('.filter-column').css({'color': 'rgb(0, 80, 155)'});
+        }
+    });    
+    
 })();
 </script>

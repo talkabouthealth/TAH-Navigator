@@ -163,7 +163,7 @@ public class CareTeamDAO {
 			return null;
 	}
 	
-	public static List<PatientBean> patientsOfCareTeam(int userId) {
+	public static List<PatientBean> patientsOfCareTeam(int userId, Map<String, String> filterParams) {
 		CareTeamMemberDTO careTeam =  getCareTeamMembersByMemberId(userId);		
 		ArrayList<PatientBean> patients = new ArrayList<PatientBean>();
 		if (careTeam != null) {
@@ -179,6 +179,38 @@ public class CareTeamDAO {
 				AppointmentDTO nextAppointment = AppointmentDAO.nextAppointment(patientDto.getPatienid());
 				NoteDTO noteFor = NotesDAO.getLastNoteFor(patientDto.getPatien());
 				
+				
+				if (filterParams.containsKey("disease")) {					
+					Integer diseaseId = new Integer(filterParams.get("disease"));
+					// filter based on disease only if disease id is not zero
+					if (diseaseId.intValue() != 0) {
+						if (patientDetail != null && patientDetail.getDiseaseId() != null) {
+							if (patientDetail.getDiseaseId().compareTo(diseaseId) != 0) {
+								continue;
+							}		
+						}
+						else {
+							continue;
+						}
+					}
+				}
+				
+				//searchPatient
+				if (filterParams.containsKey("searchPatient")) {					
+					String searchStr = filterParams.get("searchPatient");					
+					if (searchStr.length() > 0) {
+						if (userDetails != null) {
+							String patientName = String.valueOf(TemplateExtensions.usreNameNew(userDetails.getUser().getName(), userDetails.getId())).trim();
+							patientName = patientName.toLowerCase();
+							if (!patientName.contains(searchStr.toLowerCase())) {
+								continue;
+							}
+						}
+						else {
+							continue;
+						}						
+					}
+				}
 				PatientBean patient = new PatientBean();
 				patient.setUserDetails(userDetails);
 				patient.setPatientOtherDetails(patientDetail);				
