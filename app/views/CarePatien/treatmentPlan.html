@@ -33,7 +33,7 @@
       <td>#{if rt.rsDto} ${rt.rsDto.timePeriod} #{/if}</td>
       <td>#{if rt.trDto} ${rt.trDto.region} #{/if}</td>
       <td>#{if rt.doctor} ${rt.doctor} #{/if}</td>      
-      <td>#{if rt.notes} ${rt.notes} #{/if}</td>
+      <td><div>#{if rt.notes} ${rt.notes} #{/if}</div></td>
     </tr>
 
     #{/list}
@@ -69,7 +69,7 @@
       <td>#{if si.surgeryDate} ${si.surgeryDate.format('MM/dd/yyyy')} #{/if}</td>
       <td>#{if si.trDto} ${si.trDto.region} #{/if}</td>
       <td>#{if si.doctor} ${si.doctor} #{/if}</td>
-      <td>#{if si.notes} ${si.notes} #{/if}</td>
+      <td><div>#{if si.notes} ${si.notes} #{/if}</div></td>
     </tr>
     #{/list}
   </tbody>
@@ -112,7 +112,7 @@
       <td>#{if ct.csDto} ${ct.csDto.timePeriod} #{/if}</td>
       <td>#{if ct.doseReduction} ${ct.doseReduction} #{/if}</td>     
       <td>#{if ct.doctor} ${ct.doctor} #{/if}</td>
-      <td>#{if ct.notes} ${ct.notes} #{/if}</td>
+      <td><div>#{if ct.notes} ${ct.notes} #{/if}</div></td>
     </tr>
     #{/list}
   </tbody>

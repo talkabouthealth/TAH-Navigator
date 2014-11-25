@@ -18,7 +18,7 @@
             <td><a form_type="edit" patient_id="${ci.userId}" care_item_id="${ci.id}" onclick="careTeamController.evtMsgHandler('fup_careitem_form', this);">${ci.activity}</a></td>
             <td>#{if ci.frequency} ${ci.frequency} #{/if}</td>
             <td>#{if ci.endDate} ${ci.endDate.format('MM/dd/yyyy')} #{/if}#{if ci.ongoing}Ongoing#{/if}</td>
-            <td>#{if ci.purpose} ${ci.purpose} #{/if}</td>
+            <td><div>#{if ci.purpose} ${ci.purpose} #{/if}</div></td>
             <td>#{if ci.doctor} ${ci.doctor} #{/if}</td>
         </tr>
         #{/list}
@@ -42,7 +42,7 @@
             <td><a form_type="edit" patient_id="${concern.userId}" concern_id="${concern.id}" onclick="careTeamController.evtMsgHandler('fup_concern_form', this);">${concern.concern}</a></td>
             <td>#{if concern.nextStep} ${concern.nextStep} #{/if}</td>
             <td>#{if concern.concernDate} ${concern.concernDate.format('MM/dd/yyyy')} #{/if}</td>
-            <td>#{if concern.notes} ${concern.notes} #{/if}</td>
+            <td><div>#{if concern.notes} ${concern.notes} #{/if}</div></td>
         </tr>
         #{/list}
     </table>
@@ -65,7 +65,7 @@
             <td><a form_type="edit" patient_id="${goal.userId}" goal_id="${goal.id}" onclick="careTeamController.evtMsgHandler('fup_goal_form', this);">${goal.goal}</a></td>
             <td>#{if goal.nextStep} ${goal.nextStep} #{/if}</td>
             <td>#{if goal.goalDeadline} ${goal.goalDeadline.format('MM/dd/yyyy')} #{/if}</td>
-            <td>#{if goal.notes} ${goal.notes} #{/if}</td>
+            <td><div>#{if goal.notes} ${goal.notes} #{/if}</div></td>
         </tr>
         #{/list}
     </table>

@@ -735,6 +735,16 @@ $(document).ready(function() {
 			// ajax load from data-url
 			$(href).load(url,function(result){
 			    pane.tab('show');
+                //  Add tooltip feature to table [Start]
+                var divs = $('table.table td div');
+                if (divs.length) {
+                    divs.addTooltipsToTable();
+
+                    $(window).resize(function(){
+                        divs.addTooltipsToTable();
+                    });
+                }
+                //  Add tooltip feature to table [End]
 			});
 		}
 	}
