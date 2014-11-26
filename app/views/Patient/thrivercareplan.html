@@ -66,7 +66,7 @@
 	        #{list items:concerns, as:'concern'}
 	        <tr>
 	            <td>${concern.concern}</td>
-	            <td>#{if concern.nextStep} ${concern.nextStep} #{/if}</td>
+	            <td><div>#{if concern.nextStep} ${concern.nextStep} #{/if}</div></td>
 	            <td>#{if concern.concernDate} ${concern.concernDate.format('MM/dd/yyyy')} #{/if}</td>
 	            <td><div>#{if concern.notes} ${concern.notes} #{/if}</div></td>
 	        </tr>
@@ -100,7 +100,7 @@
 	        #{list items:goals, as:'goal'}
 	        <tr>
 	            <td>${goal.goal}</td>
-	            <td>#{if goal.nextStep} ${goal.nextStep} #{/if}</td>
+	            <td><div>#{if goal.nextStep} ${goal.nextStep} #{/if}</div></td>
 	            <td>#{if goal.goalDeadline} ${goal.goalDeadline.format('MM/dd/yyyy')} #{/if}</td>
 	            <td><div>#{if goal.notes} ${goal.notes} #{/if}</div></td>
 	        </tr>
