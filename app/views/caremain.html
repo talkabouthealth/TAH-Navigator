@@ -33,6 +33,7 @@
   <script type="text/javascript" src="@{'/public/plugins/flot/jquery.flot.time.js'}"></script>
   <script src="/public/js/lib/bootstrap-multiselect.js"></script>
   <script src="/public/js/careteamController.js"></script>
+  <script src="/public/js/lib/bootbox.min.js"></script>
 
   <style>
   div.title{margin-bottom: 10px;}
@@ -726,14 +727,13 @@ a.date-range.active {
                             <span class="glyphicon glyphicon-remove form-control-feedback" id="fup_cc_concern_icon"></span>
                         </div>
                     </div>
-
                     <div class="form-group form-group-sm">
                         <label for="fup_cc_action_plan" class="col-xs-4 control-label">Next Step</label>
                         <div class="col-xs-8">
-                            <input type="text" class="form-control input-sm" id="fup_cc_action_plan" placeholder="i.e. Research Fertility Options">
+                        	<textarea rows="3" class="form-control input-sm" id="fup_cc_action_plan" placeholder="i.e. Research Fertility Options"></textarea>
+<!--                             <input type="text" class="form-control input-sm" id="fup_cc_action_plan" placeholder="i.e. Research Fertility Options"> -->
                         </div>
                     </div>
-
                     <div class="form-group form-group-sm">
                         <label for="fup_cc_notes" class="col-xs-4 control-label">Note</label>
                         <div class="col-xs-8">
@@ -770,7 +770,8 @@ a.date-range.active {
                     <div class="form-group form-group-sm">
                         <label for="fup_gl_action_plan" class="col-xs-4 control-label">Next Step</label>
                         <div class="col-xs-8">
-                            <input type="text" class="form-control input-sm" id="fup_gl_action_plan" placeholder="i.e. Eat smaller portions, shop for healthier food options">
+<!--                        <input type="text" class="form-control input-sm" id="fup_gl_action_plan" placeholder="i.e. Eat smaller portions, shop for healthier food options"> -->
+                            <textarea rows="3" class="form-control input-sm" id="fup_gl_action_plan" placeholder="i.e. Eat smaller portions, shop for healthier food options"></textarea>
                         </div>
                     </div>
 
@@ -838,7 +839,8 @@ a.date-range.active {
                     <div class="form-group form-group-sm">
                         <label for="fup_ci_purpose" class="col-xs-4 control-label">Purpose</label>
                         <div class="col-xs-8">
-                            <input type="text" class="form-control input-sm" id="fup_ci_purpose" placeholder="i.e. Search for lumps and changes in breast">
+                        	<textarea class="form-control input-sm" id="fup_ci_purpose" placeholder="i.e. Search for lumps and changes in breast"></textarea>
+<!--                             <input type="text" > -->
                         </div>
                     </div>
                     <div class="form-group form-group-sm">
@@ -869,6 +871,13 @@ a.date-range.active {
   var todayDate;
   var lastLogin;
   $(document).ready(function(){
+	  
+	  
+	  $('body').on('click', '.fa-info-circle', function() {
+			bootbox.alert($(this).data("title"), null);
+			
+		});
+	  
     todayDate = $('.today-date');
 //     lastLogin = $('#time-ago');
 

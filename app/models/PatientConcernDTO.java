@@ -28,6 +28,8 @@ public class PatientConcernDTO {
 	@Column(name="concern_date")
 	private Date concernDate;
 
+	private String infoText;
+
 	public Integer getId() {
 		return id;
 	}
@@ -74,6 +76,14 @@ public class PatientConcernDTO {
 
 	public void setConcernDate(Date concernDate) {
 		this.concernDate = concernDate;
+	}
+
+	public String getInfoText() {
+		return infoText;
+	}
+
+	public void setInfoText(String infoText) {
+		this.infoText = infoText;
 	}
 	
 }

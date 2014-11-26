@@ -30,6 +30,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
   <script type="text/javascript" src="/public/js/patient/treatment.js"></script>
   <script src="/public/js/devoops.js"></script>
   <script src="/public/js/application.js"></script>
+  <script src="/public/js/lib/bootbox.min.js"></script>
 </head>
 <body>
 <div class="wrapper">
@@ -247,23 +248,18 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
 
       <script>
 
-      (function($){
-        var todayDate;
-        var lastLogin;
-        $(document).ready(function(){
-          todayDate = $('.today-date');
-//           lastLogin = $('.last-login span');
-
-          todayDate.html($.datepicker.formatDate('DD m/d/yy', new Date()));
-//           lastLogin.timeago();
-
-//           var d = moment(lastLogin.html(), 'YYYY-MM-DD h:m:s A');
-//           lastLogin.html(d.format('M/D/YYYY h:m A'));        
-        });
-      })(jQuery);
-
 // KEVIN: I don't know what this is for.
+var todayDate;
+var lastLogin;
 $(document).ready(function(){
+
+	todayDate = $('.today-date');
+    todayDate.html($.datepicker.formatDate('DD m/d/yy', new Date()));
+    
+	$('body').on('click', '.fa-info-circle', function() {
+		bootbox.alert($(this).data("title"), null);
+	});
+
 	$("a.disabled").click(function(e){
 		$("#verificationAlert").modal({ keyboard: false });
 	});

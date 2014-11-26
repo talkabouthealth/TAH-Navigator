@@ -21,6 +21,7 @@ import models.CareTeamMemberDTO;
 import models.ChemoScheduleDTO;
 import models.DiseaseMasterDTO;
 import models.ExpertDetailDTO;
+import models.InputDefaultDTO;
 import models.MedicineCatlogDTO;
 import models.MedicineMasterDTO;
 import models.NoteDTO;
@@ -49,6 +50,7 @@ import nav.dao.CareTeamDAO;
 import nav.dao.Disease;
 import nav.dao.DistressDAO;
 import nav.dao.FollowUp;
+import nav.dao.InputDefaultDAO;
 import nav.dao.MedicationDAO;
 import nav.dao.NotesDAO;
 import nav.dao.PatientAlert;
@@ -116,9 +118,41 @@ public class CarePatien  extends Controller {
 	public static void followupPlan(int patientId) {
 		List<NoteDTO> noteList = NotesDAO.getPatientNotesList(patientId+"");
 		Map <String, Object> ps = PatientDetailDAO.patientSummary(patientId);
-		List<PatientConcernDTO> concerns = FollowUp.getPatientConcerns(patientId);
-		List<PatientGoalDTO> goals = FollowUp.getPatientGoals(patientId);
-		List<PatientFollowUpCareItemDTO> careItems = FollowUp.getPatientCareItems(patientId);
+		PatientDetailDTO patientDetails = PatientDetailDAO.getDetailsByField("id", new Integer(patientId));
+
+		List<PatientFollowUpCareItemDTO> careItemsOld = FollowUp.getPatientCareItems(patientId);
+		List<PatientFollowUpCareItemDTO> careItems = null;
+		if(careItemsOld != null && !careItemsOld.isEmpty()) {
+			careItems = new ArrayList<PatientFollowUpCareItemDTO>();
+			for (PatientFollowUpCareItemDTO patientFollowUpCareItemDTO : careItemsOld) {
+			String tipText = InputDefaultDAO.getInputTipTextDefaultByFieldName(patientDetails.getDiseaseId(), "followupplan", patientFollowUpCareItemDTO.getActivity());
+			patientFollowUpCareItemDTO.setInfoText(tipText);
+			careItems.add(patientFollowUpCareItemDTO);
+			}
+		}
+
+		List<PatientConcernDTO> concernsOld = FollowUp.getPatientConcerns(patientId);
+		List<PatientConcernDTO> concerns = null;
+		if(concernsOld != null && !concernsOld.isEmpty()) {
+			concerns = new ArrayList<PatientConcernDTO>();
+			for (PatientConcernDTO patientFollowUpCareItemDTO : concernsOld) {
+			String tipText = InputDefaultDAO.getInputTipTextDefaultByFieldName(patientDetails.getDiseaseId(), "followupplan", patientFollowUpCareItemDTO.getConcern());
+			patientFollowUpCareItemDTO.setInfoText(tipText);
+			concerns.add(patientFollowUpCareItemDTO);
+			}
+		}
+
+		List<PatientGoalDTO> goalsOld = FollowUp.getPatientGoals(patientId);
+		List<PatientGoalDTO> goals = null;
+		if(goalsOld != null && !goalsOld.isEmpty()) {
+			goals = new ArrayList<PatientGoalDTO>();
+			for (PatientGoalDTO patientFollowUpCareItemDTO : goalsOld) {
+			String tipText = InputDefaultDAO.getInputTipTextDefaultByFieldName(patientDetails.getDiseaseId(), "followupplan", patientFollowUpCareItemDTO.getGoal());
+			patientFollowUpCareItemDTO.setInfoText(tipText);
+			goals.add(patientFollowUpCareItemDTO);
+			}
+		}
+
 		render(patientId,noteList, ps, concerns, goals, careItems);
 	}
 	public static void chemotherapyForm(Integer patientId, Integer treatmentId, Integer initFlag, String formType) {
@@ -212,6 +246,39 @@ public class CarePatien  extends Controller {
 		}
 		renderJSON(jsonData);
 	}
+	
+	public static void fupTemplateData(Integer patientId,String formOf) {
+		UserDetailsDTO userDto = UserDAO.getDetailsById(patientId);
+		PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", userDto.getId());
+		Map<String, Object> jsonData = new HashMap<String, Object>();
+		if (patientId != null) {
+			List<InputDefaultDTO> inputList = InputDefaultDAO.getInputDefaultByPageField("followupplan",patientOtherDetails.getDiseaseId(),formOf);
+			jsonData.put("inputlist", inputList);
+		}
+
+		if(formOf.equals("activity")) {
+			List<CareMember> doctors = UserDAO.verifiedDoctors();
+			ArrayList<String> doctorNames = new ArrayList<String>();
+			for(CareMember doctor : doctors) {			
+				StringBuilder name = new StringBuilder("");
+				if (doctor.getFirstName() != null) {
+					name.append(doctor.getFirstName());
+				}				
+				doctorNames.add(name.toString());
+			}
+			jsonData.put("doctors", doctorNames);
+
+			ArrayList<String> frequencies = new ArrayList<String>();
+			frequencies.add("Every month");
+			frequencies.add("Every 3 months");
+			frequencies.add("Every 6 months");
+			frequencies.add("Every year");
+			jsonData.put("frequencies", frequencies);
+
+		}
+		renderJSON(jsonData);
+	}
+
 	public static void goalForm(Integer goalId) {
 		Map<String, Object> jsonData = new HashMap<String, Object>();
 		if (goalId != null) {
@@ -221,7 +288,8 @@ public class CarePatien  extends Controller {
 		renderJSON(jsonData);
 	}
 	
-	public static void careItemForm(Integer careItemId) {
+	public static void careItemForm(Integer careItemId,int patientId) {
+		
 		Map<String, Object> jsonData = new HashMap<String, Object>();
 		if (careItemId != null) {
 			PatientFollowUpCareItemDTO careItem = FollowUp.getCareItem(careItemId);

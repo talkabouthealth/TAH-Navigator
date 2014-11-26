@@ -317,15 +317,49 @@ public class Patient extends Controller {
 			UserDetailsDTO userDto = (UserDetailsDTO) patientInfo.get("userDetails");
 			PatientDetailDTO patientOtherDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
 			BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
-			int breastCancerId = Disease.BREAST_CANCER_ID;
+//			int breastCancerId = Disease.BREAST_CANCER_ID;
 			List<NoteDTO> noteList = NotesDAO.getPatientNotesList(String.valueOf(user.getId()));
-			List<PatientConcernDTO> concerns = FollowUp.getPatientConcerns(user.getId());
-			List<PatientGoalDTO> goals = FollowUp.getPatientGoals(user.getId());
-			boolean noteLinkInactive = true;
-			List<PatientFollowUpCareItemDTO> careItems = FollowUp.getPatientCareItems(user.getId());
 			
+//			List<PatientConcernDTO> concerns = FollowUp.getPatientConcerns(user.getId());
+//			List<PatientGoalDTO> goals = FollowUp.getPatientGoals(user.getId());
+//			List<PatientFollowUpCareItemDTO> careItems = FollowUp.getPatientCareItems(user.getId());
+			
+			List<PatientFollowUpCareItemDTO> careItemsOld = FollowUp.getPatientCareItems(user.getId());
+			List<PatientFollowUpCareItemDTO> careItems = null;
+			if(careItemsOld != null && !careItemsOld.isEmpty()) {
+				careItems = new ArrayList<PatientFollowUpCareItemDTO>();
+				for (PatientFollowUpCareItemDTO patientFollowUpCareItemDTO : careItemsOld) {
+				String tipText = InputDefaultDAO.getInputTipTextDefaultByFieldName(patientOtherDetails.getDiseaseId(), "followupplan", patientFollowUpCareItemDTO.getActivity());
+				patientFollowUpCareItemDTO.setInfoText(tipText);
+				careItems.add(patientFollowUpCareItemDTO);
+				}
+			}
+			
+			List<PatientConcernDTO> concernsOld = FollowUp.getPatientConcerns(user.getId());
+			List<PatientConcernDTO> concerns = null;
+			if(concernsOld != null && !concernsOld.isEmpty()) {
+				concerns = new ArrayList<PatientConcernDTO>();
+				for (PatientConcernDTO patientFollowUpCareItemDTO : concernsOld) {
+				String tipText = InputDefaultDAO.getInputTipTextDefaultByFieldName(patientOtherDetails.getDiseaseId(), "followupplan", patientFollowUpCareItemDTO.getConcern());
+				patientFollowUpCareItemDTO.setInfoText(tipText);
+				concerns.add(patientFollowUpCareItemDTO);
+				}
+			}
+			
+			List<PatientGoalDTO> goalsOld = FollowUp.getPatientGoals(user.getId());
+			List<PatientGoalDTO> goals = null;
+			if(goalsOld != null && !goalsOld.isEmpty()) {
+				goals = new ArrayList<PatientGoalDTO>();
+				for (PatientGoalDTO patientFollowUpCareItemDTO : goalsOld) {
+				String tipText = InputDefaultDAO.getInputTipTextDefaultByFieldName(patientOtherDetails.getDiseaseId(), "followupplan", patientFollowUpCareItemDTO.getGoal());
+				patientFollowUpCareItemDTO.setInfoText(tipText);
+				goals.add(patientFollowUpCareItemDTO);
+				}
+			}
+			
+			boolean noteLinkInactive = true;
 			System.out.println(session.getId());
-	        render(user,userDto,patientOtherDetails, breastCancerId, breastCancerInfo, noteList, concerns, goals, careItems, noteLinkInactive);
+	        render(user,userDto,patientOtherDetails, breastCancerInfo, noteList, concerns, goals, careItems, noteLinkInactive);
 		} else {
 			index();
 		}

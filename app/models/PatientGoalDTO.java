@@ -29,6 +29,8 @@ public class PatientGoalDTO {
 	@Column(name="notes")
 	private String notes;
 
+	private String infoText;
+
 	public Integer getId() {
 		return id;
 	}
@@ -76,4 +78,13 @@ public class PatientGoalDTO {
 	public void setNotes(String notes) {
 		this.notes = notes;
 	}
+
+	public String getInfoText() {
+		return infoText;
+	}
+
+	public void setInfoText(String infoText) {
+		this.infoText = infoText;
+	}
+	
 }

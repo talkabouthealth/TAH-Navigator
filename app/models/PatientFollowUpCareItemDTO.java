@@ -33,6 +33,8 @@ public class PatientFollowUpCareItemDTO {
 	
 	@Column(name="doctor")
 	private String doctor;
+	
+	private String infoText;
 
 	public Integer getId() {
 		return id;
@@ -96,5 +98,13 @@ public class PatientFollowUpCareItemDTO {
 
 	public void setDoctor(String doctor) {
 		this.doctor = doctor;
+	}
+
+	public String getInfoText() {
+		return infoText;
+	}
+
+	public void setInfoText(String infoText) {
+		this.infoText = infoText;
 	}
 }

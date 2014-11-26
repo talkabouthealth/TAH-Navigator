@@ -50,20 +50,20 @@ public class BreastCancerInfoDTO {
 	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="typeid", insertable=false, updatable=false)
 	private CancerTypeDTO type;
-	
+
 	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="subtypeid", insertable=false, updatable=false)
 	private CancerTypeDTO subtype;
-	
+
 	@Column(name="risklevel")
 	private String risklevel;
-	
+
 	@Column(name="psascore")
 	private String psascore;
-	
+
 	@Column(name="gleasonscore")
 	private String gleasonscore;
-	
+
 	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="invasion", insertable=true, updatable=true)
 	private CancerInvasiveDTO invasion;

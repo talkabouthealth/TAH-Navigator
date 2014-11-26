@@ -2,10 +2,10 @@
 <div class="container-fluid treatment-plan">
     <div class="title">
         <h3>Follow-Up Care</h3>
-        <button type="button" class="btn btn-primary" patient_id="${patientId}" form_type="new" onclick="careTeamController.evtMsgHandler('fup_careitem_form', this);">+ Add Follow-Up Care Item</button>
+        <button type="button" class="btn btn-default" patient_id="${patientId}" form_type="new" onclick="careTeamController.evtMsgHandler('fup_careitem_form', this);">+ Add Follow-Up Care Item</button>
+<!--         &nbsp;&nbsp;&nbsp;<a href="javaScript:void(0);">User Template</a> -->
     </div>
-    #{if careItems}
-    <table class="table table-bordered table-striped table-condensed table-hover table-fixed">
+	<table class="table table-bordered table-striped table-condensed table-hover table-fixed">
         <tr>
             <th>CONCERN</th>
             <th>FREQUENCY</th>
@@ -13,23 +13,30 @@
             <th>PURPOSE</th>
             <th>DOCTOR</th>
         </tr>
-        #{list items:careItems, as:'ci'}
-        <tr>
-            <td><a form_type="edit" patient_id="${ci.userId}" care_item_id="${ci.id}" onclick="careTeamController.evtMsgHandler('fup_careitem_form', this);">${ci.activity}</a></td>
-            <td>#{if ci.frequency} ${ci.frequency} #{/if}</td>
-            <td>#{if ci.endDate} ${ci.endDate.format('MM/dd/yyyy')} #{/if}#{if ci.ongoing}Ongoing#{/if}</td>
-            <td><div>#{if ci.purpose} ${ci.purpose} #{/if}</div></td>
-            <td>#{if ci.doctor} ${ci.doctor} #{/if}</td>
-        </tr>
-        #{/list}
+		#{if careItems}
+			#{list items:careItems, as:'ci'}
+	        <tr>
+	            <td>
+	            	<a form_type="edit" patient_id="${ci.userId}" care_item_id="${ci.id}" onclick="careTeamController.evtMsgHandler('fup_careitem_form', this);">${ci.activity}</a>
+					#{if ci.infoText != ''} 
+						<i data-title="${ci.infoText}" class="fa fa-info-circle infomarker"></i>
+					#{/if}
+				</td>
+				<td>#{if ci.frequency} ${ci.frequency} #{/if}</td>
+				<td>#{if ci.endDate} ${ci.endDate.format('MM/dd/yyyy')} #{/if}#{if ci.ongoing}Ongoing#{/if}</td>
+				<td><div>#{if ci.purpose} ${ci.purpose} #{/if}</div></td>
+				<td>#{if ci.doctor} ${ci.doctor} #{/if}</td>
+			</tr>
+			#{/list}
+		#{/if}
+		#{else}
+			<tr><td colspan="5" style="text-align:center;">No record found</td></tr>
+		#{/else}
     </table>
-   #{/if}
-   
     <div class="title">
         <h3>Needs / Concerns</h3>
-        <button type="button" class="btn btn-primary" patient_id="${patientId}" form_type="new" onclick="careTeamController.evtMsgHandler('fup_concern_form', this);">+ Add Need</button>
+        <button type="button" class="btn btn-default" patient_id="${patientId}" form_type="new" onclick="careTeamController.evtMsgHandler('fup_concern_form', this);">+ Add Need</button>
     </div>
-    #{if concerns}
     <table class="table table-bordered table-striped table-condensed table-hover table-fixed">
         <tr>
             <th>CONCERN</th>
@@ -37,22 +44,28 @@
 			<th>DATE OF CONCERN</th>
 			<th>UPDATES</th>
         </tr>
-        #{list items:concerns, as:'concern'}
-        <tr>
-            <td><a form_type="edit" patient_id="${concern.userId}" concern_id="${concern.id}" onclick="careTeamController.evtMsgHandler('fup_concern_form', this);">${concern.concern}</a></td>
+		#{if concerns}
+	        #{list items:concerns, as:'concern'}
+		        <tr>
+		            <td><a form_type="edit" patient_id="${concern.userId}" concern_id="${concern.id}" onclick="careTeamController.evtMsgHandler('fup_concern_form', this);">${concern.concern}</a>
+		            #{if concern.infoText != ''} 
+						<i data-title="${concern.infoText}" class="fa fa-info-circle infomarker"></i>
+					#{/if}
+		            </td>
             <td><div>#{if concern.nextStep} ${concern.nextStep} #{/if}</div></td>
-            <td>#{if concern.concernDate} ${concern.concernDate.format('MM/dd/yyyy')} #{/if}</td>
+		            <td>#{if concern.concernDate} ${concern.concernDate.format('MM/dd/yyyy')} #{/if}</td>
             <td><div>#{if concern.notes} ${concern.notes} #{/if}</div></td>
-        </tr>
-        #{/list}
+		        </tr>
+	        #{/list}
+        #{/if}
+		#{else}
+			<tr><td colspan="4" style="text-align:center;">No record found</td></tr>
+		#{/else}
     </table>
-    #{/if}
-    
     <div class="title">
         <h3>Goals</h3>
-        <button type="button" class="btn btn-primary" patient_id="${patientId}" form_type="new" onclick="careTeamController.evtMsgHandler('fup_goal_form', this);">+ Add Goal</button>
+        <button type="button" class="btn btn-default" patient_id="${patientId}" form_type="new" onclick="careTeamController.evtMsgHandler('fup_goal_form', this);">+ Add Goal</button>
     </div>
-    #{if goals}
     <table class="table table-bordered table-striped table-condensed table-hover table-fixed">
         <tr>
             <th>GOAL</th>
@@ -60,20 +73,26 @@
             <th>GOAL START DATE</th>
             <th>UPDATES</th>
         </tr>
-        #{list items:goals, as:'goal'}
-        <tr>
-            <td><a form_type="edit" patient_id="${goal.userId}" goal_id="${goal.id}" onclick="careTeamController.evtMsgHandler('fup_goal_form', this);">${goal.goal}</a></td>
+		#{if goals}
+	        #{list items:goals, as:'goal'}
+		        <tr>
+		            <td><a form_type="edit" patient_id="${goal.userId}" goal_id="${goal.id}" onclick="careTeamController.evtMsgHandler('fup_goal_form', this);">${goal.goal}</a>
+		            #{if goal.infoText != ''} 
+						<i data-title="${goal.infoText}" class="fa fa-info-circle infomarker"></i>
+					#{/if}
+		            </td>
             <td><div>#{if goal.nextStep} ${goal.nextStep} #{/if}</div></td>
-            <td>#{if goal.goalDeadline} ${goal.goalDeadline.format('MM/dd/yyyy')} #{/if}</td>
+		            <td>#{if goal.goalDeadline} ${goal.goalDeadline.format('MM/dd/yyyy')} #{/if}</td>
             <td><div>#{if goal.notes} ${goal.notes} #{/if}</div></td>
-        </tr>
-        #{/list}
+		        </tr>
+	        #{/list}
+		#{/if}
+		#{else}
+			<tr><td colspan="4" style="text-align:center;">No record found</td></tr>
+		#{/else}
     </table>
-    #{/if}
-    
-    
-    <div style="padding-bottom:20px;">
-        <span class="title" style="vertical-align: middle;">NOTES</span>&nbsp;&nbsp;<button class="btn btn-default btn-sm noteBtn" style="font-weight:bold;">+ NEW NOTE</button>
+    <div>
+        <span class="title" style="vertical-align: middle;">NOTES</span>&nbsp;&nbsp;<button class="btn btn-default noteBtn" style="font-weight:bold;">+ NEW NOTE</button>
     </div>
     #{include '/tags/note.html' /}
 </div>
