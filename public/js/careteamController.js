@@ -36,6 +36,19 @@ var careTeamController = (function() {
 	var chromosomesIds;
 	var fabId, whoId;
 	
+    var addTooltip = function() {
+        //  Add tooltip feature to table [Start]
+        var divs = $('table.table td div');
+        if (divs.length) {
+            divs.addTooltipsToTable();
+
+            $(window).resize(function(){
+                divs.addTooltipsToTable();
+            });
+        }
+        //  Add tooltip feature to table [End]
+    };
+    
     var concernForm = {
         followUpDiv: '#followupplan',
         formId: '#follow-up-concern-form',
@@ -128,6 +141,7 @@ var careTeamController = (function() {
             }
             $.post(actions['fup_save_concern'], params, function(htmlText) {
                 $(self.followUpDiv).html(htmlText);
+                addTooltip();
             }, "html");
             return true; 
         },
@@ -287,6 +301,7 @@ var careTeamController = (function() {
             }
             $.post(actions['fup_save_goal'], params, function(htmlText) {
                 $(self.followUpDiv).html(htmlText);
+                addTooltip();
             }, "html");
             return true; 
         },
@@ -517,6 +532,7 @@ var careTeamController = (function() {
             }
             $.post(actions['fup_save_care_item'], params, function(htmlText) {
                 $(self.followUpDiv).html(htmlText);
+                addTooltip();
             }, "html");
             return true; 
         },
@@ -1045,6 +1061,7 @@ var careTeamController = (function() {
         }
         $.post(actions['ctpt_save_radiation_data'], params, function(htmlText) {
             $('#treatmentplan').html(htmlText);
+            addTooltip();
         }, "html");
         return true;
     };
@@ -1090,6 +1107,7 @@ var careTeamController = (function() {
         
         $.post(actions['ctpt_save_chemotherapy_data'], params, function(htmlText) {
             $('#treatmentplan').html(htmlText);
+            addTooltip();
         }, "html");
         return true;
     }
@@ -1126,6 +1144,7 @@ var careTeamController = (function() {
         
         $.post(actions['ctpt_save_surgery_data'], params, function(htmlText) {
             $('#treatmentplan').html(htmlText);
+            addTooltip();
         }, "html");
         return true;
     }
