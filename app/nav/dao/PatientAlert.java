@@ -139,7 +139,7 @@ public class PatientAlert {
 		long curTime = now.getTime();
 		try {
 			appointmentQuery.setParameter("treatementStep", APPOINTMENT_STEP_TREATMENT_DECISION);			
-			alertQuery.setParameter("alertDetail", AR_TREATMENT_DECISION_ONE_DAY_BEFORE);
+			alertQuery.setParameter("alertDetail", AR_TREATMENT_DECISION_ONE_DAY_BEFORE);			
 			appointments = appointmentQuery.getResultList();
 			sentAlerts = alertQuery.getResultList();
 		} catch (NoResultException e) {
@@ -147,6 +147,9 @@ public class PatientAlert {
 		}
 		for (AppointmentDTO appointment : appointments) {
 			Date appointmentDate = appointment.getAppointmentdate();
+			if (isDistressCheckedWithIn3Days(appointment.getPatientid(), appointmentDate)) {
+				continue;
+			}
 			long minTime = appointmentDate.getTime() - ONE_DAY;
 			long maxTime = appointmentDate.getTime() - (12 * ONE_HOUR);
 			if (curTime >= minTime && curTime <= maxTime ) {
@@ -190,19 +193,12 @@ public class PatientAlert {
 			e.printStackTrace();
 		}
 		for (AppointmentDTO appointment : appointments) {
-			Date appointmentDate = appointment.getAppointmentdate();						
-			long minTime = appointmentDate.getTime() - (3 * ONE_DAY);
-			long maxTime = appointmentDate.getTime() - (2 * ONE_DAY);
-			
-			UserDTO patient = appointment.getPatientid();
-			DistressBean distress = DistressDAO.getLastDistress(patient);
-			Date distressLastChecked = distress.getDistressDate();						
-			long lastTime = distressLastChecked.getTime();
-			// if distress reported in last 3 days before appointment, then email should not be sent
-			if (lastTime >= minTime && lastTime <= appointmentDate.getTime()) {
+			Date appointmentDate = appointment.getAppointmentdate();
+			if (isDistressCheckedWithIn3Days(appointment.getPatientid(), appointmentDate)) {
 				continue;
 			}
-			
+			long minTime = appointmentDate.getTime() - (3 * ONE_DAY);
+			long maxTime = appointmentDate.getTime() - (2 * ONE_DAY);
 			if (curTime >= minTime && curTime <= maxTime ) {
 				boolean mailAlreadySent = false;
 				for (AppointmentAlertDTO alert: sentAlerts) {
@@ -217,7 +213,9 @@ public class PatientAlert {
 					String email = userDetails.getUser().getEmail();
 					String firstName = userDetails.getFirstName();	
 					String url = userId + "/" + getChecksum(userId);
-					boolean success = emailDistressCheckin(email, firstName, url);
+					String appointmentTime = appointment.getAppointmenttime();
+					String date = new SimpleDateFormat("MM/dd/yyyy").format(appointmentDate);
+					boolean success = emailDistressCheckin(email, firstName, url, date, appointmentTime);
 					if (success) {
 						logEmailAppointmentReminder(appointment.getId(), EMAIL, AR_TREATMENT_DECISION_THREE_DAY_BEFORE, new Date());
 					}
@@ -236,7 +234,7 @@ public class PatientAlert {
 		long curTime = now.getTime();
 		try {
 			appointmentQuery.setParameter("treatementStep", APPOINTMENT_STEP_SIMULATION);
-			alertQuery.setParameter("alertDetail", AR_SIMULATION_ONE_DAY_BEFORE);
+			alertQuery.setParameter("alertDetail", AR_SIMULATION_ONE_DAY_BEFORE);			
 			appointments = appointmentQuery.getResultList();
 			sentAlerts = alertQuery.getResultList();
 		} catch (NoResultException e) {
@@ -244,8 +242,11 @@ public class PatientAlert {
 		}
 		for (AppointmentDTO appointment : appointments) {
 			Date appointmentDate = appointment.getAppointmentdate();
+			if (isDistressCheckedWithIn3Days(appointment.getPatientid(), appointmentDate)) {
+				continue;
+			}
 			long minTime = appointmentDate.getTime() - ONE_DAY;
-			long maxTime = appointmentDate.getTime() - (12 * ONE_HOUR);
+			long maxTime = appointmentDate.getTime() - (12 * ONE_HOUR);			
 			if (curTime >= minTime && curTime <= maxTime ) {
 				boolean mailAlreadySent = false;
 				for (AppointmentAlertDTO alert: sentAlerts) {
@@ -288,18 +289,11 @@ public class PatientAlert {
 		}
 		for (AppointmentDTO appointment : appointments) {
 			Date appointmentDate = appointment.getAppointmentdate();
-			long minTime = appointmentDate.getTime() - (3 * ONE_DAY);
-			long maxTime = appointmentDate.getTime() - (2 * ONE_DAY);
-			
-			UserDTO patient = appointment.getPatientid();
-			DistressBean distress = DistressDAO.getLastDistress(patient);
-			Date distressLastChecked = distress.getDistressDate();						
-			long lastTime = distressLastChecked.getTime();
-			// if distress reported in last 3 days before appointment, then email should not be sent
-			if (lastTime >= minTime && lastTime <= appointmentDate.getTime()) {
+			if (isDistressCheckedWithIn3Days(appointment.getPatientid(), appointmentDate)) {
 				continue;
 			}
-			
+			long minTime = appointmentDate.getTime() - (3 * ONE_DAY);
+			long maxTime = appointmentDate.getTime() - (2 * ONE_DAY);
 			if (curTime >= minTime && curTime <= maxTime ) {
 				boolean mailAlreadySent = false;
 				for (AppointmentAlertDTO alert: sentAlerts) {
@@ -314,7 +308,9 @@ public class PatientAlert {
 					String email = userDetails.getUser().getEmail();
 					String firstName = userDetails.getFirstName();	
 					String url = userId + "/" + getChecksum(userId);
-					boolean success = emailDistressCheckin(email, firstName, url);
+					String appointmentTime = appointment.getAppointmenttime();
+					String date = new SimpleDateFormat("MM/dd/yyyy").format(appointmentDate);
+					boolean success = emailDistressCheckin(email, firstName, url, date, appointmentTime);
 					if (success) {
 						logEmailAppointmentReminder(appointment.getId(), EMAIL, AR_SIMULATION_THREE_DAY_BEFORE, new Date());
 					}
@@ -322,6 +318,20 @@ public class PatientAlert {
 			}
 		}
 	}
+	
+	//  check for distress check within 3 days before next appointment
+	public static boolean isDistressCheckedWithIn3Days(UserDTO user, Date appointmentDate) {
+		DistressBean distress = DistressDAO.getLastDistress(user);
+		Date distressLastChecked = distress.getDistressDate();			
+		long minTime = appointmentDate.getTime() - (3 * ONE_DAY);			
+		long lastTime = distressLastChecked.getTime();
+		// if distress reported in last 3 days before appointment, then email should not be sent
+		if (lastTime >= minTime && lastTime <= appointmentDate.getTime()) {
+			return true;
+		}
+		return false;
+	}
+	
 	
 	public static void duringTreatmentAlerts() {
 		EntityManager em = JPAUtil.getEntityManager();
@@ -333,7 +343,7 @@ public class PatientAlert {
 		long curTime = now.getTime();
 		try {
 			appointmentQuery.setParameter("treatementStep", APPOINTMENT_STEP_DURING_TREATMENTS);
-			alertQuery.setParameter("alertDetail", AR_DURING_TREATMENTS_ONE_DAY_BEFORE);
+			alertQuery.setParameter("alertDetail", AR_DURING_TREATMENTS_ONE_DAY_BEFORE);			
 			appointments = appointmentQuery.getResultList();
 			sentAlerts = alertQuery.getResultList();
 		} catch (NoResultException e) {
@@ -341,8 +351,11 @@ public class PatientAlert {
 		}
 		for (AppointmentDTO appointment : appointments) {
 			Date appointmentDate = appointment.getAppointmentdate();
+			if (isDistressCheckedWithIn3Days(appointment.getPatientid(), appointmentDate)) {
+				continue;
+			}						
 			long minTime = appointmentDate.getTime() - ONE_DAY;
-			long maxTime = appointmentDate.getTime() - (12 * ONE_HOUR);
+			long maxTime = appointmentDate.getTime() - (12 * ONE_HOUR);															
 			if (curTime >= minTime && curTime <= maxTime ) {
 				boolean mailAlreadySent = false;
 				for (AppointmentAlertDTO alert: sentAlerts) {
@@ -385,33 +398,28 @@ public class PatientAlert {
 		}
 		for (AppointmentDTO appointment : appointments) {
 			Date appointmentDate = appointment.getAppointmentdate();
-			long minTime = appointmentDate.getTime() - (3 * ONE_DAY);
-			long maxTime = appointmentDate.getTime() - (2 * ONE_DAY);
-			
-			UserDTO patient = appointment.getPatientid();
-			DistressBean distress = DistressDAO.getLastDistress(patient);
-			Date distressLastChecked = distress.getDistressDate();						
-			long lastTime = distressLastChecked.getTime();
-			// if distress reported in last 3 days before appointment, then email should not be sent
-			if (lastTime >= minTime && lastTime <= appointmentDate.getTime()) {
+			if (isDistressCheckedWithIn3Days(appointment.getPatientid(), appointmentDate)) {
 				continue;
 			}
-			
+			long minTime = appointmentDate.getTime() - (3 * ONE_DAY);
+			long maxTime = appointmentDate.getTime() - (2 * ONE_DAY);
 			if (curTime >= minTime && curTime <= maxTime ) {
-				boolean mailAlreadySent = false;
+				boolean mailAlreadySent = false;								
 				for (AppointmentAlertDTO alert: sentAlerts) {
 					if (alert.getAppointmentId().intValue() == appointment.getId()) {
 						mailAlreadySent = true;
 						break;
 					}
-				}
+				}				
 				if (!mailAlreadySent) {
 					String userId = String.valueOf(appointment.getPatientid().getId());
 					UserDetailsDTO userDetails = UserDAO.getDetailsById(userId);
 					String email = userDetails.getUser().getEmail();
 					String firstName = userDetails.getFirstName();			
 					String url = userId + "/" + getChecksum(userId);
-					boolean success = emailDistressCheckin(email, firstName, url);
+					String appointmentTime = appointment.getAppointmenttime();
+					String date = new SimpleDateFormat("MM/dd/yyyy").format(appointmentDate);
+					boolean success = emailDistressCheckin(email, firstName, url, date, appointmentTime);
 					if (success) {
 						logEmailAppointmentReminder(appointment.getId(), EMAIL, AR_DURING_TREATMENTS_THREE_DAY_BEFORE, new Date());
 					}
@@ -586,17 +594,21 @@ public class PatientAlert {
 		}
 		return str;
 	}
-	public static boolean emailDistressCheckin(String email, String ph1, String ph2) {
-		String TPL = "Moffitt-Distress-Checkin";
+	public static boolean emailDistressCheckin(String email, String ph1, String ph2, String ph3, String ph4) {
+		String TPL = "Moffitt-Distress-Checkin-RT-3Days-Before-Appointment";
 		String PH1 = "username";
 		String PH2 = "generate_url";
+		String PH3 = "date";
+		String PH4 = "appointment_time";
 		Map<String, Object> vars = new HashMap<String, Object>();		
 		Send send = new Send(); 
 		send.setTemplate(TPL);
 		vars.put(PH1, ph1);
 		vars.put(PH2, ph2);
+		vars.put(PH3, ph3);
+		vars.put(PH4, ph4);
 		send.setEmail(email);
-        send.setVars(vars);            
+        send.setVars(vars);          
         return sendEmail(send); 		
 	}
 }
