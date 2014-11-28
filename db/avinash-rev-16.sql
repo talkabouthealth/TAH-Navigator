@@ -4,6 +4,7 @@ update nav.inputdefaultmaster set frequency = 'Every 6 months' where fieldtext =
 update nav.inputdefaultmaster set frequency = 'Every year' where fieldtext = 'Post-treatment mammography';
 update nav.inputdefaultmaster set frequency = 'Monthly' where fieldtext = 'Breast self-exam';
 update nav.inputdefaultmaster set frequency = 'Every year' where fieldtext = 'Pelvic exam';
+update nav.inputdefaultmaster set frequency = 'One appointment' where fieldtext = 'Genetic counselling';
 
 
 update nav.inputdefaultmaster  set otherfield = 'Set priorities
