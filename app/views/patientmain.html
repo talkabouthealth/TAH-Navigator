@@ -11,8 +11,8 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="shortcut icon" href="@{'/public/img/favicon.ico'}" />
   <title>TVRH Navigator</title>
-  <link href="/public/css/patients/styles.less" rel="stylesheet/less" />
-  <link href="/public/css/styles.less" rel="stylesheet/less" />
+  <link href="/public/css/patients/styles.less?d=28112014" rel="stylesheet/less" />
+  <link href="/public/css/styles.less?d=28112014" rel="stylesheet/less" />
   #{ mixpanel /}
   <script src="/public/js/lib/less-1.7.4.min.js"></script>
   <script src="/public/plugins/jquery/jquery-2.1.0.min.js"></script>
@@ -256,8 +256,22 @@ $(document).ready(function(){
 	todayDate = $('.today-date');
     todayDate.html($.datepicker.formatDate('DD m/d/yy', new Date()));
     
-	$('body').on('click', '.fa-info-circle', function() {
-		bootbox.alert($(this).data("title"), null);
+	$('body').on('click', '.infomarker', function() {
+		var type = $(this).data("type");
+		var title = $(this).data("title");
+		
+		if(type != null && $.trim(type) == '') {
+			type = 'data';
+		}
+		
+		if(title != null && $.trim(title) != '') {
+			if(type == 'link') {
+				var win = window.open($.trim(title), '_blank');
+				win.focus();
+			} else {
+				bootbox.alert($.trim(title), null);
+			}
+		}
 	});
 
 	$("a.disabled").click(function(e){

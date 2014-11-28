@@ -125,9 +125,12 @@ public class CarePatien  extends Controller {
 		if(careItemsOld != null && !careItemsOld.isEmpty()) {
 			careItems = new ArrayList<PatientFollowUpCareItemDTO>();
 			for (PatientFollowUpCareItemDTO patientFollowUpCareItemDTO : careItemsOld) {
-			String tipText = InputDefaultDAO.getInputTipTextDefaultByFieldName(patientDetails.getDiseaseId(), "followupplan", patientFollowUpCareItemDTO.getActivity());
-			patientFollowUpCareItemDTO.setInfoText(tipText);
-			careItems.add(patientFollowUpCareItemDTO);
+				InputDefaultDTO tipText = InputDefaultDAO.getInputTipTextDefaultByFieldName(patientDetails.getDiseaseId(), "followupplan", patientFollowUpCareItemDTO.getActivity());
+				if(tipText != null) {
+					patientFollowUpCareItemDTO.setInfoText(tipText.getTiptext());
+					patientFollowUpCareItemDTO.setTipType(tipText.getTiptype());
+				}
+				careItems.add(patientFollowUpCareItemDTO);
 			}
 		}
 
@@ -136,9 +139,12 @@ public class CarePatien  extends Controller {
 		if(concernsOld != null && !concernsOld.isEmpty()) {
 			concerns = new ArrayList<PatientConcernDTO>();
 			for (PatientConcernDTO patientFollowUpCareItemDTO : concernsOld) {
-			String tipText = InputDefaultDAO.getInputTipTextDefaultByFieldName(patientDetails.getDiseaseId(), "followupplan", patientFollowUpCareItemDTO.getConcern());
-			patientFollowUpCareItemDTO.setInfoText(tipText);
-			concerns.add(patientFollowUpCareItemDTO);
+				InputDefaultDTO tipText = InputDefaultDAO.getInputTipTextDefaultByFieldName(patientDetails.getDiseaseId(), "followupplan", patientFollowUpCareItemDTO.getConcern());
+				if(tipText != null) {
+					patientFollowUpCareItemDTO.setInfoText(tipText.getTiptext());
+					patientFollowUpCareItemDTO.setTipType(tipText.getTiptype());
+				}
+				concerns.add(patientFollowUpCareItemDTO);
 			}
 		}
 
@@ -147,9 +153,12 @@ public class CarePatien  extends Controller {
 		if(goalsOld != null && !goalsOld.isEmpty()) {
 			goals = new ArrayList<PatientGoalDTO>();
 			for (PatientGoalDTO patientFollowUpCareItemDTO : goalsOld) {
-			String tipText = InputDefaultDAO.getInputTipTextDefaultByFieldName(patientDetails.getDiseaseId(), "followupplan", patientFollowUpCareItemDTO.getGoal());
-			patientFollowUpCareItemDTO.setInfoText(tipText);
-			goals.add(patientFollowUpCareItemDTO);
+				InputDefaultDTO tipText = InputDefaultDAO.getInputTipTextDefaultByFieldName(patientDetails.getDiseaseId(), "followupplan", patientFollowUpCareItemDTO.getGoal());
+				if(tipText != null) {
+					patientFollowUpCareItemDTO.setInfoText(tipText.getTiptext());
+					patientFollowUpCareItemDTO.setTipType(tipText.getTiptype());
+				}
+				goals.add(patientFollowUpCareItemDTO);
 			}
 		}
 
@@ -248,33 +257,40 @@ public class CarePatien  extends Controller {
 	}
 	
 	public static void fupTemplateData(Integer patientId,String formOf) {
-		UserDetailsDTO userDto = UserDAO.getDetailsById(patientId);
-		PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", userDto.getId());
+		
 		Map<String, Object> jsonData = new HashMap<String, Object>();
-		if (patientId != null) {
-			List<InputDefaultDTO> inputList = InputDefaultDAO.getInputDefaultByPageField("followupplan",patientOtherDetails.getDiseaseId(),formOf);
-			jsonData.put("inputlist", inputList);
-		}
-
-		if(formOf.equals("activity")) {
-			List<CareMember> doctors = UserDAO.verifiedDoctors();
-			ArrayList<String> doctorNames = new ArrayList<String>();
-			for(CareMember doctor : doctors) {			
-				StringBuilder name = new StringBuilder("");
-				if (doctor.getFirstName() != null) {
-					name.append(doctor.getFirstName());
-				}				
-				doctorNames.add(name.toString());
+		
+		
+		if(formOf.equals("disease")) { 
+			List<DiseaseMasterDTO>  dis =  Disease.allDiseases();
+			jsonData.put("disease",dis);
+		} else {
+			UserDetailsDTO userDto = UserDAO.getDetailsById(patientId);
+			PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", userDto.getId());
+			if (patientId != null) {
+				List<InputDefaultDTO> inputList = InputDefaultDAO.getInputDefaultByPageField("followupplan",patientOtherDetails.getDiseaseId(),formOf);
+				jsonData.put("inputlist", inputList);
 			}
-			jsonData.put("doctors", doctorNames);
-
-			ArrayList<String> frequencies = new ArrayList<String>();
-			frequencies.add("Every month");
-			frequencies.add("Every 3 months");
-			frequencies.add("Every 6 months");
-			frequencies.add("Every year");
-			jsonData.put("frequencies", frequencies);
-
+			if(formOf.equals("activity")) {
+				List<CareMember> doctors = UserDAO.verifiedDoctors();
+				ArrayList<String> doctorNames = new ArrayList<String>();
+				for(CareMember doctor : doctors) {			
+					StringBuilder name = new StringBuilder("");
+					if (doctor.getFirstName() != null) {
+						name.append(doctor.getFirstName());
+					}				
+					doctorNames.add(name.toString());
+				}
+				jsonData.put("doctors", doctorNames);
+	
+				ArrayList<String> frequencies = new ArrayList<String>();
+				frequencies.add("Every month");
+				frequencies.add("Every 3 months");
+				frequencies.add("Every 6 months");
+				frequencies.add("Every year");
+				jsonData.put("frequencies", frequencies);
+	
+			}
 		}
 		renderJSON(jsonData);
 	}
@@ -791,5 +807,40 @@ public class CarePatien  extends Controller {
 		JsonObject obj = new JsonObject();
 		obj.add("status", new JsonPrimitive("200"));
 		renderJSON(obj);
+	}
+	
+	public static void careitemTemplateData(Integer patientId, Integer diseaseId) {
+		System.out.println("patientId: "+ patientId);
+		System.out.println("diseaseId: "+ diseaseId);
+
+		/*
+		Activity: Medical history and physical exam	
+		Frequency: Every 6 months
+
+		Activity: Mammogram	
+		Frequency: Every year
+
+		Activity: Breast self-exam	
+		Frequency: Monthly
+
+		Activity: Pelvic exam	
+		Frequency: Every year
+		*/
+		
+		List<InputDefaultDTO> defaults = InputDefaultDAO.getInputDefaultByPageField("followupplan",diseaseId,"activity");
+		if(defaults != null && !defaults.isEmpty()) {
+			Integer careItemId = null;
+			for (InputDefaultDTO inputDefaultDTO : defaults) {
+				Map<String, String> fupCareItem = new HashMap<String, String>();
+				fupCareItem.put("activity",inputDefaultDTO.getFieldtext());
+				fupCareItem.put("frequency",inputDefaultDTO.getFrequency());
+				fupCareItem.put("purpose",inputDefaultDTO.getOtherfield());
+				fupCareItem.put("endDate","");
+				fupCareItem.put("ongoing","");
+				fupCareItem.put("doctor","");
+				FollowUp.saveCareItem(patientId, careItemId, fupCareItem);		
+			}
+		}
+		followupPlan(patientId.intValue());
 	}
 }

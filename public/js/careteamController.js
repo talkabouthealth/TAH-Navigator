@@ -22,8 +22,7 @@ var careTeamController = (function() {
         'fup_save_care_item' : '/CarePatien/saveCareItem',
         'fup_remove_care_item': '/CarePatien/removeCareItem',
         'fup_template_data' : '/CarePatien/fupTemplateData',
-//        'fup_concern_form_template_data' : '/CarePatien/concernFormTemplateData',
-//        'fup_goal_form-template_data' : '/CarePatien/goalFormTemplateData',
+        'fup_save_careitem_template' : '/CarePatien/careitemTemplateData',
 		'default': '#'    // nothing 
 	};
     var BREAST_CANCER_ID = 1;
@@ -52,6 +51,102 @@ var careTeamController = (function() {
         //  Add tooltip feature to table [End]
     };
     
+    var careItemTemplateForm = {
+    		followUpDiv: '#followupplan',
+            formId: '#follow-up-care-item-template',
+            diseaseId: '#fup_ci_template_dis',
+            saveBtnId: '#save-fup-template',
+            concernDiv: '#fup_cc_template_div',
+//            concernSpan: '#fup_cc_template_icon',
+            templateOk: function() {
+                var self = careItemTemplateForm;
+                $(self.concernDiv).addClass('has-success');
+                $(self.concernDiv).removeClass('has-error');
+            },
+            templateNotOk: function() {
+                var self = careItemTemplateForm;
+                $(self.concernDiv).addClass('has-error');
+                $(self.concernDiv).removeClass('has-success');
+            },
+            init: function(patientId) {
+            	var params = {};
+            	params['formOf'] = "disease";
+            	$.post(actions['fup_template_data'], params, function(data) {
+                    var self = careItemTemplateForm;
+                    $(self.formId).attr('init_flag', '1');
+                    
+                    for(i=0;i<data.disease.length;i++) {
+                    	$(self.diseaseId).append("<option value='"+data.disease[i].id+"'>"+data.disease[i].name+" Template</option>");
+                    }
+                    
+                    $(self.saveBtnId).click(function() {
+                        if (self.save()) {
+                            $(self.formId).modal('hide');
+                        }
+                    });
+                }, "json");
+            	
+            
+            },
+            validate: function() {
+                var self = careItemTemplateForm;
+                var str = $(self.diseaseId).val();
+                if (str) {
+                    self.templateOk();
+                } else {
+                    self.templateNotOk();
+                }
+            },
+            save: function() {
+                var self = careItemTemplateForm;
+                var params = {
+                    'patientId': $(self.formId).attr('patient_id'),
+                    'diseaseId': $(self.diseaseId).val()
+                };
+                var str = $(self.diseaseId).val();
+                if (str) {
+                	$.post(actions['fup_save_careitem_template'], params, function(htmlText) {
+                        $(self.followUpDiv).html(htmlText);
+                        addTooltip();
+                    }, "html");
+                    return true; 
+                } else {
+                	return false;
+                }
+            },
+            open: function(elm) {
+                var self = careItemTemplateForm;
+                var initFlag = $(self.formId).attr('init_flag');
+                var patientId = $(elm).attr("patient_id");
+                var formType = $(elm).attr("form_type");
+                var params = {};
+                $(self.formId).attr("patient_id", patientId);
+                var formLoad = function() {
+                    if (initFlag == '0') {
+                        $(self.formId).modal({
+                            keyboard: false,
+                            backdrop: 'static'
+                        });
+                        self.init(patientId);
+                    	$(self.diseaseId).click(function() {
+                            var str = $(this).val();
+                            if (str) {
+                                self.templateOk();
+                            }
+                            else {
+                                self.templateNotOk();
+                            }
+                        });
+                    }
+                    else {
+                        $(self.formId).modal('show');
+                    }
+                };
+                formLoad();
+            }
+        };
+    /*Care Item template form end*/
+
     var concernForm = {
         followUpDiv: '#followupplan',
         formId: '#follow-up-concern-form',
@@ -96,6 +191,7 @@ var careTeamController = (function() {
                 }catch(e){}
                 $(self.concernId).typeahead({
                     source: activities,
+                    minLength: 0 ,
                     updater: function(item) {
                         if (item) {
                             self.concernOk();
@@ -279,6 +375,7 @@ var careTeamController = (function() {
                    }catch(e){}
                 $(self.goalId).typeahead({
                     source: activities,
+                    minLength: 0 ,
                     updater: function(item) {
                         if (item) {
                             self.goalOk();
@@ -488,6 +585,7 @@ var careTeamController = (function() {
                  }catch(e){}
                  $(self.activityId).typeahead({
                      source: activities,
+                     minLength: 0 ,
                      updater: function(item) {
                          if (item) {
                              self.activityOk();
@@ -2113,7 +2211,8 @@ var careTeamController = (function() {
         'toggle_validate': toggleValidate,
         'fup_concern_form': concernForm.open,
         'fup_goal_form': goalForm.open,
-        'fup_careitem_form': careItemForm.open
+        'fup_careitem_form': careItemForm.open,
+        'fup_careitem_template_form': careItemTemplateForm.open
     };
     function evtMsgHandler(msg, domElement, params) {
         var func = msgMap[msg];

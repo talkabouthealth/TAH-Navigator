@@ -3,11 +3,11 @@
     <div class="title">
         <h3>Follow-Up Care</h3>
         <button type="button" class="btn btn-default" patient_id="${patientId}" form_type="new" onclick="careTeamController.evtMsgHandler('fup_careitem_form', this);">+ Add Follow-Up Care Item</button>
-<!--         &nbsp;&nbsp;&nbsp;<a href="javaScript:void(0);">User Template</a> -->
+        &nbsp;&nbsp;&nbsp;<a form_type="add" patient_id="${patientId}" onclick="careTeamController.evtMsgHandler('fup_careitem_template_form', this);" class="careItemTemplateLink" >User Template</a>
     </div>
 	<table class="table table-bordered table-striped table-condensed table-hover table-fixed">
         <tr>
-            <th>CONCERN</th>
+            <th>ACTIVITY</th>
             <th>FREQUENCY</th>
             <th>END-DATE</th>
             <th>PURPOSE</th>
@@ -24,7 +24,7 @@
 				</td>
 				<td>#{if ci.frequency} ${ci.frequency} #{/if}</td>
 				<td>#{if ci.endDate} ${ci.endDate.format('MM/dd/yyyy')} #{/if}#{if ci.ongoing}Ongoing#{/if}</td>
-				<td><div>#{if ci.purpose} ${ci.purpose} #{/if}</div></td>
+				<td><div>#{if ci.purpose} ${ci.purpose.printMessage()} #{/if}</div></td>
 				<td>#{if ci.doctor} ${ci.doctor} #{/if}</td>
 			</tr>
 			#{/list}
@@ -52,7 +52,7 @@
 						<i data-title="${concern.infoText}" class="fa fa-info-circle infomarker"></i>
 					#{/if}
 		            </td>
-            <td><div>#{if concern.nextStep} ${concern.nextStep} #{/if}</div></td>
+            <td><div>#{if concern.nextStep} ${concern.nextStep.printMessage()} #{/if}</div></td>
 		            <td>#{if concern.concernDate} ${concern.concernDate.format('MM/dd/yyyy')} #{/if}</td>
             <td><div>#{if concern.notes} ${concern.notes} #{/if}</div></td>
 		        </tr>
@@ -81,7 +81,7 @@
 						<i data-title="${goal.infoText}" class="fa fa-info-circle infomarker"></i>
 					#{/if}
 		            </td>
-            <td><div>#{if goal.nextStep} ${goal.nextStep} #{/if}</div></td>
+            <td><div>#{if goal.nextStep} ${goal.nextStep.printMessage()} #{/if}</div></td>
 		            <td>#{if goal.goalDeadline} ${goal.goalDeadline.format('MM/dd/yyyy')} #{/if}</td>
             <td><div>#{if goal.notes} ${goal.notes} #{/if}</div></td>
 		        </tr>

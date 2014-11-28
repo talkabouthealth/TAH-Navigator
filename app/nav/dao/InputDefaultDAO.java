@@ -36,26 +36,20 @@ public class InputDefaultDAO {
 		}
 		return types;
 	}
-	
-	
-	
-	
-	public static String getInputTipTextDefaultByFieldName(Integer diseaseId,String page,String fieldName) {
+
+	public static InputDefaultDTO getInputTipTextDefaultByFieldName(Integer diseaseId,String page,String fieldName) {
 		InputDefaultDTO types = null;
-		String res = "";
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
 			TypedQuery<InputDefaultDTO> query = em.createQuery("SELECT c FROM InputDefaultDTO c where c.diseaseid = :f1 and c.page = :f2 and upper(c.fieldtext) = upper(:f3)", InputDefaultDTO.class);
-			
 			query.setParameter("f1", diseaseId);
 			query.setParameter("f2", page);
 			query.setParameter("f3", fieldName.trim());
 			query.setMaxResults(1);
 			types = query.getSingleResult();
-			res = types.getTiptext(); 
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		return res; 
+		return types; 
 	}
 }

@@ -12,7 +12,14 @@
         <div class="mobile care-items">
             #{list items:careItems, as:'ci'}
             <div class="follow-up-care-item">
-                <h3>${ci.activity}</h3>
+                <h3>
+                	<span data-type="${ci.tipType}" data-title="${ci.infoText}" class="infomarker">
+                	${ci.activity}
+                	#{if ci.infoText != ''} 
+						<i class="fa fa-info-circle"></i>
+					#{/if}
+					</span>
+				</h3>
                 <p><span>Concern: </span>#{if ci.frequency} ${ci.frequency} #{/if}<p>
                 <p><span>Frequency: </span>#{if ci.endDate} ${ci.endDate.format('MM/dd/yyyy')} #{/if}#{if ci.ongoing}Ongoing#{/if}<p>
                 <p><span>End-Date: </span>#{if ci.purpose} ${ci.purpose} #{/if}<p>
@@ -22,7 +29,7 @@
         </div>
         <table class="desktop table table-bordered table-striped table-condensed table-hover table-fixed">
             <tr>
-                <th>CONCERN</th>
+                <th>ACTIVITY</th>
                 <th>FREQUENCY</th>
                 <th>END-DATE</th>
                 <th>PURPOSE</th>
@@ -30,21 +37,24 @@
             </tr>
             #{list items:careItems, as:'ci'}
             <tr>
-                <td>${ci.activity}
+                <td>
+                	<span data-type="${ci.tipType}" data-title="${ci.infoText}" class="infomarker">
+                	${ci.activity}
                 	#{if ci.infoText != ''} 
-						<i data-title="${ci.infoText}" class="fa fa-info-circle infomarker"></i>
+						<i class="fa fa-info-circle"></i>
 					#{/if}
+					</span>
                 </td>
                 <td>#{if ci.frequency} ${ci.frequency} #{/if}</td>
                 <td>#{if ci.endDate} ${ci.endDate.format('MM/dd/yyyy')} #{/if}#{if ci.ongoing}Ongoing#{/if}</td>
-                <td><div>#{if ci.purpose} ${ci.purpose} #{/if}</div></td>
+                <td><div>#{if ci.purpose} ${ci.purpose.printMessage()} #{/if}</div></td>
                 <td>#{if ci.doctor} ${ci.doctor} #{/if}</td>
             </tr>
             #{/list}
         </table>
        #{/if}
        #{else}<p>None</p>#{/else}
-        
+
         <!-------------   Concern -------------------->
         <div class="title">
 	        <h1>Needs / Concerns</h1>
@@ -53,8 +63,15 @@
 	    <div class="concerns mobile">
 	        #{list items:concerns, as:'concern'}
 	        <div class="concern-item">
-                <h3>${concern.concern}</h3>
-                <p><span>Action Plan: </span>#{if concern.nextStep} ${concern.nextStep} #{/if}</p>
+                <h3>
+                	<span data-type="${concern.tipType}" data-title="${concern.infoText}" class="infomarker">
+                	${concern.concern}
+                	#{if concern.infoText != ''} 
+						<i class="fa fa-info-circle"></i>
+					#{/if}
+					</span>
+				</h3>
+                <p><span>Action Plan: </span>#{if concern.nextStep} ${concern.nextStep.printMessage()} #{/if}</p>
                 <p><span>Date of Concern: </span>#{if concern.concernDate} ${concern.concernDate.format('MM/dd/yyyy')} #{/if}</p>
                 <p><span>Updates: </span>#{if concern.notes} ${concern.notes} #{/if}</p>
 	        </div>
@@ -69,12 +86,15 @@
 	        </tr>
 	        #{list items:concerns, as:'concern'}
 	        <tr>
-	            <td>${concern.concern}
-		            #{if concern.infoText != ''} 
-						<i data-title="${concern.infoText}" class="fa fa-info-circle infomarker"></i>
-					#{/if}
+	            <td>
+	            	<span class="infomarker" data-type="${concern.tipType}" data-title="${concern.infoText}">
+		            	${concern.concern}
+			            #{if concern.infoText != ''} 
+							<i class="fa fa-info-circle"></i>
+						#{/if}
+					</span>
 	            </td>
-	            <td><div>#{if concern.nextStep} ${concern.nextStep} #{/if}</div></td>
+	            <td><div>#{if concern.nextStep} ${concern.nextStep.printMessage()} #{/if}</div></td>
 	            <td>#{if concern.concernDate} ${concern.concernDate.format('MM/dd/yyyy')} #{/if}</td>
 	            <td><div>#{if concern.notes} ${concern.notes} #{/if}</div></td>
 	        </tr>
@@ -91,8 +111,15 @@
 	    <div class="mobile goals">
 	        #{list items:goals, as:'goal'}
             <div class="goal-item">
-	            <h3>${goal.goal}</h3>
-                <p><span>Action Plan: </span>#{if goal.nextStep} ${goal.nextStep} #{/if}</p>
+	            <h3>
+	            	<span data-type="${goal.tipType}" data-title="${goal.infoText}" class="infomarker">
+	            	${goal.goal}
+	             	#{if goal.infoText != ''} 
+						<i class="fa fa-info-circle"></i>
+					#{/if}
+					</h3>
+					</span>
+                <p><span>Action Plan: </span>#{if goal.nextStep} ${goal.nextStep.printMessage()} #{/if}</p>
                 <p><span>Goal Start Date: </span>#{if goal.goalDeadline} ${goal.goalDeadline.format('MM/dd/yyyy')} #{/if}</p>
                 <p><span>Updates: </span>#{if goal.notes} ${goal.notes} #{/if}</p>
             </div>
@@ -107,12 +134,13 @@
 	        </tr>
 	        #{list items:goals, as:'goal'}
 	        <tr>
-	            <td>${goal.goal}
+	            <td><span data-type="${goal.tipType}" data-title="${goal.infoText}" class="infomarker">${goal.goal}
 		            #{if goal.infoText != ''} 
-						<i data-title="${goal.infoText}" class="fa fa-info-circle infomarker"></i>
+						<i class="fa fa-info-circle"></i>
 					#{/if}
+					</span>
 	            </td>
-	            <td><div>#{if goal.nextStep} ${goal.nextStep} #{/if}</div></td>
+	            <td><div>#{if goal.nextStep} ${goal.nextStep.printMessage()} #{/if}</div></td>
 	            <td>#{if goal.goalDeadline} ${goal.goalDeadline.format('MM/dd/yyyy')} #{/if}</td>
 	            <td><div>#{if goal.notes} ${goal.notes} #{/if}</div></td>
 	        </tr>

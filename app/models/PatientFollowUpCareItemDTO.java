@@ -34,7 +34,11 @@ public class PatientFollowUpCareItemDTO {
 	@Column(name="doctor")
 	private String doctor;
 	
+	@Transient
 	private String infoText;
+	
+	@Transient
+	private String tipType;
 
 	public Integer getId() {
 		return id;
@@ -106,5 +110,12 @@ public class PatientFollowUpCareItemDTO {
 
 	public void setInfoText(String infoText) {
 		this.infoText = infoText;
+	}
+	public String getTipType() {
+		return tipType;
+	}
+
+	public void setTipType(String tipType) {
+		this.tipType = tipType;
 	}
 }

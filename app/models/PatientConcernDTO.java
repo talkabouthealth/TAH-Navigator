@@ -28,7 +28,11 @@ public class PatientConcernDTO {
 	@Column(name="concern_date")
 	private Date concernDate;
 
+	@Transient
 	private String infoText;
+	
+	@Transient
+	private String tipType;
 
 	public Integer getId() {
 		return id;
@@ -85,5 +89,11 @@ public class PatientConcernDTO {
 	public void setInfoText(String infoText) {
 		this.infoText = infoText;
 	}
-	
+	public String getTipType() {
+		return tipType;
+	}
+
+	public void setTipType(String tipType) {
+		this.tipType = tipType;
+	}
 }

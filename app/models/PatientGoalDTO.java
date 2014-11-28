@@ -29,7 +29,11 @@ public class PatientGoalDTO {
 	@Column(name="notes")
 	private String notes;
 
+	@Transient
 	private String infoText;
+	
+	@Transient
+	private String tipType;
 
 	public Integer getId() {
 		return id;
@@ -86,5 +90,12 @@ public class PatientGoalDTO {
 	public void setInfoText(String infoText) {
 		this.infoText = infoText;
 	}
-	
+
+	public String getTipType() {
+		return tipType;
+	}
+
+	public void setTipType(String tipType) {
+		this.tipType = tipType;
+	}
 }

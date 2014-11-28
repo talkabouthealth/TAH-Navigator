@@ -36,6 +36,12 @@ public class InputDefaultDTO {
 	@Column(name="otherfield")
 	private String otherfield;
 
+	@Column(name="frequency")
+	private String frequency;
+
+	@Column(name="tiptype")
+	private String tiptype;
+
 	public Integer getId() {
 		return id;
 	}
@@ -90,5 +96,21 @@ public class InputDefaultDTO {
 
 	public void setOtherfield(String otherfield) {
 		this.otherfield = otherfield;
+	}
+
+	public String getFrequency() {
+		return frequency;
+	}
+
+	public void setFrequency(String frequency) {
+		this.frequency = frequency;
+	}
+
+	public String getTiptype() {
+		return tiptype;
+	}
+
+	public void setTiptype(String tiptype) {
+		this.tiptype = tiptype;
 	}
 }

@@ -329,8 +329,11 @@ public class Patient extends Controller {
 			if(careItemsOld != null && !careItemsOld.isEmpty()) {
 				careItems = new ArrayList<PatientFollowUpCareItemDTO>();
 				for (PatientFollowUpCareItemDTO patientFollowUpCareItemDTO : careItemsOld) {
-				String tipText = InputDefaultDAO.getInputTipTextDefaultByFieldName(patientOtherDetails.getDiseaseId(), "followupplan", patientFollowUpCareItemDTO.getActivity());
-				patientFollowUpCareItemDTO.setInfoText(tipText);
+					InputDefaultDTO tipText = InputDefaultDAO.getInputTipTextDefaultByFieldName(patientOtherDetails.getDiseaseId(), "followupplan", patientFollowUpCareItemDTO.getActivity());
+					if(tipText != null) {
+						patientFollowUpCareItemDTO.setInfoText(tipText.getTiptext());
+						patientFollowUpCareItemDTO.setTipType(tipText.getTiptype());
+					}
 				careItems.add(patientFollowUpCareItemDTO);
 				}
 			}
@@ -340,8 +343,11 @@ public class Patient extends Controller {
 			if(concernsOld != null && !concernsOld.isEmpty()) {
 				concerns = new ArrayList<PatientConcernDTO>();
 				for (PatientConcernDTO patientFollowUpCareItemDTO : concernsOld) {
-				String tipText = InputDefaultDAO.getInputTipTextDefaultByFieldName(patientOtherDetails.getDiseaseId(), "followupplan", patientFollowUpCareItemDTO.getConcern());
-				patientFollowUpCareItemDTO.setInfoText(tipText);
+					InputDefaultDTO tipText = InputDefaultDAO.getInputTipTextDefaultByFieldName(patientOtherDetails.getDiseaseId(), "followupplan", patientFollowUpCareItemDTO.getConcern());
+					if(tipText != null) {
+						patientFollowUpCareItemDTO.setInfoText(tipText.getTiptext());
+						patientFollowUpCareItemDTO.setTipType(tipText.getTiptype());
+					}
 				concerns.add(patientFollowUpCareItemDTO);
 				}
 			}
@@ -351,8 +357,11 @@ public class Patient extends Controller {
 			if(goalsOld != null && !goalsOld.isEmpty()) {
 				goals = new ArrayList<PatientGoalDTO>();
 				for (PatientGoalDTO patientFollowUpCareItemDTO : goalsOld) {
-				String tipText = InputDefaultDAO.getInputTipTextDefaultByFieldName(patientOtherDetails.getDiseaseId(), "followupplan", patientFollowUpCareItemDTO.getGoal());
-				patientFollowUpCareItemDTO.setInfoText(tipText);
+				InputDefaultDTO tipText = InputDefaultDAO.getInputTipTextDefaultByFieldName(patientOtherDetails.getDiseaseId(), "followupplan", patientFollowUpCareItemDTO.getGoal());
+				if(tipText != null) {
+					patientFollowUpCareItemDTO.setInfoText(tipText.getTiptext());
+					patientFollowUpCareItemDTO.setTipType(tipText.getTiptype());
+				}
 				goals.add(patientFollowUpCareItemDTO);
 				}
 			}

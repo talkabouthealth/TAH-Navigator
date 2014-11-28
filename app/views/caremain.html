@@ -32,7 +32,7 @@
   <script type="text/javascript" src="@{'/public/plugins/flot/jquery.flot.js'}"></script>
   <script type="text/javascript" src="@{'/public/plugins/flot/jquery.flot.time.js'}"></script>
   <script src="/public/js/lib/bootstrap-multiselect.js"></script>
-  <script src="/public/js/careteamController.js"></script>
+  <script src="/public/js/careteamController.js?d=28112014"></script>
   <script src="/public/js/lib/bootbox.min.js"></script>
 
   <style>
@@ -859,6 +859,33 @@ a.date-range.active {
         </div>
     </div>
 </div>
+
+<div class="modal" id="follow-up-care-item-template" tabindex="-1" role="dialog" aria-labelledby="fupCIFormTitle" init_flag="0">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="fupCIFormTitle">Care Item Template</h4>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal form-condensed" role="form">
+                    <div class="form-group form-group-sm has-error has-feedback" id="fup_cc_template_div">
+                        <label for="fup_ci_doctor" class="col-xs-4 control-label">Select Template</label>
+                        <div class="col-xs-8">
+                            <select class="form-control input-sm" id="fup_ci_template_dis" >
+                            	<option value="">Select disease template</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-default" id="save-fup-template">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 #{set distressToolopenFromCare: 'yes' /}
 #{set updateBy: expertDetail.user.id /}
 #{set patientId: patientId /}
