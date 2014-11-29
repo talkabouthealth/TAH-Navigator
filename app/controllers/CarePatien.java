@@ -748,6 +748,8 @@ public class CarePatien  extends Controller {
 				
 				app.setPatientid(patient);				
 				BaseDAO.save(app);
+				PatientAlert.firstAppointmentScheduledAlert(patient, app);
+				/*
 				if (treatmentProcessStep.equalsIgnoreCase(PatientAlert.APPOINTMENT_STEP_FIRST_APPOINTMENT)) {
 					UserDetailsDTO userDetails = UserDAO.getDetailsById(patient.getId());
 					String email = patient.getEmail();
@@ -759,6 +761,7 @@ public class CarePatien  extends Controller {
 						PatientAlert.logEmailAppointmentReminder(appointmentId, PatientAlert.EMAIL, PatientAlert.AR_FIRST_APPOINTMENT_AS_SOON_AS_SCHEDULED, new Date());
 					}					
 				}
+				*/
 			} else if("edit".equalsIgnoreCase(operation)) {
 				//Need to code this.
 				Integer appId =  new Integer(id);
