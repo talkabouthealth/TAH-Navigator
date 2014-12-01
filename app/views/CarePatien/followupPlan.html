@@ -18,8 +18,8 @@
 	        <tr>
 	            <td>
 	            	<a form_type="edit" patient_id="${ci.userId}" care_item_id="${ci.id}" onclick="careTeamController.evtMsgHandler('fup_careitem_form', this);">${ci.activity}</a>
-					#{if ci.infoText != ''} 
-						<i data-title="${ci.infoText}" class="fa fa-info-circle infomarker"></i>
+					#{if ci.infoText != null && ci.infoText != ''} 
+						<i data-type="${ci.tipType}" data-title="${ci.infoText}" class="fa fa-info-circle infomarker"></i>
 					#{/if}
 				</td>
 				<td>#{if ci.frequency} ${ci.frequency} #{/if}</td>
@@ -48,8 +48,8 @@
 	        #{list items:concerns, as:'concern'}
 		        <tr>
 		            <td><a form_type="edit" patient_id="${concern.userId}" concern_id="${concern.id}" onclick="careTeamController.evtMsgHandler('fup_concern_form', this);">${concern.concern}</a>
-		            #{if concern.infoText != ''} 
-						<i data-title="${concern.infoText}" class="fa fa-info-circle infomarker"></i>
+		            #{if concern.infoText != null &&  concern.infoText != ''} 
+						<i data-type="${concern.tipType}"  data-title="${concern.infoText}" class="fa fa-info-circle infomarker"></i>
 					#{/if}
 		            </td>
             <td><div>#{if concern.nextStep} ${concern.nextStep.printMessage()} #{/if}</div></td>
@@ -77,8 +77,8 @@
 	        #{list items:goals, as:'goal'}
 		        <tr>
 		            <td><a form_type="edit" patient_id="${goal.userId}" goal_id="${goal.id}" onclick="careTeamController.evtMsgHandler('fup_goal_form', this);">${goal.goal}</a>
-		            #{if goal.infoText != ''} 
-						<i data-title="${goal.infoText}" class="fa fa-info-circle infomarker"></i>
+		            #{if goal.infoText != null &&  goal.infoText != ''} 
+						<i data-type="${goal.tipType}"  data-title="${goal.infoText}" class="fa fa-info-circle infomarker"></i>
 					#{/if}
 		            </td>
             <td><div>#{if goal.nextStep} ${goal.nextStep.printMessage()} #{/if}</div></td>

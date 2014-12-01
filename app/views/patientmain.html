@@ -266,7 +266,7 @@ $(document).ready(function(){
 		
 		if(title != null && $.trim(title) != '') {
 			if(type == 'link') {
-				var win = window.open($.trim(title), '_blank');
+				var win = window.open($.trim(title), "TVRH Navigator", "height=300,width=400" );
 				win.focus();
 			} else {
 				bootbox.alert($.trim(title), null);

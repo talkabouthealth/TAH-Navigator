@@ -15,7 +15,7 @@
                 <h3>
                 	<span data-type="${ci.tipType}" data-title="${ci.infoText}" class="infomarker">
                 	${ci.activity}
-                	#{if ci.infoText != ''} 
+                	#{if ci.infoText != null &&  ci.infoText != ''} 
 						<i class="fa fa-info-circle"></i>
 					#{/if}
 					</span>
@@ -40,7 +40,7 @@
                 <td>
                 	<span data-type="${ci.tipType}" data-title="${ci.infoText}" class="infomarker">
                 	${ci.activity}
-                	#{if ci.infoText != ''} 
+                	#{if ci.infoText != null &&  ci.infoText != ''} 
 						<i class="fa fa-info-circle"></i>
 					#{/if}
 					</span>
@@ -66,7 +66,7 @@
                 <h3>
                 	<span data-type="${concern.tipType}" data-title="${concern.infoText}" class="infomarker">
                 	${concern.concern}
-                	#{if concern.infoText != ''} 
+                	#{if concern.infoText != null && concern.infoText != ''} 
 						<i class="fa fa-info-circle"></i>
 					#{/if}
 					</span>
@@ -89,7 +89,7 @@
 	            <td>
 	            	<span class="infomarker" data-type="${concern.tipType}" data-title="${concern.infoText}">
 		            	${concern.concern}
-			            #{if concern.infoText != ''} 
+			            #{if  concern.infoText != null && concern.infoText != ''} 
 							<i class="fa fa-info-circle"></i>
 						#{/if}
 					</span>
@@ -114,7 +114,7 @@
 	            <h3>
 	            	<span data-type="${goal.tipType}" data-title="${goal.infoText}" class="infomarker">
 	            	${goal.goal}
-	             	#{if goal.infoText != ''} 
+	             	#{if  goal.infoText != null && goal.infoText != ''} 
 						<i class="fa fa-info-circle"></i>
 					#{/if}
 					</h3>
@@ -135,7 +135,7 @@
 	        #{list items:goals, as:'goal'}
 	        <tr>
 	            <td><span data-type="${goal.tipType}" data-title="${goal.infoText}" class="infomarker">${goal.goal}
-		            #{if goal.infoText != ''} 
+		            #{if  goal.infoText != null && goal.infoText != ''} 
 						<i class="fa fa-info-circle"></i>
 					#{/if}
 					</span>

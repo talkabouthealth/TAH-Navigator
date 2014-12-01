@@ -907,7 +907,24 @@ a.date-range.active {
 	  
 	  
 	  $('body').on('click', '.fa-info-circle', function() {
-			bootbox.alert($(this).data("title"), null);
+		  
+		  var type = $(this).data("type");
+			var title = $(this).data("title");
+			
+			if(type != null && $.trim(type) == '') {
+				type = 'data';
+			}
+		  
+		  if(title != null && $.trim(title) != '') {
+				if(type == 'link') {
+					var win = window.open($.trim(title), "TVRH Navigator", "height=300,width=400" );
+					win.focus();
+				} else {
+					bootbox.alert($.trim(title), null);
+				}
+			}
+		  
+// 			bootbox.alert($(this).data("title"), null);
 			
 		});
 	  
