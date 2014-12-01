@@ -336,6 +336,7 @@ public class PatientDetailDAO {
 		List<CancerPhaseDTO> phaseList = Disease.getCancerPhases();
 		List<CancerFabClassificationDTO> fabClassList = Disease.getCancerFABClasses();
 		List<CancerWhoClassificationDTO> whoClassList = Disease.getCancerWHOClasses();
+				
 		jsonData.put("diseases", diseases);
 		jsonData.put("bcStages", bcStages);
 		jsonData.put("mutations", mutations);
@@ -359,7 +360,7 @@ public class PatientDetailDAO {
 			}
 			jsonData.put("supportName", patientDetails.getEc1name());
 			jsonData.put("supportNumber", patientDetails.getEc1number());
-			
+			jsonData.put("familyRisk", patientDetails.getFamilyRisk());
 		}
 		if (userDetails != null) {
 			Date date = userDetails.getDob();
@@ -470,65 +471,45 @@ public class PatientDetailDAO {
 		TypedQuery<PatientDetailDTO> query1 = em.createQuery("SELECT c FROM PatientDetailDTO c WHERE c.id = :id", PatientDetailDTO.class); 
 		query1.setParameter("id", patientId);
 		try {
-			patientDetails = query1.getSingleResult();
-			if (diseaseId != null && diseaseId.intValue() > 0) {
-				patientDetails.setDiseaseId(diseaseId);
-			}
-			else {
-				patientDetails.setDiseaseId(null);
-			}			
-			if (dateOfDiagnosis != null) {
-				if (!dateOfDiagnosis.isEmpty()) {					
-					SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-					Date date;
-					try {
-						date = df.parse(dateOfDiagnosis);
-						patientDetails.setDateofdiagnosis(date);
-					} catch (ParseException e) {
-						//e.printStackTrace();
-					}
-				}
-				else {
-					patientDetails.setDateofdiagnosis(null);
-				}
-			}			
-			
-			
-			patientDetails.setEc1name(supportName);
-			patientDetails.setEc1number(supportNumber);
-			em.getTransaction().begin();
-			em.persist(patientDetails);
-			em.getTransaction().commit();
+			patientDetails = query1.getSingleResult();			
 		} catch (NoResultException e) {
 			patientDetails = new PatientDetailDTO();
-			patientDetails.setId(patientId);
-			if (diseaseId != null && diseaseId.intValue() > 0) {
-				patientDetails.setDiseaseId(diseaseId);
+			patientDetails.setId(patientId);			
+		}		
+		
+		if (diseaseId != null && diseaseId.intValue() > 0) {
+			patientDetails.setDiseaseId(diseaseId);
+		}
+		else {
+			patientDetails.setDiseaseId(null);
+		}
+		if (dateOfDiagnosis != null) {
+			if (!dateOfDiagnosis.isEmpty()) {					
+				SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+				Date date;
+				try {
+					date = df.parse(dateOfDiagnosis);
+					patientDetails.setDateofdiagnosis(date);
+				} catch (ParseException e1) {
+					//e.printStackTrace();
+				}
 			}
 			else {
-				patientDetails.setDiseaseId(null);
+				patientDetails.setDateofdiagnosis(null);
 			}
-			if (dateOfDiagnosis != null) {
-				if (!dateOfDiagnosis.isEmpty()) {					
-					SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-					Date date;
-					try {
-						date = df.parse(dateOfDiagnosis);
-						patientDetails.setDateofdiagnosis(date);
-					} catch (ParseException e1) {
-						//e.printStackTrace();
-					}
-				}
-				else {
-					patientDetails.setDateofdiagnosis(null);
-				}
-			}
-			patientDetails.setEc1name(supportName);
-			patientDetails.setEc1number(supportNumber);
-			em.getTransaction().begin();
-			em.persist(patientDetails);
-			em.getTransaction().commit();
 		}
+		String familyRisk = diseaseInfo.get("familyRisk");
+		if (familyRisk != null) {
+			patientDetails.setFamilyRisk(familyRisk);
+		}
+		patientDetails.setEc1name(supportName);
+		patientDetails.setEc1number(supportNumber);
+		em.getTransaction().begin();
+		em.persist(patientDetails);
+		em.getTransaction().commit();
+		
+		
+		
 		
 		// update 'pbcsvinfo' info
 		

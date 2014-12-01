@@ -168,6 +168,14 @@
 </div>
 </div><!-- row -->
     #{/if}
+#{if patientOtherDetails.familyRisk}
+    <div class="row">
+        <div class="col-sm-12">
+            <label><i class="fa fa-file-text-o"></i> Family Risk Assessment</label>
+            <h1>${patientOtherDetails.familyRisk}</h1>
+        </div>
+    </div>
+#{/if}    
 #{/if}
 #{else}
 Diagnosis details are not provided.

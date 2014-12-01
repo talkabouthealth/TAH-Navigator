@@ -62,6 +62,8 @@ public class PatientDetailDTO {
 	@Column(name = "proxynumber")
 	private String proxynumber;
 	
+	@Column(name="family_risk")
+	private String familyRisk;	
 	
 	public int getId() {
 		return id;
@@ -181,6 +183,14 @@ public class PatientDetailDTO {
 
 	public void setDiseaseId(Integer diseaseId) {
 		this.diseaseId = diseaseId;
+	}
+
+	public String getFamilyRisk() {
+		return familyRisk;
+	}
+
+	public void setFamilyRisk(String familyRisk) {
+		this.familyRisk = familyRisk;
 	}
 
 	

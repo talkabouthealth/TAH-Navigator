@@ -1074,6 +1074,7 @@ var careTeamController = (function() {
             } else {
             	$('#ec1number').val('');
             }
+            $('#diagnosis-edit-form').find('#family-risk').val(data['familyRisk'] || '');            
             $('#disease').change(); 
         	$('#diagnosis-edit-form').modal({
         		keyboard: false,
@@ -1091,6 +1092,7 @@ var careTeamController = (function() {
         var phone = $('#phone').val();
         var supportName = $('#ec1name').val();
         var supportNumber = $('#ec1number').val();
+        var familyRisk = $('#family-risk').val();
         var params = {
             'patientId': patientId, 
             'diseaseId': diseaseId, 
@@ -1098,8 +1100,9 @@ var careTeamController = (function() {
             'dob' : dob, 
             'phone' : phone, 
             'supportName' : supportName, 
-            'supportNumber' : supportNumber
+            'supportNumber' : supportNumber            
         };
+        params['diseaseInfo.familyRisk'] = familyRisk;
         if (diseaseId == BREAST_CANCER_ID) {
             params['diseaseInfo.er'] = $('#er').val();
             params['diseaseInfo.pr'] = $('#pr').val();

@@ -177,4 +177,13 @@
 </div>
 </div><!-- row -->
     #{/if}
+    
+#{if patientDetails.familyRisk}
+    <div class="row">
+        <div class="col-sm-12">
+            <label><i class="fa fa-file-text-o"></i> Family Risk Assessment</label>
+            <h1>${patientDetails.familyRisk}</h1>
+        </div>
+    </div>
+#{/if}    
     #{/if}
