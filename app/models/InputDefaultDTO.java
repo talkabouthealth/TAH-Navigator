@@ -41,6 +41,9 @@ public class InputDefaultDTO {
 
 	@Column(name="tiptype")
 	private String tiptype;
+	
+	@Column(name="enddate")
+	private String enddate;
 
 	public Integer getId() {
 		return id;
@@ -112,5 +115,13 @@ public class InputDefaultDTO {
 
 	public void setTiptype(String tiptype) {
 		this.tiptype = tiptype;
+	}
+
+	public String getEnddate() {
+		return enddate;
+	}
+
+	public void setEnddate(String enddate) {
+		this.enddate = enddate;
 	}
 }

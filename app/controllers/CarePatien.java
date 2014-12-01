@@ -257,10 +257,7 @@ public class CarePatien  extends Controller {
 	}
 	
 	public static void fupTemplateData(Integer patientId,String formOf) {
-		
 		Map<String, Object> jsonData = new HashMap<String, Object>();
-		
-		
 		if(formOf.equals("disease")) { 
 			List<DiseaseMasterDTO>  dis =  Disease.allDiseases();
 			jsonData.put("disease",dis);
@@ -829,7 +826,7 @@ public class CarePatien  extends Controller {
 		Activity: Pelvic exam	
 		Frequency: Every year
 		*/
-		
+
 		List<InputDefaultDTO> defaults = InputDefaultDAO.getInputDefaultByPageField("followupplan",diseaseId,"activity");
 		if(defaults != null && !defaults.isEmpty()) {
 			Integer careItemId = null;
@@ -839,7 +836,13 @@ public class CarePatien  extends Controller {
 				fupCareItem.put("frequency",inputDefaultDTO.getFrequency());
 				fupCareItem.put("purpose",inputDefaultDTO.getOtherfield());
 				fupCareItem.put("endDate","");
-				fupCareItem.put("ongoing","");
+				if(inputDefaultDTO.getEnddate().equalsIgnoreCase("ongoing")) {
+					fupCareItem.put("ongoing",inputDefaultDTO.getEnddate());
+					fupCareItem.put("endDate",null);
+				} else {
+					fupCareItem.put("ongoing",null);
+					fupCareItem.put("endDate",inputDefaultDTO.getEnddate());	
+				}
 				fupCareItem.put("doctor","");
 				FollowUp.saveCareItem(patientId, careItemId, fupCareItem);		
 			}
