@@ -1,48 +1,48 @@
 /* Layout Styles */
 .wrapper {
-  padding-top: @header-height;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+    padding-top: @header-height;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 .body {
-  position: relative;
-  width: 100%;
-  z-index: 0;
-  color: @dark-blue;
-  background: white;
-  min-height: 100%;
+    position: relative;
+    width: 100%;
+    z-index: 0;
+    color: @dark-blue;
+    background: white;
+    min-height: 100%;
 }
 
 .page {
-  padding: 20px;
+    padding: 20px;
 
-  .row{
-    border-bottom: 1px solid @section-border;
-    padding-bottom: @padding;
-    margin-bottom: @padding;
+    .row{
+        border-bottom: 1px solid @section-border;
+        padding-bottom: @padding;
+        margin-bottom: @padding;
 
-    h1 {
-      margin: 0;
+        h1 {
+            margin: 0;
+        }
     }
-  }
 
-  label {
-    padding-bottom: @label-bottom-padding;
-  }
+    label {
+        padding-bottom: @label-bottom-padding;
+    }
 }
 
 // header style definition lives in application/header.less
 // sidebar style definition lives in application/sidebar.less
 
 .content {
-  background: white;
-  margin-left: @nav-width;
-  overflow: auto;
-  padding: @padding;
+    background: white;
+    margin-left: @nav-width;
+    overflow: auto;
+    padding: @padding;
 }
 
 
@@ -70,91 +70,45 @@
 
 @media (max-width: @tablet-max) {
     body {
-    .content #content {
-        padding: 0;
-    }
-
-    .page {
-        padding: 0;
-        label {
-            text-indent: 0;
-            margin-left: 0;
+        .content #content {
+            padding: 0;
         }
-        .row {
-            margin: 0;
-            &::before, &::after {
-                content: "";
-                display: none;
+
+        .page {
+            padding: 0;
+            label {
+                text-indent: 0;
+                margin-left: 0;
+            }
+            .row {
+                margin: 0;
+                &::before, &::after {
+                    content: "";
+                    display: none;
+                }
             }
         }
-    }
 
-    .col-xs-0 {
-        display: none;
-    }
-    .col-xs-12 {
-        padding: 0;
-        margin: 0;
-    }
-    .footer-terms-policy {
-        margin-left: 0;
-    }
-    h2 {
-        font-size: @large-font;
-        margin-bottom: @padding;
-    }
-}
-}
-
-.mobile {
-    display: none;
-}
-
-@media (max-width: @tablet-max) {
-   .mobile {
-       display: block;
-   }
-}
-
-
-
-
-
-.mobile {
-    display: none;
-}
-
-
-@media (max-width: @tablet-max) {
-    .mobile {
-        display: block;
-    }
-}
-.mobile {
-    display: none;
-}
-
-
-@media (max-width: @tablet-max) {
-    .mobile {
-        display: block;
-    }
-}
-.mobile {
-    display: none;
-}
-
-
-@media (max-width: @tablet-max) {
-    .mobile {
-        display: block;
+        .col-xs-0 {
+            display: none;
+        }
+        .col-xs-12 {
+            padding: 0;
+            margin: 0;
+        }
+        .footer-terms-policy {
+            margin-left: 0;
+        }
+        h2 {
+            font-size: @large-font;
+            margin-bottom: @padding;
+        }
     }
 }
 
 .mobile {
     display: none;
 }
-
 
 @media (max-width: @tablet-max) {
     .mobile {
@@ -162,6 +116,10 @@
     }
     .desktop {
         display: none;
+    }
+
+    .page table {
+        width: 100%;
     }
 
 }
