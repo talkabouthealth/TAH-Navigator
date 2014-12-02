@@ -82,9 +82,10 @@ public class Secure extends Controller {
         		if(!allowed.getPassword().trim().equals(hashed.trim())) {
         			validation.addError("password", "secure.error.password", "");
         		} else {
-	        		if(!allowed.isIsverified() && allowed.getUserType() == 'p') {
-	        			validation.addError("email", "secure.verify", "");
-	        		} else if(!allowed.isActive()) {
+//	        		if(!allowed.isIsverified() && allowed.getUserType() == 'p') {
+//	        			validation.addError("email", "secure.verify", "");
+//	        		} else 
+	        			if(!allowed.isActive()) {
 	        			validation.addError("email.exists.inactive", "email.exists.inactive", "");
 	        		} else {
 	        			System.out.println("User verified");
