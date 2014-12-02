@@ -446,7 +446,11 @@ public class CarePatien  extends Controller {
 		Map <String, Object> ps = PatientDetailDAO.patientSummary(patientId);
 		render(patientId, breastCancerId, userDetails, patientDetails, breastCancerInfo, ps,mutations,chromosomes);
 	}
-	
+	public static void patientInfo(Integer patientId) {
+		Map <String, Object> patientSummary = PatientDetailDAO.patientSummary(patientId);		
+		renderArgs.put("ps", patientSummary);		
+		render();
+	}
 	public static void diagnosisJSON(int patientId) {
 		Map<String, Object> jsonData = PatientDetailDAO.getDiagnosisJSON(patientId);
 		renderJSON(jsonData);
@@ -745,7 +749,9 @@ public class CarePatien  extends Controller {
 				
 				app.setPatientid(patient);				
 				BaseDAO.save(app);
-				PatientAlert.firstAppointmentScheduledAlert(patient, app);
+				if (treatmentProcessStep.equalsIgnoreCase(PatientAlert.APPOINTMENT_STEP_FIRST_APPOINTMENT)) {
+					PatientAlert.firstAppointmentScheduledAlert(patient, app);
+				}
 				/*
 				if (treatmentProcessStep.equalsIgnoreCase(PatientAlert.APPOINTMENT_STEP_FIRST_APPOINTMENT)) {
 					UserDetailsDTO userDetails = UserDAO.getDetailsById(patient.getId());

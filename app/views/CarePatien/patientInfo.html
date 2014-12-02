@@ -1,0 +1,29 @@
+#{include '/tags/patientSummary.html' /}
+
+<div class="patient-info">
+    
+    <div class="col-xs-12 col-sm-12">
+        <button class="btn edit-patient-info" patient-id="${ps.userId}">EDIT INFO</button>
+    </div>
+    <br><br>              
+
+    <div class="col-xs-12 col-sm-3 text-right">Email: </div>
+    <div class="col-xs-12 col-sm-9">${ps.email}</div>
+    <br><br>
+
+    <div class="col-xs-12 col-sm-3 text-right">DOB: </div>
+    <div class="col-xs-12 col-sm-9">${ps.dob.format('M/dd/yyyy')}</div>
+    <br><br>
+    
+    <div class="col-xs-12 col-sm-3 text-right">Phone: </div>
+    <div class="col-xs-12 col-sm-9">${ps.phone}</div>
+    <br><br>
+    
+    <div class="col-xs-12 col-sm-3 text-right">Support Contact: </div>
+    <div class="col-xs-12 col-sm-9">${ps.ec1Name}</div>
+    <br><br>
+
+    <div class="col-xs-12 col-sm-3 text-right">Support Contact Phone: </div>
+    <div class="col-xs-12 col-sm-9">${ps.ec1Number}</div>
+    
+</div>
