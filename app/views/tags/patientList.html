@@ -62,10 +62,7 @@
     nextVisit = "-";
     lastMD = "";
     if (patient.appointmentInfo) {
-        lastVisit = patient.appointmentInfo.appointmentdate.format("M/dd/yyyy");
-        if (patient.nextAppointment) {
-            nextVisit = patient.nextAppointment.appointmentdate.format("M/dd/yyyy");
-        }
+        lastVisit = patient.appointmentInfo.appointmentdate.format("M/dd/yyyy");        
         if (patient.appointmentInfo.caremember) {
             userName = patient.appointmentInfo.caremember.name;
             lastMD = userName.usreName(patient.appointmentInfo.caremember.id);
@@ -73,7 +70,10 @@
         else {
             lastMD = patient.appointmentInfo.careMemberName;
         }
-    }    
+    }
+    if (patient.nextAppointment) {
+        nextVisit = patient.nextAppointment.appointmentdate.format("M/dd/yyyy");
+    }
 }%
 
 *{*************  lastDistressCheckIn ************}*
