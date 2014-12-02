@@ -135,7 +135,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
               </p>
             #{/if}            
             </li>
-            <li class="mobile"><a class="distress-meter" patientId="${user.id}"><i class="fa fa-stethoscope"></i> <span>Update Distress</span></a></li>
+            <li class="mobile"><a class="distress-meter-full" href="/patient/distressmeter"><i class="fa fa-stethoscope"></i> <span>Update Distress</span></a></li>
           <li>
             #{if pageType == 'dashboard'}<a href="#" class="active">#{/if}
             #{else}<a href="@{Patient.index()}">#{/else}
@@ -244,11 +244,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
 	  </div>
 </div>
 <script type='text/javascript' src="/public/js/patient/distressMeter.js"></script>
-
-
-      <script>
-
-// KEVIN: I don't know what this is for.
+<script type='text/javascript'>
 var todayDate;
 var lastLogin;
 

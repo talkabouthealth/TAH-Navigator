@@ -26,11 +26,8 @@
       #{/if} #{if flash.success}
       <p class="alert alert-success">&{flash.success}</p>
       #{/if}
-        <div class="col-xs-6 col-sm-6 register-container" >
-          <h3>New User?</h3>
-          <p class="text-center"> <a href="@{Application.create()}" class="btn btn-primary btn-lg btn-block my-btn-register">register now</a></p>
-        </div>
-      <div class="col-xs-6 col-sm-6 login-container" >
+
+      <div class="col-xs-12 col-sm-6 login-container" >
         <form action="@{authenticate()}" method="post" id="loginForm">
           <div class="input-group input-group-lg"> <span class="input-group-addon"><img alt="" src="/public/images/em-img.png" style="height: 14px;opacity:0.6;"></span>
             <input class="form-control" style="border-radius: 0 5px 5px 0 !important;" placeholder="Enter Email"
@@ -51,13 +48,21 @@
           <!-- <br/> -->
           <!-- <br/> -->
           <div class="col-xs-12 col-sm-12" style="padding: 10px 0;">
-            <div class="col-sm-6 save_id">
+            <div class="col-xs-6 col-sm-6 save_id">
               <input name="remember" id="remember" value="true" ${flash.remember ? 'checked="true"' : ''} type="checkbox">
               &nbsp;&nbsp;Save User ID </div>
-              <div class="col-sm-6 forget"><A href="@{Application.forgot()}">Forgot Password?</A></div>
+              <div class="col-xs-6 col-sm-6 forget"><A href="@{Application.forgot()}">Forgot Password?</A></div>
             </div>
           </form>
         </div>
+        <!-- login-container -->
+
+        <div class="col-xs-12 col-sm-6 register-container" >
+          <h3>New User?</h3>
+          <p class="text-center"> <a href="@{Application.create()}" class="btn btn-primary btn-lg btn-block my-btn-register">register now</a></p>
+        </div>
+
+
       </div>
       <div class="log_p">We'll guide you through your treatment journey step by step. What to expect, how to prepare, next steps, reminders, and notifications to stay on track with treatments.
       <br />
