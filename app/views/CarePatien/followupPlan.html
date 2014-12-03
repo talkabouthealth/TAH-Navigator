@@ -3,7 +3,9 @@
     <div class="title">
         <h3>Follow-Up Care</h3>
         <button type="button" class="btn btn-default" patient_id="${patientId}" form_type="new" onclick="careTeamController.evtMsgHandler('fup_careitem_form', this);">+ Add Follow-Up Care Item</button>
+        #{if isTemplate}
         &nbsp;&nbsp;&nbsp;<a form_type="add" patient_id="${patientId}" onclick="careTeamController.evtMsgHandler('fup_careitem_template_form', this);" class="careItemTemplateLink">Use Template</a>
+        #{/if}
     </div>
 	<table class="table table-bordered table-striped table-condensed table-hover table-fixed">
         <tr>

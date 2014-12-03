@@ -71,14 +71,17 @@ var careTeamController = (function() {
                 $(self.concernDiv).removeClass('has-success');
             },
             init: function(patientId) {
-            	var params = {};
-            	params['formOf'] = "disease";
+//            	var params = {};
+            	 var params = {
+                         'patientId': patientId
+                     };
+            	 params['formOf'] = "disease";
             	$.post(actions['fup_template_data'], params, function(data) {
                     var self = careItemTemplateForm;
                     $(self.formId).attr('init_flag', '1');
                     
                     for(i=0;i<data.disease.length;i++) {
-                    	$(self.diseaseId).append("<option value='"+data.disease[i].id+"'>"+data.disease[i].name+" Template</option>");
+                    	$(self.diseaseId).append("<option value='"+data.disease[i].id+"'>"+data.disease[i].templatename+"</option>");
                     }
                     
                     $(self.saveBtnId).click(function() {

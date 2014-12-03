@@ -19,6 +19,8 @@ import models.BreastCancerInfoDTO;
 import models.CareTeamMasterDTO;
 import models.CareTeamMemberDTO;
 import models.ChemoScheduleDTO;
+import models.DefaultTemplateDetailDTO;
+import models.DefaultTemplateMasterDTO;
 import models.DiseaseMasterDTO;
 import models.ExpertDetailDTO;
 import models.InputDefaultDTO;
@@ -47,6 +49,7 @@ import nav.dao.AppointmentDAO;
 import nav.dao.AppointmentMasterDAO;
 import nav.dao.BaseDAO;
 import nav.dao.CareTeamDAO;
+import nav.dao.DefaultTemplateDAO;
 import nav.dao.Disease;
 import nav.dao.DistressDAO;
 import nav.dao.FollowUp;
@@ -161,8 +164,8 @@ public class CarePatien  extends Controller {
 				goals.add(patientFollowUpCareItemDTO);
 			}
 		}
-
-		render(patientId,noteList, ps, concerns, goals, careItems);
+		boolean isTemplate = DefaultTemplateDAO.isTemplate(patientDetails.getDiseaseId());
+		render(patientId,noteList, ps, concerns, goals, careItems,isTemplate);
 	}
 	public static void chemotherapyForm(Integer patientId, Integer treatmentId, Integer initFlag, String formType) {
 		Map<String, Object> jsonData = new HashMap<String, Object>();
@@ -258,12 +261,14 @@ public class CarePatien  extends Controller {
 	
 	public static void fupTemplateData(Integer patientId,String formOf) {
 		Map<String, Object> jsonData = new HashMap<String, Object>();
+		UserDetailsDTO userDto = UserDAO.getDetailsById(patientId);
+		PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", userDto.getId());
+	
 		if(formOf.equals("disease")) { 
-			List<DiseaseMasterDTO>  dis =  Disease.allDiseases();
+//			List<DiseaseMasterDTO>  dis =  Disease.allDiseases();
+			List<DefaultTemplateMasterDTO> dis = DefaultTemplateDAO.getPatientTemplate(patientOtherDetails.getDiseaseId());
 			jsonData.put("disease",dis);
 		} else {
-			UserDetailsDTO userDto = UserDAO.getDetailsById(patientId);
-			PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", userDto.getId());
 			if (patientId != null) {
 				List<InputDefaultDTO> inputList = InputDefaultDAO.getInputDefaultByPageField("followupplan",patientOtherDetails.getDiseaseId(),formOf);
 				jsonData.put("inputlist", inputList);
@@ -760,7 +765,7 @@ public class CarePatien  extends Controller {
 				app.setPatientid(patient);				
 				BaseDAO.save(app);
 				if (treatmentProcessStep.equalsIgnoreCase(PatientAlert.APPOINTMENT_STEP_FIRST_APPOINTMENT)) {
-					PatientAlert.firstAppointmentScheduledAlert(patient, app);
+				PatientAlert.firstAppointmentScheduledAlert(patient, app);
 				}
 				/*
 				if (treatmentProcessStep.equalsIgnoreCase(PatientAlert.APPOINTMENT_STEP_FIRST_APPOINTMENT)) {
@@ -843,16 +848,17 @@ public class CarePatien  extends Controller {
 		Frequency: Every year
 		*/
 
-		List<InputDefaultDTO> defaults = InputDefaultDAO.getInputDefaultByPageField("followupplan",diseaseId,"activity");
+//		List<InputDefaultDTO> defaults = InputDefaultDAO.getInputDefaultByPageField("followupplan",diseaseId,"activity");
+		 List<DefaultTemplateDetailDTO> defaults = DefaultTemplateDAO.getInputDefaultByPageField(diseaseId); 
 		if(defaults != null && !defaults.isEmpty()) {
 			Integer careItemId = null;
-			for (InputDefaultDTO inputDefaultDTO : defaults) {
+			for (DefaultTemplateDetailDTO inputDefaultDTO : defaults) {
 				Map<String, String> fupCareItem = new HashMap<String, String>();
 				fupCareItem.put("activity",inputDefaultDTO.getFieldtext());
 				fupCareItem.put("frequency",inputDefaultDTO.getFrequency());
 				fupCareItem.put("purpose",inputDefaultDTO.getOtherfield());
 				fupCareItem.put("endDate","");
-				if(inputDefaultDTO.getEnddate().equalsIgnoreCase("ongoing")) {
+				if(inputDefaultDTO.getEnddate() != null && inputDefaultDTO.getEnddate().equalsIgnoreCase("ongoing")) {
 					fupCareItem.put("ongoing",inputDefaultDTO.getEnddate());
 					fupCareItem.put("endDate",null);
 				} else {
