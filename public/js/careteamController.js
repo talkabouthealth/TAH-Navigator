@@ -23,6 +23,8 @@ var careTeamController = (function() {
         'fup_remove_care_item': '/CarePatien/removeCareItem',
         'fup_template_data' : '/CarePatien/fupTemplateData',
         'fup_save_careitem_template' : '/CarePatien/careitemTemplateData',
+        'patient_info': '/CarePatien/patientInfoJSON',
+        'patient_info_save': '/CarePatien/savePatientInfo',
 		'default': '#'    // nothing 
 	};
     var BREAST_CANCER_ID = 1;
@@ -330,7 +332,65 @@ var careTeamController = (function() {
             }
         }
     };
-    
+    var patientInfoForm = {
+        'containerId' : '#content #patient-info',
+        'formId': '#patient-info-form',
+        'patientId': undefined,
+        initForm: function(patientId) {
+            var self = patientInfoForm;
+            var isFormInitialized = $(self.formId).attr('init-form');
+            self.patientId = patientId;
+            
+            if (isFormInitialized == 'yes') {
+                $(self.formId).modal('show');                
+            }
+            else {
+                $(self.formId).find('#dob').datepicker({
+        			format: 'mm/dd/yyyy',
+                    autoclose: true
+        		});
+                $(self.formId).attr('init-form', 'yes'); 
+                $(self.formId).modal({
+                    keyboard: false,
+                    backdrop: 'static'
+                });
+                $(self.formId).on("click", '#save-patient-info', function(e) {
+                    self.saveForm();
+                });
+            }
+            self.loadForm();
+        },
+        loadForm: function() {
+            var self = patientInfoForm;
+            $.post(actions['patient_info'], {
+                patientId: self.patientId
+            }, function(data) {
+                $(self.formId).find('#dob').val(data.dob || '');
+                if (data.dob) {
+                    $(self.formId).find('#dob').datepicker('update', data.dob);
+                }
+                $(self.formId).find('#phone').val(data.homephone || '');
+                $(self.formId).find('#ec1name').val(data.ec1name || '');
+                $(self.formId).find('#ec1number').val(data.ec1number || '');
+            }, "json");
+        },
+        saveForm: function() {
+            var self = patientInfoForm;
+            var params = {
+                patientId: self.patientId,
+                'info.dob': $(self.formId).find('#dob').val(),
+                'info.homephone': $(self.formId).find('#phone').val(),
+                'info.ec1name': $(self.formId).find('#ec1name').val(),
+                'info.ec1number': $(self.formId).find('#ec1number').val()
+            };
+            $(self.formId).modal('hide');
+            $(self.containerId).fadeTo("slow", 0.2);
+            $.post(actions['patient_info_save'], params, function(htmlText) {
+                $(self.containerId).html(htmlText);
+                $(self.containerId).fadeTo("fast", 1);
+            }, "html");
+        }
+    };
     var goalForm = {
         followUpDiv: '#followupplan',
         formId: '#follow-up-goal-form',
@@ -788,11 +848,6 @@ var careTeamController = (function() {
                     format: 'mm/dd/yyyy',
                     autoclose: true
         		});
-        		$('#dob').datepicker({
-        			format: 'mm/dd/yyyy',
-                    autoclose: true
-        		});
-
         		$('#disease').change(function() {
         			var disease_id = $(this).val();
         			var bcStages = data.bcStages;
@@ -1058,22 +1113,7 @@ var careTeamController = (function() {
                 $('#dob').val(formatDate(new Date(data.dateOfBirth), 'mm/dd/yyyy'));
             } else {
             	$('#dob').val('');
-            }
-            if ("Phone" in data) {
-                $("#phone").val(data.Phone);
-            } else {
-            	$("#phone").val('');
-            }
-            if ("supportName" in data) {
-                $('#ec1name').val(data.supportName);
-            } else {
-            	$('#ec1name').val('');
-            }
-            if ("supportNumber" in data) {
-                $('#ec1number').val(data.supportNumber);
-            } else {
-            	$('#ec1number').val('');
-            }
+            }            
             $('#diagnosis-edit-form').find('#family-risk').val(data['familyRisk'] || '');            
             $('#disease').change(); 
         	$('#diagnosis-edit-form').modal({
@@ -1087,20 +1127,12 @@ var careTeamController = (function() {
         var patientId = $('#diagnosis-edit-form').attr("patient_id");
         // collect data and send
         var diseaseId = $('#disease').val();
-        var dateOfDiagnosis = $('#first-diagnosed').val();
-        var dob = $('#dob').val();
-        var phone = $('#phone').val();
-        var supportName = $('#ec1name').val();
-        var supportNumber = $('#ec1number').val();
+        var dateOfDiagnosis = $('#first-diagnosed').val();        
         var familyRisk = $('#family-risk').val();
         var params = {
             'patientId': patientId, 
             'diseaseId': diseaseId, 
-            'dateOfDiagnosis': dateOfDiagnosis, 
-            'dob' : dob, 
-            'phone' : phone, 
-            'supportName' : supportName, 
-            'supportNumber' : supportNumber            
+            'dateOfDiagnosis': dateOfDiagnosis                   
         };
         params['diseaseInfo.familyRisk'] = familyRisk;
         if (diseaseId == BREAST_CANCER_ID) {
@@ -2193,7 +2225,8 @@ var careTeamController = (function() {
             $distressGraph.plot(plots, options);
             
         }, "json");
-    };    
+    };     
+    
     $(function() {                     
         $(document).on('click', 'a.date-range', function() {
             var $distressGraph = $('#patient_distress_graph');
@@ -2202,6 +2235,11 @@ var careTeamController = (function() {
             $(this).addClass("active");
             var days = $(this).attr("days");
             distressGraph(patientId, days);
+        });
+        
+        $(document).on('click', '.edit-patient-info', function(e) {
+            var patientId = $(this).attr('patient-id');
+            patientInfoForm.initForm(patientId);
         });
     });
     

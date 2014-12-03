@@ -11,6 +11,7 @@
 				<li><a class="treatmentplan" href="#treatmentplan" data-url="@{CarePatien.treatmentPlan(patientId)}">TREATMENT PLAN</a></li>
 				<li><a class="followupplan" href="#followupplan" data-url="@{CarePatien.followupPlan(patientId)}">FOLLOW-UP CARE PLAN</a></li>
 				<li><a class="diagnosis" href="#diagnosis" data-url="@{CarePatien.diagnosis(patientId)}">DIAGNOSIS</a></li>
+                <li><a href="#patient-info" data-url="@{CarePatien.patientInfo(patientId)}">INFO</a></li>
 			</ul>
 			<div class="tab-content">
                 <div id="summary" class="tab-pane active">		
@@ -129,6 +130,7 @@
                 <div class="tab-pane" id="treatmentplan"></div>
                 <div class="tab-pane" id="followupplan"></div>
                 <div class="tab-pane" id="diagnosis"></div>
+                <div class="tab-pane" id="patient-info"></div>
 			</div>
 		</div>
 	</div>
@@ -727,6 +729,7 @@ $(document).ready(function() {
 	var loadTabContent = function(e) {
 		var url = $(this).attr("data-url");
   	var href = this.hash; // our target url
+    console.log(this.hash);
   	var pane = $(this);
 
 		if(href=="#summary") {

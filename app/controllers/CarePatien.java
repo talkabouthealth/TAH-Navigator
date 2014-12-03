@@ -451,13 +451,23 @@ public class CarePatien  extends Controller {
 		renderArgs.put("ps", patientSummary);		
 		render();
 	}
+	public static void patientInfoJSON(Integer patientId) {
+		Map<String, Object> json = PatientDetailDAO.getInfo(patientId.intValue());
+		renderJSON(json);
+	}
+	public static void savePatientInfo(Integer patientId,  Map<String, String> info) {
+		PatientDetailDAO.saveInfo(patientId.intValue(), info);
+		Map <String, Object> patientSummary = PatientDetailDAO.patientSummary(patientId);		
+		renderArgs.put("ps", patientSummary);
+		renderTemplate("CarePatien/patientInfo.html");
+	}
 	public static void diagnosisJSON(int patientId) {
 		Map<String, Object> jsonData = PatientDetailDAO.getDiagnosisJSON(patientId);
 		renderJSON(jsonData);
 	}
 	
-	public static void updateDiagnosis(int patientId, Integer diseaseId, String dateOfDiagnosis, String dob, String phone, String supportName, String supportNumber, Map<String, String> diseaseInfo) {
-		PatientDetailDAO.updateDiagnosis(patientId, diseaseId, dateOfDiagnosis, dob, phone, supportName, supportNumber, diseaseInfo);
+	public static void updateDiagnosis(int patientId, Integer diseaseId, String dateOfDiagnosis, Map<String, String> diseaseInfo) {
+		PatientDetailDAO.updateDiagnosis(patientId, diseaseId, dateOfDiagnosis, diseaseInfo);
 		Map<String, Object> patientInfo = PatientDetailDAO.getDiagnosis(patientId);
 		UserDetailsDTO userDetails = (UserDetailsDTO) patientInfo.get("userDetails");
 		PatientDetailDTO patientDetails = (PatientDetailDTO) patientInfo.get("patientDetails");

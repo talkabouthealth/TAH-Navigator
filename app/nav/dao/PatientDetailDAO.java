@@ -202,6 +202,7 @@ public class PatientDetailDAO {
 		ps.put("nextPurpose", nextPurpose);
 		ps.put("lastAppointment", lastAppointment);
 		ps.put("lastPurpose", lastPurpose);
+		ps.put("email", userDto.getEmail());
 		return ps;
 	}
 	
@@ -318,6 +319,77 @@ public class PatientDetailDAO {
 		}
 		return mutations;
 	}
+	public static Map<String, Object> getInfo(int patientId) {
+		UserDetailsDTO userDetails = UserDAO.getDetailsById(patientId);
+		PatientDetailDTO patientDetails = getDetailsByField("id", patientId);
+		
+		// validation and conversion
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		Date dob = userDetails.getDob();
+		String date = null;
+		String ec1name = null, ec1number = null;
+		if (dob != null) {
+			date = dateFormat.format(dob);
+		}
+		if (patientDetails != null) {
+			ec1name = patientDetails.getEc1name();
+			ec1number = patientDetails.getEc1number();
+		}
+		
+		// read
+		Map<String, Object> json = new HashMap<String, Object>();		
+		json.put("dob", date);
+		json.put("homephone", userDetails.getHomePhone());
+		json.put("ec1name", ec1name);
+		json.put("ec1number", ec1number);
+		return json;
+	}
+	public static void saveInfo(int patientId, Map<String, String> info) {
+		UserDetailsDTO userDetails = null;
+		PatientDetailDTO patientDetails = null;		
+		
+		// validation and conversion
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		Date dob = null;
+		String homephone = info.get("homephone");
+		String ec1name = info.get("ec1name");
+		String ec1number = info.get("ec1number");		
+		try {
+			dob = dateFormat.parse(info.get("dob"));
+		} catch (ParseException e1) {			
+		}
+		
+		// save
+		EntityManager em = JPAUtil.getEntityManager();		
+		
+		TypedQuery<UserDetailsDTO> userDetailsQuery = em.createQuery("SELECT u FROM UserDetailsDTO u WHERE u.id = :id", UserDetailsDTO.class); 
+		userDetailsQuery.setParameter("id", patientId);		
+		try {
+			userDetails = userDetailsQuery.getSingleResult();
+			userDetails.setDob(dob);
+			userDetails.setHomePhone(homephone);
+			em.getTransaction().begin();
+			em.persist(userDetails);
+			em.getTransaction().commit();
+		} catch (NoResultException e) {
+			
+		}
+		
+		TypedQuery<PatientDetailDTO> patientDetailsQuery = em.createQuery("SELECT p FROM PatientDetailDTO p WHERE p.id = :id", PatientDetailDTO.class); 
+		patientDetailsQuery.setParameter("id", patientId);		
+		try {
+			patientDetails = patientDetailsQuery.getSingleResult();			
+		} catch (NoResultException e) {
+			patientDetails = new PatientDetailDTO();
+			patientDetails.setId(patientId);
+		}
+		patientDetails.setEc1name(ec1name);
+		patientDetails.setEc1number(ec1number);
+		em.getTransaction().begin();
+		em.persist(patientDetails);
+		em.getTransaction().commit();						
+	}
+	
 	public static Map<String, Object> getDiagnosisJSON(int patientId) {
 		Map<String, Object> patientInfo = getDiagnosis(patientId);
 		Map<String, Object> jsonData = new HashMap<String, Object>();
@@ -440,7 +512,7 @@ public class PatientDetailDAO {
 		return jsonData;
 	}
 	
-	public static void updateDiagnosis(int patientId, Integer diseaseId, String dateOfDiagnosis, String dob, String phone, String supportName, String supportNumber, Map<String, String> diseaseInfo) {
+	public static void updateDiagnosis(int patientId, Integer diseaseId, String dateOfDiagnosis, Map<String, String> diseaseInfo) {
 		EntityManager em = JPAUtil.getEntityManager();
 		PatientDetailDTO patientDetails;
 		UserDetailsDTO userDetails;
@@ -501,9 +573,7 @@ public class PatientDetailDAO {
 		String familyRisk = diseaseInfo.get("familyRisk");
 		if (familyRisk != null) {
 			patientDetails.setFamilyRisk(familyRisk);
-		}
-		patientDetails.setEc1name(supportName);
-		patientDetails.setEc1number(supportNumber);
+		}		
 		em.getTransaction().begin();
 		em.persist(patientDetails);
 		em.getTransaction().commit();
@@ -669,22 +739,7 @@ public class PatientDetailDAO {
 		TypedQuery<UserDetailsDTO> query2 = em.createQuery("SELECT c FROM UserDetailsDTO c WHERE c.id = :id", UserDetailsDTO.class); 
 		query2.setParameter("id", patientId);
 		userDetails = query2.getSingleResult();
-		if (dob != null) {
-			if (!dob.isEmpty()) {					
-				SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-				Date date;
-				try {
-					date = df.parse(dob);
-					userDetails.setDob(date);
-				} catch (ParseException e1) {
-					e1.printStackTrace();
-				}
-//			} else {
-//				userDetails.setDob(null);
-			}
-		}
 		
-		userDetails.setHomePhone(phone);
 		em.getTransaction().begin();
 		em.persist(userDetails);
 		em.getTransaction().commit();
