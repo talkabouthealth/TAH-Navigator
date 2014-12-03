@@ -938,13 +938,13 @@ a.date-range.active {
 		  
 		  if(title != null && $.trim(title) != '') {
 				if(type == 'link') {
-					var win = window.open($.trim(title), "TVRH Navigator", "height=700,width=700" );
+					var win = window.open($.trim(title), "TVRH Navigator", "scrollbars=yes,height=700,width=1000" );
+// 					var win = window.open('/static/window?url='+$.trim(title), "TVRH Navigator", "scrollbars=yes,height=700,width=1000" );
 					win.focus();
 				} else {
 					bootbox.alert($.trim(title), null);
 				}
 			}
-		  
 // 			bootbox.alert($(this).data("title"), null);
 			
 		});
