@@ -5,7 +5,7 @@
 	<div class="col-xs-12 col-sm-12">
 		<div>
 			<ul id="tabs" class="nav nav-tabs">
-				<li class="active"><a href="#summary">SUMMARY</a></li>
+				<li class="active"><a href="#summary" data-url="@{CarePatien.summary(patientId)}">SUMMARY</a></li>
 				<li><a class="appointment" href="#appointment" data-url="@{CarePatien.appointment(patientId)}">APPOINTMENTS</a></li>				
 				<li><a class="medication" href="#medication" data-url="@{CarePatien.medication(patientId)}">MEDICATIONS</a></li>
 				<li><a class="treatmentplan" href="#treatmentplan" data-url="@{CarePatien.treatmentPlan(patientId)}">TREATMENT PLAN</a></li>
@@ -14,115 +14,8 @@
                 <li><a href="#patient-info" data-url="@{CarePatien.patientInfo(patientId)}">INFO</a></li>
 			</ul>
 			<div class="tab-content">
-                <div id="summary" class="tab-pane active">		
-                    #{include '/tags/patientSummary.html' /}
-                    <div class="col-xs-12 col-sm-12 nopadding">				
-                        <div class="col-xs-4 col-sm-4" style="border-right: 1px solid #CCC">
-                            <div class="distress">
-                                <h3>Distress &nbsp;&nbsp;&nbsp; 
-                                    <small><a class="distress-meter button rounded" patientId="${patientId}">Update Distress</a></small>
-                                </h3>
-                                #{if distress != null }
-                                <table>
-                                    <tr><td colspan="2"> <p class="last">Last Updated <span id="timeAgo">${distress.distressDate.format('M/dd/yyyy')}</span></p></td></tr>
-                                    <tr>
-                                        <td>
-                                            <div style=" background-color: #efefef;float: left;padding: 5px 10px;">
-                                                <span style="  background-color: #fff;float:left;color:darkred;border: 5px solid darkred;border-radius: 40px;font-size: 25px;font-weight: 700;padding: 0px 10px;">${distress.curDist}</span>
-                                                <span style="float:left;color:darkred;font-weight: bold;padding-left: 10px;">
-                                                #{if distress.curDist < 5}
-                                                    MILD<br/> DISTRESS
-                                                #{/if}
-                                                #{if distress.curDist == 5}
-                                                    MEDIUM<br/> DISTRESS
-                                                #{/if}
-                                                #{if distress.curDist > 5}
-                                                    SEVERE<br/> DISTRESS
-                                                #{/if}
-                                                </span>
-                                                <span class="td-graph"></span>
-                                            </div>
-                                        </td>
-                                    </tr>	
-                                    <tr>
-                                        <td><p><strong>CURRENT PROBLEM LIST</strong>
-                                        <br/>
-                                            #{list items: lastWeekProblems, as: 'problem'}
-                                            ${problem}<br/>
-                                            #{/list}
-                                        </p>
-                                        </td>
-                                    </tr>	
-                                </table>
-                                #{/if}
-                                #{else}
-                                    No Data available
-                                #{/else}                                                                
-                            </div><!-- distress -->
-                        </div>
-                        <div class="col-xs-offset-1 col-xs-7">
-                            <div>
-                                <div id="patient_distress_graph" patient_id="${patientId}" style="width:550px; height: 250px;">
-                                </div>
-                            </div>
-                            <div>
-                                <div style="text-align: right; padding: 20px 50px 10px 0px;color: #333;">
-                                    <strong>Date Range: </strong>
-                                    <a href="#" class="date-range" days="7">1w</a> |
-                                    <a href="#" class="date-range active" days="30">1m</a> |
-                                    <a href="#" class="date-range" days="90">3m</a> |
-                                    <a href="#" class="date-range" days="180">6m</a> |
-                                    <a href="#" class="date-range" days="366">1y</a> |
-                                    <a href="#" class="date-range" days="0">All</a>
-                                </div>
-                            </div>
-                        </div>                        
-                    </div>
-                    
-                    <div style="color: #333;">
-                        <div>
-                            <h4 style="font-weight: bold;padding: 20px 0px 15px 15px;">PAST PROBLEM LISTS</h4>
-                        </div>                        
-                        <div>
-                            <div class="col-xs-2" style="border-right: 1px solid #CCC;">
-                                <strong>LAST MONTH</strong>
-                                #{list items: lastMonthProblems, as: 'problem'}
-                                <div>- ${problem}</div>
-                                #{/list}
-                            </div>                                
-                            <div class="col-xs-3" style="border-right: 1px solid #CCC;">
-                                <strong>LAST 3 MONTHS</strong>
-                                #{list items: lastThreeMonthProblems, as: 'problem'}
-                                <div>- ${problem}</div>
-                                #{/list}
-                            </div>
-                            <div class="col-xs-3" style="border-right: 1px solid #CCC;">
-                                <strong>LAST 6 MONTHS</strong>
-                                #{list items: lastSixMonthProblems, as: 'problem'}
-                                <div>- ${problem}</div>
-                                #{/list}
-                            </div>
-                            <div class="col-xs-2" style="border-right: 1px solid #CCC;">
-                                <strong>LAST YEAR</strong>
-                                #{list items: lastYearProblems, as: 'problem'}
-                                <div>- ${problem}</div>
-                                #{/list}
-                            </div>
-                            <div class="col-xs-2">
-                                <strong>ALL PROBLEMS</strong>
-                                #{list items: allProblems, as: 'problem'}
-                                <div>- ${problem}</div>
-                                #{/list}
-                            </div>                                
-                        </div>                                               
-                    </div>
-                    
-                    <div class="col-xs-12 col-sm-12" style="border-top: 1px solid #CCC;margin-top: 20px;padding-top: 20px;">
-                        <div>
-                            <span class="title" style="vertical-align: middle;">NOTES</span>&nbsp;&nbsp;<button class="btn btn-default btn-sm noteBtn" style="font-weight:bold;">+ NEW NOTE</button>
-                        </div>
-                        #{include '/tags/note.html' /}
-                    </div>
+                <div class="tab-pane active" id="summary">		
+                    #{include '/CarePatien/summary.html' /}                    
                 </div>
                 <div class="tab-pane" id="appointment"></div>
                 <div class="tab-pane" id="careteam"></div>
@@ -725,31 +618,30 @@
 var timeArray = ["8 AM","8.15 AM","8.30 AM","8.45 AM","9 AM","9.15 AM","9.30 AM","9.45 AM","10 AM","10.15 AM","10.30 AM","10.45 AM","11 AM","11.15 AM","11.30 AM","11.45 AM","12 noon","12.15 PM","12.30 PM",
 				"12.45 PM","1 PM","1.15 PM","1.30 PM","1.45 PM","2 PM","2.15 PM","2.30 PM","2.45 PM","3 PM","3.15 PM","3.30 PM","3.45 PM","4 PM","5.15 PM","5.30 PM","5.45 PM","6 PM"];
 $(document).ready(function() {
-
+    $('#tabs').on('shown.bs.tab', function(e) {
+        $('body').scrollTop(0);        
+    });
 	var loadTabContent = function(e) {
 		var url = $(this).attr("data-url");
-  	var href = this.hash; // our target url
-    console.log(this.hash);
-  	var pane = $(this);
+        var href = this.hash; // our target url        
+        var pane = $(this);    
+        // ajax load from data-url
+        $(href).load(url,function(result){
+            pane.tab('show');
+            //  Add tooltip feature to table [Start]
+            var divs = $('table.table td div');
+            if (divs.length) {
+                divs.addTooltipsToTable();
 
-		if(href=="#summary") {
-			pane.tab('show');
-		} else {
-			// ajax load from data-url
-			$(href).load(url,function(result){
-			    pane.tab('show');
-                //  Add tooltip feature to table [Start]
-                var divs = $('table.table td div');
-                if (divs.length) {
+                $(window).resize(function(){
                     divs.addTooltipsToTable();
-
-                    $(window).resize(function(){
-                        divs.addTooltipsToTable();
-                    });
-                }
-                //  Add tooltip feature to table [End]
-			});
-		}
+                });
+            }
+            //  Add tooltip feature to table [End]                
+            if (href == '#summary') {
+                $('a.date-range[days="30"]').click();
+            }
+        });		
 	}
 
 	$('#tabs a').click(loadTabContent);

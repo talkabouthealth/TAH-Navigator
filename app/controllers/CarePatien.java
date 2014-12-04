@@ -15,7 +15,9 @@ import javax.imageio.ImageIO;
 
 import models.AddressDTO;
 import models.AppointmentDTO;
+import models.AppointmentMasterDTO;
 import models.BreastCancerInfoDTO;
+import models.BreastCancerStageDTO;
 import models.CareTeamMasterDTO;
 import models.CareTeamMemberDTO;
 import models.ChemoScheduleDTO;
@@ -62,6 +64,7 @@ import nav.dao.ProfileDAO;
 import nav.dao.Treatment;
 import nav.dao.UserDAO;
 import nav.dto.CareMember;
+import nav.dto.DistressBean;
 import nav.dto.ExpertBean;
 import nav.dto.UserBean;
 import play.mvc.Controller;
@@ -83,6 +86,34 @@ public class CarePatien  extends Controller {
 		List<AppointmentDTO> expList = AppointmentDAO.getAppointmentListByField("patientid.id" , idField, curreDate, "past" );
 		Map <String, Object> ps = PatientDetailDAO.patientSummary(patientId);
 		render(patientId,list,expList, ps);
+	}
+	public static void summary(Integer patientId) {
+		UserBean user = CommonUtil.loadCachedUser(session);
+		ExpertDetailDTO expertDetail = ProfileDAO.getExpertByField("id", user.getId());
+		
+		UserDetailsDTO patientDto = UserDAO.getDetailsById(patientId);
+		PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", patientId);
+		
+		DistressBean distress = DistressDAO.getLastDistress(patientDto.getUser());
+		
+		//DistressBean lastDistress = DistressDAO.getLastDistress(patientDto.getUser(),1);
+		
+		List<NoteDTO> noteList = NotesDAO.getPatientNotesList(patientId.toString());
+		List<DiseaseMasterDTO> diseases = Disease.allDiseases();
+		List<BreastCancerStageDTO> stages = Disease.breastCancerStages();
+		int breastCancerId = Disease.BREAST_CANCER_ID; 
+		List<UserDTO> drList = UserDAO.getAll("5","");
+		
+		Map <String, Object> ps = PatientDetailDAO.patientSummary(Integer.valueOf(patientId));		
+		//Appointment masterData
+		List<AppointmentMasterDTO> appList = AppointmentMasterDAO.getAllAppointments();
+		List<String> lastWeekProblems = DistressDAO.problemList(Integer.valueOf(patientId), 7);
+		List<String> lastMonthProblems = DistressDAO.problemList(Integer.valueOf(patientId), 30);
+		List<String> lastThreeMonthProblems = DistressDAO.problemList(Integer.valueOf(patientId), 90);
+		List<String> lastSixMonthProblems = DistressDAO.problemList(Integer.valueOf(patientId), 180);
+		List<String> lastYearProblems = DistressDAO.problemList(Integer.valueOf(patientId), 365);
+		List<String> allProblems = DistressDAO.problemList(Integer.valueOf(patientId), 0);		
+        render(user,expertDetail,patientId,patientDto,patientOtherDetails,distress,noteList, diseases, stages, breastCancerId, ps,appList,drList, lastWeekProblems, lastMonthProblems, lastThreeMonthProblems, lastSixMonthProblems, lastYearProblems, allProblems);
 	}
 	public static void distressValues(int patientId, int days) {
 		Map<Long, Integer> values = DistressDAO.distressValues(patientId, days);
