@@ -57,3 +57,4 @@ update nav.inputdefaultmaster  set tiptext =
  • History of breast cancer in a male relative'
 where fieldtext = 'Genetic counselling';
 
+delete from nav.defaultemplatetdetail where fieldtext = 'Genetic counselling';

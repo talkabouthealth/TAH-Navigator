@@ -26,7 +26,7 @@ public class InputDefaultDAO {
 		List<InputDefaultDTO> types = null;
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
-			TypedQuery<InputDefaultDTO> query = em.createQuery("SELECT c FROM InputDefaultDTO c where c.diseaseid = :f1 and c.page = :f2 and c.field = :f3", InputDefaultDTO.class);
+			TypedQuery<InputDefaultDTO> query = em.createQuery("SELECT c FROM InputDefaultDTO c where c.diseaseid = :f1 and c.page = :f2 and c.field = :f3 order by c.fieldtext", InputDefaultDTO.class);
 			query.setParameter("f1", diseaseId);
 			query.setParameter("f2", page);
 			query.setParameter("f3", field);
