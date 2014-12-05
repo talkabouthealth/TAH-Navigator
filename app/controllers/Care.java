@@ -148,10 +148,9 @@ public class Care extends Controller {
 					app.setPurpose(purpose);
 					Integer appIdInt = new Integer(purpose);
 					app.setAppointmentid(AppointmentMasterDAO.getAppointmentByField("id", appIdInt));
-				} else {
-					app.setTreatementStep(treatmentProcessStep);
+//				} else {
 				}
-	
+				app.setTreatementStep(treatmentProcessStep);
 				app.setPurposeText(purposeText);
 				app.setAppointmenttime(time);
 

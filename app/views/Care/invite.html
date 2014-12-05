@@ -34,7 +34,7 @@
 		<div class="form-group form-group-sm">
 			<label class="col-xs-3 control-label" for="rt_schedule">&nbsp;</label>
 			<div class="col-xs-8 form-group input-group">
-				<input  id="appointmentBtn" type="checkbox"/>Add appointment
+				<input  id="appointmentBtn" type="checkbox" checked="checked"/>Add appointment
 			</div>
 		</div>
 
@@ -71,12 +71,20 @@
 				<label class="col-xs-3 control-label" for="rt_schedule">Step in the Treatment Process</label>
 				<div class="col-xs-8 form-group input-group">
 					<select class="form-control nomargin" id="ts_process">
+					<!-- 
 						<option></option>
 						<option>Prepare for First Appointment</option>
 						<option>Make Treatment Decision</option>
 						<option>Prepare for First Treatment</option>
 						<option>Ongoing Treatments</option>
 						<option>Continue Follow-Ups</option>    
+					-->
+						<option></option>
+                        <option selected="selected">First Appointment</option>
+                        <option>Make Treatment Decision</option>
+                        <option>Simulation</option>
+                        <option>Appointment During Treatments</option>
+                        <option>Post Treatment Appointment</option>     
 					</select>
 				</div>
 			</div>
@@ -164,15 +172,16 @@ $(document).ready(function() {
 		}
 	});
 	LoadSelect2Script(selectExpert);
-    $('#treatment_step_process').hide();
+//     $('#treatment_step_process').hide();
 	$('#appointmentForm').submit(function(event) {
 		event.preventDefault();
 		var isValid = true;
 		if($("#appointmentBtn").prop('checked') == true) {
 			isValid = validateOtherData();
 		}
-		
 		if(isValid) {
+			$("#errorUL").empty();
+			$("#errorUL").html("<li class='list-group-item list-group-item-info'>Sending invitation</li>");
 			var postData = $("#appointmentForm").serializeArray();
 			if($("#appointmentBtn").prop('checked') == true) {
 		        var $avm = $('#appointment_verified_members');
@@ -203,9 +212,9 @@ $(document).ready(function() {
 			                break;
 			            }
 			     }
-		        if (!definedPurpose) {
+// 		        if (!definedPurpose) {
 		            postData.push({name: "treatmentProcessStep", value: $("#ts_process option:selected").text()});    
-		        }
+// 		        }
 				postData.push({name: "purpose", value: purpose});
 				postData.push({name: "withapp", value: 1});
 			} else {
@@ -299,6 +308,7 @@ validateOtherData = function() {
 		valid = false;
 		$("#appointmentForm input[name='zip']").parent().addClass("has-error");
 	}
+	return valid;
 }
 selectExpert = function() {
  	var $avm = $('#appointment_verified_members');
@@ -336,7 +346,7 @@ selectExpert = function() {
             source: purposeList,
             minLength: 0,
             updater: function(item) {
-                $('#treatment_step_process').hide();
+//                 $('#treatment_step_process').hide();
                 return item;
             }
         });
@@ -350,12 +360,12 @@ selectExpert = function() {
                     break;
                 }
             }
-            if (definedPurpose) {
-                $('#treatment_step_process').hide();
-            }
-            else if(purposetext.length > 0) {
-                $('#treatment_step_process').show();
-            }
+//             if (definedPurpose) {
+//                 $('#treatment_step_process').hide();
+//             }
+//             else if(purposetext.length > 0) {
+//                 $('#treatment_step_process').show();
+//             }
         });
 	}, "json");
 	 }
