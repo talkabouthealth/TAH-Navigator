@@ -368,6 +368,9 @@ var careTeamController = (function() {
             $.post(actions['patient_info'], {
                 patientId: self.patientId
             }, function(data) {
+                $(self.formId).find('#first-name').val(data.firstname || '');
+                $(self.formId).find('#last-name').val(data.lastname || '');
+                $(self.formId).find('#email').val(data.email || '');
                 $(self.formId).find('#dob').val(data.dob || '');
                 if (data.dob) {
                     $(self.formId).find('#dob').datepicker('update', data.dob);
@@ -381,6 +384,9 @@ var careTeamController = (function() {
             var self = patientInfoForm;
             var params = {
                 patientId: self.patientId,
+                'info.firstName': $(self.formId).find('#first-name').val(),
+                'info.lastName': $(self.formId).find('#last-name').val(),
+                'info.email': $(self.formId).find('#email').val(),
                 'info.dob': $(self.formId).find('#dob').val(),
                 'info.homephone': $(self.formId).find('#phone').val(),
                 'info.ec1name': $(self.formId).find('#ec1name').val(),

@@ -175,8 +175,8 @@ public class PatientDetailDAO {
 		}
 		
 		userId = String.valueOf(userDto.getId());
-		firstName = userDetailsDto.getFirstName();
-		lastName = userDetailsDto.getLastName();
+		firstName = userDetailsDto.getFirstName() != null ? userDetailsDto.getFirstName() : "";
+		lastName = userDetailsDto.getLastName() != null ? userDetailsDto.getLastName() : "";		
 		dob = userDetailsDto.getDob();
 		isVerified = userDto.isIsverified();
 		phone = userDetailsDto.getHomePhone();
@@ -320,37 +320,51 @@ public class PatientDetailDAO {
 		return mutations;
 	}
 	public static Map<String, Object> getInfo(int patientId) {
+		UserDTO user = UserDAO.getUserBasicByField("id", patientId);
 		UserDetailsDTO userDetails = UserDAO.getDetailsById(patientId);
 		PatientDetailDTO patientDetails = getDetailsByField("id", patientId);
 		
 		// validation and conversion
+		String email = user.getEmail() != null ? user.getEmail() : "";
+		String firstName = userDetails.getFirstName() != null ? userDetails.getFirstName() : "";
+		String lastName = userDetails.getLastName() != null ? userDetails.getLastName() : "";
+		String homePhone = userDetails.getHomePhone() != null ? userDetails.getHomePhone() : "";
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 		Date dob = userDetails.getDob();
-		String date = null;
-		String ec1name = null, ec1number = null;
+		String date = "";
+		String ec1name = "", ec1number = "";
 		if (dob != null) {
 			date = dateFormat.format(dob);
 		}
+		
 		if (patientDetails != null) {
-			ec1name = patientDetails.getEc1name();
-			ec1number = patientDetails.getEc1number();
+			ec1name = patientDetails.getEc1name() != null ? patientDetails.getEc1name() : "";
+			ec1number = patientDetails.getEc1number() != null ? patientDetails.getEc1number() : "";
 		}
 		
 		// read
-		Map<String, Object> json = new HashMap<String, Object>();		
-		json.put("dob", date);
-		json.put("homephone", userDetails.getHomePhone());
+		Map<String, Object> json = new HashMap<String, Object>();
+		
+		json.put("firstname", firstName);		
+		json.put("lastname", lastName);		
+		json.put("email", email);
+		json.put("dob", date);		
+		json.put("homephone", homePhone);
 		json.put("ec1name", ec1name);
 		json.put("ec1number", ec1number);
 		return json;
 	}
 	public static void saveInfo(int patientId, Map<String, String> info) {
+		UserDTO user = null;
 		UserDetailsDTO userDetails = null;
 		PatientDetailDTO patientDetails = null;		
 		
 		// validation and conversion
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 		Date dob = null;
+		String firstName = info.get("firstName");
+		String lastName = info.get("lastName");
+		String email = info.get("email");
 		String homephone = info.get("homephone");
 		String ec1name = info.get("ec1name");
 		String ec1number = info.get("ec1number");		
@@ -360,12 +374,26 @@ public class PatientDetailDAO {
 		}
 		
 		// save
-		EntityManager em = JPAUtil.getEntityManager();		
+		EntityManager em = JPAUtil.getEntityManager();	
+		
+		TypedQuery<UserDTO> userQuery = em.createQuery("SELECT u FROM UserDTO u WHERE u.id = :id", UserDTO.class); 
+		userQuery.setParameter("id", patientId);		
+		try {
+			user = userQuery.getSingleResult();
+			user.setEmail(email);
+			em.getTransaction().begin();
+			em.persist(user);
+			em.getTransaction().commit();
+		} catch (NoResultException e) {
+			
+		}
 		
 		TypedQuery<UserDetailsDTO> userDetailsQuery = em.createQuery("SELECT u FROM UserDetailsDTO u WHERE u.id = :id", UserDetailsDTO.class); 
 		userDetailsQuery.setParameter("id", patientId);		
 		try {
 			userDetails = userDetailsQuery.getSingleResult();
+			userDetails.setFirstName(firstName);
+			userDetails.setLastName(lastName);
 			userDetails.setDob(dob);
 			userDetails.setHomePhone(homephone);
 			em.getTransaction().begin();
