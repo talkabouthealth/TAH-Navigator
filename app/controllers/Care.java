@@ -82,7 +82,10 @@ public class Care extends Controller {
 		sortBy.put("lastDistressCheckDate", "desc");
 		List<PatientBean> patients = CareTeamDAO.sortPatients(patientBeans, sortBy);
 		List<DiseaseMasterDTO> diseases = Disease.allDiseases();
-        render(user, expertDetail, patients, diseases);
+		List<CareMember> careMembers = UserDAO.verifiedCareMembers();
+		renderArgs.put("careMembers", careMembers);
+		renderArgs.put("diseases", diseases);
+        render(user, expertDetail, patients);
     }
 	
 	public static void sortPatients(Map<String, String> filterMap) {

@@ -194,7 +194,21 @@ public class CareTeamDAO {
 						}
 					}
 				}
-				
+				if (filterParams.containsKey("md")) {					
+					Integer careMemberId = new Integer(filterParams.get("md"));
+					// filter based on disease only if disease id is not zero
+					if (careMemberId.intValue() != 0) {
+						if (appointment != null && appointment.getCaremember() != null) {
+							UserDTO user = appointment.getCaremember();
+							if (user.getId() != careMemberId.intValue()) {
+								continue;
+							}
+						}
+						else {
+							continue;
+						}
+					}
+				}
 				//searchPatient
 				if (filterParams.containsKey("searchPatient")) {					
 					String searchStr = filterParams.get("searchPatient");					
@@ -409,6 +423,54 @@ public class CareTeamDAO {
 					}
 					if (o2.getAppointmentInfo() != null) {
 						o2Date = o2.getAppointmentInfo().getAppointmentdate();
+					}
+					
+					
+					if (sortOrder.equalsIgnoreCase("desc")) {					
+						if (o1Date != null && o2Date != null) {
+							return o2Date.compareTo(o1Date);
+						}						
+						else if (o2Date != null) {
+							return 1;
+						}
+						else if (o1Date != null) {
+							return -1;
+						}									
+						else {
+							return 0;
+						}				
+					}					
+					else if (sortOrder.equalsIgnoreCase("asc")) {
+						if (o1Date != null && o2Date != null) {
+							return o1Date.compareTo(o2Date);
+						}						
+						else if (o1Date != null) {
+							return -1;
+						}
+						else if (o2Date != null) {
+							return 1;
+						}
+						else {
+							return 0;
+						}
+					}
+					return 0;
+				}
+			});
+		}
+		//  sort by next Visit
+		if (sortBy.containsKey("nextVisit")) {
+			final String sortOrder = sortBy.get("nextVisit");
+			Collections.sort(patients, new Comparator<PatientBean>() {
+				@Override
+				public int compare(PatientBean o1, PatientBean o2) {
+					Date o1Date = null;
+					Date o2Date = null;					
+					if (o1.getNextAppointment() != null) {
+						o1Date = o1.getNextAppointment().getAppointmentdate();
+					}
+					if (o2.getNextAppointment() != null) {
+						o2Date = o2.getNextAppointment().getAppointmentdate();
 					}
 					
 					
