@@ -1805,6 +1805,7 @@ function FileUpload(){
 		}
 
 	}) .on('complete', function(event, id, name, response) {
+        $('#image-upload-status').html("Image Successfully Uploaded");
         var $fileEl = $(this).fineUploader("getItemByFileId", id),
         $viewBtn = $fileEl.find(".qq-upload-button-selector");
 	    if (response.success) {
@@ -1813,7 +1814,9 @@ function FileUpload(){
 	        $(".profilePic").attr("src", $(".profilePic").attr("src")+"?t=" + new Date().getTime());
 	        $(".account-image img").attr("src", $(".account-image img").attr("src")+"?t=" + new Date().getTime());
 	    }
-	});
+	}).on ('upload', function(event, id, name) {
+        $('#image-upload-status').empty();
+    });
 }
 /*-------------------------------------------
 	Function for OpenStreetMap page (maps.html)

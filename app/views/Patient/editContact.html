@@ -32,6 +32,9 @@
  								 					
  							  
 					</td>
+                    <td>
+                        <div id="dob-status" class="personal-status" style="color:green;padding-left: 10px;">Saved</div>
+                    </td>
  				</tr>
  				
  				<!--
@@ -74,6 +77,9 @@
 					    <p class="help-block"></p>
 						</div>			  
 					</td>
+                    <td>
+                        <div id="ec1name-status" class="personal-status" style="color:green;padding-left: 10px;">Saved</div>
+                    </td>
  				</tr>
  				<tr>
  					<td> 
@@ -92,6 +98,9 @@
 					    <p class="help-block"></p>
 						</div>			  
 					</td>
+                    <td>
+                        <div id="ec1number-status" class="personal-status" style="color:green;padding-left: 10px;">Saved</div>
+                    </td>
  				</tr>
  				<tr>
  					<td> 
@@ -110,6 +119,9 @@
 					    <p class="help-block"></p>
 						</div>			  
 					</td>
+                    <td>
+                        <div id="ec2name-status" class="personal-status" style="color:green;padding-left: 10px;">Saved</div>
+                    </td>
  				</tr>
  				 <tr>
  					<td> 
@@ -127,6 +139,9 @@
 					    <p class="help-block"></p>
 						</div>			  
 					</td>
+                    <td>
+                        <div id="ec2number-status" class="personal-status" style="color:green;padding-left: 10px;">Saved</div>
+                    </td>
  				</tr>
 <!-- 				<tr>
  					<td> 
@@ -206,6 +221,13 @@
    <script>
 <!--
     $(document).ready(function() {
+        $('div.personal-status').hide();
+        $(document).on('blur', '#contactForm input[name="dob"], input[name="ec1name"], input[name="ec1number"], input[name="ec2name"], input[name="ec2number"]', function(e) {
+            var statusId = '#' + $(e.target).attr('name') + '-' + 'status';            
+            $('div.personal-status').removeClass('event-source').hide();            
+            $(statusId).addClass("event-source");
+            $('#contactForm').submit();
+        });
     	$('#contactForm').validator();
     	var Options = { success: setMessageOnForm };
     	$('#contactForm').submit(function() {
@@ -219,6 +241,8 @@
                    		} else {
                    			$("#errorGroup").html("<li class='list-group-item list-group-item-success'>" + msg  +"</li>"); 
                    		}
+                        $('div.event-source').show();
+                        $('div.event-source').removeClass('event-source');
                    },
              error: function(){
             	  $("#errorGroup").html("<li class='list-group-item list-group-item-danger'>Internal server error. Please try again.</li>"); 

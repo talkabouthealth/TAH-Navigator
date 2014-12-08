@@ -18,11 +18,15 @@
 					    			<option #{if flash['member.contactMethod'].equals(seq.id.toString()) }  selected #{/if}  value="${seq.id}">${seq.name}</option>
 					    		#{/list}
 					    	#{/if}
-							</select>
+							</select>                              
 					    </div>
+                                                
 					    <p class="help-block"></p>
 						</div>			  
 					</td>
+                    <td>
+                        <div id="contactMethod-status" class="comm-status" style="color:green;padding-left: 10px;">Saved</div>
+                    </td>
  				</tr>
  				<tr>
  					<td>
@@ -94,6 +98,9 @@
 					    	</div>
 							<div class="help-block with-errors"></div>
  								</td>
+                                <td>
+                                    <div id="mobile-status" class="comm-status" style="color:green;padding-left: 10px;">Saved</div>
+                                </td>
  							</tr>
  							<tr>
  								<td style="width: 115px;">Home phone</td>
@@ -104,6 +111,9 @@
 					    	</div>
 							<div class="help-block with-errors"></div>
  								</td>
+                                <td>
+                                <div id="homephone-status" class="comm-status" style="color:green;padding-left: 10px;">Saved</div>
+                            </td>
  							</tr>
  						</table>
 					</td>
@@ -129,6 +139,9 @@
 					    	</div>
 							<div class="help-block with-errors"></div>
  								</td>
+                                <td>
+                                <div id="street1-status" class="comm-status" style="color:green;padding-left: 10px;">Saved</div>
+                            </td>
  							</tr>
  							<tr>
  								<td style="width: 90px;">&nbsp;</td>
@@ -144,6 +157,9 @@
 					    	</div>
 							<div class="help-block with-errors"></div>
  								</td>
+                                <td>
+                                <div id="street2-status" class="comm-status" style="color:green;padding-left: 10px;">Saved</div>
+                            </td>
  							</tr>
  							<tr>
  								<td style="width: 90px;">City</td>
@@ -159,6 +175,9 @@
 					    	</div>
 							<div class="help-block with-errors"></div>
  								</td>
+                                <td>
+                                <div id="city-status" class="comm-status" style="color:green;padding-left: 10px;">Saved</div>
+                            </td>
  							</tr>
  							<tr>
  								<td style="width: 90px;">State</td>
@@ -174,6 +193,9 @@
 					    	</div>
 							<div class="help-block with-errors"></div>
  								</td>
+                                <td>
+                                <div id="state-status" class="comm-status" style="color:green;padding-left: 10px;">Saved</div>
+                            </td>
  							</tr>
  							<tr>
  								<td>Country</td>
@@ -189,6 +211,9 @@
 					    	</div>
 							<div class="help-block with-errors"></div>
  								</td>
+                                <td>
+                                <div id="country-status" class="comm-status" style="color:green;padding-left: 10px;">Saved</div>
+                            </td>
  							</tr>
  							<tr>
  								<td>Zip</td>
@@ -204,6 +229,9 @@
 					    	</div>
 							<div class="help-block with-errors"></div>
  								</td>
+                                <td>
+                                <div id="zip-status" class="comm-status" style="color:green;padding-left: 10px;">Saved</div>
+                            </td>
  							</tr>
  						</table>
 					</td>
@@ -220,6 +248,13 @@
    <script>
 <!--
     $(document).ready(function() {
+        $('div.comm-status').hide();
+        $(document).on('blur change', '#passForm select[name="contactMethod"], input[name="mobile"], input[name="homephone"], input[name="street1"], input[name="street2"], input[name="city"], input[name="state"], input[name="country"], input[name="zip"]', function(e) {
+            var statusId = '#' + $(e.target).attr('name') + '-' + 'status';            
+            $('div.comm-status').removeClass('event-source').hide();            
+            $(statusId).addClass("event-source");
+            $('#passForm').submit();
+        });
     	$('#passForm').validator();
     	var Options = { success: setMessageOnForm };
     	$('#passForm').submit(function() {
@@ -232,7 +267,9 @@
                    			$("#errorGroup").html("<li class='list-group-item list-group-item-danger'>" + errorText  +"</li>"); 
                    		} else {
                    			$("#errorGroup").html("<li class='list-group-item list-group-item-success'>" + msg  +"</li>"); 
-                   		}
+                   		}                        
+                        $('div.event-source').show();
+                        $('div.event-source').removeClass('event-source');
                    },
              error: function(){
             	  $("#errorGroup").html("<li class='list-group-item list-group-item-danger'>Internal server error. Please try again.</li>"); 
