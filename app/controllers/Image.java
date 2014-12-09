@@ -1,27 +1,17 @@
 package controllers;
 
-import java.awt.AlphaComposite;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.Transparency;
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-
-import javax.imageio.ImageIO;
-
-import nav.dao.MedicationDAO;
-import nav.dao.UserImageDAO;
 
 import models.PatientMedicationDTO;
 import models.UserImageDTO;
-
+import nav.dao.MedicationDAO;
+import nav.dao.UserDAO;
+import nav.dao.UserImageDAO;
+import nav.dto.UserBean;
 import play.Play;
 import play.mvc.Controller;
-import util.ImageUtil;
+import util.CommonUtil;
 
 public class Image extends Controller {
 	
@@ -34,52 +24,42 @@ public class Image extends Controller {
 	/**
 	 * Renders image of given talker (or returns default image)
 	 */
-	public static void show(String userId) {
+	public static void show(int userId) {
 //		System.out.println("Image servlate : "+ userId);
 		String contentType = "image/png";// + imageBean.getImageType();
+		
+		UserBean user = CommonUtil.loadCachedUser(session);
+		boolean loadImage = true;
+		if(user.getId() != userId) {
+			if(session.get("usertype").equals("user")) {
+				UserBean patientDto = UserDAO.getUserByField("id", new Integer(userId));
+				if(patientDto != null && patientDto.getUserType() == 'p') {
+					loadImage = false;
+				}
+			}
+		}
 		UserImageDTO imgdto =  UserImageDAO.getByUserId(userId);
 		response.setHeader("Content-Type", contentType);
 		response.setHeader("Cache-Control", "no-cache");
-		if (imgdto != null && imgdto.getByteImage() == null) {
-			//render default
-			renderBinary(DEFAULT_IMAGE_FILE);
-			
-		} else {
-			try{
-				if(imgdto != null && imgdto.getByteImage() != null)
-					renderBinary(new ByteArrayInputStream(imgdto.getByteImage()));
-				else
-					renderBinary(DEFAULT_IMAGE_FILE);
-			 	/*
-				String [] coords = imageBean.getCoords();
-		        int xPos = 0;
-				int yPos =  0;
-				int width =  100;
-				int height =  100;
-				if(coords != null && coords.length == 4) {
-			    	xPos = Integer.parseInt(coords[0]);
-			    	yPos = Integer.parseInt(coords[1]);
-			    	width = Integer.parseInt(coords[2]);
-			    	height = Integer.parseInt(coords[3]);
-			    }
-				ByteArrayOutputStream baos = null;
-				if(coords == null || (originalImage.getWidth() < xPos + width || originalImage.getHeight() < yPos + height)) {
-			 		//baos = ImageUtil.createCropedThumbnail(0, 0, originalImage.getWidth(), originalImage.getHeight(), originalImage,imageBean.getImageType());
-					//baos = new ByteArrayOutputStream(in);
-					renderBinary(new ByteArrayInputStream(imageBean.getImageArray()));
-			 	} else {
-			 		width = width + xPos;
-			 		height = height + yPos;
-			 		baos = ImageUtil.crop(xPos, yPos, width, height, originalImage,imageBean.getImageType());
-			 		renderBinary(new ByteArrayInputStream(baos.toByteArray()));
-			 	}
-			 	*/
-			}catch ( Exception e ) {
-				e.printStackTrace();
+		if(loadImage) {
+			if (imgdto != null && imgdto.getByteImage() == null) {
+				//render default
 				renderBinary(DEFAULT_IMAGE_FILE);
+			} else {
+				try{
+					if(imgdto != null && imgdto.getByteImage() != null)
+						renderBinary(new ByteArrayInputStream(imgdto.getByteImage()));
+					else
+						renderBinary(DEFAULT_IMAGE_FILE);
+				 
+				}catch ( Exception e ) {
+					e.printStackTrace();
+					renderBinary(DEFAULT_IMAGE_FILE);
+				}
 			}
+		} else {
+			renderBinary(DEFAULT_IMAGE_FILE);
 		}
-		
 	}
 	
 	public static void showMedicine(String medId) {

@@ -39,7 +39,7 @@ public class UserImageDAO {
 			return false;
 	}
 	
-	public static UserImageDTO getByUserId(String usreId) {
+	public static UserImageDTO getByUserId(int usreId) {
 		Integer in = new Integer(usreId);
 		return getUserByField("id",in);
 	}
