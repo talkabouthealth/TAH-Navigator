@@ -94,21 +94,31 @@ VALUES
 
 /*General template*/
 INSERT INTO nav.defaultemplatetmaster(templatename,  page, field) VALUES ('General Template', 'followupplan', 'activity');
-INSERT INTO nav.defaultemplatetdetail(templateid, fieldtext, otherfield, frequency, enddate) VALUES (3, 'Medical history and physical exam','To check for recurrence and metastasis.','Every 6 months','Ongoing');
+INSERT INTO nav.defaultemplatetdetail(templateid, fieldtext, otherfield, frequency, enddate) VALUES (2, 'Medical history and physical exam','To check for recurrence and metastasis.','Every 6 months','Ongoing');
 
 INSERT INTO nav.defaultemplatetmaster(templatename, diseaseid, page, field) VALUES ('Prostate Cancer Template',2, 'followupplan', 'activity');
 INSERT INTO nav.defaultemplatetdetail(templateid, fieldtext, otherfield, frequency, enddate) VALUES 
-(4, 'Medical history and physical exam','To check for recurrence and metastasis.','Every 6 months','Ongoing'),
-(4, 'PSA Test','Used primarily to screen for prostate cancer.','Every 6 months','Ongoing');
+(3, 'Medical history and physical exam','To check for recurrence and metastasis.','Every 6 months','Ongoing'),
+(3, 'PSA Test','Used primarily to screen for prostate cancer.','Every 6 months','Ongoing');
 
 
 INSERT INTO nav.defaultemplatetmaster(templatename, diseaseid, page, field) VALUES ('Lung Cancer Template',3, 'followupplan', 'activity');
 INSERT INTO nav.defaultemplatetdetail(templateid, fieldtext, otherfield, frequency, enddate) VALUES 
-(5, 'Medical history and physical exam','To check for recurrence and metastasis.','Every 6 months','Ongoing'),
-(5, 'CT Scanning','CT scans of the chest are recommended every 6 months for the first 2 years after resection and every year thereafter. This test can help tell if cancer has returned or spread into your liver or other organs.'
+(4, 'Medical history and physical exam','To check for recurrence and metastasis.','Every 6 months','Ongoing'),
+(4, 'CT Scanning','CT scans of the chest are recommended every 6 months for the first 2 years after resection and every year thereafter. This test can help tell if cancer has returned or spread into your liver or other organs.'
 ,'Every 6 months','Ongoing');
 
 INSERT INTO nav.defaultemplatetmaster(templatename, diseaseid, page, field) VALUES ('Colon Cancer Template',4, 'followupplan', 'activity');
+INSERT INTO nav.defaultemplatetdetail(templateid, fieldtext, otherfield, frequency, enddate) VALUES 
+(5, 'Medical history and physical exam','To check for recurrence and metastasis.','Every 6 months','Ongoing'),
+(5, 'CEA Test','Abnormal level of CEA may be a sign of cancer, but further testing is needed.'
+,'Every 6 months','Ongoing'),
+(5, 'CT Scanning','CT scans of the abdomen and chest are recommended each year for three years. This test can help tell if colon cancer has spread into your liver or other organs.'
+,'Every year','Ongoing'),
+(5, 'Colonoscopy','This test allows the doctor to look for polyps or second cancers in the entire rectum and colon with a colonoscope (a flexible, lighted tube).'
+,'At 3 years and every 5 years thereafter','Ongoing');
+
+INSERT INTO nav.defaultemplatetmaster(templatename, diseaseid, page, field) VALUES ('Rectal Cancer Template',5, 'followupplan', 'activity');
 INSERT INTO nav.defaultemplatetdetail(templateid, fieldtext, otherfield, frequency, enddate) VALUES 
 (6, 'Medical history and physical exam','To check for recurrence and metastasis.','Every 6 months','Ongoing'),
 (6, 'CEA Test','Abnormal level of CEA may be a sign of cancer, but further testing is needed.'
@@ -116,46 +126,36 @@ INSERT INTO nav.defaultemplatetdetail(templateid, fieldtext, otherfield, frequen
 (6, 'CT Scanning','CT scans of the abdomen and chest are recommended each year for three years. This test can help tell if colon cancer has spread into your liver or other organs.'
 ,'Every year','Ongoing'),
 (6, 'Colonoscopy','This test allows the doctor to look for polyps or second cancers in the entire rectum and colon with a colonoscope (a flexible, lighted tube).'
-,'At 3 years and every 5 years thereafter','Ongoing');
-
-INSERT INTO nav.defaultemplatetmaster(templatename, diseaseid, page, field) VALUES ('Rectal Cancer Template',5, 'followupplan', 'activity');
-INSERT INTO nav.defaultemplatetdetail(templateid, fieldtext, otherfield, frequency, enddate) VALUES 
-(7, 'Medical history and physical exam','To check for recurrence and metastasis.','Every 6 months','Ongoing'),
-(7, 'CEA Test','Abnormal level of CEA may be a sign of cancer, but further testing is needed.'
-,'Every 6 months','Ongoing'),
-(7, 'CT Scanning','CT scans of the abdomen and chest are recommended each year for three years. This test can help tell if colon cancer has spread into your liver or other organs.'
-,'Every year','Ongoing'),
-(7, 'Colonoscopy','This test allows the doctor to look for polyps or second cancers in the entire rectum and colon with a colonoscope (a flexible, lighted tube).'
 ,'At 3 years and every 5 years thereafter','Ongoing'),
-(7, 'Rectosigmoidoscopy','In this test, a sigmoidoscope (a flexible, lighted tube) is inserted into a patient’s rectum to check for polyps, cancer, and other abnormalities.'
+(6, 'Rectosigmoidoscopy','In this test, a sigmoidoscope (a flexible, lighted tube) is inserted into a patient’s rectum to check for polyps, cancer, and other abnormalities.'
 ,'Every 6 months','Ongoing');
 
 INSERT INTO nav.defaultemplatetmaster(templatename, diseaseid, page, field) VALUES ('Endometrial Cancer Low Risk Template',7, 'followupplan', 'activity');
 INSERT INTO nav.defaultemplatetdetail(templateid, fieldtext, otherfield, frequency, enddate) VALUES 
-(8, 'Medical history and physical exam','To check for recurrence and metastasis.','Every 6 months for year 1. Yearly after year 1','Ongoing');
+(7, 'Medical history and physical exam','To check for recurrence and metastasis.','Every 6 months for year 1. Yearly after year 1','Ongoing');
 
 INSERT INTO nav.defaultemplatetmaster(templatename, diseaseid, page, field) VALUES ('Endometrial Cancer Medium Risk Template',7, 'followupplan', 'activity');
 INSERT INTO nav.defaultemplatetdetail(templateid, fieldtext, otherfield, frequency, enddate) VALUES 
-(9, 'Medical history and physical exam','To check for recurrence and metastasis.','Every 3 months for year 1. Every 6 months for year 1 through 5. Yearly after year 5.','Ongoing');
+(8, 'Medical history and physical exam','To check for recurrence and metastasis.','Every 3 months for year 1. Every 6 months for year 1 through 5. Yearly after year 5.','Ongoing');
 
 INSERT INTO nav.defaultemplatetmaster(templatename, diseaseid, page, field) VALUES ('Endometrial Cancer High Risk Template',7, 'followupplan', 'activity');
 INSERT INTO nav.defaultemplatetdetail(templateid, fieldtext, otherfield, frequency, enddate) VALUES 
-(10, 'Medical history and physical exam','To check for recurrence and metastasis.','Every 3 months for year 1 and 2. Every 6 months for year 2 through 5. Yearly after year 5.','Ongoing');
+(9, 'Medical history and physical exam','To check for recurrence and metastasis.','Every 3 months for year 1 and 2. Every 6 months for year 2 through 5. Yearly after year 5.','Ongoing');
 
 INSERT INTO nav.defaultemplatetmaster(templatename, diseaseid, page, field) VALUES ('Cervical Cancer Low Risk Template',15, 'followupplan', 'activity');
 INSERT INTO nav.defaultemplatetdetail(templateid, fieldtext, otherfield, frequency, enddate) VALUES 
-(11, 'Medical history and physical exam','To check for recurrence and metastasis.','Every 6 months for year 1 and 2. Yearly after year 2.','Ongoing');
+(10, 'Medical history and physical exam','To check for recurrence and metastasis.','Every 6 months for year 1 and 2. Yearly after year 2.','Ongoing');
 
 INSERT INTO nav.defaultemplatetmaster(templatename, diseaseid, page, field) VALUES ('Cervical Cancer High Risk Template',15, 'followupplan', 'activity');
 INSERT INTO nav.defaultemplatetdetail(templateid, fieldtext, otherfield, frequency, enddate) VALUES 
-(12, 'Medical history and physical exam','To check for recurrence and metastasis.','Every 3 months for year 1 and 2. Every 6 months for year 3, 4, and 5. Yearly after year 5.','Ongoing');
+(11, 'Medical history and physical exam','To check for recurrence and metastasis.','Every 3 months for year 1 and 2. Every 6 months for year 3, 4, and 5. Yearly after year 5.','Ongoing');
 
 
 ALTER TABLE nav.defaultemplatetdetail ALTER COLUMN frequency TYPE character varying(150);
 
 INSERT INTO nav.defaultemplatetmaster(templatename, diseaseid, page, field) VALUES ('Ovarian Cancer Template',22, 'followupplan', 'activity');
 INSERT INTO nav.defaultemplatetdetail(templateid, fieldtext, otherfield, frequency, enddate) VALUES 
-(13, 'Medical history and physical exam','To check for recurrence and metastasis.','Every 3 months for year 1 and 2. Every 4 to 6 months in year 3. Every 6 months in year 4 and 5. Yearly after year 5.','Ongoing');
+(12, 'Medical history and physical exam','To check for recurrence and metastasis.','Every 3 months for year 1 and 2. Every 4 to 6 months in year 3. Every 6 months in year 4 and 5. Yearly after year 5.','Ongoing');
 
 update nav.inputdefaultmaster set tiptext = 'http://www.cancer.gov/cancertopics/coping/radiation-side-effects/skin.pdf' where field =  'goal' and fieldtext = 'Maintain Skin Integrity';
 update nav.inputdefaultmaster set tiptext = 'http://www.cancer.net/coping-and-emotions/managing-emotions/managing-stress' where field =  'goal' and fieldtext = 'Manage Stress';
@@ -174,7 +174,7 @@ Manage your "self-talk".
 Practice saying "no".
 Organize early to avoid rushing.
 Delegate work to others.
-Take naps and drink a lot of fluids.', 'text');
+Take naps and drink a lot of fluids.', 'link');
 
 update nav.inputdefaultmaster set tiptext = 'http://www.cancer.gov/cancertopics/coping/radiation-side-effects/mouthandthroat.pdf' where field =  'concern' and fieldtext = 'Difficulty swallowing';
 update nav.inputdefaultmaster set tiptext = 'http://www.cancer.gov/cancertopics/coping/radiation-side-effects/fatigue.pdf' where field =  'concern' and fieldtext = 'Fatigue';
