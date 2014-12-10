@@ -93,8 +93,14 @@
 			<tr><td colspan="4" style="text-align:center;">No record found</td></tr>
 		#{/else}
     </table>
+    * This Ongoing Care Plan is provided to you to keep with your health care records and to share with your primary care provider.
+     
+    *{
     <div>
         <span class="title" style="vertical-align: middle;">NOTES</span>&nbsp;&nbsp;<button class="btn btn-default noteBtn" style="font-weight:bold;">+ NEW NOTE</button>
     </div>
+   
     #{include '/tags/note.html' /}
+    }*
+   
 </div>

@@ -79,7 +79,7 @@ var careTeamController = (function() {
             	$.post(actions['fup_template_data'], params, function(data) {
                     var self = careItemTemplateForm;
                     $(self.formId).attr('init_flag', '1');
-                    
+                    $(self.diseaseId).html('<option value="">Select disease template</option>');
                     for(i=0;i<data.disease.length;i++) {
                     	$(self.diseaseId).append("<option value='"+data.disease[i].id+"'>"+data.disease[i].templatename+"</option>");
                     }
@@ -90,8 +90,6 @@ var careTeamController = (function() {
                         }
                     });
                 }, "json");
-            	
-            
             },
             validate: function() {
                 var self = careItemTemplateForm;
@@ -1210,7 +1208,7 @@ var careTeamController = (function() {
             $("#follow-up-concern-form").attr('init_flag','0');
             $("#follow-up-care-item-form").attr('init_flag','0');
             $("#follow-up-goal-form").attr('init_flag','0');
-            
+            $("#follow-up-care-item-template").attr('init_flag','0');
         }, "html");
     };
 
