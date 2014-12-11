@@ -19,7 +19,7 @@ public class AppointmentMasterDAO extends BaseDAO{
 		List<AppointmentMasterDTO> dto = null;
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
-			TypedQuery<AppointmentMasterDTO> query = em.createQuery("SELECT c FROM AppointmentMasterDTO c order by id", AppointmentMasterDTO.class); 
+			TypedQuery<AppointmentMasterDTO> query = em.createQuery("SELECT c FROM AppointmentMasterDTO c where c.active = true order by name", AppointmentMasterDTO.class); 
 			dto = query.getResultList();
 		} catch(Exception e) {
 			e.printStackTrace();

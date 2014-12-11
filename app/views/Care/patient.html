@@ -42,8 +42,12 @@
       		<input type="hidden" name="patientId" value="${patientId}"/>
       		<input type="hidden" name="id" />
 			<div class="modal-body" style="overflow:hidden;">
-				<p class="editNote"><span class="btn btn-default-small">CURRENT DATA:</span> <span class="editNoteDet" style="font-weight: bold;">Thursday May 10th 2014 9AM - LUPECTOMY</span> | IF THIS IS NOT CORRECT, COMPLETE THE FORM BELOW</p>
-
+				<p class="editNote"><span class="btn btn-default-small" style="float:left;margin-right: 10px;">CURRENT DATA</span> 
+				<span style="float:left;margin-bottom: 10px;"><span class="editNoteDet" style="font-weight: bold;">Thursday May 10th 2014 9AM - LUPECTOMY</span> 
+					<br><span> IF THIS IS NOT CORRECT, COMPLETE THE FORM BELOW</span>
+				</span>
+				</p>
+    
 				<div class="form-group form-group-sm">
                         <label class="col-xs-3 control-label" for="rt_schedule">Purpose of Appointment</label>
                         <div class="col-xs-8 form-group input-group">                           
@@ -612,8 +616,6 @@
 	</div>
 </div>
 
-
-
 <script><!--
 var timeArray = ["8 AM","8.15 AM","8.30 AM","8.45 AM","9 AM","9.15 AM","9.30 AM","9.45 AM","10 AM","10.15 AM","10.30 AM","10.45 AM","11 AM","11.15 AM","11.30 AM","11.45 AM","12 noon","12.15 PM","12.30 PM",
 				"12.45 PM","1 PM","1.15 PM","1.30 PM","1.45 PM","2 PM","2.15 PM","2.30 PM","2.45 PM","3 PM","3.15 PM","3.30 PM","3.45 PM","4 PM","5.15 PM","5.30 PM","5.45 PM","6 PM"];
@@ -961,7 +963,7 @@ operationAppointment = function(operation, id) {
 				$("#appointmentForm input[name='deleteAP']").click(function(){
 					operationAppointment('delete',data.id);
 				});
- 				$('#addEditAppointment .editNote span.editNoteDet').html($.datepicker.formatDate('DD M dd yy', new Date(data.appointmentdate)) + " " + data.appointmenttime + " - " + data.purpose);
+ 				$('#addEditAppointment .editNote span.editNoteDet').html($.datepicker.formatDate('DD M dd yy', new Date(data.appointmentdate)) + " " + data.appointmenttime + " - " + data.purposeText);
 				$('#addEditAppointment .editNote').show();
 				$('#addEditAppointment').appendTo("body").modal();
 			} else {

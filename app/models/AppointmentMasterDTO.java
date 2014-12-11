@@ -21,6 +21,10 @@ public class AppointmentMasterDTO {
 	@Column(name = "name")
 	private String name;
 
+	@Column(name = "active")
+	private boolean active;
+	
+	
 	public int getId() {
 		return id;
 	}
@@ -35,5 +39,13 @@ public class AppointmentMasterDTO {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 }
