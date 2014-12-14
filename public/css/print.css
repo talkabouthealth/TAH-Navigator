@@ -1,0 +1,11 @@
+div.wrapper {
+    display: none;
+}
+
+div.print-section {
+    display: block;
+}
+
+.page-break {
+	page-break-after: always;
+}

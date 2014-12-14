@@ -1,0 +1,549 @@
+<div id="dm_templates" style="display:none;">
+	<div id="tpl_distress_meter"> 
+		<div class="form-panel">    
+			<div class="step1-panel-right">                
+				<div id="distressSlider">
+					<label class="low">1 NO DISTRESS</label>
+					<label class="high">10 EXTREME DISTRESS</label>
+					<div class="distress-amount">
+						<span class="distress-amount-value"></span>
+						<span class="distress-amount-text"></span>
+					</div>
+				</div>                
+			</div>
+			<div class="step1-panel-left">
+				<p class="p1"><span>STEP 1</span>  DISTRESS TOOL</p>
+				<h4>HOW IT WORKS</h4>
+				<p>Please use the slider to the right to choose a level of distress starting at 1 (no distress) up to 10 (extreme distress and discomfort) based on your distress over the last 7 days including today.</p>
+				<p class="p3">Click the "continue" button below when complete.</p>
+			</div>            
+		</div>        
+	</div>    
+	<div id="tpl_problem_list">
+		<div class="form-panel">    
+			<div class="step2-panel-right">
+				<div class="row">
+					<div class="col-xs-6 problem-list-left">
+						<p class="problem-title practical-problems">practical problems</p>
+						<p class="problem-title family-problems">family problems</p>
+						<p class="problem-title emotional-problems">emotional problems</p>
+					</div>
+					<div class="col-xs-6 problem-list-right">
+						<p class="problem-title physical-problems">physical problems</p>                    
+                    </div>
+				</div> 
+				<div class="row">
+					<div class="col-xs-offset-1 col-xs-11">
+						<strong class="other-details">OTHER/ADDITIONAL ISSUES:</strong>                        
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-xs-offset-1 col-xs-11">                        
+						<textarea name="otherDetail" rows="3" cols="40"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="step2-panel-left">                
+				<p class="p1"><span>STEP 2</span>  DISTRESS TOOL</p>                
+				<div class="step2-distress-amount">
+					<span class="distress-amount-value"></span>
+					<span class="distress-amount-text"></span>
+				</div>                
+				<h4>INDICATE PROBLEMS RELATED TO DISTRESS</h4>
+				<p>Please click on all issues or problems that have affected you over the last seven days including today.</p>
+				<p class="p3">Once complete, click the "submit" button on the bottom right.</p>
+			</div>            
+		</div>
+	</div>    
+    <div id="tpl_problem">
+        <div class="stepchecker">
+            <div class="toggle-switch toggle-switch-primary">
+                <label>
+                    <input type="checkbox" name="distressType" value="{value}"></input>
+                    <div class="toggle-switch-inner"></div>
+                    <div class="toggle-switch-switch"><i class="fa fa-times"></i></div>
+                </label>
+            </div>&nbsp;&nbsp;<strong>{text}</strong>
+        </div>
+    </div>
+
+    <div id="tpl_thank_you_page_1">
+        <div class="thank-you-page-1"> 
+            <h4>Thank you for sharing how you are doing. The more you share, the more we can personalize your care.</h4>
+            
+            <h4>Please use this distress measurement tool to update us whenever something changes.</h4>
+            <h4>You can access this tool by clicking on the "Update Distress" button at the top of every page:</h4>
+            
+            <div class="visual">
+              <h5>Share how you are doing</h5>
+              <div class="buttons">                
+                <div class="distress-meter button rounded">Update Distress</div>
+              </div>
+            </div>
+            
+            <h4>If this is an emergency, please call 911.</h4>
+        </div>
+    </div>
+    
+    <div id="tpl_step1_buttons">
+        <div class="step1-buttons" style="clear:both;">
+            <button type="button" class="btn btn-default page1-continue">Continue <span><i class="fa fa-chevron-right"></i></span></button>
+        </div>
+    </div>
+    <div id="tpl_step2_buttons">
+        <div class="step1-buttons" style="clear:both;">
+            <button type="button" class="btn btn-default page2-back"><span><i class="fa fa-chevron-left"></i></span> Back</button>
+            <button type="button" class="btn btn-default page2-submit">Submit <span><i class="fa fa-chevron-right"></i></span></button>
+        </div>
+    </div>
+    <div id="tpl_step3_buttons">
+        <button type="button" class="btn btn-default page3-back"><span><i class="fa fa-chevron-left"></i></span> Back</button>
+        <button type="button" class="btn btn-default page3-continue">Continue <span><i class="fa fa-chevron-right"></i></span></button>
+    </div>
+    
+    <div id="tpl_modal_container">
+        <div class="modal" tabindex="-1" role="dialog" aria-labelledby="dm_modal_title" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title">DISTRESS MEASUREMENT TOOL</h4>
+                    </div>
+                    <div class="modal-body">
+                        
+                    </div>
+                    <div class="modal-footer">
+                        
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+    
+    <div id="tpl_page_container">
+        <div>
+            <div class="page-content">
+                <div class="page-header">                    
+                    <h4>DISTRESS MEASUREMENT TOOL</h4>
+                </div>
+                <div class="page-body">
+                    
+                </div>
+                <div class="page-footer">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+// assume following library are loaded before
+// * jQuery
+// * bootstrap
+
+$(function() {           
+    $('head').append('<link rel="stylesheet" type="text/css" href="@{'/public/css/distressMeter.css'}">');
+    var distressMeter = function(options) {
+        var distressId;
+        var $container;
+        var $slider;
+        options = options || {};
+        var distressValue = options.distressValue || 1;
+        var problemList = options.problemList || [];
+        var otherList = '';
+        var problemValues = [];
+        var patientId = options.patientId;
+        var uiType = options.uiType || 'modal'; // modal, nonmodal
+        var accessType = options.accessType || 'secureLogin'; //secureLogin, 'hashLogin'
+        var updateBy = options.updateBy || ''; //patient, careteam
+        var texts = [
+            'No Distress',
+            'Mild Distress',
+            'Low Distress',
+            'Modest Distress',
+            'Moderate Distress',
+            'More Than Moderate Distress',
+            'High Distress',
+            'Severe Distress',
+            'Very Severe Distress',
+            'Extreme Distress'
+        ];
+        
+        var practical_problems = [
+            { text: "Child care", value: 1},
+            { text: "Housing", value: 2},
+            { text: "Insurance/Financial", value: 3},
+            { text: "Transportation", value: 4},
+            { text: "Work/School", value: 5},
+            { text: "Treatment decision", value: 6}
+        ];
+        var family_problems = [
+            { text: "Dealing with children", value: 7},
+            { text: "Dealing with partner", value: 8},
+            { text: "Ability to have children", value: 9},
+            { text: "Family health issues", value: 10}            
+        ];
+        var emotional_problems = [
+            { text: "Depression", value: 11},
+            { text: "Fears", value: 12},
+            { text: "Nervousness", value: 13},
+            { text: "Sadness", value: 14},
+            { text: "Worry", value: 15},
+            { text: "Loss of interest in usual activities", value: 16}                        
+        ];
+        var physical_problems = [
+            { text: "Appearance", value: 17},
+            { text: "Bathing/Dressing", value: 18},
+            { text: "Breathing", value: 19},
+            { text: "Changes in urination", value: 20},
+            { text: "Constipation", value: 21},
+            { text: "Diarrhea", value: 22},
+            { text: "Eating", value: 23},
+            { text: "Fatigue", value: 24},
+            { text: "Feeling swollen", value: 25},
+            { text: "Fevers", value: 26},
+            { text: "Getting around", value: 27},            
+            { text: "Indigestion", value: 28},
+            { text: "Memory/Concentration", value: 29},
+            { text: "Mouth sores", value: 30},
+            { text: "Nausea", value: 31},
+            { text: "Nose dry/congested", value: 32},
+            { text: "Pain", value: 33},
+            { text: "Sexual", value: 34},
+            { text: "Skin dry/itchy", value: 35},
+            { text: "Sleep", value: 36},
+            { text: "Tingling in hands/feet", value: 37}
+        ];
+        var parseRow = function(html, row, removePlaceHolder) {            
+            html = html.replace(/\%7B/g, '{');
+            html = html.replace(/\%7D/g, '}');
+            if (typeof row == 'object') {
+                for (var prop in row) {
+                    var val = row[prop];
+                    var attrValue = val;
+                    if (typeof val == "string") {
+                        attrValue = val.replace(/\"/g, '&quot;');
+                    }
+                    var pattern1 = new RegExp('"{' + prop + '}"', "g");
+                    var pattern2 = new RegExp("{" + prop + "}", "g");
+                    html = html.replace(pattern1, '"' + attrValue + '"');
+                    html = html.replace(pattern2, val);
+                }
+            }
+        //	removePlaceHolder, if its true, then all non assignend placeHolder is unwrapped.
+            removePlaceHolder = removePlaceHolder || false;
+            if (removePlaceHolder) {
+                var re = /({([\w-]*)})/img;
+                html = html.replace(re, "$2");
+            }
+            html = html.replace(/null/g, '');
+            return html;
+        };
+
+        var listRows = function(text, rows, removePlaceHolder) {
+            var length = rows.length;
+            var i;
+            var html = '';            
+            for (i = 0; i < length; i++) {
+                html += parseRow(text, rows[i], removePlaceHolder);
+            }
+            return html;
+        };
+        var positionAmount = function() {
+            var totalStep = 9;
+            var min = 70;
+            var max = 7;
+            var cur = min - (((min - max) * (distressValue - 1))/ totalStep);
+            $container.find(".distress-amount").css({
+                top: cur + "%"
+            });
+        };
+        var renderDistressValue = function(value) {            
+            $container.find(".distress-amount-value").text(value);
+            $container.find(".distress-amount-text").text(texts[value - 1]);            
+        };
+        var readProblemValues = function() {
+            problemValues = [];
+            otherList = $container.find("textarea").val();
+            $container.find('input[type="checkbox"][name="distressType"]:checked').each(function(index, elm) {
+                problemValues.push($(elm).val());
+            });
+        };
+        var getProblemValues = function(problemList) {
+            var problemValues = [];
+            for (var i = 0; i < problemList.length; i++) {
+                var flag = false;
+                var value;
+                for (var j = 0; j < practical_problems.length; j++) {
+                    var p1 = practical_problems[j].text;
+                    var re = new RegExp(p1, "i");
+                    if (re.test(problemList[i])) {
+                        value = practical_problems[j].value;
+                        flag = true;
+                        break;
+                    }
+                }
+                if (!flag) {
+                    for (var j = 0; j < family_problems.length; j++) {
+                        var p1 = family_problems[j].text;
+                        var re = new RegExp(p1, "i");
+                        if (re.test(problemList[i])) {
+                            value = family_problems[j].value;
+                            flag = true;
+                            break;
+                        }
+                    }
+                }
+                if (!flag) {
+                    for (var j = 0; j < emotional_problems.length; j++) {
+                        var p1 = emotional_problems[j].text;
+                        var re = new RegExp(p1, "i");
+                        if (re.test(problemList[i])) {
+                            value = emotional_problems[j].value;
+                            flag = true;
+                            break;
+                        }
+                    }
+                }
+                if (!flag) {
+                    for (var j = 0; j < physical_problems.length; j++) {
+                        var p1 = physical_problems[j].text;
+                        var re = new RegExp(p1, "i");
+                        if (re.test(problemList[i])) {
+                            value = physical_problems[j].value;
+                            flag = true;
+                            break;
+                        }
+                    }
+                }
+                
+                if (flag) {
+                    problemValues.push(value);                    
+                }
+                else {                                        
+                    if(otherList.length > 0) {
+                        otherList+= ", " + problemList[i];
+                    }
+                    else {
+                        otherList+= problemList[i];
+                    }                    
+                }
+            }
+            return problemValues;
+        };
+        var submitData = function() {            
+            var today = moment(new Date());
+            var params = {};
+            params['curDist'] = distressValue;
+            params['daterecrded'] = today.format('M/D/YYYY h:m A');
+            params['patientId'] = patientId;
+            for (var i = 0; i < problemValues.length; i++) {
+                params['distressType.' + i] = problemValues[i];
+            };
+            if (otherList.length > 0) {
+                params['otherDetail'] = otherList;
+            }
+            if (typeof distressId != 'undefined') {
+                params['distressId'] = distressId;
+            }
+			if (updateBy) {
+				params['updateBy'] = updateBy;
+			}
+            $.post('/distress/save', params, function(data) {
+                distressId = data.distressId;
+            }, "json");
+        };        
+        var renderProblems = function() {
+            var tpl = $('#dm_templates #tpl_problem').html();
+            var listHtml = listRows(tpl, practical_problems);
+            $container.find(".practical-problems").after(listHtml);
+            listHtml = listRows(tpl, family_problems);
+            $container.find(".family-problems").after(listHtml);
+            listHtml = listRows(tpl, emotional_problems);
+            $container.find(".emotional-problems").after(listHtml);
+            listHtml = listRows(tpl, physical_problems);
+            $container.find(".physical-problems").after(listHtml);
+            
+            for (var i = 0; i < problemValues.length; i++) {                
+                $container.find('input[type="checkbox"][name="distressType"][value="'+ problemValues[i] +'"]').prop("checked", true);                
+            }
+            $container.find("textarea").val(otherList);
+        };
+        
+        var renderModalPage1 = function() {
+            $container.find(".modal-body").html($('#dm_templates #tpl_distress_meter').html());
+            $container.find(".modal-footer").html($('#dm_templates #tpl_step1_buttons').html());                        
+            $slider = $container.find("#distressSlider");
+            initSlider();
+        };
+        
+        var renderModalPage2 = function() {
+            $container.find(".modal-body").html($('#dm_templates #tpl_problem_list').html());
+            $container.find(".modal-footer").html($('#dm_templates #tpl_step2_buttons').html());
+                   
+            renderDistressValue(distressValue);
+            renderProblems();
+            toggleHacks();
+        };
+        
+        var renderModalPage3 = function() {
+            $container.find(".modal-body").html($('#dm_templates #tpl_thank_you_page_1').html());
+            $container.find(".modal-footer").html($('#dm_templates #tpl_step3_buttons').html());                               
+        };
+        
+        var renderNonModalPage1 = function() {
+            $container.find(".page-body").html($('#dm_templates #tpl_distress_meter').html());
+            $container.find(".page-footer").html($('#dm_templates #tpl_step1_buttons').html());                        
+            $slider = $container.find("#distressSlider");
+            initSlider();
+        };
+        var renderNonModalPage2 = function() {
+            $container.find(".page-body").html($('#dm_templates #tpl_problem_list').html());
+            $container.find(".page-footer").html($('#dm_templates #tpl_step2_buttons').html());
+            renderDistressValue(distressValue);
+            renderProblems();
+            toggleHacks();
+        };
+        
+        var renderNonModalPage3 = function() {
+            $container.find(".page-body").html($('#dm_templates #tpl_thank_you_page_1').html());
+            $container.find(".page-footer").html($('#dm_templates #tpl_step3_buttons').html());                               
+        };
+        // Most probably Kevins's Code
+        // cute li'l hack to support iPads and touch devices for the toggle switches
+        var toggleHacks = function() {
+            var touchend = function(e) {
+                e.preventDefault();
+                var toggleSwitch = $container.find('.toggle-switch input');
+                toggleSwitch.prop('checked', !toggleSwitch.prop('checked'));
+            };
+            $container.find('.stepchecker').bind('touchend', touchend);
+            $container.find('.stepchecker').bind('touchcancel', touchend);
+            $container.find('.stepchecker').click(function(e){
+                if ( e && e.target == this ) {
+                    touchend(e);
+                }
+            });
+        };
+        
+        
+        var initSlider = function() {            
+            $slider.slider({
+                orientation: "vertical",
+                range: "min",
+                min: 1,
+                max: 10,
+                step: 1,
+                value: distressValue,
+                slide: function(e, ui) {
+                    distressValue = ui.value;
+                    if (distressValue > 6) {
+                        $(this).find(".ui-slider-range").addClass("high-distress").removeClass("medium-distress low-distress");
+                    }
+                    else if (distressValue > 3) {
+                         $(this).find(".ui-slider-range").addClass("medium-distress").removeClass("high-distress low-distress");
+                    }
+                    else {
+                        $(this).find(".ui-slider-range").addClass("low-distress").removeClass("medium-distress high-distress");
+                    }                    
+                    renderDistressValue(distressValue);
+                    positionAmount();
+                }
+            });
+            renderDistressValue(distressValue); 
+            positionAmount();    
+        };        
+        var modalUI = function() {
+            var html = $('#dm_templates #tpl_modal_container').html();            
+            var divId = 'distressmeter_' + new Date().getTime();
+            var html1 = '<div class="distress-meter-form" id="' + divId + '">' + html + '</div>';    
+            $('body').append(html1);
+            $container = $('#' + divId);
+            var $modal = $container.find(".modal");            
+            $modal.modal({
+                backdrop: 'static'                
+            });
+            renderModalPage1();
+            $modal.on("hidden.bs.modal", function(e) {
+                $('#' + divId).remove();
+            });            
+            $container.on("click", ".page1-continue", function(e) {
+				submitData();
+                renderModalPage2();
+            });
+            $container.on("click", ".page2-back", function(e) {
+                readProblemValues();
+				submitData();
+                renderModalPage1();
+            });
+            $container.on("click", ".page2-submit", function(e) {
+                readProblemValues();
+                submitData();
+                renderModalPage3();
+            });
+            $container.on("click", ".page3-back", function(e) {
+                renderModalPage2();
+            });
+            $container.on("click", ".page3-continue", function(e) {
+                $modal.modal('hide');
+            });    
+        };
+        
+        var nonModalUI = function() {            
+            var html = $('#dm_templates #tpl_page_container').html(); 
+            $container.html('<div class="distress-meter-form">' + html + '</div>'); 
+            renderNonModalPage1();
+            $container.on("click", ".page1-continue", function(e) {
+                submitData();
+                renderNonModalPage2();
+            });
+            $container.on("click", ".page2-back", function(e) {
+                readProblemValues();
+                submitData();
+                renderNonModalPage1();
+            });
+            $container.on("click", ".page2-submit", function(e) {
+                readProblemValues();
+                submitData();
+                renderNonModalPage3();
+            });
+            $container.on("click", ".page3-back", function(e) {
+                renderNonModalPage2();
+            }); 
+            
+            $container.on("click", ".page3-continue", function(e) {
+                if (accessType == 'hashLogin') {
+                    location.href = '/logout';
+                }
+                else {
+                    location.href = '/patient/index';
+                }
+                    
+            });
+            
+            
+        };
+        
+        problemValues = getProblemValues(problemList);
+        if (uiType == 'nonmodal') {
+            $container = $(options['elm']);
+            
+            nonModalUI();
+        }
+        else if (uiType == 'modal') {
+            modalUI();
+        }        
+    };
+    $.distressMeter = distressMeter;
+    $.fn.distressMeter = function(options) {
+        options = options || {};
+        options['uiType'] = 'nonmodal';
+        options['elm'] = this;
+        distressMeter(options);
+    };
+});
+
+
+</script>

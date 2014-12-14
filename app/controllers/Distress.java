@@ -48,7 +48,12 @@ public class Distress  extends Controller {
 		PatientDistressDTO dto = null;
 		if (updateBy != null) {
 			UserDTO uDto = UserDAO.getUserBasicByField("id", patientId);
-			dto = DistressDAO.updateDistressByCareTeam(distInt, uDto, updateBy, dtCreated, otherDetail);
+			if (distressId != null) {				
+				dto = DistressDAO.updatePatientDistress(distInt, uDto, otherDetail, dtCreated, distressId.intValue());
+			}
+			else {
+				dto = DistressDAO.updateDistressByCareTeam(distInt, uDto, updateBy, dtCreated, otherDetail);
+			}			
 		}
 		else {
 			user = CommonUtil.loadCachedUser(session);

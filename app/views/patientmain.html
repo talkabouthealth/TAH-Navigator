@@ -1,210 +1,386 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-xmlns:og="http://ogp.me/ns#"
-xmlns:fb="http://www.facebook.com/2008/fbml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:og="http://ogp.me/ns#" xmlns:fb="http://www.facebook.com/2008/fbml">
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-  <meta name="author" content="TalkAboutHealth" />
-  <meta name="robots" content="all" />
-  <meta name="description" content="The TVRH Navigator enables convenient communication with the care team and checks on patients at multiple points during treatments to track progress and personalize treatments. The TVRH Navigator enables patients to better understand their situation, prepare for what's next, and plan out their lives."/>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="shortcut icon" href="@{'/public/img/favicon.ico'}" />
-  <title>TVRH Navigator. Moffitt Cancer Center - The Villages Regional Hospital Patient Navigation Application</title>
-  <link href="/public/css/patients/styles.less?d=28112014" rel="stylesheet/less" />
-  <link href="/public/css/styles.less?d=28112014" rel="stylesheet/less" />
-  #{ mixpanel /}
-  <script src="/public/js/lib/less-1.7.4.min.js"></script>
-  <script src="/public/plugins/jquery/jquery-2.1.0.min.js"></script>
-  <script src="/public/plugins/jquery-ui/jquery-ui.min.js"></script>
-  <script src="/public/js/lib/jquery.ui.touch-punch.min.js"></script>
-  <script src="/public/plugins/bootstrap/bootstrap.min.js"></script>
-  <script src="/public/plugins/justified-gallery/jquery.justifiedgallery.min.js"></script>
-  <script src="/public/plugins/tinymce/tinymce.min.js"></script>
-  <script src="/public/plugins/tinymce/jquery.tinymce.min.js"></script>
-  <script src="/public/plugins/timeago/jquery.timeago.js"></script>
-  <script src="/public/plugins//moment/moment.min.js"></script>
-  <script src="/public/js/validator.min.js"></script>
-  <script src="/public/plugins/tooltipster-master/js/jquery.tooltipster.min.js"></script>
-  <script src="/public/js/tableTooltips.js"></script>
-  <script type="text/javascript" src="/public/js/patient/treatment.js"></script>
-  <script src="/public/js/devoops.js"></script>
-  <script src="/public/js/application.js"></script>
-  <script src="/public/js/lib/bootbox.min.js"></script>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="author" content="TalkAboutHealth" />
+	<meta name="robots" content="all" />
+	<meta name="description" content="The TVRH Navigator enables convenient communication with the care team and checks on patients at multiple points during treatments to track progress and personalize treatments. The TVRH Navigator enables patients to better understand their situation, prepare for what's next, and plan out their lives."/>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="shortcut icon" href="@{'/public/img/favicon.ico'}" />
+	<title>TVRH Navigator. Moffitt Cancer Center - The Villages Regional Hospital Patient Navigation Application</title>
+	<link href="/public/css/patients/styles.less?d=28112014" rel="stylesheet/less" />
+	<link href="/public/css/styles.less?d=28112014" rel="stylesheet/less" />
+	<link href="/public/css/print.css" rel="stylesheet" type="text/css" media="print" />
+	#{ mixpanel /}
+	<script src="/public/js/lib/less-1.7.4.min.js"></script>
+	<script src="/public/plugins/jquery/jquery-2.1.0.min.js"></script>
+	<script src="/public/plugins/jquery-ui/jquery-ui.min.js"></script>
+	<script src="/public/js/lib/jquery.ui.touch-punch.min.js"></script>
+	<script src="/public/plugins/bootstrap/bootstrap.min.js"></script>
+	<script src="/public/plugins/justified-gallery/jquery.justifiedgallery.min.js"></script>
+	<script src="/public/plugins/tinymce/tinymce.min.js"></script>
+	<script src="/public/plugins/tinymce/jquery.tinymce.min.js"></script>
+	<script src="/public/plugins/timeago/jquery.timeago.js"></script>
+	<script src="/public/plugins//moment/moment.min.js"></script>
+	<script src="/public/js/validator.min.js"></script>
+	<script src="/public/plugins/tooltipster-master/js/jquery.tooltipster.min.js"></script>
+	<script src="/public/js/tableTooltips.js"></script>
+	<script type="text/javascript" src="/public/js/patient/treatment.js"></script>
+	<script src="/public/js/devoops.js"></script>
+	<script src="/public/js/application.js"></script>
+	<script src="/public/js/lib/bootbox.min.js"></script>
+	<style type="text/css">		
+		
+	</style>
 </head>
 <body>
-<div class="wrapper">
-  <div class="header">
-    <div class="hamburger">
-        <a type="button" class="sidebar-toggle">
-            <i class="fa fa-bars"></i>
-        </a>
-    </div>
-    <div class="logo">
-      <img src="/public/images/moffitt-logo.png"  />
-    </div><!-- logo -->
-    <div class="mobile-account">
-        <a class="button rounded" href="/logout">Log Out</a>
-    </div>
-    <div class="account">
-      <div class="account-container">
-        <div class="account-info">
-          <div class="account-image">
-            <img src="@{Image.show(user.id)}" />
-          </div>
-          <div class="account-data">
-            <p class="today-date">Thusday 4/24/2014</p>
-            <h3>#{userName userName: user.name, userId:user.id /}</h3>
-            #{if patientOtherDetails != null && patientOtherDetails.disease != null}
-            <h4>
-              ${patientOtherDetails.disease.name}#{if breastCancerInfo != null && breastCancerInfo.bcStage}, ${breastCancerInfo.bcStage.name}#{/if}
-            </h4>
-            #{/if}            
-            #{if session.get("lastLoginTime") != null}
-            <p class="last-login">Last Login: <span id="time-ago">${session.get("lastLoginTime")}</span></p>
-            #{/if}
-          </div>
-        </div><!-- account-info -->
-        <div class="account-share">
+	<div class="wrapper">
+		<div class="header">
+			<div class="hamburger">
+				<a type="button" class="sidebar-toggle">
+					<i class="fa fa-bars"></i>
+				</a>
+			</div>
+			<div class="logo">
+				<img src="/public/images/moffitt-logo.png"  />
+			</div><!-- logo -->
+			<div class="mobile-account">
+				<a class="button rounded" href="/logout">Log Out</a>
+			</div>
+			<div class="account">
+				<div class="account-container">
+					<div class="account-info">
+						<div class="account-image">
+							<img src="@{Image.show(user.id)}" />
+						</div>
+						<div class="account-data">
+							<p class="today-date">Thusday 4/24/2014</p>
+							<h3>#{userName userName: user.name, userId:user.id /}</h3>
+#{if patientOtherDetails != null && patientOtherDetails.disease != null}
+							<h4>
+								${patientOtherDetails.disease.name}#{if breastCancerInfo != null && breastCancerInfo.bcStage}, ${breastCancerInfo.bcStage.name}#{/if}
+							</h4>
+#{/if}
+#{if session.get("lastLoginTime") != null}
+							<p class="last-login">Last Login: <span id="time-ago">${session.get("lastLoginTime")}</span></p>
+#{/if}
+						</div>
+					</div><!-- account-info -->
+					<div class="account-share">
           <!--
           <p class="emergency"> IF YOU HAVE AN EMERGENCY <span> DIAL 911 </span></p> -->
-          <label>Share how you are doing</label>
-          <div class="buttons">
-            <a class="distress-meter button rounded" patientId="${user.id}">Update Distress</a>
-            <!--<a class="button rounded">Share Symptoms</a>
-            <a class="button rounded">Share Satisfaction</a>-->
-          </div>
-        </div><!-- share -->
-        <div class="account-actions">
-          <ul class="btngroup">
-            <li>
-            <a href="#" class="button rounded" data-toggle="dropdown">Settings</a>
-            <ul class="dropdown-menu">
-              <li><a href="@{Patient.setting()}"><i class="fa fa-spinner"></i><span class="hidden-sm text">Update Profile Image</span></a></li>
-              <li><a href="@{Patient.profile()}"><i class="fa fa-inbox"></i><span class="hidden-sm text">Edit Communication Preferences</span></a></li>
-              <li><a href="@{Patient.editContact()}"><i class="fa fa-user"></i><span class="hidden-sm text">Edit Personal Information</span></a></li>
-              <li><a href="@{Patient.password()}"><i class="fa fa-lock"></i><span class="hidden-sm text">Edit Password</span></a></li>
-            </ul>
-          </li>
-          <li><a class="button rounded" href="/logout">Log Out</a></li>
-        </ul>
-
-        <nav class="navbar2 navbar-default" role="navigation">
-          <div style=" text-align: center;width: 30px;margin-top: 25px;">
-            <a type="button" style="cursor: pointer;position: relative;" data-toggle="collapse" data-target="#example-navbar-collapse">
-              <i class="fa fa-bars"></i>
-            </a>
-          </div>
-          <div style=" height: 1px;overflow-x: hidden;" id="example-navbar-collapse">
-            <div class="menu">
-              <ul class="nav navbar-nav">
-                <li><a href="javaScript:distressMeter()"><i class="fa fa-sort-numeric-desc"></i></a></li>
+						<label>Share how you are doing</label>
+						<div class="buttons">
+							<a class="distress-meter button rounded" patientId="${user.id}">Update Distress</a>
+		    <!--<a class="button rounded">Share Symptoms</a>
+		    <a class="button rounded">Share Satisfaction</a>-->
+						</div>
+					</div><!-- share -->
+					<div class="account-actions">
+						<ul class="btngroup">
+							<li>
+								<a href="#" class="button rounded" data-toggle="dropdown">Settings</a>
+								<ul class="dropdown-menu">
+									<li><a href="@{Patient.setting()}"><i class="fa fa-spinner"></i><span class="hidden-sm text">Update Profile Image</span></a></li>
+									<li><a href="@{Patient.profile()}"><i class="fa fa-inbox"></i><span class="hidden-sm text">Edit Communication Preferences</span></a></li>
+									<li><a href="@{Patient.editContact()}"><i class="fa fa-user"></i><span class="hidden-sm text">Edit Personal Information</span></a></li>
+									<li><a href="@{Patient.password()}"><i class="fa fa-lock"></i><span class="hidden-sm text">Edit Password</span></a></li>
+								</ul>
+							</li>
+							<!--<li><a class="button" href="#" id="print-pages">Print Pages</a></li>-->
+							<li><a class="button rounded" href="/logout">Log Out</a></li>
+						</ul>
+						<nav class="navbar2 navbar-default" role="navigation">
+							<div style=" text-align: center;width: 30px;margin-top: 25px;">
+								<a type="button" style="cursor: pointer;position: relative;" data-toggle="collapse" data-target="#example-navbar-collapse">
+									<i class="fa fa-bars"></i>
+								</a>
+							</div>
+							<div style=" height: 1px;overflow-x: hidden;" id="example-navbar-collapse">
+								<div class="menu">
+									<ul class="nav navbar-nav">
+										<li><a href="javaScript:distressMeter()"><i class="fa fa-sort-numeric-desc"></i></a></li>
                 <!--                  <li><a href="#" class="active"><i class="fa fa-bell"></i><span class="coun-n">2</span></a></li> -->
                 <!--                  <li> <a href="#"><i class="fa fa-pencil"></i></a></li> -->
-                <li><a href="#" data-toggle="dropdown"><i class="fa fa-cog"></i></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="@{Patient.setting()}"><i class="fa fa-spinner"></i><span class="hidden-sm text"></span></a></li>
-                    <li><a href="@{Patient.profile()}"><i class="fa fa-inbox"></i><span class="hidden-sm text"></span></a></li>
-                    <li><a href="@{Patient.editContact()}"><i class="fa fa-user"></i><span class="hidden-sm text"></span></a></li>
-                    <li><a href="@{Patient.password()}"><i class="fa fa-lock"></i><span class="hidden-sm text"></span></a></li>
-                  </ul>
-                </li>
-                <li><a href="/logout"><i class="fa fa-power-off"></i></a></li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-        </div>
-      </div><!-- account-container -->
-
-    </div><!-- account -->
-
-
-
-
-
-    </div><!-- header -->
-    <div class="body">
-      <div class="sidebar">
-        <ul class="nav main-menu">
-            <li class="mobile divider account-data">
-            <p class="username">#{userName userName: user.name, userId:user.id /}</p>
-            #{if patientOtherDetails != null && patientOtherDetails.disease != null}
-            <p class="disease">
-              ${patientOtherDetails.disease.name}#{if breastCancerInfo != null && breastCancerInfo.bcStage}, ${breastCancerInfo.bcStage.name}#{/if}
-              </p>
-            #{/if}            
-            </li>
-            <li class="mobile"><a class="distress-meter-full" href="/patient/distressmeter"><i class="fa fa-stethoscope"></i> <span>Update Distress</span></a></li>
-          <li>
-            #{if pageType == 'dashboard'}<a href="#" class="active">#{/if}
-            #{else}<a href="@{Patient.index()}">#{/else}
-            <i class="fa fa-th-large"></i>
-            <span>My Dashboard</span>
-          </a>
-        </li>
-        #{if user.verifiedFlag}
-        <li>  #{if pageType == 'appointment'}<a href="#" class="active">#{/if}
-          #{else}<a href="@{Patient.appointment()}">#{/else}
-          <i class="fa fa-calendar-o"><span style="position: absolute; left: 22px; font-size: 7px; top: 24px;">5</span></i> <span>My Appointments</span></a>
-        </li>
-        <li>
-          #{if pageType == 'careteam'}<a href="#" class="active">#{/if}
-          #{else}<a href="@{Patient.careteam()}">#{/else}
-          <i class="fa fa-user-md"></i> <span>My Care Team</span></a>
-        </li>
-        <li>
-          #{if pageType == 'medication'}<a href="#" class="active">#{/if}
-          #{else}<a href="@{Patient.medication()}">#{/else}
-          <i class="fa fa-tint"></i> <span>My Medications</span></a>
-        </li>
-        <li>
-          #{if pageType == 'treatmentplan'}<a href="#" class="active">#{/if}
-          #{else}<a href="@{Patient.treatmentplan()}">#{/else}
-          <i class="fa fa-flag"></i> <span>My Treatment Plan</span></a>
-        </li>
-        <li>
-          #{if pageType == 'thrivercareplan'}<a href="#" class="active">#{/if}
-          #{else}<a href="@{Patient.thrivercareplan()}">#{/else}
-          <i class="fa fa-book"></i> <span>My Ongoing Care Plan</span></a>
-        </li>
+										<li>
+											<a href="#" data-toggle="dropdown"><i class="fa fa-cog"></i></a>
+											<ul class="dropdown-menu">
+												<li><a href="@{Patient.setting()}"><i class="fa fa-spinner"></i><span class="hidden-sm text"></span></a></li>
+												<li><a href="@{Patient.profile()}"><i class="fa fa-inbox"></i><span class="hidden-sm text"></span></a></li>
+												<li><a href="@{Patient.editContact()}"><i class="fa fa-user"></i><span class="hidden-sm text"></span></a></li>
+												<li><a href="@{Patient.password()}"><i class="fa fa-lock"></i><span class="hidden-sm text"></span></a></li>
+											</ul>
+										</li>
+										<li><a href="/logout"><i class="fa fa-power-off"></i></a></li>
+									</ul>
+								</div>
+							</div>
+						</nav>
+					</div>
+				</div><!-- account-container -->
+			</div><!-- account -->
+		</div><!-- header -->
+		<div class="body">
+			<div class="sidebar">
+				<ul class="nav main-menu">
+					<li class="mobile divider account-data">
+						<p class="username">#{userName userName: user.name, userId:user.id /}</p>
+#{if patientOtherDetails != null && patientOtherDetails.disease != null}
+						<p class="disease">
+							${patientOtherDetails.disease.name}#{if breastCancerInfo != null && breastCancerInfo.bcStage}, ${breastCancerInfo.bcStage.name}#{/if}
+						</p>
+#{/if}
+					</li>
+					<li class="mobile">
+						<a class="distress-meter-full" href="/patient/distressmeter">
+							<i class="fa fa-stethoscope"></i> 
+							<span>Update Distress</span>
+						</a>
+					</li>
+					<li>
+#{if pageType == 'dashboard'}
+						<a href="#" class="active">
+#{/if}
+#{else}
+						<a href="@{Patient.index()}">
+#{/else}
+							<i class="fa fa-th-large"></i>
+							<span>My Dashboard</span>
+						</a>
+					</li>
+#{if user.verifiedFlag}
+					<li>
+#{if pageType == 'appointment'}
+						<a href="#" class="active">
+#{/if}
+#{else}
+						<a href="@{Patient.appointment()}">#{/else}
+							<i class="fa fa-calendar-o">
+								<span style="position: absolute; left: 22px; font-size: 7px; top: 24px;">5</span>
+							</i> 
+							<span>My Appointments</span>
+						</a>
+					</li>
+					<li>
+#{if pageType == 'careteam'}
+						<a href="#" class="active">
+#{/if}
+#{else}
+						<a href="@{Patient.careteam()}">
+#{/else}
+							<i class="fa fa-user-md"></i> 
+							<span>My Care Team</span>
+						</a>
+					</li>
+					<li>
+#{if pageType == 'medication'}
+						<a href="#" class="active">
+#{/if}
+#{else}
+						<a href="@{Patient.medication()}">
+#{/else}
+							<i class="fa fa-tint"></i> 
+							<span>My Medications</span>
+						</a>
+					</li>
+					<li>
+#{if pageType == 'treatmentplan'}
+						<a href="#" class="active">
+#{/if}
+#{else}
+						<a href="@{Patient.treatmentplan()}">
+#{/else}
+							<i class="fa fa-flag"></i> 
+							<span>My Treatment Plan</span>
+						</a>
+					</li>
+					<li>
+#{if pageType == 'thrivercareplan'}
+						<a href="#" class="active">
+#{/if}
+#{else}
+						<a href="@{Patient.thrivercareplan()}">
+#{/else}
+							<i class="fa fa-book"></i> 
+							<span>My Ongoing Care Plan</span>
+						</a>
+					</li>
         <!--                  <i class="fa fa-book"></i> <span>My Thriver Care Plan</span></a></li> -->
+					<li>
+#{if pageType == 'diagnosis'}
+						<a href="#" class="active">
+#{/if}
+#{else}
+						<a href="@{Patient.diagnosis()}">
+#{/else}
+							<i class="fa fa-user"></i> 
+							<span>My Diagnosis</span>
+						</a>
+					</li>
 
-        <li>
-          #{if pageType == 'diagnosis'}<a href="#" class="active">#{/if}
-          #{else}<a href="@{Patient.diagnosis()}">#{/else}
-          <i class="fa fa-user"></i> <span>My Diagnosis</span></a>
-        </li>
-
-        #{/if}
-        #{else}
-        <li class="disabled"><a disabled href="#"><i class="fa fa-calendar"></i> <span>My Appointments</span></a></li>
-        <li class="disabled"><a disabled href="#"><i class="fa fa-user-md"></i> <span>My Care Team</span></a></li>
-        <li class="disabled"><a disabled href="#"><i class="fa fa-medkit"></i> <span>My Medications</span></a></li>
-        <li class="disabled"><a disabled href="#"><i class="fa fa-flag"></i> <span>My Treatment Plan</span></a></li>
+#{/if}
+#{else}
+					<li class="disabled"><a disabled href="#"><i class="fa fa-calendar"></i> <span>My Appointments</span></a></li>
+					<li class="disabled"><a disabled href="#"><i class="fa fa-user-md"></i> <span>My Care Team</span></a></li>
+					<li class="disabled"><a disabled href="#"><i class="fa fa-medkit"></i> <span>My Medications</span></a></li>
+					<li class="disabled"><a disabled href="#"><i class="fa fa-flag"></i> <span>My Treatment Plan</span></a></li>
         <!--                <li class="disabled"><a disabled href="#"><i class="fa fa-book"></i> <span>My Thriver Care Plan</span></a></li> -->
-        <li class="disabled"><a disabled href="#"><i class="fa fa-book"></i> <span>My Survivorship Care Plan</span></a></li>
-        <li class="disabled"><a disabled href="#"><i class="fa fa-user"></i> <span>My Diagnosis</span></a></li>
-        #{/else}
-        <li class="mobile"><a href="/patient/settings"><i class="fa fa-cog"></i> <span>Settings</span></a></li>
-      </ul>
-    </div><!-- nav -->
-    <div class="content">
-      #{doLayout /}
-    </div><!-- content -->
-  </div><!-- body -->
-  <div class="footer-terms-policy">
-        <div class="shadow"></div>
-        <div><small><a href="https://tvrhnavigator.com/static/tos" target="_blank">Terms of Service</a> - <a href="https://tvrhnavigator.com/static/privacy" target="_blank">Privacy Policy</a></small></div>
-        <div><small>Copyright ${new Date().format('yyyy')} TalkAboutHealth</small></div>
-    </div>
-</div><!-- wrapper -->
+					<li class="disabled"><a disabled href="#"><i class="fa fa-book"></i> <span>My Survivorship Care Plan</span></a></li>
+					<li class="disabled"><a disabled href="#"><i class="fa fa-user"></i> <span>My Diagnosis</span></a></li>
+#{/else}
+					<li class="mobile"><a href="/patient/settings"><i class="fa fa-cog"></i> <span>Settings</span></a></li>
+				</ul>
+			</div><!-- nav -->
+			<div class="content">
+#{doLayout /}
+			</div><!-- content -->
+		</div><!-- body -->
+		<div class="footer-terms-policy">
+			<div class="shadow"></div>
+			<div><small><a href="https://tvrhnavigator.com/static/tos" target="_blank">Terms of Service</a> - <a href="https://tvrhnavigator.com/static/privacy" target="_blank">Privacy Policy</a></small></div>
+			<div><small>Copyright ${new Date().format('yyyy')} TalkAboutHealth</small></div>
+		</div>
+	</div><!-- wrapper -->
 
+<!--****************************************************************************
+				Modal and Layout
+*****************************************************************************-->
 
+	<div class="distress modal fade" id="verificationAlert" tabindex="-1" role="dialog" aria-labelledby="verificationAlertLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content col-xs-12 col-sm-12">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="verificationAlertLabel">Account not verified</h4>
+				</div>
+				<div class="modal-body">Please contact admin to verify your account.</div>
+			</div>
+		</div>
+	</div>	
 
+	<div class="distress modal fade" id="welcome" role="dialog" aria-labelledby="welcomeLable" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">&nbsp;</h4>
+				</div>
+				<div class="modal-body">
+					<div style="padding: 10px 50px;">
+						<h3>Thank you for signing up for the TVRH Navigator!</h3>
+						<p style="margin:30px 50px;">
+							<h4>The next step is to share how you are doing. This will enable us to provide you more personalized care and prepare for your next appointment.</h4>
+						</p>
+					</div>
+				</div>
+				<div class="modal-footer">Step 2 of 4&nbsp;&nbsp; 
+					<button type="button" class="btn btn-default btn-label-right cont" data-next="2">CONTINUE <span><i class="fa fa-chevron-right"></i></span></button>
+				</div>
+			</div>
+		</div>
+	</div>
 
-
+	<div class="modal" id="print-modal-filter" tabindex="-1" role="dialog" aria-labelledby="print-modal-filter-title" aria-hidden="true" patientId="${user.id}">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="print-modal-filter-title">Which pages would you like to print?</h4>
+				</div>
+				<div class="modal-body">
+					<form class="form-horizontal" role="form">
+						<div class="form-group">
+							<div class="col-xs-offset-2 col-xs-10">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" value="cover_page"> Cover page
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-xs-offset-2 col-xs-10">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" value="diagnosis"> Diagnosis
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-xs-offset-2 col-xs-10">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" value="treatment_plan"> Treatment Plan
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-xs-offset-2 col-xs-10">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" value="follow_up_care_plan"> Follow-up Care Plan
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-xs-offset-2 col-xs-10">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" value="care_team"> Care Team
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-xs-offset-2 col-xs-10">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" value="appointments"> Appointments
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-xs-offset-2 col-xs-10">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" value="medications"> Medications
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-xs-offset-2 col-xs-10">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" value="distress_data"> Distress Data
+									</label>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-xs-offset-2 col-xs-10">
+								<div class="checkbox">
+									<label>
+										<input type="checkbox" value="all"> All
+										</label>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					<button type="button" class="btn btn-default" id="print-pages-modal-btn">Print</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
 
 
 <div class="distress modal fade" id="verificationAlert" tabindex="-1" role="dialog" aria-labelledby="verificationAlertLabel" aria-hidden="true">
@@ -221,7 +397,7 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
   </div>
 </div>
 
-#{distressModal /}
+
 
 <div class="distress modal fade" id="welcome" role="dialog" aria-labelledby="welcomeLable" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
@@ -244,41 +420,67 @@ xmlns:fb="http://www.facebook.com/2008/fbml">
 	    </div>
 	  </div>
 </div>
-<script type='text/javascript' src="/public/js/patient/distressMeter.js"></script>
+
+#{distressMeter /}
+
+	<div class="print-section container-fluid">
+	</div>
+
 <script type='text/javascript'>
 var todayDate;
 var lastLogin;
 
 var makeModalUncloseable = function(el) {
-    $('.modal .close').hide();
-    el.on('hide.bs.modal', function (e) {
-        e.preventDefault(); 
-    });
+	$('.modal .close').hide();
+	el.on('hide.bs.modal', function (e) {
+		e.preventDefault();
+	});
 };
 var showWelcome = function() {
     $('#welcome').modal({ keyboard: false });
     makeModalUncloseable($('#welcome'));
 
     $('#welcome button.cont').click(function(e) {
-        $('#welcome').unbind('hide.bs.modal')
-        $('#welcome').modal('hide');
-        $('a.distress-meter').click();
-        makeModalUncloseable($('a.distress-meter'));
+	$('#welcome').unbind('hide.bs.modal')
+	$('#welcome').modal('hide');
+	$('a.distress-meter').click();
+	makeModalUncloseable($('a.distress-meter'));
     });
 };
 $(document).ready(function(){
-
+	
+	//  distress modal [start]
+	$(document).on('click', 'a.distress-meter', function(e) {
+		var patientId = $(this).attr('patientId');		
+		$.post('/distress/lastDistressIn24Hours', {
+			patientId: patientId
+		}, function(data) {
+			var options = {            
+				patientId: patientId
+			};			
+			if ('lastDistress' in data) {
+				var info = data.lastDistress;
+				options['distressValue'] = info.curDist;
+				var otherDetail = info.otherdetail;
+				var problemList = otherDetail.split(",<br/>");
+				options['problemList'] = problemList;
+			}
+			$.distressMeter(options);
+		}, "json");
+	});
+	//  distress modal [end]
+	
 	todayDate = $('.today-date');
-    todayDate.html($.datepicker.formatDate('DD m/d/yy', new Date()));
-    
+	todayDate.html($.datepicker.formatDate('DD m/d/yy', new Date()));
+
 	$('body').on('click', '.infomarker', function() {
 		var type = $(this).data("type");
 		var title = $(this).data("title");
-		
+
 		if(type != null && $.trim(type) == '') {
 			type = 'data';
 		}
-		
+
 		if(title != null && $.trim(title) != '') {
 			if(type == 'link') {
 				var win = window.open($.trim(title), "TVRH Navigator", "height=700,width=1000" );
@@ -292,29 +494,67 @@ $(document).ready(function(){
 	$("a.disabled").click(function(e){
 		$("#verificationAlert").modal({ keyboard: false });
 	});
-	#{set showPopup = session.get("showdistress") /}
-	#{ if showPopup == null  }
-		#{set showPopup = 'true' /}
-		#{set session.put("showdistress",'false') /}
-	#{/if}
-	#{elseif showPopup == 'true'}
-		#{set session.put("showdistress",'false') /}
-	#{/elseif}
-	#{ if showPopup == 'true'}
-        showWelcome();
-	#{/if}
-  $('iframe').each(function()
-  {
-    var url = $(this).attr("src");
-    var char = "?";
-    if(url.indexOf("?") != -1) {
-      var char = "&";
-    }
+	
+#{set showPopup = session.get("showdistress") /}
+#{if showPopup == null  }
+#{set showPopup = 'true' /}
+#{set session.put("showdistress",'false') /}
+#{/if}
+#{elseif showPopup == 'true'}
+#{set session.put("showdistress",'false') /}
+#{/elseif}
+#{ if showPopup == 'true'}
 
-    $(this).attr("src",url+char+"wmode=transparent");
-  });
+	showWelcome();
+	
+#{/if}
+	$('iframe').each(function() {
+		var url = $(this).attr("src");
+		var char = "?";
+		if(url.indexOf("?") != -1) {
+			var char = "&";
+		}
+		$(this).attr("src",url+char+"wmode=transparent");
+	});
+
+	//  ************* print pages [start] ***************
+	(function() {
+		var formId = '#print-modal-filter';
+		$(document).on('click', '#print-pages', function(e) {
+			var isFormInitialized = $(formId).attr('init-form');
+			if (isFormInitialized == 'yes') {					
+				$(formId).modal('show');
+				$(formId).find('input[type="checkbox"]:checked').prop("checked", false);					
+			}
+			else {
+				$(formId).attr('init-form', 'yes');
+				$(formId).modal({
+					keyboard: false,
+					backdrop: 'static'
+				});
+			}
+		});
+
+		$(document).on('click', '#print-pages-modal-btn', function(e) {
+			var filter = [];
+			$(formId).find('input[type="checkbox"]:checked').each(function(index, elm) {
+				filter.push($(elm).val());
+			});
+			$(formId).modal('hide');
+			$.post('/printpages/patient',  {
+				filter: filter,
+				patientId: $(formId).attr('patientId')
+			}, function(htmlText) {
+				$('.print-section').html(htmlText);
+				window.print();
+			});
+		});
+	})();
+	//  ************* print pages [end] ***************
 });
 </script>
-  #{ googleAnalytics /}
+
+#{ googleAnalytics /}
+
 </body>
 </html>

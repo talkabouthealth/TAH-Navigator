@@ -3,7 +3,7 @@
                         <div class="col-xs-4 col-sm-4" style="border-right: 1px solid #CCC">
                             <div class="distress">
                                 <h3>Distress &nbsp;&nbsp;&nbsp; 
-                                    <small><a class="distress-meter button rounded" patientId="${patientId}">Update Distress</a></small>
+                                    <small><a class="distress-meter button rounded" patientId="${patientId}" updateBy="${expertDetail.user.id}">Update Distress</a></small>
                                 </h3>
                                 #{if distress != null }
                                 <table>

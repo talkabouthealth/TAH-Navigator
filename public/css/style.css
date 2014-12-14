@@ -2062,3 +2062,19 @@ td.beauty-hover {
 .table-fixed td {
 	overflow: hidden;
 }
+
+
+
+.modal-content {
+	color: black;
+}
+
+.modal-content .checkbox input[type=checkbox]{
+	position: relative;
+}
+
+div.print-section {
+    display: none;
+}
+
+

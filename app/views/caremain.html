@@ -10,6 +10,7 @@
   <title>TVRH Navigator. Moffitt Cancer Center - The Villages Regional Hospital Patient Navigation Application</title>
   <link href="/public/css/styles.less" rel="stylesheet/less" />
   <link href="/public/css/care/styles.less" rel="stylesheet/less" />
+  <link href="/public/css/print.css" rel="stylesheet" type="text/css" media="print" />
   <script src="/public/js/lib/less-1.7.4.min.js"></script>
   <link href="/public/css/bootstrap.min.css" rel="stylesheet" type="text/css" />    
 
@@ -933,11 +934,8 @@ a.date-range.active {
     </div>
 </div>
 
-#{set distressToolopenFromCare: 'yes' /}
-#{set updateBy: expertDetail.user.id /}
 #{set patientId: patientId /}
-
-#{distressModal /}
+#{distressMeter /}
 
 <!-- ------------------------ All Care Team Modal-Templates Here  [END] ------------------------------- -->
 
@@ -946,6 +944,29 @@ a.date-range.active {
   var todayDate;
   var lastLogin;
   $(document).ready(function(){
+	  //  distress modal [start]
+	$(document).on('click', 'a.distress-meter', function(e) {
+		var patientId = $(this).attr('patientId');	
+		var updateBy = $(this).attr('updateBy');
+		$.post('/distress/lastDistressIn24Hours', {
+			patientId: patientId
+		}, function(data) {
+			var options = {            
+				patientId: patientId,
+				updateBy: updateBy
+			};			
+			if ('lastDistress' in data) {
+				var info = data.lastDistress;
+				options['distressValue'] = info.curDist;
+				var otherDetail = info.otherdetail;
+				var problemList = otherDetail.split(",<br/>");
+				options['problemList'] = problemList;
+			}
+			$.distressMeter(options);
+		}, "json");
+	});
+	//  distress modal [end]
+	  
 	  
 	  
 	  $('body').on('click', '.fa-info-circle', function() {
@@ -1026,7 +1047,6 @@ a.date-range.active {
   -->
 </script>
 
-<script type='text/javascript' src="/public/js/patient/distressMeter.js"></script>
 #{ googleAnalytics /}
 </body>
 </html>

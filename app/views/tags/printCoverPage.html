@@ -1,0 +1,38 @@
+*{ parameters are : user, userDetails, patientDetails }*
+#{set user: _user /}
+#{set userDetails: _userDetails /}
+#{set patientDetails: _patientDetails /}
+
+
+
+
+<br><br><br><br><br><br><br>
+<h1 class="text-center">Cancer Care Plan and Summary</h1>	
+
+<div class="clearfix"></div>
+<br><br>
+<div class="col-xs-offset-3 col-xs-7">Patient: ${userDetails.firstName + " " + userDetails.lastName}</div>
+ #{if patientDetails && patientDetails.diseaseId}
+<div class="col-xs-offset-3 col-xs-7">${patientDetails.disease.name}</div>		
+#{/if}
+<div class="col-xs-offset-3 col-xs-7">Stage 3A, ER+, PR-, HER2-, BRCA+</div>
+
+
+<div class="clearfix"></div>
+<br><br>
+<div class="col-xs-offset-3 col-xs-7">Patient DOB: 5/20/1975</div>
+<div class="col-xs-offset-3 col-xs-7">Patient Phone: 917-710-1972</div>
+<div class="col-xs-offset-3 col-xs-7">Email: murray@talkabouthealth.com</div>
+
+
+<div class="clearfix"></div>
+<br><br>
+<div class="col-xs-offset-3 col-xs-7">Support Contact Name: Jorun Jones</div>
+<div class="col-xs-offset-3 col-xs-7">Support Contact Telephone: 917-705-3096</div>
+
+
+<div class="clearfix"></div>
+<br><br>
+<div class="col-xs-offset-3 col-xs-7">Primary Cancer Physician: Jorge Freire, MD</div>
+<div class="col-xs-offset-3 col-xs-7">Primary Care Physician: Mick Tulley, MD</div>
+<div class="page-break"></div>

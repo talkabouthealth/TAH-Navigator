@@ -1,0 +1,31 @@
+#{if cover_page || all}
+#{printCoverPage user: user, userDetails: userDetails, patientDetails: patientDetails  /}
+#{/if}
+
+#{if diagnosis || all}
+<div>Diagnosis</div>
+#{/if}
+
+#{if treatment_plan || all}
+<div>Treatment Plan</div>
+#{/if}
+
+#{if follow_up_care_plan || all}
+<div>Follow-up Care Plan</div>
+#{/if}
+
+#{if care_team || all}
+<div>Care Team</div>
+#{/if}
+
+#{if appointments || all}
+<div>Appointments</div>
+#{/if}
+
+#{if medications || all}
+<div>Medications</div>
+#{/if}
+
+#{if distress_data || all}
+<div>Distress Data</div>
+#{/if}
