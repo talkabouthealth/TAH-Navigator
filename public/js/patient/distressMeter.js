@@ -79,20 +79,15 @@ var DistressMeter = function() {
         distressAmountValue.html(amount);
         $("#step2").hide();
         $(".progress-bar").slider( "value", amount );
-        setIndicator(amount);
         $("#step3").hide();
 
         $(".otherDetails").val('');
         $('.toggle-switch input[name="distressType"]').prop('checked', false);
         setStepCheckers();
         setYouTubeVideo();
-
-        if ( amount > 1 ) {
-            labelNone.show().animate({opacity: 1});
-        }
-        if ( amount < 8 ) {
-            labelExtreme.show().animate({opacity: 1});
-        }
+        setTimeout(function() {
+            setIndicator(amount);
+        });
     }, "json");
     
   };
@@ -270,14 +265,14 @@ var setElements = function() {
 $(document).ready(function(){
 
     showDistressButton = $('a.distress-meter');
-  showDistressButton.click(function(e){
-      launchDistressMeter();
-      distressContainer.modal({ keyboard: false, backdrop: 'static' });
-  });
+    showDistressButton.click(function(e){
+        $('#distress').modal({ keyboard: false, backdrop: 'static' });
+        launchDistressMeter();
+    });
 
 
 
-  });
+});
 
   // calling this function implies distress is not a modal
   var setTemplate = function(el) {
