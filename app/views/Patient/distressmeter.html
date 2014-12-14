@@ -1,35 +1,4 @@
 #{set pageType = 'diagnosis' /}
 #{extends 'patientmain.html' /}
-
-#{distressMeter /}
-<div id="distressmeter" patient-id="${user.id}">
- 
-</div>
-
-<script type="text/javascript">
-$(function() {     
-    var $distressDiv = $('#distressmeter');
-    var patientId = $distressDiv.attr("patient-id");
-    $.post('/distress/lastDistressIn24Hours', {
-        patientId: patientId
-    }, function(data) {
-        var options = {            
-            patientId: patientId
-        };
-        #{if session.get("hashLogin")}
-        options['accessType'] = 'hashLogin';        
-        $('.sidebar').css("pointer-events", "none").fadeTo("slow", 0.2);
-        $('.account-container').css("pointer-events", "none").fadeTo("slow", 0.2);
-        #{/if}
-        if ('lastDistress' in data) {
-            var info = data.lastDistress;
-            options['distressValue'] = info.curDist;
-            var otherDetail = info.otherdetail;
-            var problemList = otherDetail.split(",<br/>");
-            options['problemList'] = problemList;
-        }
-        $distressDiv.distressMeter(options);
-    }, "json");
-    //$.post("/distress/save", { curDist: 4, distresType: [1, 2, 3], daterecrded: '
-});
-</script>
+<script type='text/javascript' src="/public/js/patient/distressMeter.js"></script>
+<script type='text/javascript'>DistressMeter.setTemplate('#distress .modal-content form');</script>

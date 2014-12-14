@@ -12,10 +12,20 @@
     }
 
     label, .distress-amount {
-      position: absolute; margin-left: 50px; width: 240px; color: #000000;font-weight:normal; text-align: left;
+      position: absolute; 
+      margin-left: 50px; 
+      width: 240px; 
+      color: #000000;
+      font-weight:normal; 
+      text-align: left;
 
       &.no-distress {
         top: 92%
+      }
+
+      &.no-distress, &.extreme-distress {
+          display: inline-block;
+          opacity: 1;
       }
     }
 

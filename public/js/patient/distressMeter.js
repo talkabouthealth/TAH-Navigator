@@ -1,11 +1,14 @@
 var DistressMeter = function() {
   var showDistressButton, nextPageButton, backButton;
-  var distressModal, distressForm, distressAmountText, distressAmountValue;
+  var distressContainer, distressForm, distressAmountText, distressAmountValue;
+  var curDist;
   var step1, step2, step3;
   var indicator, indicatorAmount, indicatorText;
   var sliderRange;
   var labelExtreme, labelNone;
   var isProblemList;
+
+  var patientId;
 
   var amount = 1;
   var postData;
@@ -26,7 +29,6 @@ var DistressMeter = function() {
   };
 
   var range = function(value, min, max) {
-    // debugger;
     value = parseInt(value,10) * (1/0.92) ;
     return value * max + min;
   };
@@ -36,7 +38,6 @@ var DistressMeter = function() {
     indicator.css('bottom', range(calculateTopOps(amount), 0, 0.81) + '%');
     indicatorAmount.html(amount);
     indicatorText.html(distressRange[amount]);
-
 
     if ( labelNone.is(':visible') && amount < 2 ) {
       labelNone.animate({opacity: 0}).hide();
@@ -54,46 +55,67 @@ var DistressMeter = function() {
   
 
   var launchDistressMeter = function() {
-    var amount;
-    if ($.isEmptyObject(lastDistress)) {
-        amount = 1;
-    }
-    else {
-        amount = lastDistress.curDist;
-    }    
-    page = 1;
-    $("#step1").show();
-    distressAmountValue.html(amount);
-    $("#step2").hide();
-    $(".progress-bar").slider( "value", amount );
-    setIndicator(amount);
-    $("#step3").hide();
 
-    $(".otherDetails").val('');
-    $('.toggle-switch input[name="distressType"]').prop('checked', false);
-    distressModal.modal({ keyboard: false, backdrop: 'static' });
-    distressModal.on('hidden.bs.modal', function (e) {
+    $.post('/distress/lastDistressIn24Hours', {
+        patientId: showDistressButton.attr("patientId")
+    }, function(data) {
+        setElements();
+        if ($.isEmptyObject(data)) {
+            lastDistress = {};
+        }
+        else {
+            lastDistress = data.lastDistress;
+        }        
+
+        var amount;
+        if ($.isEmptyObject(lastDistress)) {
+            amount = 1;
+        } else {
+            amount = lastDistress.curDist;
+        }    
+
+        page = 1;
+        $("#step1").show();
+        distressAmountValue.html(amount);
+        $("#step2").hide();
+        $(".progress-bar").slider( "value", amount );
+        setIndicator(amount);
+        $("#step3").hide();
+
+        $(".otherDetails").val('');
+        $('.toggle-switch input[name="distressType"]').prop('checked', false);
+        setStepCheckers();
+        setYouTubeVideo();
+
+        if ( amount > 1 ) {
+            labelNone.show().animate({opacity: 1});
+        }
+        if ( amount < 8 ) {
+            labelExtreme.show().animate({opacity: 1});
+        }
+    }, "json");
+    
+  };
+
+  var setYouTubeVideo = function() {
+    distressContainer.on('hidden.bs.modal', function (e) {
     	$("#youTubeVideo").show();
     	$("#youTubeVideoImage").hide();
     });
-    distressModal.on('shown.bs.modal', function (e) {
+    distressContainer.on('shown.bs.modal', function (e) {
     	$("#youTubeVideo").hide();
     	$("#youTubeVideoImage").show();
     });
-    distressModal.find('div.stepchecker strong').each(function(){
+  };
+
+  var setStepCheckers = function() {
+    distressContainer.find('div.stepchecker strong').each(function(){
       var strong = $(this);
       var toggle = strong.prev().find('label');
       strong.unbind('click').click(function(){
         toggle.click();
       });
     });
-
-    if ( amount > 1 ) {
-      labelNone.show().animate({opacity: 1});
-    }
-    if ( amount < 8 ) {
-      labelExtreme.show().animate({opacity: 1});
-    }
   };
 
   var nextPage = function() {
@@ -145,10 +167,10 @@ var DistressMeter = function() {
     	  }catch(e){}    		
       });
     } else if ( page === 3 ) {    
-    	 distressModal.modal('hide');
+    	 distressContainer.modal('hide');
 
 } else if ( page === 4 ) {
- distressModal.modal('hide');
+ distressContainer.modal('hide');
 }
 page++;
 };
@@ -177,7 +199,7 @@ var calculateTopOps = function(value) {
 
 var slide = function( event, ui ) {
   var value = ui.value;
-  document.forms.distressForm.curDist.value = value;
+  curDist.val(value);
   setIndicator(value);
 
   if ( ui.value >= 7 ) {
@@ -189,40 +211,24 @@ var slide = function( event, ui ) {
   }
 };
 
-$(document).ready(function(){
-  showDistressButton = $('a.distress-meter');
-  nextPageButton = $('#distress button.next-page');
-  backButton = $('#distress button.back');
-  distressModal = $('#distress');
-  distressForm = $('#distressForm');
+var setElements = function() {
+    if ( ! distressContainer ) { distressContainer = $('#distress'); }
+    curDist = $('input[name="curDist"]');
+  nextPageButton = distressContainer.find('button.next-page');
+  backButton = distressContainer.find('button.back');
+  distressForm = distressContainer.find('form');
   indicator = $('.progress .distress-amount');
   indicatorAmount = indicator.find('.distress-amount-value');
   indicatorText = indicator.find('.distress-amount-text');
   sliderRange = $('.progress-bar');
   distressAmountValue = $('.distress-amount-value');
   distressAmountText = $('.distress-amount-text');
-  labelExtreme = distressModal.find('label.extreme-distress');
-  labelNone = distressModal.find('label.no-distress');
+  labelExtreme = distressContainer.find('label.extreme-distress');
+  labelNone = distressContainer.find('label.no-distress');
 
-  step1 = distressModal.find('#step1');
-  step2 = distressModal.find('#step2');
-  step3 = distressModal.find('#step3');
-  showDistressButton.click(function(e){
-    e.preventDefault();
-    var patientId = $(this).attr("patientId");
-    $.post('/distress/lastDistressIn24Hours', {
-        patientId: patientId
-    }, function(data) {
-        if ($.isEmptyObject(data)) {
-            lastDistress = {};
-        }
-        else {
-            lastDistress = data.lastDistress;
-        }        
-        launchDistressMeter();
-    }, "json");
-    
-  });
+  step1 = distressContainer.find('#step1');
+  step2 = distressContainer.find('#step2');
+  step3 = distressContainer.find('#step3');
 
   nextPageButton.click(function(e){
     e.preventDefault();
@@ -245,8 +251,6 @@ $(document).ready(function(){
       slide: slide
     });
 
-  });
-
   // cute li'l hack to support iPads and touch devices for the toggle switches
   var touchend = function(e) {
     e.preventDefault();
@@ -260,5 +264,38 @@ $(document).ready(function(){
       touchend(e);
     }
   });
+
+};
+
+$(document).ready(function(){
+
+    showDistressButton = $('a.distress-meter');
+  showDistressButton.click(function(e){
+      launchDistressMeter();
+      distressContainer.modal({ keyboard: false, backdrop: 'static' });
+  });
+
+
+
+  });
+
+  // calling this function implies distress is not a modal
+  var setTemplate = function(el) {
+      $(document).ready(function() {
+          el = $(el);
+          if ( el.length ) {
+              $('.content').html(el[0].outerHTML).addClass('distress');
+
+              distressContainer = $('.content');
+              // remove the modal on the page
+              $('#distress').remove();
+              launchDistressMeter();
+          }
+      });
+  };
+
+  return {
+      setTemplate: setTemplate
+  };
 
 }();
