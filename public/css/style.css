@@ -2064,6 +2064,28 @@ td.beauty-hover {
 }
 
 
+.patient-header-btn-group  {
+	margin-top: 10px;
+}
+
+.patient-header-btn-group .btn {
+	background: white;
+	color: black;
+}
+
+.patient-header-btn-group .btn:hover {
+	background: #cdcdcd;
+}
+
+.patient-header-btn-group .dropdown-menu {
+	margin-top: 0px;	
+}
+
+.patient-header-btn-group .dropdown-menu a:hover{
+	background: #cdcdcd;
+	color: black;
+}
+
 
 .modal-content {
 	color: black;

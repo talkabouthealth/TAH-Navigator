@@ -78,19 +78,19 @@
 						</div>
 					</div><!-- share -->
 					<div class="account-actions">
-						<ul class="btngroup">
-							<li>
-								<a href="#" class="button rounded" data-toggle="dropdown">Settings</a>
-								<ul class="dropdown-menu">
-									<li><a href="@{Patient.setting()}"><i class="fa fa-spinner"></i><span class="hidden-sm text">Update Profile Image</span></a></li>
-									<li><a href="@{Patient.profile()}"><i class="fa fa-inbox"></i><span class="hidden-sm text">Edit Communication Preferences</span></a></li>
-									<li><a href="@{Patient.editContact()}"><i class="fa fa-user"></i><span class="hidden-sm text">Edit Personal Information</span></a></li>
-									<li><a href="@{Patient.password()}"><i class="fa fa-lock"></i><span class="hidden-sm text">Edit Password</span></a></li>
-								</ul>
-							</li>
-							<!--<li><a class="button" href="#" id="print-pages">Print Pages</a></li>-->
-							<li><a class="button rounded" href="/logout">Log Out</a></li>
-						</ul>
+						<div class="btn-group patient-header-btn-group">
+							<a class="btn" data-toggle="dropdown">Settings <span class="caret"></span></a>
+							<ul class="dropdown-menu">
+								<li><a href="@{Patient.setting()}"><i class="fa fa-spinner"></i><span class="hidden-sm text">Update Profile Image</span></a></li>
+								<li><a href="@{Patient.profile()}"><i class="fa fa-inbox"></i><span class="hidden-sm text">Edit Communication Preferences</span></a></li>
+								<li><a href="@{Patient.editContact()}"><i class="fa fa-user"></i><span class="hidden-sm text">Edit Personal Information</span></a></li>
+								<li><a href="@{Patient.password()}"><i class="fa fa-lock"></i><span class="hidden-sm text">Edit Password</span></a></li>
+							</ul>
+							<a class="btn" id="print-pages">Print Pages</a>
+							<a class="btn" href="/logout">Log Out</a>
+						</div>
+						
+						
 						<nav class="navbar2 navbar-default" role="navigation">
 							<div style=" text-align: center;width: 30px;margin-top: 25px;">
 								<a type="button" style="cursor: pointer;position: relative;" data-toggle="collapse" data-target="#example-navbar-collapse">

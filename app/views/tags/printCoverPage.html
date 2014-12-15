@@ -1,38 +1,44 @@
-*{ parameters are : user, userDetails, patientDetails }*
+*{ parameters are : user, userDetails, patientDetails, cancerInfo }*
 #{set user: _user /}
 #{set userDetails: _userDetails /}
 #{set patientDetails: _patientDetails /}
+#{set cancerInfo: _cancerInfo /}
 
 
 
-
-<br><br><br><br><br><br><br>
 <h1 class="text-center">Cancer Care Plan and Summary</h1>	
 
-<div class="clearfix"></div>
-<br><br>
+#{if userDetails}
 <div class="col-xs-offset-3 col-xs-7">Patient: ${userDetails.firstName + " " + userDetails.lastName}</div>
- #{if patientDetails && patientDetails.diseaseId}
-<div class="col-xs-offset-3 col-xs-7">${patientDetails.disease.name}</div>		
 #{/if}
-<div class="col-xs-offset-3 col-xs-7">Stage 3A, ER+, PR-, HER2-, BRCA+</div>
+#{if cancerInfo}
+<div class="col-xs-offset-3 col-xs-7">${cancerInfo.diseaseName}</div>
+#{if cancerInfo.diseaseId == '1'}
+#{set info: [] /}		
+#{if cancerInfo.stageName} %{ info.add(cancerInfo.stageName); }% #{/if}
+#{if cancerInfo.er} %{ info.add("ER" + cancerInfo.er); }% #{/if}
+#{if cancerInfo.pr} %{ info.add("PR" + cancerInfo.pr); }% #{/if}
+#{if cancerInfo.her2} %{ info.add("HER2" + cancerInfo.her2); }% #{/if}
+#{if cancerInfo.brca} %{ info.add("BRCA" + cancerInfo.brca); }% #{/if}
+<div class="col-xs-offset-3 col-xs-7">${info.join(', ')}</div>
+#{/if}
+#{/if}
 
 
-<div class="clearfix"></div>
-<br><br>
-<div class="col-xs-offset-3 col-xs-7">Patient DOB: 5/20/1975</div>
-<div class="col-xs-offset-3 col-xs-7">Patient Phone: 917-710-1972</div>
-<div class="col-xs-offset-3 col-xs-7">Email: murray@talkabouthealth.com</div>
+#{if userDetails}
+<div class="col-xs-offset-3 col-xs-7">Patient DOB: ${userDetails.dob.format('MM/dd/yyyy')}</div>
+<div class="col-xs-offset-3 col-xs-7">Patient Phone: ${userDetails.homePhone}</div>
+#{/if}
+<div class="col-xs-offset-3 col-xs-7">Email: ${user.email}</div>
 
 
-<div class="clearfix"></div>
-<br><br>
-<div class="col-xs-offset-3 col-xs-7">Support Contact Name: Jorun Jones</div>
-<div class="col-xs-offset-3 col-xs-7">Support Contact Telephone: 917-705-3096</div>
+#{if patientDetails}
+<div class="col-xs-offset-3 col-xs-7">Support Contact Name: ${patientDetails.ec1name}</div>
+<div class="col-xs-offset-3 col-xs-7">Support Contact Telephone: ${patientDetails.ec1number}</div>
+#{/if}
 
 
-<div class="clearfix"></div>
-<br><br>
-<div class="col-xs-offset-3 col-xs-7">Primary Cancer Physician: Jorge Freire, MD</div>
-<div class="col-xs-offset-3 col-xs-7">Primary Care Physician: Mick Tulley, MD</div>
+
+<div class="col-xs-offset-3 col-xs-7">Primary Cancer Physician: N/A</div>
+<div class="col-xs-offset-3 col-xs-7">Primary Care Physician: N/A</div>
 <div class="page-break"></div>
