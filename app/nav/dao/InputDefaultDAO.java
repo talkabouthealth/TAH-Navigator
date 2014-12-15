@@ -37,6 +37,20 @@ public class InputDefaultDAO {
 		return types;
 	}
 
+	public static  List<InputDefaultDTO> getInputDefaultByPageField(String page,String field) {
+		List<InputDefaultDTO> types = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			TypedQuery<InputDefaultDTO> query = em.createQuery("SELECT c FROM InputDefaultDTO c where c.page = :f2 and c.field = :f3 order by c.fieldtext", InputDefaultDTO.class);
+			query.setParameter("f2", page);
+			query.setParameter("f3", field);
+			types = query.getResultList();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return types;
+	}
+
 	public static InputDefaultDTO getInputTipTextDefaultByFieldName(Integer diseaseId,String page,String fieldName) {
 		InputDefaultDTO types = null;
 		EntityManager em = JPAUtil.getEntityManager();

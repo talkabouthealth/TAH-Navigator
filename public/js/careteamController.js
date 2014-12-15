@@ -28,31 +28,30 @@ var careTeamController = (function() {
 		'default': '#'    // nothing 
 	};
     var BREAST_CANCER_ID = 1;
-	var PROSTATE_CANCER_ID = 2; 	
+	var PROSTATE_CANCER_ID = 2;
 	var BLADDER_CANCER_ID = 8;
 	var OVARIAN_CANCER_ID = 22;
 
 	var psaScoreArray = ["0","1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30"];
 
-	var curStageId ='' ;
+	var curStageId = '';
 	var csrtype,csrsubtype,invasionVal,gradeVal,csrphase;
 	var genetics;
 	var chromosomesIds;
 	var fabId, whoId;
-	
+
     var addTooltip = function() {
-        //  Add tooltip feature to table [Start]
+        // Add tooltip feature to table [Start]
         var divs = $('table.table td div');
         if (divs.length) {
             divs.addTooltipsToTable();
-
-            $(window).resize(function(){
+            $(window).resize(function() {
                 divs.addTooltipsToTable();
             });
         }
         //  Add tooltip feature to table [End]
     };
-    
+
     var careItemTemplateForm = {
     		followUpDiv: '#followupplan',
             formId: '#follow-up-care-item-template',
@@ -71,10 +70,7 @@ var careTeamController = (function() {
                 $(self.concernDiv).removeClass('has-success');
             },
             init: function(patientId) {
-//            	var params = {};
-            	 var params = {
-                         'patientId': patientId
-                     };
+            	 var params = { 'patientId': patientId };
             	 params['formOf'] = "disease";
             	$.post(actions['fup_template_data'], params, function(data) {
                     var self = careItemTemplateForm;
@@ -83,12 +79,28 @@ var careTeamController = (function() {
                     for(i=0;i<data.disease.length;i++) {
                     	$(self.diseaseId).append("<option value='"+data.disease[i].id+"'>"+data.disease[i].templatename+"</option>");
                     }
-                    
+
                     $(self.saveBtnId).click(function() {
                         if (self.save()) {
                             $(self.formId).modal('hide');
                         }
                     });
+
+                	$(self.diseaseId).click(function() {
+                        var str = $(this).val();
+                        if (str) {
+                            self.templateOk();
+                        }
+                        else {
+                            self.templateNotOk();
+                        }
+                    });
+                	
+                	$(self.formId).modal({
+                		keyboard: false,
+                		backdrop: 'static'
+                	});
+                	
                 }, "json");
             },
             validate: function() {
@@ -126,20 +138,9 @@ var careTeamController = (function() {
                 $(self.formId).attr("patient_id", patientId);
                 var formLoad = function() {
                     if (initFlag == '0') {
-                        $(self.formId).modal({
-                            keyboard: false,
-                            backdrop: 'static'
-                        });
+                        
                         self.init(patientId);
-                    	$(self.diseaseId).click(function() {
-                            var str = $(this).val();
-                            if (str) {
-                                self.templateOk();
-                            }
-                            else {
-                                self.templateNotOk();
-                            }
-                        });
+                        
                     }
                     else {
                         $(self.formId).modal('show');
@@ -229,7 +230,12 @@ var careTeamController = (function() {
                     self.remove();
                     $(self.formId).modal('hide');
                 });
-                 
+
+                $(self.formId).modal({
+                    keyboard: false,
+                    backdrop: 'static'
+                });
+                
             }, "json");
         },
         empty: function() {
@@ -304,10 +310,6 @@ var careTeamController = (function() {
             
             var formLoad = function() {
                 if (initFlag == '0') {
-                    $(self.formId).modal({
-                        keyboard: false,
-                        backdrop: 'static'
-                    });
                     self.init(patientId);
                 }
                 else {
@@ -482,7 +484,10 @@ var careTeamController = (function() {
 	                self.remove();
 	                $(self.formId).modal('hide');
 	            });
-	            
+	            $(self.formId).modal({
+                    keyboard: false,
+                    backdrop: 'static'
+                });
 	            /*Ajax end*/
         	});
         },
@@ -563,10 +568,6 @@ var careTeamController = (function() {
             
             var formLoad = function() {
                 if (initFlag == '0') {
-                    $(self.formId).modal({
-                        keyboard: false,
-                        backdrop: 'static'
-                    });
                     self.init(patientId);
                 }
                 else {
@@ -701,6 +702,12 @@ var careTeamController = (function() {
                      $(self.formId).modal('hide');
                  });
                  $(self.formId).attr('init_flag', '1');
+                 
+                 $(self.formId).modal({
+                     keyboard: false,
+                     backdrop: 'static'
+                 });
+                 
              }, "json");
         },
         empty: function() {
@@ -802,10 +809,6 @@ var careTeamController = (function() {
             
             var formLoad = function() {
                 if (initFlag == '0') {
-                    $(self.formId).modal({
-                        keyboard: false,
-                        backdrop: 'static'
-                    });
                     self.init(patientId);
                 } else {
                     $(self.formId).modal('show');

@@ -296,15 +296,17 @@ public class CarePatien  extends Controller {
 		PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", userDto.getId());
 	
 		if(formOf.equals("disease")) { 
-//			List<DiseaseMasterDTO>  dis =  Disease.allDiseases();
 			List<DefaultTemplateMasterDTO> dis = DefaultTemplateDAO.getPatientTemplate(patientOtherDetails.getDiseaseId());
 			jsonData.put("disease",dis);
 		} else {
-			if (patientId != null) {
+//			if (patientId != null) {
+//				List<InputDefaultDTO> inputList = InputDefaultDAO.getInputDefaultByPageField("followupplan",patientOtherDetails.getDiseaseId(),formOf);
+//				jsonData.put("inputlist", inputList);
+//			}
+			if(formOf.equals("activity")) {
 				List<InputDefaultDTO> inputList = InputDefaultDAO.getInputDefaultByPageField("followupplan",patientOtherDetails.getDiseaseId(),formOf);
 				jsonData.put("inputlist", inputList);
-			}
-			if(formOf.equals("activity")) {
+				
 				List<CareMember> doctors = UserDAO.verifiedDoctors();
 				ArrayList<String> doctorNames = new ArrayList<String>();
 				for(CareMember doctor : doctors) {			
@@ -322,7 +324,9 @@ public class CarePatien  extends Controller {
 				frequencies.add("Every 6 months");
 				frequencies.add("Every year");
 				jsonData.put("frequencies", frequencies);
-	
+			} else {
+				List<InputDefaultDTO> inputList = InputDefaultDAO.getInputDefaultByPageField("followupplan",formOf);
+				jsonData.put("inputlist", inputList);
 			}
 		}
 		renderJSON(jsonData);
