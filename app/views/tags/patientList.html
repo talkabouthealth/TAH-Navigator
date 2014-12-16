@@ -18,33 +18,31 @@
 %{ 
     disease = "-"; 
     if (patient.patientOtherDetails) {
+		diseaseInfo = [];
         if (patient.patientOtherDetails.disease) {
             disease = patient.patientOtherDetails.disease.name;
+			diseaseInfo.add(patient.patientOtherDetails.disease.name);
         }
         if (patient.breastCancerInfo && patient.breastCancerInfo.bcStage) {
-            disease += " " + patient.breastCancerInfo.bcStage.name;
+            disease += ", " + patient.breastCancerInfo.bcStage.name;
+			diseaseInfo.add(patient.breastCancerInfo.bcStage.name);
         }
-        if (patient.breastCancerInfo) {
-            disease += "\n";
-            if (patient.breastCancerInfo.er || patient.breastCancerInfo.pr || patient.breastCancerInfo.her2) {
-                if (patient.breastCancerInfo.er) {
-                    disease += "Er" + patient.breastCancerInfo.er;
-                }
-                if (patient.breastCancerInfo.er && patient.breastCancerInfo.pr) {
-                    disease += ", Pr" + patient.breastCancerInfo.pr;
-                }
-                else if (patient.breastCancerInfo.pr) {
-                    disease += "Pr" + patient.breastCancerInfo.pr;
-                }
-                if ((patient.breastCancerInfo.er || patient.breastCancerInfo.pr) && patient.breastCancerInfo.her2) {
-                    disease += ", HER2" + patient.breastCancerInfo.her2;
-                }
-                else if (patient.breastCancerInfo.her2) {
-                    disease += "HER2" + patient.breastCancerInfo.her2;
-                }
-            }
+        if (patient.breastCancerInfo) {                        
+			if (patient.breastCancerInfo.er) {
+				diseaseInfo.add("Er" + patient.breastCancerInfo.er);
+			}
+			if (patient.breastCancerInfo.pr) {                    
+				diseaseInfo.add("Pr" + patient.breastCancerInfo.pr);
+			}                
+			if (patient.breastCancerInfo.her2) {
+				diseaseInfo.add("HER2" + patient.breastCancerInfo.her2);				
+			}
+			if (patient.breastCancerInfo.brca) {
+				diseaseInfo.add("BRCA" + patient.breastCancerInfo.brca);				
+			}
         }
-    }    
+		disease = diseaseInfo.join(", ");
+    }
 }%
 
 *{*************  lastDistress ************}*
@@ -86,7 +84,7 @@
 
 *{*************  problemList ************}*
 %{
-    problemList = "N/A";
+    problemList = "None";
     if (patient.distress && patient.distress.otherdetail) {
         problemList = patient.distress.otherdetail.printMessage();
 	}						
@@ -115,7 +113,7 @@
     <td class="current-distress">${lastDistress}</td>
     <td>
         <div>
-        #{if lastDistressCheckIn != "-"}
+	#{if lastDistressCheckIn != "-"}
         <span class="timeAgo" title="${lastDistressCheckIn}">${lastDistressCheckIn}</span>
         #{/if}
         #{else}${lastDistressCheckIn}#{/else}
