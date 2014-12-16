@@ -85,15 +85,20 @@ public class PatientAlert {
 	}
 	
 	public static void firstAppointmentScheduledAlert(UserDTO patient, AppointmentDTO appointment) {
-		UserDetailsDTO userDetails = UserDAO.getDetailsById(patient.getId());
-		String email = patient.getEmail();
-		String firstName = userDetails.getFirstName();
-		String appointmentTime = appointment.getAppointmenttime();
-		String appointmentDate = new SimpleDateFormat("MM/dd/yyyy").format(appointment.getAppointmentdate());
-		boolean success = emailAppointmentReminder_asSoonAsScheduled(email, firstName, appointmentDate, appointmentTime);							
-		if (success) {
-			int appointmentId = appointment.getId();
-			logEmailAppointmentReminder(appointmentId, EMAIL, AR_FIRST_APPOINTMENT_AS_SOON_AS_SCHEDULED, new Date());
+		Date now = new Date();
+		long curTime = now.getTime();
+		Date appDate = appointment.getAppointmentdate();
+		if (curTime < appDate.getTime()) {
+			UserDetailsDTO userDetails = UserDAO.getDetailsById(patient.getId());
+			String email = patient.getEmail();
+			String firstName = userDetails.getFirstName();
+			String appointmentTime = appointment.getAppointmenttime();
+			String appointmentDate = new SimpleDateFormat("MM/dd/yyyy").format(appointment.getAppointmentdate());
+			boolean success = emailAppointmentReminder_asSoonAsScheduled(email, firstName, appointmentDate, appointmentTime);							
+			if (success) {
+				int appointmentId = appointment.getId();
+				logEmailAppointmentReminder(appointmentId, EMAIL, AR_FIRST_APPOINTMENT_AS_SOON_AS_SCHEDULED, new Date());
+			}
 		}
 	}
 	
