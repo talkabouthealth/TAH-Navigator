@@ -16,7 +16,7 @@ public class CancerDAO {
 	public static final int BREAST_CANCER_ID = 1;
 	
 	public static Map<String, String> cancerInfo(int patientId) {
-		Map<String, String> info = null;
+		Map<String, String> info = new HashMap<String, String>();
 		EntityManager em = JPAUtil.getEntityManager();
 		TypedQuery<PatientDetailDTO> patientDetailsQuery = em.createQuery("SELECT p FROM PatientDetailDTO p WHERE p.id = :id", PatientDetailDTO.class);
 		patientDetailsQuery.setParameter("id", patientId);
@@ -40,9 +40,8 @@ public class CancerDAO {
 	
 	public static Map<String, String> breastCancerInfo(PatientDetailDTO patientDetails) {
 		EntityManager em = JPAUtil.getEntityManager();
-		Map<String, String> info = null;											
-		DiseaseMasterDTO diseaseMaster = patientDetails.getDisease();
-		info = new HashMap<String, String>();
+		Map<String, String> info = new HashMap<String, String>();										
+		DiseaseMasterDTO diseaseMaster = patientDetails.getDisease();		
 		info.put("diseaseId", String.valueOf(BREAST_CANCER_ID));
 		info.put("diseaseName", diseaseMaster.getName());
 		TypedQuery<BreastCancerInfoDTO> query = em.createQuery("SELECT b FROM BreastCancerInfoDTO b WHERE b.id = :id", BreastCancerInfoDTO.class);

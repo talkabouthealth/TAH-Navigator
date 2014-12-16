@@ -1,0 +1,35 @@
+*{ parameters are : user, userDetails, patientDetails, cancerInfo }*
+#{set user: _user /}
+#{set userDetails: _userDetails /}
+#{set patientDetails: _patientDetails /}
+#{set cancerInfo: _cancerInfo /}
+
+<div>
+	<div class="col-xs-4">
+		<h2>${userDetails?.firstName + " " + userDetails?.lastName}<h2>
+#{if cancerInfo}
+		<div>${cancerInfo?.diseaseName}</div>
+#{/if}
+#{if cancerInfo.diseaseId == '1'}
+#{set info: [] /}		
+#{if cancerInfo.stageName} %{ info.add(cancerInfo.stageName); }% #{/if}
+#{if cancerInfo.er} %{ info.add("ER" + cancerInfo.er); }% #{/if}
+#{if cancerInfo.pr} %{ info.add("PR" + cancerInfo.pr); }% #{/if}
+#{if cancerInfo.her2} %{ info.add("HER2" + cancerInfo.her2); }% #{/if}
+#{if cancerInfo.brca} %{ info.add("BRCA" + cancerInfo.brca); }% #{/if}
+		<div>${info.join(', ')}</div>
+#{/if}
+	</div>
+	
+	<div class="col-xs-4">
+		<div><b>DOB:</b> ${userDetails?.dob?.format('MM/dd/yyyy')}</div>
+		<div><b>PHONE:</b> ${userDetails?.homePhone}</div>
+	</div>
+	<div class="col-xs-4">
+		<div><b>DATE OF DIAGNOSIS:</b> ${patientDetails?.dateofdiagnosis?.format('MM/dd/yyyy')}</div>
+		<div><b>SUPPORT CONTACT:</b> ${patientDetails?.ec1name}</div>
+		<div>${patientDetails?.ec1number}</div>
+	</div>
+	
+</div>
+

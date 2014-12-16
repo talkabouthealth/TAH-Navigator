@@ -422,8 +422,9 @@
 </div>
 
 #{distressMeter /}
+		
 
-	<div class="print-section container-fluid">
+	<div class="print-section">
 	</div>
 
 <script type='text/javascript'>
@@ -540,6 +541,9 @@ $(document).ready(function(){
 			$(formId).find('input[type="checkbox"]:checked').each(function(index, elm) {
 				filter.push($(elm).val());
 			});
+			if (filter.length == 0) {
+				return;
+			}
 			$(formId).modal('hide');
 			$.post('/printpages/patient',  {
 				filter: filter,

@@ -4,15 +4,13 @@
 #{set patientDetails: _patientDetails /}
 #{set cancerInfo: _cancerInfo /}
 
+<div class="print-cover-page">
+
+	<h1 class="text-center">Cancer Care Plan and Summary</h1>	
 
 
-<h1 class="text-center">Cancer Care Plan and Summary</h1>	
-
-#{if userDetails}
-<div class="col-xs-offset-3 col-xs-7">Patient: ${userDetails.firstName + " " + userDetails.lastName}</div>
-#{/if}
-#{if cancerInfo}
-<div class="col-xs-offset-3 col-xs-7">${cancerInfo.diseaseName}</div>
+	<div class="col-xs-offset-3 col-xs-7">Patient: ${userDetails?.firstName + " " + userDetails?.lastName}</div>
+	<div class="col-xs-offset-3 col-xs-7">${cancerInfo?.diseaseName}</div>
 #{if cancerInfo.diseaseId == '1'}
 #{set info: [] /}		
 #{if cancerInfo.stageName} %{ info.add(cancerInfo.stageName); }% #{/if}
@@ -20,25 +18,21 @@
 #{if cancerInfo.pr} %{ info.add("PR" + cancerInfo.pr); }% #{/if}
 #{if cancerInfo.her2} %{ info.add("HER2" + cancerInfo.her2); }% #{/if}
 #{if cancerInfo.brca} %{ info.add("BRCA" + cancerInfo.brca); }% #{/if}
-<div class="col-xs-offset-3 col-xs-7">${info.join(', ')}</div>
-#{/if}
-#{/if}
-
-
-#{if userDetails}
-<div class="col-xs-offset-3 col-xs-7">Patient DOB: ${userDetails.dob.format('MM/dd/yyyy')}</div>
-<div class="col-xs-offset-3 col-xs-7">Patient Phone: ${userDetails.homePhone}</div>
-#{/if}
-<div class="col-xs-offset-3 col-xs-7">Email: ${user.email}</div>
-
-
-#{if patientDetails}
-<div class="col-xs-offset-3 col-xs-7">Support Contact Name: ${patientDetails.ec1name}</div>
-<div class="col-xs-offset-3 col-xs-7">Support Contact Telephone: ${patientDetails.ec1number}</div>
+	<div class="col-xs-offset-3 col-xs-7">${info.join(', ')}</div>
 #{/if}
 
 
 
-<div class="col-xs-offset-3 col-xs-7">Primary Cancer Physician: N/A</div>
-<div class="col-xs-offset-3 col-xs-7">Primary Care Physician: N/A</div>
-<div class="page-break"></div>
+	<div class="col-xs-offset-3 col-xs-7 para">Patient DOB: ${userDetails?.dob?.format('MM/dd/yyyy')}</div>
+	<div class="col-xs-offset-3 col-xs-7">Patient Phone: ${userDetails?.homePhone}</div>
+	<div class="col-xs-offset-3 col-xs-7">Email: ${user?.email}</div>
+
+
+	<div class="col-xs-offset-3 col-xs-7 para">Support Contact Name: ${patientDetails?.ec1name}</div>
+	<div class="col-xs-offset-3 col-xs-7">Support Contact Telephone: ${patientDetails?.ec1number}</div>
+
+
+	<div class="col-xs-offset-3 col-xs-7 para">Primary Cancer Physician: N/A</div>
+	<div class="col-xs-offset-3 col-xs-7">Primary Care Physician: N/A</div>
+
+</div>

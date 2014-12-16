@@ -6,6 +6,28 @@ div.print-section {
     display: block;
 }
 
-.page-break {
+div.print-section h1 {
+	margin: 20px auto;
+	padding: 0;
+}
+
+div.print-section .para {
+	margin-top: 30px;
+}
+
+div.print-secton .fa {
+	clear: both;
+	padding: 5px auto;
+}
+
+.print-cover-page,
+.print-diagnosis {	
+	clear: both;
+	display: block;
+	text-align: left;
 	page-break-after: always;
 }
+
+
+
+

@@ -1,0 +1,64 @@
+*{ parameters are : user, userDetails, patientDetails, cancerInfo }*
+#{set user: _user /}
+#{set userDetails: _userDetails /}
+#{set patientDetails: _patientDetails /}
+#{set cancerInfo: _cancerInfo /}
+
+
+<div class="print-diagnosis">
+
+	<h1>Diagnosis and Background Information</h1>
+	<div>
+		<label><i class="fa fa-file-text-o"></i> Diagnosis</label>
+	</div>
+	<div style="margin-left: 20px;">
+		<h2>
+			${cancerInfo?.diseaseName} |
+			<small>First Diagnosed: ${patientDetails?.dateofdiagnosis?.format('MM/dd/yyyy')}</small>
+		</h2>
+	</div>
+
+
+	<div>
+		<label><i class="fa fa-file-text-o"></i> Cancer Type Information</label>
+	</div>
+	<div style="margin-left: 20px;">
+		<h2>
+#{if cancerInfo.diseaseId == '1'}
+#{set info: [] /}		
+#{if cancerInfo.er} %{ info.add("ER" + cancerInfo.er); }% #{/if}
+#{if cancerInfo.pr} %{ info.add("PR" + cancerInfo.pr); }% #{/if}
+#{if cancerInfo.her2} %{ info.add("HER2" + cancerInfo.her2); }% #{/if}
+${info.join(', ')}
+#{/if}
+		</h2>
+	</div>
+	
+	
+	<div>
+		<label><i class="fa fa-file-text-o"></i> Stage Information</label>
+	</div>
+	<div style="margin-left: 20px;">
+		<h2>#{if cancerInfo.stageName} ${cancerInfo.stageName} #{/if}</h2>
+	</div>
+	
+	<div>
+		<label><i class="fa fa-file-text-o"></i> Family History & Genetics</label>
+	</div>
+	<div style="margin-left: 20px;">
+		<h2>#{if cancerInfo.brca} ${"BRCA" + cancerInfo.brca} #{/if}</h2>
+	</div>
+	
+	<h1>BACKGROUND INFO</h1>
+	
+	<div>Symptoms / Signs: </div>
+	<div>Family History / predisposing conditions: </div>
+	<div>Major co-morbid conditions: </div>
+	<div>Height: </div>
+	<div>Pre-treatment weight: </div>
+	<div>Post-treatment weight: </div>
+	<div>Pre-treatment BSA: </div>
+	<div>ECOG performance status at begining of treatment: </div>
+	<div>ECOG performance status at end of treatment: </div>
+
+</div>

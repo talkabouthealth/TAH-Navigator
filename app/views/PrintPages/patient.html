@@ -3,7 +3,8 @@
 #{/if}
 
 #{if diagnosis || all}
-<div>Diagnosis</div>
+#{printSummary user: user, userDetails: userDetails, patientDetails: patientDetails, cancerInfo: cancerInfo /}
+#{printDiagnosis user: user, userDetails: userDetails, patientDetails: patientDetails, cancerInfo: cancerInfo /}
 #{/if}
 
 #{if treatment_plan || all}
