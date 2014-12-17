@@ -323,51 +323,13 @@ public class Patient extends Controller {
 //			int breastCancerId = Disease.BREAST_CANCER_ID;
 			List<NoteDTO> noteList = NotesDAO.getPatientNotesList(String.valueOf(user.getId()));
 			
-//			List<PatientConcernDTO> concerns = FollowUp.getPatientConcerns(user.getId());
-//			List<PatientGoalDTO> goals = FollowUp.getPatientGoals(user.getId());
-//			List<PatientFollowUpCareItemDTO> careItems = FollowUp.getPatientCareItems(user.getId());
-			
-			List<PatientFollowUpCareItemDTO> careItemsOld = FollowUp.getPatientCareItems(user.getId());
-			List<PatientFollowUpCareItemDTO> careItems = null;
-			if(careItemsOld != null && !careItemsOld.isEmpty()) {
-				careItems = new ArrayList<PatientFollowUpCareItemDTO>();
-				for (PatientFollowUpCareItemDTO patientFollowUpCareItemDTO : careItemsOld) {
-					InputDefaultDTO tipText = InputDefaultDAO.getInputTipTextDefaultByFieldName(patientOtherDetails.getDiseaseId(), "followupplan", patientFollowUpCareItemDTO.getActivity());
-					if(tipText != null) {
-						patientFollowUpCareItemDTO.setInfoText(tipText.getTiptext());
-						patientFollowUpCareItemDTO.setTipType(tipText.getTiptype());
-					}
-				careItems.add(patientFollowUpCareItemDTO);
-				}
-			}
-			
-			List<PatientConcernDTO> concernsOld = FollowUp.getPatientConcerns(user.getId());
-			List<PatientConcernDTO> concerns = null;
-			if(concernsOld != null && !concernsOld.isEmpty()) {
-				concerns = new ArrayList<PatientConcernDTO>();
-				for (PatientConcernDTO patientFollowUpCareItemDTO : concernsOld) {
-					InputDefaultDTO tipText = InputDefaultDAO.getInputTipTextDefaultByFieldName(patientOtherDetails.getDiseaseId(), "followupplan", patientFollowUpCareItemDTO.getConcern());
-					if(tipText != null) {
-						patientFollowUpCareItemDTO.setInfoText(tipText.getTiptext());
-						patientFollowUpCareItemDTO.setTipType(tipText.getTiptype());
-					}
-				concerns.add(patientFollowUpCareItemDTO);
-				}
-			}
-			
-			List<PatientGoalDTO> goalsOld = FollowUp.getPatientGoals(user.getId());
-			List<PatientGoalDTO> goals = null;
-			if(goalsOld != null && !goalsOld.isEmpty()) {
-				goals = new ArrayList<PatientGoalDTO>();
-				for (PatientGoalDTO patientFollowUpCareItemDTO : goalsOld) {
-				InputDefaultDTO tipText = InputDefaultDAO.getInputTipTextDefaultByFieldName(patientOtherDetails.getDiseaseId(), "followupplan", patientFollowUpCareItemDTO.getGoal());
-				if(tipText != null) {
-					patientFollowUpCareItemDTO.setInfoText(tipText.getTiptext());
-					patientFollowUpCareItemDTO.setTipType(tipText.getTiptype());
-				}
-				goals.add(patientFollowUpCareItemDTO);
-				}
-			}
+			List<PatientConcernDTO> concerns = FollowUp.getPatientConcerns(user.getId());			
+			List<PatientGoalDTO> goals = FollowUp.getPatientGoals(user.getId());			
+			List<PatientFollowUpCareItemDTO> careItems = FollowUp.getPatientCareItems(user.getId());
+						
+			concerns = FollowUp.updateConcerns(concerns, patientOtherDetails);
+			goals = FollowUp.updateGoals(goals, patientOtherDetails);
+			careItems = FollowUp.updateCareItems(careItems, patientOtherDetails);
 			
 			boolean noteLinkInactive = true;
 			System.out.println(session.getId());

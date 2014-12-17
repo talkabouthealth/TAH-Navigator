@@ -8,11 +8,13 @@
 #{/if}
 
 #{if treatment_plan || all}
-<div>Treatment Plan</div>
+#{printSummary user: user, userDetails: userDetails, patientDetails: patientDetails, cancerInfo: cancerInfo /}
+#{printTreatmentPlan radiationTreatments: radiationTreatments, chemoTreatments: chemoTreatments, surgeryInfo: surgeryInfo /}
 #{/if}
 
 #{if follow_up_care_plan || all}
-<div>Follow-up Care Plan</div>
+#{printSummary user: user, userDetails: userDetails, patientDetails: patientDetails, cancerInfo: cancerInfo /}
+#{printCarePlan concerns: concerns, goals: goals, careItems: careItems /}
 #{/if}
 
 #{if care_team || all}

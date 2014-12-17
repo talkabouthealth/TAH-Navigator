@@ -1,12 +1,21 @@
 package controllers;
 
+import java.util.List;
 import java.util.Map;
 
 import nav.dao.CancerDAO;
+import nav.dao.FollowUp;
 import nav.dao.PatientDetailDAO;
+import nav.dao.Treatment;
 import nav.dao.UserDAO;
 import models.BreastCancerInfoDTO;
+import models.PatientChemoTreatmentDTO;
+import models.PatientConcernDTO;
 import models.PatientDetailDTO;
+import models.PatientFollowUpCareItemDTO;
+import models.PatientGoalDTO;
+import models.PatientRadiationTreatmentDTO;
+import models.PatientSurgeryInfoDTO;
 import models.UserDTO;
 import models.UserDetailsDTO;
 import play.mvc.Controller;
@@ -19,20 +28,30 @@ public class PrintPages extends Controller {
 		UserDetailsDTO userDetails = UserDAO.getDetailsByField("id", patientId);
 		PatientDetailDTO patientDetails = PatientDetailDAO.getDetailsByField("id", patientId);
 		Map<String, String> cancerInfo = CancerDAO.cancerInfo(patientId);
-		System.out.println("PatientId: " + patientId.toString());
-		System.out.println("Name: " + userDetails.getFirstName() + " " + userDetails.getLastName());
+		// treatment plan
+		List<PatientRadiationTreatmentDTO> radiationTreatments = Treatment.getPatientRadiationTreatments(patientId);
+		List<PatientChemoTreatmentDTO> chemoTreatments = Treatment.getPatientChemoTreatments(patientId);
+		List<PatientSurgeryInfoDTO> surgeryInfo = Treatment.getPatientSurgeryInfo(patientId);
+		// care plan
+		List<PatientConcernDTO> concerns = FollowUp.getPatientConcerns(user.getId());			
+		List<PatientGoalDTO> goals = FollowUp.getPatientGoals(user.getId());			
+		List<PatientFollowUpCareItemDTO> careItems = FollowUp.getPatientCareItems(user.getId());							
+		
 		
 		for(String str: filter) {
 			renderArgs.put(str, true);
 		}	
 		
-		if (cancerInfo != null) {
-			System.out.println(cancerInfo.get("diseaseName"));
-		}
 		renderArgs.put("user", user);
 		renderArgs.put("userDetails", userDetails);
 		renderArgs.put("patientDetails", patientDetails);
 		renderArgs.put("cancerInfo", cancerInfo);
+		renderArgs.put("radiationTreatments", radiationTreatments);
+		renderArgs.put("chemoTreatments", chemoTreatments);
+		renderArgs.put("surgeryInfo", surgeryInfo);
+		renderArgs.put("concerns", concerns);
+		renderArgs.put("goals", goals);
+		renderArgs.put("careItems", careItems);
 		render();
 	}
 	

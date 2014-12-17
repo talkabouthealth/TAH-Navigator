@@ -2,6 +2,7 @@ package nav.dao;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,9 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import models.InputDefaultDTO;
 import models.PatientConcernDTO;
+import models.PatientDetailDTO;
 import models.PatientFollowUpCareItemDTO;
 import models.PatientGoalDTO;
 import models.PatientStSideEffectDTO;
@@ -36,6 +39,19 @@ public class FollowUp {
 		return concerns;
 	}
 	
+	public static List<PatientConcernDTO> updateConcerns(List<PatientConcernDTO> concerns, PatientDetailDTO patientDetails) {
+		if (concerns != null) {
+			for (PatientConcernDTO concern : concerns) {
+				InputDefaultDTO tipText = InputDefaultDAO.getInputTipTextDefaultByFieldName(patientDetails.getDiseaseId(), "followupplan", concern.getConcern());
+				if(tipText != null) {
+					concern.setInfoText(tipText.getTiptext());
+					concern.setTipType(tipText.getTiptype());
+				}			
+			}
+		}
+		return concerns;
+	}
+	
 	public static List<PatientGoalDTO> getPatientGoals(Integer patientId) {
 		EntityManager em = JPAUtil.getEntityManager();
 		List<PatientGoalDTO> goals = null;
@@ -50,6 +66,19 @@ public class FollowUp {
 		return goals;
 	}
 	
+	public static List<PatientGoalDTO> updateGoals(List<PatientGoalDTO> goals, PatientDetailDTO patientDetails) {
+		if (goals != null) {
+			for (PatientGoalDTO goal : goals) {
+				InputDefaultDTO tipText = InputDefaultDAO.getInputTipTextDefaultByFieldName(patientDetails.getDiseaseId(), "followupplan", goal.getGoal());
+				if(tipText != null) {
+					goal.setInfoText(tipText.getTiptext());
+					goal.setTipType(tipText.getTiptype());
+				}				
+			}
+		}
+		return goals;
+	}
+	
 	public static List<PatientFollowUpCareItemDTO> getPatientCareItems(Integer patientId) {
 		EntityManager em = JPAUtil.getEntityManager();
 		List<PatientFollowUpCareItemDTO> careItems = null;
@@ -60,6 +89,19 @@ public class FollowUp {
 		} 
 		catch(Exception e) {
 			//e.printStackTrace();
+		}
+		return careItems;
+	}
+	
+	public static List<PatientFollowUpCareItemDTO> updateCareItems(List<PatientFollowUpCareItemDTO> careItems, PatientDetailDTO patientDetails) {
+		if(careItems != null) {			
+			for (PatientFollowUpCareItemDTO careItem : careItems) {				
+				InputDefaultDTO tipText = InputDefaultDAO.getInputTipTextDefaultByFieldName(patientDetails.getDiseaseId(), "followupplan", careItem.getActivity());
+				if(tipText != null) {
+					careItem.setInfoText(tipText.getTiptext());
+					careItem.setTipType(tipText.getTiptype());
+				}			
+			}
 		}
 		return careItems;
 	}

@@ -1,0 +1,97 @@
+*{ parameters are : concerns, goals, careItems }*
+#{set concerns: _concerns /}
+#{set goals: _goals /}
+#{set careItems: _careItems /}
+
+
+
+<div class="print-care-plan">
+	<h1>Ongoing Care Plan</h1>
+	
+	<h2>Follow-Up Care</h2>
+	
+#{if careItems}       
+	<table class="table table-bordered table-striped table-condensed table-hover">
+		<thead>
+			<tr>
+				<th>ACTIVITY</th>
+				<th>FREQUENCY</th>
+				<th>END-DATE</th>
+				<th>PURPOSE</th>
+				<th>DOCTOR</th>
+			</tr>
+		</thead>
+		<tbody>
+#{list items:careItems, as:'ci'}		
+			<tr>
+				<td>${ci.activity}</td>
+				<td>#{if ci.frequency} ${ci.frequency} #{/if}</td>
+				<td>#{if ci.endDate} ${ci.endDate.format('MM/dd/yyyy')} #{/if}#{if ci.ongoing}Ongoing#{/if}</td>
+				<td><div>#{if ci.purpose} ${ci.purpose.printMessage()} #{/if}</div></td>
+				<td>#{if ci.doctor} ${ci.doctor} #{/if}</td>
+			</tr>
+#{/list}
+		</tbody>
+	</table>
+#{/if}
+#{else}
+	<p>None</p>
+#{/else}
+
+	<h2>Needs / Concerns</h2>	
+#{if concerns}       
+	<table class="table table-bordered table-striped table-condensed table-hover">
+		<thead>
+			<tr>
+				<th>CONCERN</th>
+				<th>ACTION PLAN</th>
+				<th>DATE OF CONCERN</th>
+				<th>UPDATES</th>
+			</tr>
+		</thead>
+		<tbody>
+#{list items:concerns, as:'concern'}		
+			<tr>
+				<td>${concern.concern}</td>
+				<td><div>#{if concern.nextStep} ${concern.nextStep.printMessage()} #{/if}</div></td>
+				<td>#{if concern.concernDate} ${concern.concernDate.format('MM/dd/yyyy')} #{/if}</td>
+				<td><div>#{if concern.notes} ${concern.notes} #{/if}</div></td>
+			</tr>
+#{/list}
+		</tbody>
+	</table>
+#{/if}
+#{else}
+	<p>None</p>
+#{/else}
+
+
+	<h2>Goals</h2>	
+#{if goals}       
+	<table class="table table-bordered table-striped table-condensed table-hover">
+		<thead>
+			<tr>
+				<th>GOAL</th>
+				<th>ACTION PLAN</th>
+				<th>GOAL START DATE</th>
+				<th>UPDATES</th>
+			</tr>
+		</thead>
+		<tbody>
+#{list items:goals, as:'goal'}		
+			<tr>
+				<td>${goal.goal}</td>
+				<td><div>#{if goal.nextStep} ${goal.nextStep.printMessage()} #{/if}</div></td>
+				<td>#{if goal.goalDeadline} ${goal.goalDeadline.format('MM/dd/yyyy')} #{/if}</td>
+				<td><div>#{if goal.notes} ${goal.notes} #{/if}</div></td>
+			</tr>
+#{/list}
+		</tbody>
+	</table>
+#{/if}
+#{else}
+	<p>None</p>
+#{/else}
+
+
+</div>

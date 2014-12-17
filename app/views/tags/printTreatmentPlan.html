@@ -1,0 +1,113 @@
+*{ parameters are : radiationTreatments, chemoTreatments, surgeryInfo }*
+#{set radiationTreatments: _radiationTreatments /}
+#{set chemoTreatments: _chemoTreatments /}
+#{set surgeryInfo: _surgeryInfo /}
+
+
+
+<div class="print-treatment-plan">
+	<h1>Treatment Plan and Summary</h1>
+	
+	<h2>Radiation Treatment</h2>
+#{if radiationTreatments}	
+	<table class="table table-bordered table-striped table-condensed table-hover">
+		<thead>
+			<tr>
+				<th class="col-sm-3">Type</th>
+				<th class="col-sm-1">Dates</th>
+				<th class="col-sm-1">Dose</th>
+				<th class="col-sm-1">Schedule</th>
+				<th class="col-sm-1">Region Treated</th>
+				<th class="col-sm-2">Doctor</th>      
+				<th class="col-sm-3">Notes</th>
+			</tr>
+		</thead>
+		<tbody>
+#{list items:radiationTreatments, as:'rt'}
+			<tr>
+				<td>${rt.rtDto.name}</td>
+				<td>
+					#{if rt.startDate} ${rt.startDate.format('MM/dd/yyyy')} #{/if}
+					#{if rt.endDate} - ${rt.endDate.format('MM/dd/yyyy')} #{/if}
+				</td>
+				<td>#{if rt.dose} ${rt.dose} #{/if}</td>
+				<td>#{if rt.rsDto} ${rt.rsDto.timePeriod} #{/if}</td>
+				<td>#{if rt.trDto} ${rt.trDto.region} #{/if}</td>
+				<td>#{if rt.doctor} ${rt.doctor} #{/if}</td>      
+				<td><div>#{if rt.notes} ${rt.notes} #{/if}</div></td>
+			</tr>
+
+#{/list}
+		</tbody>
+	</table>
+#{/if}
+#{else}
+	<p>None</p>
+#{/else}	
+	
+	<h2>Surgery</h2>
+#{if surgeryInfo}	
+	<table class="table table-bordered table-striped table-condensed table-hover">
+		<thead>
+			<tr>
+				<th class="col-sm-3"></th>
+				<th class="col-sm-1">Date</th>
+				<th class="col-sm-3">Region Treated</th>      
+				<th class="col-sm-2">Doctor</th>
+				<th class="col-sm-3">Notes</th>
+			</tr>
+		</thead>
+		<tbody>
+#{list items:surgeryInfo, as:'si'}
+			<tr>
+				<td>${si.stDto.name}</td>
+				<td>#{if si.surgeryDate} ${si.surgeryDate.format('MM/dd/yyyy')} #{/if}</td>
+				<td>#{if si.trDto} ${si.trDto.region} #{/if}</td>
+				<td>#{if si.doctor} ${si.doctor} #{/if}</td>
+				<td><div>#{if si.notes} ${si.notes} #{/if}</div></td>
+			</tr>
+#{/list}
+		</tbody>
+	</table>
+#{/if}
+#{else}
+	<p>None</p>
+#{/else}	
+	
+	
+	<h2>Chemotherapy</h2>
+#{if chemoTreatments}	
+	<table class="table table-bordered table-striped table-condensed table-hover">
+		<thead>
+			<tr>
+				<th class="col-sm-3"></th>
+				<th class="col-sm-1">Dates</th>
+				<th class="col-sm-1"># of Cycles</th>
+				<th class="col-sm-1">Schedule</th>
+				<th class="col-sm-1">% Dose Reduction</th>      
+				<th class="col-sm-2">Doctor</th>
+				<th class="col-sm-3">Notes</th>
+			</tr>
+		</thead>
+		<tbody>
+#{list items:chemoTreatments, as:'ct'}
+			<tr>
+				<td>${ct.genericName} (${ct.brandName})</td>
+				<td>
+					#{if ct.startDate} ${ct.startDate.format('MM/dd/yyyy')} #{/if}
+					#{if ct.endDate} - ${ct.endDate.format('MM/dd/yyyy')} #{/if}
+				</td>
+				<td>#{if ct.cycleNo} ${ct.cycleNo} #{/if}</td>
+				<td>#{if ct.csDto} ${ct.csDto.timePeriod} #{/if}</td>
+				<td>#{if ct.doseReduction} ${ct.doseReduction} #{/if}</td>     
+				<td>#{if ct.doctor} ${ct.doctor} #{/if}</td>
+				<td><div>#{if ct.notes} ${ct.notes} #{/if}</div></td>
+			</tr>
+#{/list}
+		</tbody>
+	</table>
+#{/if}
+#{else}
+	<p>None</p>
+#{/else}	
+</div>

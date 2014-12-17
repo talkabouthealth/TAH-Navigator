@@ -21,7 +21,9 @@ div.print-secton .fa {
 }
 
 .print-cover-page,
-.print-diagnosis {	
+.print-diagnosis,
+.print-treatment-plan,
+.print-care-plan {	
 	clear: both;
 	display: block;
 	text-align: left;
