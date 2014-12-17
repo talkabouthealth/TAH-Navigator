@@ -232,7 +232,6 @@
 	</div>
 </div>
 
-
 <div class="modal fade" id="addEditmedication" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
@@ -273,19 +272,9 @@
                 <div class="form-group form-group-sm">
                         <label class="col-xs-4 control-label" for="rt_schedule">Prescribing Physician</label>
                         <div class="col-xs-8 form-group input-group">
-                           #{if drList != null}
-								<select class="memberselect" name="memberid">
-								#{list drList, as:'seq'}
-									<option value="${seq.id}"> ${seq.name.usreNameNew(seq.id)} </option>
-								#{/list}
-								</select>
-							#{/if}
-							#{else}
-								No expert assigned
-							#{/else}
+                        	<input type="text" class="form-control input-sm" name="memberid" id="memberid" placeholder="i.e. Dr. Jorge Freire" autocomplete="off">
                         </div>
                 </div>
-
                  <div class="form-group form-group-sm" style="height:25px;">
                         <label class="col-xs-4 control-label" for="rt_schedule">Dates</label>
                         <div class="col-xs-8 form-group nopadding input-daterange" id="datepickerRange">
@@ -616,7 +605,8 @@
 	</div>
 </div>
 
-<script><!--
+<script>
+var docs = [];
 var timeArray = ["8 AM","8.15 AM","8.30 AM","8.45 AM","9 AM","9.15 AM","9.30 AM","9.45 AM","10 AM","10.15 AM","10.30 AM","10.45 AM","11 AM","11.15 AM","11.30 AM","11.45 AM","12 noon","12.15 PM","12.30 PM",
 				"12.45 PM","1 PM","1.15 PM","1.30 PM","1.45 PM","2 PM","2.15 PM","2.30 PM","2.45 PM","3 PM","3.15 PM","3.30 PM","3.45 PM","4 PM","5.15 PM","5.30 PM","5.45 PM","6 PM"];
 $(document).ready(function() {
@@ -643,7 +633,22 @@ $(document).ready(function() {
             if (href == '#summary') {
                 $('a.date-range[days="30"]').click();
             }
-        });		
+        });
+        
+        var params = {};
+        params['patientId'] = "0";
+        params['formOf'] = "doctors";
+        $.post('/CarePatien/fupTemplateData', params, function(data) {
+        	 var tmp = [];
+             for (var id in data.doctors) {
+                 tmp.push(data.doctors[id]);
+             }
+            $("#memberid").data("careMembers", data.doctors);
+            $("#memberid").typeahead({
+            	minLength: 0 ,
+                source: tmp
+            });
+        }, "json");
 	}
 
 	$('#tabs a').click(loadTabContent);
@@ -693,7 +698,7 @@ $(document).ready(function() {
     	$("#uploadId").val(esnTemp);
 	});
 	$('body').on('click', 'a.removeInstruction', function() {
-    	var idTemp = $(this).data("id");
+		var idTemp = $(this).data("id");
     	var formURL = "/carePatien/medicationOperation";
 		var postData = {operation:"removeMethod",'id':idTemp};
 		$.post(formURL, postData, function( data ) {
@@ -716,12 +721,24 @@ $(document).ready(function() {
 
 
 	$('#medicationForm').submit(function(event) {
+		var members =  $("#memberid").data("careMembers");
+		var memNameTmp  =  $("#addEditmedication #memberid").val();
 		var postData = $("#medicationForm").serializeArray();
+		var verified = false;
+		for (var id in members) {
+			if(members[id] == memNameTmp) {
+				postData["careMembername"] =  id;
+				postData.push({name:'careMembername',value:id});
+				verified = true;
+				break;
+			}
+		}
+		if (!verified) {
+			postData.push({name:'careMembername',value:null});
+		}
 		var formURL = $("#medicationForm").attr("action");
 		$.post(formURL, postData, function( data ) {
 			$('#addEditmedication').modal('hide');
-// 			var current_index = $("#tabs").tabs('option', 'active');
-// 			$("#tabs").tabs('load',current_index);
 			$('#tabs li.active a').click();
 		});
  		event.preventDefault();
@@ -802,9 +819,6 @@ operationMedication = function(operation,id) {
 				d = moment(data.enddate, 'MMM DD, YYYY hh:mm:ss A');
 				$("#addEditmedication input[name='endDate']").val(d.format('MM/DD/YYYY'));
 
-// 				$("#addEditmedication input[name='startDate']").val($.datepicker.formatDate('mm/dd/yy', new Date(data.startdate)));
-// 				$("#addEditmedication input[name='endDate']").val($.datepicker.formatDate('mm/dd/yy', new Date(data.enddate)));
-
 				$('#datepickerRange').datepicker({ startDate: data.startdate, endDate: data.enddate});                
 				$("#addEditmedication input[name='deleteMD']").show();
 				$("#addEditmedication input[name='deleteMD']").click(function() {
@@ -812,10 +826,8 @@ operationMedication = function(operation,id) {
 				});
 
 				$("#addEditmedication textarea[name='otherdetails']").val(data.specialinstruction);
-				if(data.caremember != null)
-					$("#addEditmedication select[name='memberid']").val(data.caremember.id);
-
-
+// 				if(data.caremember != null)
+					$("#addEditmedication input[name='memberid']").val(data.caremembername);
 				$('#addEditmedication').appendTo("body").modal();
 			} else {
 				alert('Internal server error');
@@ -840,6 +852,7 @@ operationMedication = function(operation,id) {
 		$("#addEditmedication textarea[name='otherdetails']").val("");
 		$("#addEditmedication input[name='catlogId']").val("0");
 		$("#addEditmedication input[name='deleteMD']").hide();
+		$("#addEditmedication input[name='memberid']").val("");
 		$('#addEditmedication').appendTo("body").modal();
 	}
 }
@@ -1073,5 +1086,4 @@ function getFrameByName(name) {
 	      return frames[i];
 	  return null;
 }
--->
 </script>

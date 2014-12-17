@@ -9,10 +9,9 @@
 					<p><strong>FREQUENCY: </strong>${seq.frequency}</p>
 					<p><strong>DATES: </strong>${seq.startdate.format('MM/dd/yyyy')} - ${seq.enddate.format('MM/dd/yyyy')}</p>
 					<p><strong>SPECIAL INSTRUCTIONS: </strong>${seq.specialinstruction}</p>
-					#{if seq.caremember != null}
-						<p><strong>PRESCRIBING PYSICIAN: </strong>#{userName userName: seq.caremember.name, userId:seq.caremember.id /}</p>
+					 #{if seq.caremembername}
+					<p><strong>PRESCRIBING PYSICIAN: </strong>${seq.caremembername}</p>
 					#{/if}
-
 				#{if seq.method != null}
 <!--				${seq.method}-->
 <!-- 					<img src="/public/images/${seq.method}.png"/> -->

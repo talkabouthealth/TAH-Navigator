@@ -36,6 +36,9 @@ public class PatientMedicationDTO {
 	@OneToOne
 	@JoinColumn(name = "carememberid")
 	private UserDTO caremember;
+	
+	@Column(name = "caremembername")
+	private String caremembername;
 
 	@Column(name = "frequency")
 	private String frequency;
@@ -152,5 +155,13 @@ public class PatientMedicationDTO {
 
 	public void setPatientid(int patientid) {
 		this.patientid = patientid;
+	}
+
+	public String getCaremembername() {
+		return caremembername;
+	}
+
+	public void setCaremembername(String caremembername) {
+		this.caremembername = caremembername;
 	}
 }

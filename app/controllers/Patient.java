@@ -291,6 +291,9 @@ public class Patient extends Controller {
 			List<PatientMedicationDTO> pastMedications = new ArrayList<PatientMedicationDTO>();
 			Date today = new Date();
 			for (PatientMedicationDTO mDto : medicationList) {
+				if(mDto.getCaremembername() == null) {
+					mDto.setCaremembername(UserDAO.getUserName(mDto.getCaremember().getId()));
+				}
 				if ((today.compareTo(mDto.getStartdate()) >= 0) && (today.compareTo(mDto.getEnddate()) <=0)) {
 					currentMedications.add(mDto);
 				}

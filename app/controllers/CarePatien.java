@@ -131,6 +131,11 @@ public class CarePatien  extends Controller {
 	public static void medication(int patientId) {
 		UserDetailsDTO userDto = UserDAO.getDetailsById(patientId);
 		List<PatientMedicationDTO> medicationList = MedicationDAO.getMedicine("patientid", userDto.getId());
+		for (PatientMedicationDTO patientMedicationDTO : medicationList) {
+			if(patientMedicationDTO.getCaremembername() == null) {
+				patientMedicationDTO.setCaremembername(UserDAO.getUserName(patientMedicationDTO.getCaremember().getId()));
+			}
+		}
 		Map <String, Object> ps = PatientDetailDAO.patientSummary(patientId);
 		render(patientId,medicationList, ps);
 	}
@@ -292,42 +297,50 @@ public class CarePatien  extends Controller {
 	
 	public static void fupTemplateData(Integer patientId,String formOf) {
 		Map<String, Object> jsonData = new HashMap<String, Object>();
-		UserDetailsDTO userDto = UserDAO.getDetailsById(patientId);
-		PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", userDto.getId());
 	
-		if(formOf.equals("disease")) { 
+		if(formOf.equals("disease")) {
+			UserDetailsDTO userDto = UserDAO.getDetailsById(patientId);
+			PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", userDto.getId());
+
 			List<DefaultTemplateMasterDTO> dis = DefaultTemplateDAO.getPatientTemplate(patientOtherDetails.getDiseaseId());
 			jsonData.put("disease",dis);
-		} else {
-//			if (patientId != null) {
-//				List<InputDefaultDTO> inputList = InputDefaultDAO.getInputDefaultByPageField("followupplan",patientOtherDetails.getDiseaseId(),formOf);
-//				jsonData.put("inputlist", inputList);
-//			}
-			if(formOf.equals("activity")) {
-				List<InputDefaultDTO> inputList = InputDefaultDAO.getInputDefaultByPageField("followupplan",patientOtherDetails.getDiseaseId(),formOf);
-				jsonData.put("inputlist", inputList);
+		} else if(formOf.equals("doctors")) {
+			List<CareMember> doctors = UserDAO.verifiedDoctors();
+			Map<Integer, String> doctorNames = new HashMap<Integer, String>();
+			for(CareMember doctor : doctors) {			
+				StringBuilder name = new StringBuilder("");
+				if (doctor.getFirstName() != null) {
+					name.append(doctor.getFirstName());
+				}				
+				doctorNames.put(doctor.getId(), name.toString());
+			}
+			jsonData.put("doctors", doctorNames);
+		} else if(formOf.equals("activity")) {
+			UserDetailsDTO userDto = UserDAO.getDetailsById(patientId);
+			PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", userDto.getId());
+
+			List<InputDefaultDTO> inputList = InputDefaultDAO.getInputDefaultByPageField("followupplan",patientOtherDetails.getDiseaseId(),formOf);
+			jsonData.put("inputlist", inputList);
 				
-				List<CareMember> doctors = UserDAO.verifiedDoctors();
-				ArrayList<String> doctorNames = new ArrayList<String>();
-				for(CareMember doctor : doctors) {			
-					StringBuilder name = new StringBuilder("");
-					if (doctor.getFirstName() != null) {
-						name.append(doctor.getFirstName());
-					}				
-					doctorNames.add(name.toString());
-				}
-				jsonData.put("doctors", doctorNames);
-	
-				ArrayList<String> frequencies = new ArrayList<String>();
-				frequencies.add("Every month");
-				frequencies.add("Every 3 months");
-				frequencies.add("Every 6 months");
-				frequencies.add("Every year");
-				jsonData.put("frequencies", frequencies);
-			} else {
+			List<CareMember> doctors = UserDAO.verifiedDoctors();
+			ArrayList<String> doctorNames = new ArrayList<String>();
+			for(CareMember doctor : doctors) {			
+				StringBuilder name = new StringBuilder("");
+				if (doctor.getFirstName() != null) {
+					name.append(doctor.getFirstName());
+				}				
+				doctorNames.add(name.toString());
+			}
+			jsonData.put("doctors", doctorNames);
+			ArrayList<String> frequencies = new ArrayList<String>();
+			frequencies.add("Every month");
+			frequencies.add("Every 3 months");
+			frequencies.add("Every 6 months");
+			frequencies.add("Every year");
+			jsonData.put("frequencies", frequencies);
+		} else {
 				List<InputDefaultDTO> inputList = InputDefaultDAO.getInputDefaultByPageField("followupplan",formOf);
 				jsonData.put("inputlist", inputList);
-			}
 		}
 		renderJSON(jsonData);
 	}
@@ -562,6 +575,11 @@ public class CarePatien  extends Controller {
 	public static void patientMedication(int id) {
 		Integer idField = new Integer(id);
 		PatientMedicationDTO  dto = MedicationDAO.getMedicineByField("id", idField);
+		
+			if(dto.getCaremembername() == null) {
+				dto.setCaremembername(UserDAO.getUserName(dto.getCaremember().getId()));
+			}
+		
 		if(dto != null) {
 			renderJSON(dto);
 		} else {
@@ -619,17 +637,16 @@ public class CarePatien  extends Controller {
 		}
 	}
 	
-	public static void medicationOperation(String operation,int id,int patientId,int catlogId,String genericname,String brandname,String frequency,int memberid,String startDate,String endDate, String otherdetails) {
+	public static void medicationOperation(String operation,int id,int patientId,int catlogId,String genericname,String brandname,String frequency,String memberid,Integer careMembername,String startDate,String endDate, String otherdetails) {
 		UserDTO patientBy = UserDAO.getUserBasicByField("id",patientId);
-		
-		UserDTO drUser = UserDAO.getUserBasicByField("id", memberid);
+		UserDTO drUser = null;
+		if(careMembername != null) {
+			drUser = UserDAO.getUserBasicByField("id", careMembername);
+		}
 		operation = operation==null?"add":operation;
 		System.out.println(startDate +" : "+endDate);
 		//10/15/2014 : 10/15/2014
-		
-
 		try {
-
 			if("add".equalsIgnoreCase(operation)) {
 				Date startDt = new SimpleDateFormat("MM/dd/yyyy").parse(startDate);
 				Date endDt = new SimpleDateFormat("MM/dd/yyyy").parse(endDate);
@@ -654,6 +671,7 @@ public class CarePatien  extends Controller {
 				patientMedicationDTO.setActive(true);
 				patientMedicationDTO.setAdddate(new Date());
 				patientMedicationDTO.setCaremember(drUser);
+				patientMedicationDTO.setCaremembername(memberid);
 				patientMedicationDTO.setEnddate(new Date());
 				patientMedicationDTO.setFrequency(frequency);
 				patientMedicationDTO.setMedicine(medicineMasterDTO);
@@ -678,6 +696,7 @@ public class CarePatien  extends Controller {
 					BaseDAO.update(medicineMasterDTO);
 					
 					patientMedicationDTO.setCaremember(drUser);
+					patientMedicationDTO.setCaremembername(memberid);
 					patientMedicationDTO.setFrequency(frequency);
 					patientMedicationDTO.setMedicine(medicineMasterDTO);
 					patientMedicationDTO.setSpecialinstruction(otherdetails);
