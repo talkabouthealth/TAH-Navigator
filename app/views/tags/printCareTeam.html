@@ -19,21 +19,22 @@
 	</div>
 	
 #{if team.experts.size() > 0}	
-	<div class="line"></div>
-	<div class="clearfix">
+	<div class="line"></div>	
 #{list team.experts, as:'expert'}
 #{if expert && expert.expertDetail && expert.userDetails && expert.expertDetail.designation}	
+	<div class="clearfix">
 		<div class="col-xs-3">
 			<img src="@{Image.show(expert.expertDetail.id)}">
 		</div>
-		<div class="col-xs-3">
+		<div class="col-xs-9">
 			<div>${expert?.expertDetail?.designation?.designation}</div>
 			<div>#{userName userName: expert?.userDetails?.user?.name, userId: expert?.userDetails?.user?.id /}</div>
 			<div>${expert?.userDetails?.mobile}</div>
 		</div>		
+	</div>
 #{/if}
 #{/list}    
-	</div>
+	
 	
 #{/if}	
 	
