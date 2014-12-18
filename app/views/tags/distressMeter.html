@@ -413,17 +413,34 @@ $(function() {
         };
         // Most probably Kevins's Code
         // cute li'l hack to support iPads and touch devices for the toggle switches
-        var toggleHacks = function() {
+		
+        var toggleHacks = function() {				
             var touchend = function(e) {
                 e.preventDefault();
-                var toggleSwitch = $container.find('.toggle-switch input');
+				var target = e.target;
+				var toggleSwitch = $(target).find('.toggle-switch input');				
                 toggleSwitch.prop('checked', !toggleSwitch.prop('checked'));
             };
             $container.find('.stepchecker').bind('touchend', touchend);
             $container.find('.stepchecker').bind('touchcancel', touchend);
-            $container.find('.stepchecker').click(function(e){
+			/*
+			$container.find('.stepchecker').click(function(e){
                 if ( e && e.target == this ) {
                     touchend(e);
+                }
+            });
+			*/
+			$container.find('.stepchecker strong').click(function(e){
+                if ( e && e.target == this ) {
+                    var $parent = $(this).parent();
+					var toggleSwitch = $parent.find('.toggle-switch input');				
+					toggleSwitch.prop('checked', !toggleSwitch.prop('checked'));
+                }
+            });
+			$container.find('.stepchecker toggle-switch').click(function(e){
+                if ( e && e.target == this ) {                    
+					var toggleSwitch = $(this).find('.toggle-switch input');				
+					toggleSwitch.prop('checked', !toggleSwitch.prop('checked'));
                 }
             });
         };
