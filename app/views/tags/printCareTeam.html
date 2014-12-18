@@ -6,6 +6,7 @@
 	<h1>Care Team Members</h1>
 #{if careTeams != null && careTeams.size() > 0}	
 #{list careTeams, as:'team'}	
+#{if team && team.careTeamDto && team.careTeamDto.careteam && team.leadExpert && team.leadExpert.userDetails}
 	<h3><i class="fa fa-table"></i> ${team.careTeamDto.careteam.name} CARE TEAM</h3>		
 	<div class="clearfix">
 		<div class="col-xs-3">
@@ -20,7 +21,8 @@
 #{if team.experts.size() > 0}	
 	<div class="line"></div>
 	<div class="clearfix">
-#{list team.experts, as:'expert'}	
+#{list team.experts, as:'expert'}
+#{if expert && expert.expertDetail && expert.userDetails && expertDetail.designation}	
 		<div class="col-xs-3">
 			<img src="@{Image.show(expert.expertDetail.id)}">
 		</div>
@@ -29,6 +31,7 @@
 			<div>#{userName userName: expert?.userDetails?.user?.name, userId: expert?.userDetails?.user?.id /}</div>
 			<div>${expert?.userDetails?.mobile}</div>
 		</div>		
+#{/if}
 #{/list}    
 	</div>
 	
@@ -36,7 +39,7 @@
 	
 	<div class="double-line"></div>
 	
-	
+#{/if}	
 #{/list}
 #{/if}
 #{else}
