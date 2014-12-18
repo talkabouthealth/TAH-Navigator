@@ -1388,6 +1388,7 @@ var careTeamController = (function() {
         }
         $('#si_st').typeahead({
             source: tmp
+            ,minLength: 0
         });
         $('#si_st').keyup(function() {
             var str = $(this).val();
@@ -1416,7 +1417,7 @@ var careTeamController = (function() {
         }
         
         $('#si_region').typeahead({
-            source: tmp
+            source: tmp,minLength: 0
         });
         
         
@@ -1688,6 +1689,7 @@ var careTeamController = (function() {
             tmp[i] = radiationTypes[i].name
         }
         $('#rt_type').typeahead({
+        	 minLength: 0 ,
             source: tmp
         });
         
@@ -1707,10 +1709,11 @@ var careTeamController = (function() {
             }
         });
         tmp = [];
-        for (var i = 0; i < 100; i++) {
+        for (var i = 0; i < 300; i++) {
             tmp[i] = '' + (i+1) + ' Gy';
         }
         $('#rt_dose').typeahead({
+        	minLength: 0 ,
             source: tmp
         });
         var radiationSchedules = data.radiationSchedules;
@@ -1720,6 +1723,7 @@ var careTeamController = (function() {
             tmp[i] = radiationSchedules[i].timePeriod;
         }
         $('#rt_schedule').typeahead({
+        	minLength: 0 ,
             source: tmp
         });
         
@@ -1734,6 +1738,7 @@ var careTeamController = (function() {
             tmp[i] = treatmentRegions[i].region;
         }
         $('#rt_region').typeahead({
+        	minLength: 0 ,
             source: tmp
         });
         

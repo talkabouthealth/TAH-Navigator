@@ -17,7 +17,7 @@ public class Treatment {
 		List<RadiationTypeDTO> radiationTypes = null;
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
-			TypedQuery<RadiationTypeDTO> query = em.createQuery("FROM RadiationTypeDTO", RadiationTypeDTO.class); 
+			TypedQuery<RadiationTypeDTO> query = em.createQuery("FROM RadiationTypeDTO where active = true", RadiationTypeDTO.class); 
 			radiationTypes = query.getResultList();
 		} 
 		catch(Exception e) {
@@ -45,11 +45,28 @@ public class Treatment {
 		return surgeryTypes;
 	}
 	
+	public static List<SurgeryTypeDTO> getSurgeryTypes(Integer diseseId) {
+		List<SurgeryTypeDTO> surgeryTypes = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			TypedQuery<SurgeryTypeDTO> query = em.createQuery("FROM SurgeryTypeDTO where (diseaseid = :f1 or diseaseid is null) and active= true order by name", SurgeryTypeDTO.class); 
+			query.setParameter("f1", diseseId);
+			surgeryTypes = query.getResultList();
+		} 
+		catch(Exception e) {
+			e.printStackTrace();
+		} 
+		finally {
+			em.close();
+		}
+		return surgeryTypes;
+	}
+
 	public static List<RadiationScheduleDTO> allRadiationSchedules() {
 		List<RadiationScheduleDTO> radiationSchedules = null;
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
-			TypedQuery<RadiationScheduleDTO> query = em.createQuery("FROM RadiationScheduleDTO", RadiationScheduleDTO.class); 
+			TypedQuery<RadiationScheduleDTO> query = em.createQuery("FROM RadiationScheduleDTO where active = true", RadiationScheduleDTO.class); 
 			radiationSchedules = query.getResultList();
 		} 
 		catch(Exception e) {
@@ -92,6 +109,24 @@ public class Treatment {
 		}
 		return treatmentRegions;
 	}
+	
+	public static List<TreatmentRegionDTO> getTreatementRegions(Integer diseseId) {
+		List<TreatmentRegionDTO> treatmentRegions = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			TypedQuery<TreatmentRegionDTO> query = em.createQuery("FROM TreatmentRegionDTO where (diseaseid = :f1 or diseaseid is null) and active= true order by region", TreatmentRegionDTO.class);
+			query.setParameter("f1", diseseId);
+			treatmentRegions = query.getResultList();
+		} 
+		catch(Exception e) {
+			e.printStackTrace();
+		} 
+		finally {
+			em.close();
+		}
+		return treatmentRegions;
+	}
+	
 	public static List<SideEffectDTO> allSideEffects() {
 		List<SideEffectDTO> sideEffects = null;
 		EntityManager em = JPAUtil.getEntityManager();
@@ -141,8 +176,11 @@ public class Treatment {
 			deleteQuery.executeUpdate();
 			em.getTransaction().commit();
 		}
+		UserDetailsDTO userDto = UserDAO.getDetailsById(patientId);
+		PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", userDto.getId());
 		
-		TypedQuery<TreatmentRegionDTO> trQuery = em.createQuery("SELECT c FROM TreatmentRegionDTO c WHERE c.region = :region", TreatmentRegionDTO.class); 
+		TypedQuery<TreatmentRegionDTO> trQuery = em.createQuery("SELECT c FROM TreatmentRegionDTO c WHERE (diseaseid = :f1 or diseaseid is null) and c.region = :region", TreatmentRegionDTO.class);
+		trQuery.setParameter("f1", patientOtherDetails.getDiseaseId()); 
 		trQuery.setParameter("region", region);
 		try {
 			TreatmentRegionDTO trDto = trQuery.getSingleResult();
@@ -150,13 +188,16 @@ public class Treatment {
 		} catch (NoResultException e) {
 			TreatmentRegionDTO trDto = new TreatmentRegionDTO();
 			trDto.setRegion(region);
+			trDto.setActive(false);
+			trDto.setDiseaseid(null);
 			em.getTransaction().begin();
 			em.persist(trDto);
 			em.getTransaction().commit();
 			trId = trDto.getId();
 		}
 		
-		TypedQuery<SurgeryTypeDTO> stQuery = em.createQuery("SELECT s FROM SurgeryTypeDTO s WHERE s.name = :name", SurgeryTypeDTO.class); 
+		TypedQuery<SurgeryTypeDTO> stQuery = em.createQuery("SELECT s FROM SurgeryTypeDTO s WHERE (s.diseaseid = :f1 or s.diseaseid is null) and s.name = :name", SurgeryTypeDTO.class);
+		stQuery.setParameter("f1", patientOtherDetails.getDiseaseId()); 
 		stQuery.setParameter("name", surgeryType);
 		try {
 			SurgeryTypeDTO stDto = stQuery.getSingleResult();
@@ -164,6 +205,8 @@ public class Treatment {
 		} catch (NoResultException e) {
 			SurgeryTypeDTO stDto = new SurgeryTypeDTO();
 			stDto.setName(surgeryType);
+			stDto.setActive(false);
+			stDto.setDiseaseid(null);
 			em.getTransaction().begin();
 			em.persist(stDto);
 			em.getTransaction().commit();
@@ -454,7 +497,13 @@ public class Treatment {
 		}
 		
 		if (region != null && !region.isEmpty()) {
-			TypedQuery<TreatmentRegionDTO> query3 = em.createQuery("SELECT c FROM TreatmentRegionDTO c WHERE c.region = :region", TreatmentRegionDTO.class); 
+//			TypedQuery<TreatmentRegionDTO> query3 = em.createQuery("SELECT c FROM TreatmentRegionDTO c WHERE c.region = :region", TreatmentRegionDTO.class);
+			
+			UserDetailsDTO userDto = UserDAO.getDetailsById(patientId);
+			PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", userDto.getId());
+			
+			TypedQuery<TreatmentRegionDTO> query3 = em.createQuery("SELECT c FROM TreatmentRegionDTO c WHERE (diseaseid = :f1 or diseaseid is null) and c.region = :region", TreatmentRegionDTO.class);
+			query3.setParameter("f1", patientOtherDetails.getDiseaseId()); 
 			query3.setParameter("region", region);
 			try {
 				trDto = query3.getSingleResult();

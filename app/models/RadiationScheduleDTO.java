@@ -14,6 +14,9 @@ public class RadiationScheduleDTO {
 	@Column(name="time_period")
 	private String timePeriod;
 
+	@Column(name = "active")
+	private boolean active;
+
 	public Integer getId() {
 		return id;
 	}
@@ -28,5 +31,13 @@ public class RadiationScheduleDTO {
 
 	public void setTimePeriod(String timePeriod) {
 		this.timePeriod = timePeriod;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
 	}
 }

@@ -192,7 +192,7 @@ public class UserDAO {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
 		} finally {
-			em.close();
+//			em.close();
 		}
 		return dto;
 	}

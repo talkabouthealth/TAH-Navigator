@@ -259,10 +259,15 @@ public class CarePatien  extends Controller {
 	public static void surgeryForm(Integer patientId, Integer treatmentId, Integer initFlag, String formType) {
 		Map<String, Object> jsonData = new HashMap<String, Object>();
 		if (initFlag.intValue() == 0) {
-			List<SurgeryTypeDTO> surgeryTypes = Treatment.allSurgeryTypes();
-			List<TreatmentRegionDTO> treatmentRegions = Treatment.allTreatementRegions();
-			List<SideEffectDTO> sideEffects = Treatment.allSideEffects();
+			UserDetailsDTO userDto = UserDAO.getDetailsById(patientId);
+			PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", userDto.getId());
 			
+			List<SurgeryTypeDTO> surgeryTypes = Treatment.getSurgeryTypes(patientOtherDetails.getDiseaseId());
+//			List<TreatmentRegionDTO> treatmentRegions = Treatment.allTreatementRegions();
+			
+			
+			List<TreatmentRegionDTO> treatmentRegions = Treatment.getTreatementRegions(patientOtherDetails.getDiseaseId());
+			List<SideEffectDTO> sideEffects = Treatment.allSideEffects();
 			
 			List<CareMember> doctors = UserDAO.verifiedDoctors();
 			Map<Integer, String> doctorNames = new HashMap<Integer, String>();
@@ -454,9 +459,13 @@ public class CarePatien  extends Controller {
 	public static void radiationForm(Integer patientId, Integer treatmentId, Integer initFlag, String formType) {
 		Map<String, Object> jsonData = new HashMap<String, Object>();
 		if (initFlag.intValue() == 0) {
+			UserDetailsDTO userDto = UserDAO.getDetailsById(patientId);
+			PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", userDto.getId());
+			
 			List<RadiationTypeDTO> radiationTypes = Treatment.allRadiationTypes();
 			List<RadiationScheduleDTO> radiationSchedules = Treatment.allRadiationSchedules();
-			List<TreatmentRegionDTO> treatmentRegions = Treatment.allTreatementRegions();
+//			List<TreatmentRegionDTO> treatmentRegions = Treatment.allTreatementRegions();
+			List<TreatmentRegionDTO> treatmentRegions = Treatment.getTreatementRegions(patientOtherDetails.getDiseaseId());
 			List<SideEffectDTO> sideEffects = Treatment.allSideEffects();
 			List<CareMember> doctors = UserDAO.verifiedDoctors();
 			Map<Integer, String> doctorNames = new HashMap<Integer, String>();
