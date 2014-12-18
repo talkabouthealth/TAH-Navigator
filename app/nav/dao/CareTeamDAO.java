@@ -8,15 +8,19 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import nav.dto.CareTeam;
 import nav.dto.DistressBean;
+import nav.dto.ExpertBean;
 import nav.dto.PatientBean;
 import models.AppointmentDTO;
 import models.BreastCancerInfoDTO;
 import models.CareTeamMasterDTO;
 import models.CareTeamMemberDTO;
+import models.ExpertDetailDTO;
 import models.NoteDTO;
 import models.PatienCareTeamDTO;
 import models.PatientDetailDTO;
@@ -153,6 +157,45 @@ public class CareTeamDAO {
 			em.close();
 		}
 		return dto;
+	}
+	
+	public static List<ExpertBean> teamExperts(int careTeamId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		List<ExpertBean> experts = new ArrayList<ExpertBean>();
+		List<CareTeamMemberDTO> members = null;
+		TypedQuery<CareTeamMemberDTO> query = em.createQuery("FROM CareTeamMemberDTO c WHERE c.careteamid = :careteamid order by primary desc", CareTeamMemberDTO.class);
+		query.setParameter("careteamid", careTeamId);
+		try {
+			members = query.getResultList();
+			for (CareTeamMemberDTO member : members) {
+				ExpertBean expert = new ExpertBean();				
+				UserDetailsDTO userDetails = UserDAO.getDetailsById(member.getMemberid());
+				ExpertDetailDTO expertDetails = ProfileDAO.getExpertByField("id", member.getMemberid());
+				expert.setUserDetails(userDetails);
+				expert.setExpertDetail(expertDetails);
+				experts.add(expert);				
+			}
+		} catch (NoResultException e) {			
+			e.printStackTrace();
+		}
+		return experts;
+	}
+	
+	public static List<CareTeam> patientTeams(Integer patientId) {
+		List<PatienCareTeamDTO> careTeamDtos = getPatienCareTeamByField("patienid", patientId);
+		List<CareTeam> careTeams = new ArrayList<CareTeam>();		
+		for (PatienCareTeamDTO teamDto: careTeamDtos) {			
+			List<ExpertBean> experts = teamExperts(teamDto.getCareteamid());
+			CareTeam team = new CareTeam();
+			team.setCareTeamDto(teamDto);			
+			if (experts.size() > 0) {
+				team.setLeadExpert(experts.get(0));
+				experts.remove(0);
+			}
+			team.setExperts(experts);
+			careTeams.add(team);
+		}
+		return careTeams;
 	}
 	
 	public static CareTeamMemberDTO getCareTeamMembersByMemberId(Object value) {

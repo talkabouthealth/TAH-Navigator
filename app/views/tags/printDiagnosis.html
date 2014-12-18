@@ -8,9 +8,8 @@
 <div class="print-diagnosis">
 
 	<h1>Diagnosis and Background Information</h1>
-	<div>
-		<label><i class="fa fa-file-text-o"></i> Diagnosis</label>
-	</div>
+	
+	<h3><i class="fa fa-file-text-o"></i> Diagnosis</h3>	
 	<div style="margin-left: 20px;">
 		<h2>
 			${cancerInfo?.diseaseName} |
@@ -19,9 +18,8 @@
 	</div>
 
 
-	<div>
-		<label><i class="fa fa-file-text-o"></i> Cancer Type Information</label>
-	</div>
+	
+	<h3><i class="fa fa-file-text-o"></i> Cancer Type Information</h3>	
 	<div style="margin-left: 20px;">
 		<h2>
 #{if cancerInfo.diseaseId == '1'}
@@ -35,16 +33,14 @@ ${info.join(', ')}
 	</div>
 	
 	
-	<div>
-		<label><i class="fa fa-file-text-o"></i> Stage Information</label>
-	</div>
+	
+	<h3><i class="fa fa-file-text-o"></i> Stage Information</h3>	
 	<div style="margin-left: 20px;">
 		<h2>#{if cancerInfo.stageName} ${cancerInfo.stageName} #{/if}</h2>
 	</div>
 	
-	<div>
-		<label><i class="fa fa-file-text-o"></i> Family History & Genetics</label>
-	</div>
+	
+	<h3><i class="fa fa-file-text-o"></i> Family History & Genetics</h3>	
 	<div style="margin-left: 20px;">
 		<h2>#{if cancerInfo.brca} ${"BRCA" + cancerInfo.brca} #{/if}</h2>
 	</div>

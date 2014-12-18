@@ -18,7 +18,8 @@
 #{/if}
 
 #{if care_team || all}
-<div>Care Team</div>
+#{printSummary user: user, userDetails: userDetails, patientDetails: patientDetails, cancerInfo: cancerInfo /}
+#{printCareTeam careTeams: careTeams /}
 #{/if}
 
 #{if appointments || all}

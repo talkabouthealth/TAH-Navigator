@@ -11,6 +11,27 @@ div.print-section h1 {
 	padding: 0;
 }
 
+div.print-section h3 {
+	margin: 10px auto;
+	padding: 0;
+}
+
+div.print-section .line {
+	width: 100%;
+	height: 1px;
+	margin: 5px auto;
+	border-top: 1px solid #ccc;
+	
+}
+
+div.print-section .double-line {
+	width: 100%;
+	height: 10px;
+	border-top: 1px solid #ccc;
+	border-bottom: 1px solid #ccc;
+	margin: 5px;
+}
+
 div.print-section .para {
 	margin-top: 30px;
 }
@@ -23,7 +44,8 @@ div.print-secton .fa {
 .print-cover-page,
 .print-diagnosis,
 .print-treatment-plan,
-.print-care-plan {	
+.print-care-plan,
+.print-care-team {	
 	clear: both;
 	display: block;
 	text-align: left;

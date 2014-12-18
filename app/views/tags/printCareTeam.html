@@ -1,0 +1,45 @@
+*{ parameters are : careTeams }*
+#{set careTeams: _careTeams /}
+
+
+<div class="print-care-team">
+	<h1>Care Team Members</h1>
+#{if careTeams != null && careTeams.size() > 0}	
+#{list careTeams, as:'team'}	
+	<h3><i class="fa fa-table"></i> ${team.careTeamDto.careteam.name} CARE TEAM</h3>		
+	<div class="clearfix">
+		<div class="col-xs-3">
+			<img src="@{Image.show(team.leadExpert.expertDetail.id)}">
+		</div>
+		<div class="col-xs-9">
+			<h4>#{userName userName: team.leadExpert.userDetails.user.name, userId: team.leadExpert.userDetails.user.id /}</h4>
+			<div>${team.leadExpert.userDetails.mobile}</div>
+		</div>
+	</div>
+	
+#{if team.experts.size() > 0}	
+	<div class="line"></div>
+	<div class="clearfix">
+#{list team.experts, as:'expert'}	
+		<div class="col-xs-3">
+			<img src="@{Image.show(expert.expertDetail.id)}">
+		</div>
+		<div class="col-xs-3">
+			<div>${expert?.expertDetail?.designation?.designation}</div>
+			<div>#{userName userName: expert.userDetails.user.name, userId: expert.userDetails.user.id /}</div>
+			<div>${expert.userDetails.mobile}</div>
+		</div>		
+#{/list}    
+	</div>
+	
+#{/if}	
+	
+	<div class="double-line"></div>
+	
+	
+#{/list}
+#{/if}
+#{else}
+	<p>No Data found</p>    
+#{/else}
+</div>

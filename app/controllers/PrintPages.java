@@ -1,14 +1,19 @@
 package controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import nav.dao.CancerDAO;
+import nav.dao.CareTeamDAO;
 import nav.dao.FollowUp;
 import nav.dao.PatientDetailDAO;
 import nav.dao.Treatment;
 import nav.dao.UserDAO;
+import nav.dto.CareTeam;
+import nav.dto.ExpertBean;
 import models.BreastCancerInfoDTO;
+import models.PatienCareTeamDTO;
 import models.PatientChemoTreatmentDTO;
 import models.PatientConcernDTO;
 import models.PatientDetailDTO;
@@ -36,7 +41,8 @@ public class PrintPages extends Controller {
 		List<PatientConcernDTO> concerns = FollowUp.getPatientConcerns(user.getId());			
 		List<PatientGoalDTO> goals = FollowUp.getPatientGoals(user.getId());			
 		List<PatientFollowUpCareItemDTO> careItems = FollowUp.getPatientCareItems(user.getId());							
-		
+		// care team		
+		List<CareTeam> careTeams = CareTeamDAO.patientTeams(patientId);		
 		
 		for(String str: filter) {
 			renderArgs.put(str, true);
@@ -52,6 +58,7 @@ public class PrintPages extends Controller {
 		renderArgs.put("concerns", concerns);
 		renderArgs.put("goals", goals);
 		renderArgs.put("careItems", careItems);
+		renderArgs.put("careTeams", careTeams);
 		render();
 	}
 	
