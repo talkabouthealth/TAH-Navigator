@@ -9,11 +9,11 @@
 	<h3><i class="fa fa-table"></i> ${team.careTeamDto.careteam.name} CARE TEAM</h3>		
 	<div class="clearfix">
 		<div class="col-xs-3">
-			<img src="@{Image.show(team.leadExpert.expertDetail.id)}">
+			<img src="@{Image.show(team?.leadExpert?.expertDetail?.id)}">
 		</div>
 		<div class="col-xs-9">
-			<h4>#{userName userName: team.leadExpert.userDetails.user.name, userId: team.leadExpert.userDetails.user.id /}</h4>
-			<div>${team.leadExpert.userDetails.mobile}</div>
+			<h4>#{userName userName: team?.leadExpert?.userDetails?.user?.name, userId: team?.leadExpert?.userDetails?.user?.id /}</h4>
+			<div>${team?.leadExpert?.userDetails?.mobile}</div>
 		</div>
 	</div>
 	
@@ -26,8 +26,8 @@
 		</div>
 		<div class="col-xs-3">
 			<div>${expert?.expertDetail?.designation?.designation}</div>
-			<div>#{userName userName: expert.userDetails.user.name, userId: expert.userDetails.user.id /}</div>
-			<div>${expert.userDetails.mobile}</div>
+			<div>#{userName userName: expert?.userDetails?.user?.name, userId: expert?.userDetails?.user?.id /}</div>
+			<div>${expert?.userDetails?.mobile}</div>
 		</div>		
 #{/list}    
 	</div>
