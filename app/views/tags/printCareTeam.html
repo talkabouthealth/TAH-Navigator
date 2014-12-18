@@ -22,7 +22,7 @@
 	<div class="line"></div>
 	<div class="clearfix">
 #{list team.experts, as:'expert'}
-#{if expert && expert.expertDetail && expert.userDetails && expertDetail.designation}	
+#{if expert && expert.expertDetail && expert.userDetails && expert.expertDetail.designation}	
 		<div class="col-xs-3">
 			<img src="@{Image.show(expert.expertDetail.id)}">
 		</div>
