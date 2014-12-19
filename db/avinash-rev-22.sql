@@ -85,3 +85,9 @@ INSERT INTO nav.surgery_type(name, days, active, diseaseid) VALUES
 ,('Laparoscopic Total Hysterectomy', 21, true, 22)
 ,('Laparoscopic Bilateral Salpingo-Oopherectomy', 21, true, 22)
 ,('Laparoscopic Radical Hysterectomy', 21, true, 22);
+
+
+update nav.surgery_type set name = 'Flap Breast Reconstruction' where name = 'Tissue flap breast reconstruction';
+
+update nav.treatment_region set region = 'Both Chest Walls' where region = 'Both Chest Wall';
+

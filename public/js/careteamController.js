@@ -1389,6 +1389,7 @@ var careTeamController = (function() {
         $('#si_st').typeahead({
             source: tmp
             ,minLength: 0
+            ,items:10
         });
         $('#si_st').keyup(function() {
             var str = $(this).val();
@@ -1684,13 +1685,22 @@ var careTeamController = (function() {
         var radiationTypes = data.radiationTypes;
         var doctors = data.doctors;
         var length = radiationTypes.length;
-        var tmp = [];
+        var tmpRt = [];
+        var tmp1 = [];
         for (var i = 0; i < length; i++) {
-            tmp[i] = radiationTypes[i].name
+        	if(i==0) 
+        		tmp1[i] = radiationTypes[i].name;
+        	tmpRt[i] = radiationTypes[i].name
         }
-        $('#rt_type').typeahead({
+        
+        var rtTypes = $('#rt_type').typeahead({
         	 minLength: 0 ,
-            source: tmp
+        	 items: 8,
+             source: tmp1,
+             matcher: function(t) {
+           		 this.setSource(tmpRt);
+           		 return~t.toLowerCase().indexOf(this.query.toLowerCase());
+             }
         });
         
         $('#rt_type').keyup(function() {

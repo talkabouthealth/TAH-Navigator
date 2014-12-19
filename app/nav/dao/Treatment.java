@@ -17,7 +17,7 @@ public class Treatment {
 		List<RadiationTypeDTO> radiationTypes = null;
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
-			TypedQuery<RadiationTypeDTO> query = em.createQuery("FROM RadiationTypeDTO where active = true", RadiationTypeDTO.class); 
+			TypedQuery<RadiationTypeDTO> query = em.createQuery("FROM RadiationTypeDTO order by name", RadiationTypeDTO.class); //where active = true 
 			radiationTypes = query.getResultList();
 		} 
 		catch(Exception e) {
