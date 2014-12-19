@@ -863,7 +863,7 @@ var careTeamController = (function() {
         			var bcStages = data.bcStages;
         			length = 0;
 
-            		$('#stage').html('');
+            		$('#stage').html('<option></option>');
             		for (var i = 0; i < bcStages.length; i++) {
             			if(disease_id == bcStages[i].diseaseid) {
             				length = length + 1;
