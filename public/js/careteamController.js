@@ -883,7 +883,7 @@ var careTeamController = (function() {
             			$('#mutations').multiselect('destroy');
             		} catch(e){}
             		var mutations = data.mutations;
-            		$('#mutations').html('');
+            		$('#mutations').html('<option></option>');
             		var mutationLength = 0;
             		for (var i = 0; i < mutations.length; i++) {
             			if(disease_id == mutations[i].diseaseid) {
@@ -926,7 +926,7 @@ var careTeamController = (function() {
 
     	        	var subTypeLenght = 0;
     	        	var roottype = data.subtype;
-            		$('#cancersubtype').html('');
+            		$('#cancersubtype').html('<option></option>');
             		for (var i = 0; i < roottype.length; i++) {
             			if(disease_id == roottype[i].diseaseid) {
             				subTypeLenght = subTypeLenght +1;
@@ -941,7 +941,7 @@ var careTeamController = (function() {
             		}
             		
     	        	var roottype = data.roottype;
-            		$('#cancertype').html('');
+            		$('#cancertype').html('<option></option>');
             		var rootTypeLenght = 0;
             		for (var i = 0; i < roottype.length; i++) {
             			if(disease_id == roottype[i].diseaseid) {
@@ -958,7 +958,7 @@ var careTeamController = (function() {
             		
             		
             		var invasion = data.invasion;
-            		$('#invasiveness').html('');
+            		$('#invasiveness').html('<option></option>');
             		rootTypeLenght = 0;
             		for (var i = 0; i < invasion.length; i++) {
             			if(disease_id == invasion[i].diseaseid) {
@@ -974,7 +974,7 @@ var careTeamController = (function() {
             		}
 
             		var grade = data.grade;
-            		$('#grade').html('');
+            		$('#grade').html('<option></option>');
             		rootTypeLenght = 0;
             		for (var i = 0; i < grade.length; i++) {
             			if(disease_id == grade[i].diseaseid) {
@@ -989,7 +989,7 @@ var careTeamController = (function() {
             			$("#grade_div").hide();
             		}
             		var phase = data.phase;
-            		$('#phase').html('');
+            		$('#phase').html('<option></option>');
             		rootTypeLenght = 0;
             		for (var i = 0; i < phase.length; i++) {
             			if(disease_id == phase[i].diseaseid) {
@@ -1007,7 +1007,7 @@ var careTeamController = (function() {
             		try {
             			$('#chromosome').multiselect('destroy');
             		} catch(e){}
-            		$('#chromosome').html('');
+            		$('#chromosome').html('<option></option>');
             		rootTypeLenght = 0;
             		for (var i = 0; i < chromosome.length; i++) {
             			if(disease_id == chromosome[i].diseaseid) {
@@ -1039,7 +1039,7 @@ var careTeamController = (function() {
             		}
             		
             		roottype = data.who;
-            		$('#who').html('');
+            		$('#who').html('<option></option>');
             		rootTypeLenght = 0;
             		for (var i = 0; i < roottype.length; i++) {
             			if(disease_id == roottype[i].diseaseid) {
