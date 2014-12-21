@@ -667,13 +667,13 @@ public class Treatment {
 			TypedQuery<PatientRadiationTreatmentDTO> query = em.createQuery("FROM PatientRadiationTreatmentDTO p WHERE p.userId = :userId ORDER BY p.startDate ASC", PatientRadiationTreatmentDTO.class);
 			query.setParameter("userId", patientId);
 			radiationTreatments = query.getResultList();
+			for (PatientRadiationTreatmentDTO prtDto : radiationTreatments) {
+				refreshRadiationTreatment(prtDto);
+			}
 		} 
 		catch(Exception e) {
 			e.printStackTrace();
-		}
-		for (PatientRadiationTreatmentDTO prtDto : radiationTreatments) {
-			refreshRadiationTreatment(prtDto);
-		}
+		}		
 		return radiationTreatments;
 	}
 	
@@ -727,13 +727,13 @@ public class Treatment {
 			TypedQuery<PatientChemoTreatmentDTO> query = em.createQuery("FROM PatientChemoTreatmentDTO p WHERE p.userId = :userId ORDER BY p.startDate ASC", PatientChemoTreatmentDTO.class);
 			query.setParameter("userId", patientId);
 			chemoTreatments = query.getResultList();
+			for (PatientChemoTreatmentDTO pctDto : chemoTreatments) {
+				refreshChemotherapy(pctDto);
+			}
 		} 
 		catch(Exception e) {
 			e.printStackTrace();
-		}
-		for (PatientChemoTreatmentDTO pctDto : chemoTreatments) {
-			refreshChemotherapy(pctDto);
-		}
+		}		
 		return chemoTreatments;
 	}
 	
@@ -744,13 +744,14 @@ public class Treatment {
 			TypedQuery<PatientSurgeryInfoDTO> query = em.createQuery("FROM PatientSurgeryInfoDTO p WHERE p.userId = :userId ORDER BY p.surgeryDate ASC", PatientSurgeryInfoDTO.class);
 			query.setParameter("userId", patientId);
 			surgeryInfo = query.getResultList();
+			for (PatientSurgeryInfoDTO psiDto : surgeryInfo) {
+				refreshSurgeryInfo(psiDto);
+			}
 		} 
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		for (PatientSurgeryInfoDTO psiDto : surgeryInfo) {
-			refreshSurgeryInfo(psiDto);
-		}
+		
 		return surgeryInfo;
 	}
 }
