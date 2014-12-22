@@ -8,6 +8,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 import models.BreastCancerInfoDTO;
+import models.CancerTypeDTO;
 import models.DiseaseMasterDTO;
 import models.PatientDetailDTO;
 import util.JPAUtil;
@@ -71,5 +72,17 @@ public class CancerDAO {
 			e.printStackTrace();
 		}	
 		return info;
+	}
+	
+	public static Integer createCancerType(Integer diseaseId, String name, boolean rootType) {
+		EntityManager em = JPAUtil.getEntityManager();
+		CancerTypeDTO cancerType = new CancerTypeDTO();
+		cancerType.setDiseaseid(diseaseId);
+		cancerType.setRoottype(rootType);
+		cancerType.setName(name);
+		em.getTransaction().begin();
+		em.persist(cancerType);
+		em.getTransaction().commit();
+		return cancerType.getId();
 	}
 }

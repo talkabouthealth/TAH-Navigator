@@ -247,7 +247,7 @@ a.date-range.active {
 
 <!-- ------------------------ All Care Team Modal-Templates Here  [START] ------------------------------- -->
 
-<div class="modal"  id="diagnosis-edit-form" tabindex="-1" role="dialog" aria-labelledby="diagnosisEditFormTitle" init-flag="0">
+<div class="modal"  id="diagnosis-edit-form" role="dialog" aria-labelledby="diagnosisEditFormTitle" init-flag="0">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -300,9 +300,10 @@ a.date-range.active {
                     <div class="form-group form-group-sm" id="cancertype_div">
                         <label for="cancertype" class="col-xs-5 control-label">Cancer Type</label>
                         <div class="col-xs-7">
-                            <select class="form-control input-sm" id="cancertype">
+							<input type="text" class="form-control input-sm" id="cancertype" />
+                            <!--<select class="form-control input-sm" id="cancertype">
                                 <option></option>
-                            </select>
+                            </select>-->
                         </div>
                     </div>
                     <div class="form-group form-group-sm" id="stage_div">
@@ -954,6 +955,7 @@ a.date-range.active {
 (function($){
   var todayDate;
   var lastLogin;
+  LoadSelect2Script();
   $(document).ready(function(){
 	  //  distress modal [start]
 	$(document).on('click', 'a.distress-meter', function(e) {
