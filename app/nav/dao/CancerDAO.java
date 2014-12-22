@@ -8,6 +8,8 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 import models.BreastCancerInfoDTO;
+import models.BreastCancerStageDTO;
+import models.CancerInvasiveDTO;
 import models.CancerTypeDTO;
 import models.DiseaseMasterDTO;
 import models.PatientDetailDTO;
@@ -84,5 +86,26 @@ public class CancerDAO {
 		em.persist(cancerType);
 		em.getTransaction().commit();
 		return cancerType.getId();
+	}
+	
+	public static Integer createCancerStage(Integer diseaseId, String name) {
+		EntityManager em = JPAUtil.getEntityManager();
+		BreastCancerStageDTO stage = new BreastCancerStageDTO();
+		stage.setDiseaseid(diseaseId);
+		stage.setName(name);
+		em.getTransaction().begin();
+		em.persist(stage);
+		em.getTransaction().commit();
+		return stage.getId();
+	}
+	public static CancerInvasiveDTO createCancerInvasion(Integer diseaseId, String name) {
+		EntityManager em = JPAUtil.getEntityManager();
+		CancerInvasiveDTO invasion = new CancerInvasiveDTO();
+		invasion.setDiseaseid(diseaseId);
+		invasion.setInvname(name);
+		em.getTransaction().begin();
+		em.persist(invasion);
+		em.getTransaction().commit();
+		return invasion;
 	}
 }

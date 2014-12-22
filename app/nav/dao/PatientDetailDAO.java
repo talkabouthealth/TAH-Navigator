@@ -629,9 +629,15 @@ public class PatientDetailDAO {
 		if (StringUtils.isBlank(str)) {
 			stageId = null;
 		} else {
-			stageId = new Integer(str);
+			try {
+				stageId = new Integer(str);
+				breastCancerInfo.setStageId(stageId);
+			} catch (Exception e) {
+				stageId = CancerDAO.createCancerStage(diseaseId, str);
+				breastCancerInfo.setStageId(stageId);
+			}
 		}
-		breastCancerInfo.setStageId(stageId);
+		
 		
 		str = diseaseInfo.get("fab_id");
 		if (StringUtils.isBlank(str)) {
@@ -670,9 +676,15 @@ public class PatientDetailDAO {
 		if (StringUtils.isBlank(str)) {
 			invasiveness = null;
 		} else {
-			invasiveness = new Integer(str);
+			try {
+				invasiveness = new Integer(str);
+				breastCancerInfo.setInvasion(Disease.getCancerInvasiveById(invasiveness));
+			} catch (Exception e) {
+				CancerInvasiveDTO invasion = CancerDAO.createCancerInvasion(diseaseId, str);
+				breastCancerInfo.setInvasion(invasion);
+			}
 		}
-		breastCancerInfo.setInvasion(Disease.getCancerInvasiveById(invasiveness));
+		
 		
 		breastCancerInfo.setTypeid(null);
 		breastCancerInfo.setSubtypeid(null);

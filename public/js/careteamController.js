@@ -863,19 +863,31 @@ var careTeamController = (function() {
         			var bcStages = data.bcStages;
         			length = 0;
 
-            		$('#stage').html('<option></option>');
+            		//$('#stage').html('<option></option>');
+					var stageData = [{id: '', text: ''}];
             		for (var i = 0; i < bcStages.length; i++) {
             			if(disease_id == bcStages[i].diseaseid) {
             				length = length + 1;
+							stageData.push({id: bcStages[i].id, text: bcStages[i].name});
             				if(bcStages[i].id == curStageId) {
-            					$('#stage').append('<option value="' + bcStages[i].id + '" selected="">' + bcStages[i].name + '</option>');
+            					//$('#stage').append('<option value="' + bcStages[i].id + '" selected="">' + bcStages[i].name + '</option>');
+								stageData.push({id: bcStages[i].id, text: bcStages[i].name});
             				} else {
-            					$('#stage').append('<option value="' + bcStages[i].id + '">' + bcStages[i].name + '</option>');
+            					//$('#stage').append('<option value="' + bcStages[i].id + '">' + bcStages[i].name + '</option>');
             				}
             			}
             		}
             		if(length>0){
             			$('#stage_div').show();
+						$('#stage').select2({
+							'data': stageData,
+							'createSearchChoice': function(term, data) {
+								if ($(data).filter(function() { return this.text.localeCompare(term)===0; }).length === 0) {	
+									return {id:term, text:term};
+								}
+							}
+						});
+						$('#stage').val(curStageId);						
             		} else {
             			$('#stage_div').hide();	
             		}
@@ -968,15 +980,25 @@ var careTeamController = (function() {
             		
             		
             		var invasion = data.invasion;
-            		$('#invasiveness').html('<option></option>');
+            		//$('#invasiveness').html('<option></option>');
+					var invasionData = [{id: '', text: ''}];
             		rootTypeLenght = 0;
             		for (var i = 0; i < invasion.length; i++) {
             			if(disease_id == invasion[i].diseaseid) {
             				rootTypeLenght = rootTypeLenght +1 ;
-           					$('#invasiveness').append('<option value="' + invasion[i].id + '">' + invasion[i].invname + '</option>');
+           					//$('#invasiveness').append('<option value="' + invasion[i].id + '">' + invasion[i].invname + '</option>');
+							invasionData.push({id: invasion[i].id, text: invasion[i].invname});
             			}
             		}
             		if(rootTypeLenght>0) {
+						$('#invasiveness').select2({
+							'data': invasionData,
+							'createSearchChoice': function(term, data) {
+								if ($(data).filter(function() { return this.text.localeCompare(term)===0; }).length === 0) {	
+									return {id:term, text:term};
+								}
+							}
+						});
             		    $('#invasiveness').val(invasionVal);
             			$("#invasiveness_div").show();
             		} else {
