@@ -628,6 +628,7 @@ public class PatientDetailDAO {
 		Integer stageId;
 		if (StringUtils.isBlank(str)) {
 			stageId = null;
+			breastCancerInfo.setStageId(null);
 		} else {
 			try {
 				stageId = new Integer(str);
@@ -675,6 +676,7 @@ public class PatientDetailDAO {
 		Integer invasiveness;
 		if (StringUtils.isBlank(str)) {
 			invasiveness = null;
+			breastCancerInfo.setInvasion(null);
 		} else {
 			try {
 				invasiveness = new Integer(str);
