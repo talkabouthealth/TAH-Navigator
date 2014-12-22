@@ -14,6 +14,7 @@ import javax.persistence.TypedQuery;
 import javax.sound.midi.MidiDevice.Info;
 
 import org.apache.commons.lang.StringUtils;
+
 import models.AddressDTO;
 import models.AppointmentDTO;
 import models.BreastCancerInfoDTO;
@@ -713,7 +714,12 @@ public class PatientDetailDAO {
 		if (StringUtils.isBlank(str)) {
 			breastCancerInfo.setTypeid(null);
 		} else {
-			breastCancerInfo.setTypeid( new Integer(str));
+			try {
+				breastCancerInfo.setTypeid( new Integer(str));
+			} catch (Exception e) {
+				Integer typeId = CancerDAO.createCancerType(diseaseId, str, true);
+				breastCancerInfo.setTypeid(typeId);
+			}
 		}
 		str = diseaseInfo.get("subtypeid");
 		if (StringUtils.isBlank(str)) {

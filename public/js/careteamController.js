@@ -941,15 +941,25 @@ var careTeamController = (function() {
             		}
             		
     	        	var roottype = data.roottype;
-            		$('#cancertype').html('<option></option>');
+            		//$('#cancertype').html('<option value=""></option>');					
+					var cancerTypeData = [{id: '', text: ''}];
             		var rootTypeLenght = 0;
             		for (var i = 0; i < roottype.length; i++) {
             			if(disease_id == roottype[i].diseaseid) {
             				rootTypeLenght = rootTypeLenght +1 ;
-           					$('#cancertype').append('<option value="' + roottype[i].id + '">' + roottype[i].name + '</option>');
+           					//$('#cancertype').append('<option value="' + roottype[i].id + '">' + roottype[i].name + '</option>');
+							cancerTypeData.push({id: roottype[i].id, text: roottype[i].name});
             			}
             		}
             		if(rootTypeLenght>0) {
+						$('#cancertype').select2({
+							'data': cancerTypeData,
+							'createSearchChoice': function(term, data) {
+								if ($(data).filter(function() { return this.text.localeCompare(term)===0; }).length === 0) {	
+									return {id:term, text:term};
+								}
+							}
+						});
             		    $('#cancertype').val(csrtype);
             			$('#cancertype_div').show();
             		} else {
@@ -1058,7 +1068,8 @@ var careTeamController = (function() {
         		$('#save-diagnosis-data').click(function(e) {
         			updateDiagnosisData();
         			$('#diagnosis-edit-form').modal('hide');
-        		});
+        		});								
+								
         	}
         	$('#diagnosis-edit-form').attr('patient_id', patientId);
             if ("diseaseId" in data) {
@@ -1130,6 +1141,7 @@ var careTeamController = (function() {
         		keyboard: false,
         		backdrop: 'static'
         	});
+			
         }, "json");
     };
     
