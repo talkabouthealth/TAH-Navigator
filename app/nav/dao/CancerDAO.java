@@ -9,8 +9,13 @@ import javax.persistence.TypedQuery;
 
 import models.BreastCancerInfoDTO;
 import models.BreastCancerStageDTO;
+import models.CancerChromosomeDTO;
+import models.CancerFabClassificationDTO;
+import models.CancerGradeDTO;
 import models.CancerInvasiveDTO;
+import models.CancerPhaseDTO;
 import models.CancerTypeDTO;
+import models.CancerWhoClassificationDTO;
 import models.DiseaseMasterDTO;
 import models.PatientDetailDTO;
 import util.JPAUtil;
@@ -108,4 +113,60 @@ public class CancerDAO {
 		em.getTransaction().commit();
 		return invasion;
 	}
+	
+	public static CancerGradeDTO createCancerGrade(Integer diseaseId, String name) {
+		EntityManager em = JPAUtil.getEntityManager();
+		CancerGradeDTO grade = new CancerGradeDTO();
+		grade.setDiseaseid(diseaseId);
+		grade.setGradename(name);
+		em.getTransaction().begin();
+		em.persist(grade);
+		em.getTransaction().commit();
+		return grade;
+	}
+	
+	public static CancerPhaseDTO createCancerPhase(Integer diseaseId, String name) {
+		EntityManager em = JPAUtil.getEntityManager();
+		CancerPhaseDTO phase = new CancerPhaseDTO();
+		phase.setDiseaseid(diseaseId);
+		phase.setName(name);
+		em.getTransaction().begin();
+		em.persist(phase);
+		em.getTransaction().commit();
+		return phase;
+	}
+	
+	public static CancerFabClassificationDTO createCancerFabClass(Integer diseaseId, String name) {
+		EntityManager em = JPAUtil.getEntityManager();
+		CancerFabClassificationDTO fab = new CancerFabClassificationDTO();
+		fab.setDiseaseid(diseaseId);
+		fab.setFabname(name);
+		em.getTransaction().begin();
+		em.persist(fab);
+		em.getTransaction().commit();
+		return fab;
+	}
+	
+	public static CancerWhoClassificationDTO createCancerWHOClass(Integer diseaseId, String name) {
+		EntityManager em = JPAUtil.getEntityManager();
+		CancerWhoClassificationDTO who = new CancerWhoClassificationDTO();
+		who.setDiseaseid(diseaseId);
+		who.setWhoname(name);
+		em.getTransaction().begin();
+		em.persist(who);
+		em.getTransaction().commit();
+		return who;
+	}
+	
+	public static CancerChromosomeDTO createCancerChromosome(Integer diseaseId, String name) {
+		EntityManager em = JPAUtil.getEntityManager();
+		CancerChromosomeDTO chromosome = new CancerChromosomeDTO();
+		chromosome.setDiseaseid(diseaseId);
+		chromosome.setChromosomename(name);
+		em.getTransaction().begin();
+		em.persist(chromosome);
+		em.getTransaction().commit();
+		return chromosome;
+	}
+	
 }

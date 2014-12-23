@@ -838,6 +838,11 @@ var careTeamController = (function() {
     };
     
     var diagnosis = function(domElement) {
+		var createSearchChoice = function(term, data) {
+			if ($(data).filter(function() { return this.text.localeCompare(term)===0; }).length === 0) {	
+				return {id:term, text:term};
+			}
+		};
         var patientId = $(domElement).attr("patient_id");
         $.post(actions['ctp_diagnosis_json'], {
                patientId: patientId
@@ -881,11 +886,7 @@ var careTeamController = (function() {
             			$('#stage_div').show();
 						$('#stage').select2({
 							'data': stageData,
-							'createSearchChoice': function(term, data) {
-								if ($(data).filter(function() { return this.text.localeCompare(term)===0; }).length === 0) {	
-									return {id:term, text:term};
-								}
-							}
+							'createSearchChoice': createSearchChoice
 						});
 						$('#stage').val(curStageId);						
             		} else {
@@ -966,11 +967,7 @@ var careTeamController = (function() {
             		if(rootTypeLenght>0) {
 						$('#cancertype').select2({
 							'data': cancerTypeData,
-							'createSearchChoice': function(term, data) {
-								if ($(data).filter(function() { return this.text.localeCompare(term)===0; }).length === 0) {	
-									return {id:term, text:term};
-								}
-							}
+							'createSearchChoice': createSearchChoice
 						});
             		    $('#cancertype').val(csrtype);
             			$('#cancertype_div').show();
@@ -993,11 +990,7 @@ var careTeamController = (function() {
             		if(rootTypeLenght>0) {
 						$('#invasiveness').select2({
 							'data': invasionData,
-							'createSearchChoice': function(term, data) {
-								if ($(data).filter(function() { return this.text.localeCompare(term)===0; }).length === 0) {	
-									return {id:term, text:term};
-								}
-							}
+							'createSearchChoice': createSearchChoice
 						});
             		    $('#invasiveness').val(invasionVal);
             			$("#invasiveness_div").show();
@@ -1006,64 +999,91 @@ var careTeamController = (function() {
             		}
 
             		var grade = data.grade;
-            		$('#grade').html('<option></option>');
+            		//$('#grade').html('<option></option>');
+					var gradeData = [{id: '', text: ''}];
             		rootTypeLenght = 0;
             		for (var i = 0; i < grade.length; i++) {
             			if(disease_id == grade[i].diseaseid) {
             				rootTypeLenght = rootTypeLenght +1 ;
-           					$('#grade').append('<option value="' + grade[i].id + '">' + grade[i].gradename + '</option>');
+           					//$('#grade').append('<option value="' + grade[i].id + '">' + grade[i].gradename + '</option>');
+							gradeData.push({id: grade[i].id, text: grade[i].gradename});
             			}
             		}
             		if(rootTypeLenght>0) {
+						$('#grade').select2({
+							'data': gradeData,
+							'createSearchChoice': createSearchChoice
+						});
             		    $('#grade').val(gradeVal);
             			$("#grade_div").show();
             		} else {
             			$("#grade_div").hide();
             		}
             		var phase = data.phase;
-            		$('#phase').html('<option></option>');
+            		//$('#phase').html('<option></option>');
+					var phaseData = [{id: '', text: ''}];
             		rootTypeLenght = 0;
             		for (var i = 0; i < phase.length; i++) {
             			if(disease_id == phase[i].diseaseid) {
             				rootTypeLenght = rootTypeLenght +1 ;
-           					$('#phase').append('<option value="' + phase[i].id + '">' + phase[i].name + '</option>');
+           					//$('#phase').append('<option value="' + phase[i].id + '">' + phase[i].name + '</option>');
+							phaseData.push({id: phase[i].id, text: phase[i].name});
             			}
             		}
             		if(rootTypeLenght>0) {
+						$('#phase').select2({
+							'data': phaseData,
+							'createSearchChoice': createSearchChoice
+						});
             		    $('#phase').val(csrphase);
             			$("#phase_div").show();
             		} else {
             			$("#phase_div").hide();
             		}
             		var chromosome = data.chromosome;
+					/*
             		try {
             			$('#chromosome').multiselect('destroy');
             		} catch(e){}
-            		$('#chromosome').html('<option></option>');
+					*/
+            		//$('#chromosome').html('<option></option>');
+					var chromosomeData = [{id: '', text: ''}];
             		rootTypeLenght = 0;
             		for (var i = 0; i < chromosome.length; i++) {
             			if(disease_id == chromosome[i].diseaseid) {
             				rootTypeLenght = rootTypeLenght +1 ;
-           					$('#chromosome').append('<option value="' + chromosome[i].id + '">' + chromosome[i].chromosomename + '</option>');
+           					//$('#chromosome').append('<option value="' + chromosome[i].id + '">' + chromosome[i].chromosomename + '</option>');
+							chromosomeData.push({id: chromosome[i].id, text: chromosome[i].chromosomename});
             			}
             		}
             		if(rootTypeLenght>0) {
+						$('#chromosome').select2({
+							'data': chromosomeData,
+							'createSearchChoice': createSearchChoice,
+							'multiple': true
+						});
             		    $('#chromosome').val(chromosomesIds);
             			$("#chromosome_div").show();
-            			$('#chromosome').multiselect({enableFiltering: false, buttonWidth: '310px',buttonClass: 'inputdropdown'});
+            			//$('#chromosome').multiselect({enableFiltering: false, buttonWidth: '310px',buttonClass: 'inputdropdown'});
             		} else {
             			$("#chromosome_div").hide();
             		}
     	        	roottype = data.fab;
-            		$('#fab').html('');
+            		//$('#fab').html('');
+					var fabData = [{id:'', text:''}];
             		rootTypeLenght = 0;
             		for (var i = 0; i < roottype.length; i++) {
             			if(disease_id == roottype[i].diseaseid) {
             				rootTypeLenght = rootTypeLenght +1 ;
-           					$('#fab').append('<option value="' + roottype[i].id + '">' + roottype[i].fabname + '</option>');
+           					//$('#fab').append('<option value="' + roottype[i].id + '">' + roottype[i].fabname + '</option>');
+							fabData.push({id: roottype[i].id, text: roottype[i].fabname});
             			}
             		}
             		if(rootTypeLenght>0) {
+						$('#fab').select2({
+							'data': fabData,
+							'createSearchChoice': createSearchChoice
+						});
             		    $('#fab').val(fabId);
             			$('#fab_div').show();
             		} else {
@@ -1071,15 +1091,21 @@ var careTeamController = (function() {
             		}
             		
             		roottype = data.who;
-            		$('#who').html('<option></option>');
+            		//$('#who').html('<option></option>');
+					var whoData = [{id: '', text: ''}];
             		rootTypeLenght = 0;
             		for (var i = 0; i < roottype.length; i++) {
             			if(disease_id == roottype[i].diseaseid) {
             				rootTypeLenght = rootTypeLenght +1 ;
-           					$('#who').append('<option value="' + roottype[i].id + '">' + roottype[i].whoname + '</option>');
+           					//$('#who').append('<option value="' + roottype[i].id + '">' + roottype[i].whoname + '</option>');
+							whoData.push({id: roottype[i].id, text: roottype[i].whoname});
             			}
             		}
             		if(rootTypeLenght>0) {
+						$('#who').select2({
+							'data': whoData,
+							'createSearchChoice': createSearchChoice
+						});
             		    $('#who').val(whoId);
             			$('#who_div').show();
             		} else {
@@ -1129,6 +1155,10 @@ var careTeamController = (function() {
            	  	} else {
                	  $('#stage').val('');
            	  	}
+				
+				if ('chromosomesIds' in data) {
+					$('#chromosome').val(data.chromosomesIds);
+				}
 
            	  	$('#risklevel').val(data.risklevel);
            	  	$('#psascore').val(data.psascore);
