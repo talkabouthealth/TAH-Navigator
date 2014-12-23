@@ -71,8 +71,8 @@
                  <div class="form-group form-group-sm">
                         <label class="col-xs-3 control-label" for="rt_schedule">Time</label>
                         <div class="col-xs-8 form-group input-group">
-                           <input type="text" class="form-control timeField nomargin" name="time" required="required">
-                           <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+                           <input type="text" class="form-control timeField nomargin" name="time"> <!-- required="required" -->
+<!--                            <span class="input-group-addon has-error"><i class="fa fa-star"></i></span> -->
                         </div>
                 </div>
                  <div class="form-group form-group-sm">
@@ -82,6 +82,47 @@
                            <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
                         </div>
                 </div>
+                <div class="form-group form-group-sm" id="repeatWeeklyBtnDiv">
+					<label class="col-xs-3 control-label" for="rt_schedule" style="padding-top: 0px;">Repeat Weekly</label>
+					<div class="col-xs-8 form-group input-group">
+						<input id="repeatWeeklyBtn" name="repeatWeeklyBtn" type="checkbox"/>
+						<span id="appoinetmentrepeatError" class="txt-danger" style="float:right;"></span>
+					</div>
+				</div>
+				<div id="repeatWeeklyBlock" style="display:none;width:100%;float: left;">
+					<div class="form-group form-group-sm">
+                        <label class="col-xs-3 control-label" for="rt_schedule">Starts on</label>
+                        <div class="col-xs-2 form-group input-group" style="margin-bottom: 5px; padding-left: 0px;">
+                           <input type="text" class="form-control nomargin" id="startsOn" name="startsOn" style="border-radius: 3px;">
+                        </div>
+                	</div>
+					<div class="form-group form-group-sm">
+                		<label class="col-xs-3 control-label" for="rt_schedule" style="padding-top: 0px;">Ends</label>
+						<div class="col-xs-2 form-group input-group">
+							<input id="endsNeverBtn" name="endsOnCheck" type="checkbox" data-value="never" value="never"/>&nbsp;Never<br>
+						</div>
+					</div>
+					<div class="form-group form-group-sm">
+						<label class="col-xs-3 control-label sr-only" for="rt_schedule"></label>
+						<div class="col-xs-2 form-group" style="/* padding-left: 3px; */">
+							<input id="endsAfterBtn" name="endsOnCheck" type="checkbox" data-value="after" value="after"/>&nbsp;After
+						</div>
+						<div class="col-xs-2 form-group" style="margin-left: -45px; margin-bottom: 5px;">
+							<input type="text" class="form-control nomargin input-sm" id="occurences" name="occurences" disabled="disabled" style="border-radius: 3px; width: 60%;">
+						</div>
+						<div class="col-xs-1 form-group" style="margin-left: -45px; margin-bottom: 5px;">&nbsp;occurences.</div>
+					</div>
+					<div class="form-group form-group-sm">
+						<label class="col-xs-3 control-label sr-only" for="rt_schedule"></label>
+						<div class="col-xs-2 form-group" style="/* padding-left: 3px;  */margin-bottom: 5px;">
+							<input id="endsOnBtn" name="endsOnCheck" type="checkbox" data-value="endsOn" value="endsOn"/>&nbsp;On
+						</div>
+						<div class="col-xs-2 form-group" style="margin-left: -45px; margin-bottom: 5px;">
+							<input type="text" class="form-control nomargin" id="endsOnDate" name="endsOnDate" disabled="disabled" style="border-radius: 3px;">
+						</div>
+					</div>
+				</div>
+				
                  <div class="form-group form-group-sm">
                         <label class="col-xs-3 control-label" for="rt_schedule">Center</label>
                         <div class="col-xs-8 form-group input-group">
@@ -605,6 +646,41 @@
 	</div>
 </div>
 
+<div class="modal fade" id="editAppointmentOccurences" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Edit recurring appointments</h4>
+      </div>
+      <div class="modal-body" style="overflow:hidden;">
+        <div class="col-xs-12 col-sm-12" id="bodyText" style="padding: 10px 0px;">Would you like to change only this appointment, all appointments in the series?</div>
+        <div class="col-xs-12 col-sm-12" style="padding: 10px 0px;">
+        	<div class="col-xs-3 col-sm-3">
+  			<button type="button" class="btn btn-default btn-sm" value="onlyThisEvent" id="onlyThisEvent">Only this event</button>
+  			</div>
+  			<div class="col-xs-9 col-sm-9">
+  			<span>&nbsp;All other appointments in the series will remain the same.</span>
+  			</div>
+		</div>
+		<div class="col-xs-12 col-sm-12" style="padding: 10px 0px;">
+			<div class="col-xs-3 col-sm-3">
+  			<button type="button" class="btn btn-default btn-sm" value="allEvents" id="allEvents">All events</button>
+  			</div>
+  			<div class="col-xs-9 col-sm-9">
+  			<span>&nbsp;All appointments in the series will be changed. Any changes made to other appointments will be kept.</span>
+  			</div>
+		</div>
+		<div class="col-xs-12 col-sm-12" style="padding: 10px 0px;">
+		NOTE: Appointment date change will only reflect to current appointment.
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <script>
 var docs = [];
 var timeArray = ["8 AM","8.15 AM","8.30 AM","8.45 AM","9 AM","9.15 AM","9.30 AM","9.45 AM","10 AM","10.15 AM","10.30 AM","10.45 AM","11 AM","11.15 AM","11.30 AM","11.45 AM","12 noon","12.15 PM","12.30 PM",
@@ -668,7 +744,8 @@ $(document).ready(function() {
     	}
 	});
 
-	$("input.timeField").autocomplete({source: timeArray,minLenght:1 });
+// 	$("input.timeField").autocomplete({source: timeArray,minLenght:1 });
+	$("input.timeField").typeahead({ source: timeArray,minLength: 0 }); 
 	$('#hasDatepicker').datepicker({defaultDate: +1 ,minDate:"+1d"});
 
 	$('#datepickerRange').datepicker({
@@ -719,6 +796,18 @@ $(document).ready(function() {
 		});
 	});
 
+	$('body').on('click', 'ul.pagination li', function() {
+		$(this).parent().find("li").removeClass("active");
+		$(this).addClass("active");
+		var type = $(this).data('type');
+		var pageNo = $(this).data('seq');
+		$.post("/carepatien/appointmentNextPage", {  'patientId': ${patientId}, 'pageId': pageNo, 'type': type}, function( data ) { 
+			$("#"+type+"Table").html(data);
+			$('html,body').animate({
+				scrollTop: $("."+type).offset().top -160
+			}, 500);
+		});
+	});
 
 	$('#medicationForm').submit(function(event) {
 		var members =  $("#memberid").data("careMembers");
@@ -746,55 +835,105 @@ $(document).ready(function() {
 
 
 	$('#appointmentForm').submit(function(event) {
-		var postData = $("#appointmentForm").serializeArray();
-        var $avm = $('#appointment_verified_members');
-        var $ap = $('#appointment_purpose');
-        var membername = $avm.val();
-        var members = $avm.data("careMembers");
-        var verified = false;
-        for (var id in members) {
-            if(members[id] == membername) {
-                $avm.attr("careMemberId", id); 
-                verified = true;
-                break;
-            }
-        }
-        if (!verified) {
-            $avm.removeAttr("careMemberId");
-        }        
-        postData.push({name: "memberid", value: $avm.attr("careMemberId") || 0});
         
-        var purposes = $ap.data("purposes");
-        var purpose_text = $.trim($ap.val());
-        var definedPurpose = false;
-        var purpose = 0;
-        for (var i = 0; i < purposes.length; i++) {
-            if (purposes[i].name == purpose_text) {
-                definedPurpose = true;
-                purpose = purposes[i].id;
-                break;
+        if($("#appointmentForm input[name='operation']").val() == 'add'){
+    		var postData = $("#appointmentForm").serializeArray();
+            var $avm = $('#appointment_verified_members');
+            var $ap = $('#appointment_purpose');
+            var membername = $avm.val();
+            var members = $avm.data("careMembers");
+            var verified = false;
+            for (var id in members) {
+                if(members[id] == membername) {
+                    $avm.attr("careMemberId", id); 
+                    verified = true;
+                    break;
+                }
             }
+            if (!verified) {
+                $avm.removeAttr("careMemberId");
+            }        
+            postData.push({name: "memberid", value: $avm.attr("careMemberId") || 0});
+            
+            var purposes = $ap.data("purposes");
+            var purpose_text = $.trim($ap.val());
+            var definedPurpose = false;
+            var purpose = 0;
+            for (var i = 0; i < purposes.length; i++) {
+                if (purposes[i].name == purpose_text) {
+                    definedPurpose = true;
+                    purpose = purposes[i].id;
+                    break;
+                }
+            }
+            postData.push({name: "treatmentProcessStep", value: $("#ts_process option:selected").text()});    
+            postData.push({name: "purpose", value: purpose});
+            
+			if($("#repeatWeeklyBtn").prop('checked')==true) {
+            	var schDate = $("#appointmentForm input[name='schDate']").val();
+        		var startsOn = $("#appointmentForm input[name='startsOn']").val();
+        		
+        		var from = schDate.split("/");
+                var mySchDate = new Date(from[2], (from[0]/1) - 1, from[1]);
+
+                from = startsOn.split("/");
+                var myStartsOn = new Date(from[2], (from[0]/1) - 1, from[1]);
+                if(myStartsOn == 'Invalid Date') {
+                	$("#appoinetmentrepeatError").html("Invalid Start date.");
+                	return false;
+                } else if (myStartsOn < mySchDate) {
+                	$("#appoinetmentrepeatError").html("Start date is less than Scheduled date.");
+                    $("#appointmentForm input[name='startsOn']").focus();
+                    return false;
+                } else if($("#appointmentForm input[name='endsOnCheck']").val() == '') {
+                	$("#appoinetmentrepeatError").html("Please select end option.");
+                	return false;
+                } else if($("#appointmentForm input[name='endsOnCheck']").val() == 'after' && ($("#appointmentForm input[name='occurences']").val() == '' || isNaN($("#appointmentForm input[name='occurences']").val()))) {
+                	$("#appoinetmentrepeatError").html("Please provide number of occurences.");
+                	return false;
+                } else if($("#appointmentForm input[name='endsOnCheck']").val() == 'endsOn' ) {
+ 					from = $("#appointmentForm input[name='endsOnDate']").val().split("/");
+                	var	myEndsOne = new Date(from[2], (from[0]/1) - 1, from[1]);
+                	if(myEndsOne == 'Invalid Date') {
+                		$("#appoinetmentrepeatError").html("Invalid End date.");
+                    	return false;
+                	} else if (myEndsOne < myStartsOn) {
+                		$("#appoinetmentrepeatError").html("End date is less than Scheduled date.");
+                    	return false;
+                	} else {
+                		$("#appoinetmentrepeatError").html("");
+                	}
+                } else {
+                	$("#appoinetmentrepeatError").html("");
+                }
+            }
+        	var formURL = $("#appointmentForm").attr("action");
+    		$.post(formURL, postData, function( data ) {
+    			$('#addEditAppointment').modal('hide');
+    			$('#tabs li.active a').click();
+    		});
+        } else if($("#appointmentForm").attr('appointmentgroupid') == '1') {
+	        	if($("#appointmentForm input[name='operation']").val() == 'edit'){
+	        		$('#editAppointmentOccurences #myModalLabel').html('Edit recurring appointments');
+	        		$('#editAppointmentOccurences #bodyText').html('Would you like to change only this event or all events in the series?');
+	        		$('#editAppointmentOccurences #onlyThisEvent + span').html('&nbsp;All other events in the series will remain the same.');
+	        		$('#editAppointmentOccurences #onlyThisEvent + span').html('&nbsp;All events in the series will be changed. Any changes made to other events will be kept.');
+	        	}else if($("#appointmentForm input[name='operation']").val() == 'delete'){
+	        		$('#editAppointmentOccurences #myModalLabel').html('Delete recurring appointments');
+	        		$('#editAppointmentOccurences #bodyText').html('Would you like to delete only this event or all events in the series?');
+	        		$('#editAppointmentOccurences #allEvents + span').html('&nbsp;All other events in the series will remain.');
+	        		$('#editAppointmentOccurences #allEvents + span').html('&nbsp;All events in the series will be deleted.');
+	        	}
+	        	$('#editAppointmentOccurences').appendTo("body").modal();
+		} else {
+				submitAppointmentForm();
         }
-        //if (!definedPurpose) {
-        postData.push({name: "treatmentProcessStep", value: $("#ts_process option:selected").text()});    
-        //}
-        postData.push({name: "purpose", value: purpose});
-        
-		var formURL = $("#appointmentForm").attr("action");
-		$.post(formURL, postData, function( data ) {
-			$('#addEditAppointment').modal('hide');
-// 			var current_index = $("#tabs").tabs('option', 'active');
-// 			$("#tabs").tabs('load',current_index);
-			$('#tabs li.active a').click();
-		});
  		event.preventDefault();
 	});
-
 
 	// Load Sparkline plugin and run callback for draw Sparkline charts for dashboard(top of dashboard + plot in tables)
 	LoadSparkLineScript(DrawSparklineDashboardNew);
 	LoadSelect2Script(selectExpert);
-
 });
 selectExpert = function() {
 	$('.memberselect').select2();
@@ -826,8 +965,7 @@ operationMedication = function(operation,id) {
 				});
 
 				$("#addEditmedication textarea[name='otherdetails']").val(data.specialinstruction);
-// 				if(data.caremember != null)
-					$("#addEditmedication input[name='memberid']").val(data.caremembername);
+				$("#addEditmedication input[name='memberid']").val(data.caremembername);
 				$('#addEditmedication').appendTo("body").modal();
 			} else {
 				alert('Internal server error');
@@ -891,7 +1029,7 @@ operationNote = function(operation,id,title,desc, noteBy) {
 	}
 }
 operationAppointment = function(operation, id) {
-    //$('#treatment_step_process').hide();
+	
     var $avm = $('#appointment_verified_members');
     var $ap = $('#appointment_purpose');
     var initFlag = $avm.attr("init_flag");    
@@ -919,7 +1057,6 @@ operationAppointment = function(operation, id) {
                 source: purposeList,
                 minLength: 0,
                 updater: function(item) {
-                    //$('#treatment_step_process').hide();
                     return item;
                 }
             });
@@ -933,27 +1070,33 @@ operationAppointment = function(operation, id) {
                         break;
                     }
                 }
-                if (definedPurpose) {
+//                 if (definedPurpose) {
                     //$('#treatment_step_process').hide();
-                }
-                else if(purposetext.length > 0) {
+//                 }else 
+                if(purposetext.length > 0) {
                     $('#treatment_step_process').show();
                 }
             });
 	    }, "json");
     }
+
 	if(operation == 'edit') {
 		var formURL = "/carePatien/patientAppointment";
 		var postData = {'id':id};
 		$.post(formURL, postData, function( data ) {
-			if(data != '.') {			    			    
+			if(data != '.') {
 				$("#myModalLabel_appointment").html("EDIT APPOINTMENT");
 				$("#appointmentForm input[name='operation']").val("edit");
 				$("#appointmentForm input[name='id']").val(data.id);
-				//$("#appointmentFormPurpose").select2("val", data.purpose);
-                $ap.val(data.purposeText);
+				
+				if(data.appointmentgroupid) {
+					$("#appointmentForm").attr('appointmentgroupid', '1');
+				} else {
+					$("#appointmentForm").attr('appointmentgroupid', '0');
+				}
+
+				$ap.val(data.purposeText);
                 if ('treatementStep' in data) {
-                    //$('#treatment_step_process').show();
                     $('#treatment_step_process option').each(function(index, elm) {
                         var text = $(elm).text();
                         if (text == data.treatementStep) {
@@ -963,9 +1106,12 @@ operationAppointment = function(operation, id) {
                 }
 				$("#appointmentForm input[name='time']").val(data.appointmenttime);
 				$("#appointmentForm input[name='schDate']").val($.datepicker.formatDate('mm/dd/yy', new Date(data.appointmentdate)));
+// 				$("#appointmentForm input[name='schDate']").prop("disabled", true);
+
+				$("#repeatWeeklyBtnDiv").hide();
+				$("#repeatWeeklyBlock").hide();
+				
 				$("#appointmentForm input[name='center']").val(data.appointmentcenter);
-				//$("#appointmentForm select[name='memberid']").val(data.caremember.id);				
-				//$("#appointmentForm select[name='memberid']").select2();
                 $avm.val(data.careMemberName);
 				$("#appointmentForm input[name='address1']").val(data.addressid.line1);
 				$("#appointmentForm input[name='city']").val(data.addressid.city);
@@ -976,7 +1122,7 @@ operationAppointment = function(operation, id) {
 				$("#appointmentForm input[name='deleteAP']").click(function(){
 					operationAppointment('delete',data.id);
 				});
- 				$('#addEditAppointment .editNote span.editNoteDet').html($.datepicker.formatDate('DD M dd yy', new Date(data.appointmentdate)) + " " + data.appointmenttime + " - " + data.purposeText);
+ 				$('#addEditAppointment .editNote span.editNoteDet').html($.datepicker.formatDate('DD M dd yy', new Date(data.appointmentdate)) + " " + data.appointmenttime + " - " + data.purpose);
 				$('#addEditAppointment .editNote').show();
 				$('#addEditAppointment').appendTo("body").modal();
 			} else {
@@ -984,11 +1130,11 @@ operationAppointment = function(operation, id) {
 			}
 		});
 	} else if(operation == 'delete') {
-		if(confirm('Do you want to delete the scheduled appointment.')) {
+		//if(confirm('Do you want to delete the scheduled appointment.')) {
 			$("#appointmentForm input[name='operation']").val("delete");
 			$("#appointmentForm input[name='id']").val(id);
 			$("#appointmentForm").submit();
-		}
+		//}
 	} else {
         $('#treatment_step_process').val('');
 		$("#myModalLabel_appointment").html("ADD APPOINTMENT");
@@ -996,7 +1142,22 @@ operationAppointment = function(operation, id) {
 		$("#appointmentForm input[name='id']").val("0");
 		$("#appointmentFormPurpose").select2("val", "1");
 		$("#appointmentForm input[name='time']").val("");
+		
 		$("#appointmentForm input[name='schDate']").val("");
+		$("#appointmentForm input[name='schDate']").prop("disabled", false);
+
+		$("#repeatWeeklyBtnDiv").show();
+		$("#appointmentForm input[name='repeatWeeklyBtn']").prop("checked", false);
+		$("#repeatWeeklyBlock").hide();
+		$("#appointmentForm input[name='startsOn']").val("");
+		$("#appointmentForm input[name='occurences']").val("");
+		$("#appointmentForm input[name='occurences']").prop("disabled", true);
+		
+		$("#appointmentForm input[name='endsOnDate']").val("");
+		$("#appointmentForm input[name='endsOnDate']").prop("disabled", true);
+		$("#appointmentForm input[name='endsOnCheck']").prop("checked", false);
+		$("#appointmentForm input[name='endsOnCheck']").val("");
+		
 		$("#appointmentForm input[name='center']").val("Moffitt Cancer Center TVRH");
 		//$("#appointmentForm select[name='memberid']").val();
 		//$("#appointmentForm select[name='memberid']").select2("val", $("#appointmentForm select[name='memberid'] option:eq(1)").val());
@@ -1014,7 +1175,6 @@ operationCareTeam = function(operation, id) {
 }
 
 operationCareTeamMember = function(operation, id) {
-// 	$('#addEditCareTeam').appendTo("body").modal();
 	$('#addEditCareMemberTeam').appendTo("body").modal();
 }
 operationRadiationTreatment = function(operation, id) {
@@ -1035,7 +1195,6 @@ $(document).ready(function() {
 });
 
 function DrawSparklineDashboardNew(){
-// 	setInterval(SparklineLoop, 1000);
 	$.ajax({ type: 'POST', url: '/care/distressData',
 		data  : {patientId:${patientId}},
 		success:function(data){
@@ -1052,15 +1211,6 @@ function DrawSparklineDashboardNew(){
 			});
 		}
 	});
-	/* var sparkline_table = [ [1,641], [2,364], [4,564], [5,735], [6,235], [7,435], [8,342], [9,742], [10,465] ];
-	$('.td-symp').each(function(){
-		var arr = $.map( sparkline_table, function(val, index) {
-			return [[val[0], SmallChangeVal([val[1]])]];
-		});
-		$(this).sparkline( arr ,
-			{defaultPixelsPerValue: 13, minSpotColor: null, maxSpotColor: null, spotColor: null,
-			height: 35,fillColor: false, lineWidth: 2, lineColor: '#FFF'});
-		}); */
 }
 function uploadDone(name) {
 	var frame = getFrameByName(name);
@@ -1086,4 +1236,169 @@ function getFrameByName(name) {
 	      return frames[i];
 	  return null;
 }
+
+$(document).ready(function(){
+	
+	$('#startsOn').datepicker({defaultDate: +1 ,minDate:"+1d"});
+	$('#endsOnDate').datepicker({defaultDate: +1 ,minDate:"+1d"});
+	
+    if($("#repeatWeeklyBtn").prop('checked')==true) {
+  		$("#repeatWeeklyBlock").show();	
+  	} else {
+  		$("#repeatWeeklyBlock").hide();
+  	}
+  	
+  	$("#repeatWeeklyBtn").click(function(){
+  		if($("#repeatWeeklyBtn").prop('checked')==true) {
+  			$("#repeatWeeklyBlock").show();	
+  		} else {
+  			$("#repeatWeeklyBlock").hide();
+  		}
+  	});
+  	
+  	$("input[name='endsOnCheck']").click(function() {
+  	    $("input[name='endsOnCheck']").prop("checked",false);
+  	    $(this).prop("checked",true);
+  	    var currValue = $(this).data('value');
+  	    if($(this).data('value') == "never"){
+  	    	$("#occurences").prop("disabled", true);
+  	    	$("#endsOnDate").prop("disabled", true);
+  	    	$("#appointmentForm input[name='endsOnCheck']").val(currValue);
+  	    }else if($(this).data('value') == "after"){
+  	    	$("#occurences").prop("disabled", false);
+  	    	$("#endsOnDate").prop("disabled", true);
+  	    	$("#appointmentForm input[name='endsOnCheck']").val(currValue);
+  	    }else if($(this).data('value') == "endsOn"){
+  	    	$("#occurences").prop("disabled", true);
+  	    	$("#endsOnDate").prop("disabled", false);
+  	    	$("#appointmentForm input[name='endsOnCheck']").val(currValue);
+  	    }
+  	});
+  	
+  	$('#onlyThisEvent').click(function(){
+		var postData = $("#appointmentForm").serializeArray();
+        var $avm = $('#appointment_verified_members');
+        var $ap = $('#appointment_purpose');
+        var membername = $avm.val();
+        var members = $avm.data("careMembers");
+        var verified = false;
+        for (var id in members) {
+            if(members[id] == membername) {
+                $avm.attr("careMemberId", id); 
+                verified = true;
+                break;
+            }
+        }
+        if (!verified) {
+            $avm.removeAttr("careMemberId");
+        }        
+        postData.push({name: "memberid", value: $avm.attr("careMemberId") || 0});
+        
+        var purposes = $ap.data("purposes");
+        var purpose_text = $.trim($ap.val());
+        var definedPurpose = false;
+        var purpose = 0;
+        for (var i = 0; i < purposes.length; i++) {
+            if (purposes[i].name == purpose_text) {
+                definedPurpose = true;
+                purpose = purposes[i].id;
+                break;
+            }
+        }
+        postData.push({name: "treatmentProcessStep", value: $("#ts_process option:selected").text()});    
+        postData.push({name: "purpose", value: purpose});
+		postData.push({name: "editOccurencesAction", value:"onlyThisEvent"});
+    	
+		var formURL = $("#appointmentForm").attr("action");
+		$.post(formURL, postData, function( data ) {
+			$('#editAppointmentOccurences').modal('hide');
+			$('#addEditAppointment').modal('hide');
+			$('#tabs li.active a').click();
+		});
+    });
+    
+    $('#allEvents').click(function(){
+		var postData = $("#appointmentForm").serializeArray();
+        var $avm = $('#appointment_verified_members');
+        var $ap = $('#appointment_purpose');
+        var membername = $avm.val();
+        var members = $avm.data("careMembers");
+        var verified = false;
+        for (var id in members) {
+            if(members[id] == membername) {
+                $avm.attr("careMemberId", id); 
+                verified = true;
+                break;
+            }
+        }
+        if (!verified) {
+            $avm.removeAttr("careMemberId");
+        }        
+        postData.push({name: "memberid", value: $avm.attr("careMemberId") || 0});
+        
+        var purposes = $ap.data("purposes");
+        var purpose_text = $.trim($ap.val());
+        var definedPurpose = false;
+        var purpose = 0;
+        for (var i = 0; i < purposes.length; i++) {
+            if (purposes[i].name == purpose_text) {
+                definedPurpose = true;
+                purpose = purposes[i].id;
+                break;
+            }
+        }
+        postData.push({name: "treatmentProcessStep", value: $("#ts_process option:selected").text()});    
+        postData.push({name: "purpose", value: purpose});
+		postData.push({name: "editOccurencesAction", value:"allEvents"});
+		var formURL = $("#appointmentForm").attr("action");
+		$.post(formURL, postData, function( data ) {
+			$('#editAppointmentOccurences').modal('hide');
+			$('#addEditAppointment').modal('hide');
+			$('#tabs li.active a').click();
+		});
+    });
+    
+});
+
+submitAppointmentForm = function() {
+	var postData = $("#appointmentForm").serializeArray();
+    var $avm = $('#appointment_verified_members');
+    var $ap = $('#appointment_purpose');
+    var membername = $avm.val();
+    var members = $avm.data("careMembers");
+    var verified = false;
+    for (var id in members) {
+        if(members[id] == membername) {
+            $avm.attr("careMemberId", id); 
+            verified = true;
+            break;
+        }
+    }
+    if (!verified) {
+        $avm.removeAttr("careMemberId");
+    }        
+    postData.push({name: "memberid", value: $avm.attr("careMemberId") || 0});
+
+    var purposes = $ap.data("purposes");
+    var purpose_text = $.trim($ap.val());
+    var definedPurpose = false;
+    var purpose = 0;
+    for (var i = 0; i < purposes.length; i++) {
+        if (purposes[i].name == purpose_text) {
+            definedPurpose = true;
+            purpose = purposes[i].id;
+            break;
+        }
+    }
+    postData.push({name: "treatmentProcessStep", value: $("#ts_process option:selected").text()});    
+    postData.push({name: "purpose", value: purpose});
+    postData.push({name: "editOccurencesAction", value:"onlyThisEvent"});
+	var formURL = $("#appointmentForm").attr("action");
+	$.post(formURL, postData, function( data ) {
+		$('#editAppointmentOccurences').modal('hide');
+		$('#addEditAppointment').modal('hide');
+		$('#tabs li.active a').click();
+	});
+}
+
 </script>

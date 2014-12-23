@@ -8,10 +8,9 @@ div.green-title{cursor: pointer;}
 <div id="content" class="page my-appointments">
   <div class="col-xs-12 col-sm-12">
       <div class="upcoming-appointments">
-
-        <h2>Upcoming Appointments</h2>
+        <h2 class="upcoming">Upcoming Appointments</h2>
         #{if list != null && list.size()>0}
-        <ul class="expend-list">
+        <ul class="expend-list" id="upcomingTable">
           #{list list, as:'seq'}
           <li>
           <div class="green-title">
@@ -82,12 +81,25 @@ div.green-title{cursor: pointer;}
                 </div>
               </div>
             </div>
-    <!--         <div class="line-h"></div> -->
           </div>
           </li>
           #{/list}
         </ul>
 
+		#{if totalUp != null && totalUp.size()>0}
+		#{set fclass = 'active' /}
+		<div class="row">		
+			<div class="col-xs-12">
+				<ul class="pagination pagination-lg">
+				#{list totalUp, as:'seq'}
+					<li class='${fclass}' data-type="upcoming" data-seq="${seq}"><a>${seq}</a></li>
+					#{set fclass = '' /}
+					#{/list}
+				</ul>
+			</div>
+		</div>
+		#{/if}
+	
         #{/if}
         #{else}
         <div class="col-xs-12 col-sm-12 nopadding"></br>No upcoming appointments.</div>
@@ -95,9 +107,9 @@ div.green-title{cursor: pointer;}
         <div class="clear"></div>
     </div>
     <div class="past-appointments">
-        <h2>Past Appointments</h2>
+        <h2 class="past">Past Appointments</h2>
         #{if listOld != null && listOld.size()>0}
-        <ul class="expend-list">
+        <ul class="expend-list" id="pastTable">
           #{list listOld, as:'seq'}
           <li>
           <div class="green-title">
@@ -149,7 +161,6 @@ div.green-title{cursor: pointer;}
                     </div>
                   </div>
                 </div>
-
                 <div class="media">
                 #{if seq.caremember}
                     <a class="pull-left" href="#"> <img src="@{Image.show(seq.caremember.id)}" class=""> </a>
@@ -159,12 +170,12 @@ div.green-title{cursor: pointer;}
                     <div class="secont-l-p-f">
                       <p class="large-f">
                         <span>
-                                    #{if seq.caremember != null}
-                     #{userName userName: seq.caremember.name, userId:seq.caremember.id /}
-                #{/if}
-                #{else}
-                ${seq.careMemberName}
-                #{/else}
+                        #{if seq.caremember != null}
+							#{userName userName: seq.caremember.name, userId:seq.caremember.id /}
+		                #{/if}
+		                #{else}
+							${seq.careMemberName}
+		                #{/else}
                         </span></p>
                       <p> ${seq.expertMobile}
                      *{ &nbsp; |&nbsp; ${seq.caremember.email} }*</p>
@@ -173,11 +184,23 @@ div.green-title{cursor: pointer;}
                 </div>
               </div>
             </div>
-    <!--         <div class="line-h"></div> -->
           </div>
           </li>
           #{/list}
         </ul>
+        #{if totalPast != null && totalPast.size()>0}
+        #{set fclass = 'active' /}
+		<div class="row">		
+			<div class="col-xs-12">
+				<ul class="pagination pagination-lg">
+				#{list totalPast, as:'seq'}
+					<li class='${fclass}' data-type="past" data-seq="${seq}"><a>${seq}</a></li>
+					#{set fclass = '' /}
+					#{/list}
+				</ul>
+			</div>
+		</div>
+		#{/if}
         #{/if}
         #{else}
         <div class="col-xs-12 col-sm-12 nopadding"></br>No past appointments.</div>
@@ -188,14 +211,26 @@ div.green-title{cursor: pointer;}
 <script type="text/javascript">
 <!--
 $(document).ready(function() {
-  $('.green-title').click(function() {
-    $(this).find(".col-sm-6").toggle();
-    $(this).next('div.show-div-list').slideToggle();
-    $(this).find(".ui-icon-triangle-1-e").toggleClass('ui-icon-triangle-1-s');
-    var txt = $(this).find(".checkDiv").is(':visible') ? 'See More ' : 'Collapse';
-    $(this).find(".toggleText .text").text(txt);
-  });
-  //$('div.green-title:first').trigger( "click" );
+	$('body').on('click', '.green-title', function() {
+		$(this).find(".col-sm-6").toggle();
+	    $(this).next('div.show-div-list').slideToggle();
+	    $(this).find(".ui-icon-triangle-1-e").toggleClass('ui-icon-triangle-1-s');
+	    var txt = $(this).find(".checkDiv").is(':visible') ? 'See More ' : 'Collapse';
+	    $(this).find(".toggleText .text").text(txt);
+	});
+
+	$('body').on('click', 'ul.pagination li', function() {
+		$(this).parent().find("li").removeClass("active");
+		$(this).addClass("active");
+		var type = $(this).data('type');
+		var pageNo = $(this).data('seq');
+		$.post("/patient/appointmentNextPage", { 'pageId': pageNo, 'type': type}, function( data ) { 
+			$("#"+type+"Table").html(data);
+			$('html,body').animate({
+				scrollTop: $("."+type).offset().top -160
+			}, 1000);
+		});
+	});
 });
 -->
 </script>

@@ -78,10 +78,17 @@ public class Patient extends Controller {
 		if(!user.isVerifiedFlag() && accesstoallpages != null) {
 			user.setVerifiedFlag(Boolean.parseBoolean(accesstoallpages.getPropertyvalue()));
 		}
-		List<AppointmentDTO> listOther = AppointmentDAO.getAppointmentListByField("patientid.id", userDto.getId(), curreDate, "upcoming" );		
+		long listOther = AppointmentDAO.getTotalappointmentForDashboard("patientid.id", userDto.getId(), curreDate, "upcoming");
         render(user,userDto,patientOtherDetails, breastCancerId, breastCancerInfo,apt,careExpert,maxUsers,checlist,accesstoallpages, listOther);
     }
 
+	public static void appointmentNextPage(int pageId,String type) {
+		UserBean user = CommonUtil.loadCachedUser(session);
+		Date curreDate = new Date();
+		pageId = (pageId -1)*10;
+		List<AppointmentDTO> list = AppointmentDAO.getAppointmentListByField("patientid.id", user.getId(), curreDate, type,pageId );
+		render("tags/patientappointment.html",list);
+	}
 	
 	public static void distressmeter() {
 		UserBean user = CommonUtil.loadCachedUser(session);
@@ -109,7 +116,7 @@ public class Patient extends Controller {
 			List<AppointmentDTO> list = new ArrayList<AppointmentDTO>();
 			UserDetailsDTO userDetails = null;
 			Date curreDate = new Date();
-			List<AppointmentDTO> listOther = AppointmentDAO.getAppointmentListByField("patientid.id", userDto.getId(), curreDate, "upcomming" );
+			List<AppointmentDTO> listOther = AppointmentDAO.getAppointmentListByField("patientid.id", userDto.getId(), curreDate, "upcomming",0 );
 			if(listOther != null) {
 				for (AppointmentDTO appointmentDTO : listOther) {
 					if (appointmentDTO.getCaremember() != null) {
@@ -122,7 +129,7 @@ public class Patient extends Controller {
 				list = null;
 			}
 	
-			List<AppointmentDTO> expListOther = AppointmentDAO.getAppointmentListByField("patientid.id" , userDto.getId(), curreDate, "past" );
+			List<AppointmentDTO> expListOther = AppointmentDAO.getAppointmentListByField("patientid.id" , userDto.getId(), curreDate, "past",0 );
 			List<AppointmentDTO> listOld = new ArrayList<AppointmentDTO>();
 			if(expListOther != null) {
 				for (AppointmentDTO appointmentDTO : expListOther) {
@@ -135,8 +142,9 @@ public class Patient extends Controller {
 			} else {
 				listOld = null;
 			}
-			
-	        render(user,userDto,patientOtherDetails,list,listOld, breastCancerId, breastCancerInfo);
+			ArrayList<Integer> totalUp = AppointmentDAO.getTotalappointments("patientid.id", userDto.getId(), curreDate, "upcomming" );
+			ArrayList<Integer> totalPast = AppointmentDAO.getTotalappointments("patientid.id", userDto.getId(), curreDate, "past" );
+	        render(user,userDto,patientOtherDetails,list,listOld, breastCancerId, breastCancerInfo,totalUp,totalPast);
 		} else {
 			index();
 		}
