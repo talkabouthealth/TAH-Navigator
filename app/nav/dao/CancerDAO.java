@@ -13,6 +13,7 @@ import models.CancerChromosomeDTO;
 import models.CancerFabClassificationDTO;
 import models.CancerGradeDTO;
 import models.CancerInvasiveDTO;
+import models.CancerMutationDTO;
 import models.CancerPhaseDTO;
 import models.CancerTypeDTO;
 import models.CancerWhoClassificationDTO;
@@ -169,4 +170,14 @@ public class CancerDAO {
 		return chromosome;
 	}
 	
+	public static CancerMutationDTO createCancerMutation(Integer diseaseId, String name) {
+		EntityManager em = JPAUtil.getEntityManager();
+		CancerMutationDTO mutation = new CancerMutationDTO();
+		mutation.setDiseaseid(diseaseId);
+		mutation.setMutation(name);
+		em.getTransaction().begin();
+		em.persist(mutation);
+		em.getTransaction().commit();
+		return mutation;
+	}
 }

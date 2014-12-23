@@ -767,7 +767,11 @@ public class PatientDetailDAO {
 		if (StringUtils.isBlank(str)) {
 			breastCancerInfo.setSubtypeid(null);
 		} else {
-			breastCancerInfo.setSubtypeid( new Integer(str));
+			try {
+				breastCancerInfo.setSubtypeid( new Integer(str));
+			} catch (Exception e) {
+				breastCancerInfo.setSubtypeid(CancerDAO.createCancerType(diseaseId, str, true));
+			}
 		}
 		String mustr = diseaseInfo.get("mutation_id");
 		if (StringUtils.isNotBlank(mustr)) {
@@ -776,11 +780,19 @@ public class PatientDetailDAO {
 			for (String string : muIds) {
 				string = string.trim();
 				if (StringUtils.isNotBlank(string)) {
-					muId = new Integer(string);
-					PatientMutationDTO pmDto = new PatientMutationDTO();
-					pmDto.setMutationid(muId);
-					pmDto.setPatientid(new Integer(patientId));
-					BaseDAO.save(pmDto);
+					try {
+						muId = new Integer(string);
+						PatientMutationDTO pmDto = new PatientMutationDTO();
+						pmDto.setMutationid(muId);
+						pmDto.setPatientid(new Integer(patientId));
+						BaseDAO.save(pmDto);
+					} catch (Exception e) {
+						CancerMutationDTO mutationDto = CancerDAO.createCancerMutation(diseaseId, string);
+						PatientMutationDTO pmDto = new PatientMutationDTO();
+						pmDto.setMutationid(mutationDto.getId());
+						pmDto.setPatientid(new Integer(patientId));
+						BaseDAO.save(pmDto);
+					}
 				}
 			}
 		}
@@ -799,10 +811,10 @@ public class PatientDetailDAO {
 						BaseDAO.save(pmDto);
 					} catch (Exception e) {
 						CancerChromosomeDTO chromosomeDto = CancerDAO.createCancerChromosome(diseaseId, string);
-						PatientChromosomeDTO pmDto1 = new PatientChromosomeDTO();
-						pmDto1.setChromosomeid(chromosomeDto.getId());
-						pmDto1.setPatientid(new Integer(patientId));
-						BaseDAO.save(pmDto1);
+						PatientChromosomeDTO pmDto = new PatientChromosomeDTO();
+						pmDto.setChromosomeid(chromosomeDto.getId());
+						pmDto.setPatientid(new Integer(patientId));
+						BaseDAO.save(pmDto);
 					}
 				}
 			}
