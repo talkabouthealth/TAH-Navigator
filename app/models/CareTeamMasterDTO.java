@@ -15,9 +15,9 @@ import javax.persistence.Table;
 public class CareTeamMasterDTO {
 
 	@Id
-	@Column(name = "id")
 	@GeneratedValue(strategy= GenerationType.SEQUENCE, generator="careteammaster_id_seq")
 	@SequenceGenerator(allocationSize=1, schema="nav",  name="careteammaster_id_seq", sequenceName = "nav.careteammaster_id_seq")
+	@Column(name = "id")
 	private int id;
 
 	@Column(name = "name")

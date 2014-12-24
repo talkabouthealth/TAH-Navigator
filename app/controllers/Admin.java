@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 
+import models.AddressDTO;
 import models.ApplicationSettingsDTO;
 import models.AppointmentMasterDTO;
 import models.CareTeamMasterDTO;
@@ -53,6 +54,23 @@ public class Admin extends Controller {
 	public static void appSettings() {
 		UserBean user = CommonUtil.loadCachedUser(session);
 		render(user);
+	}
+	
+	public static void createCareTeam(String teamtype,String center,String address1,String city,String state,String zip) {/*String address2,*/
+		
+		AddressDTO address = new AddressDTO();
+		address.setCity(city);
+		address.setLine1(center);
+		address.setLine2(address1); //+ " " + address2
+		address.setState(state);
+		address.setZip(zip);
+		BaseDAO.save(address);
+		
+		CareTeamMasterDTO teamMasterDTO = new CareTeamMasterDTO();
+		teamMasterDTO.setAddress(address);
+		teamMasterDTO.setName(teamtype);
+		BaseDAO.save(teamMasterDTO);
+		renderText("<tr><td><a href='/admin/editcareteam?careTeamId="+teamMasterDTO.getId()+"'>"+teamtype+" CARE TEAM</a></td></tr>");
 	}
 	
 	public static void createCareMember(String email,String name,String password, boolean isActive) {
