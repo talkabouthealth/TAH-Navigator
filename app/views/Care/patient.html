@@ -746,7 +746,9 @@ $(document).ready(function() {
 
 // 	$("input.timeField").autocomplete({source: timeArray,minLenght:1 });
 	$("input.timeField").typeahead({ source: timeArray,minLength: 0 }); 
-	$('#hasDatepicker').datepicker({defaultDate: +1 ,minDate:"+1d"});
+	$('#hasDatepicker').datepicker({defaultDate: +1 ,minDate:"+1d",autoclose:true}).on('changeDate', function(e){
+        $("#startsOn").val($(this).val());
+    });
 
 	$('#datepickerRange').datepicker({
 		defaultDate: +1 ,minDate:"+1d",          
@@ -1239,8 +1241,11 @@ function getFrameByName(name) {
 
 $(document).ready(function(){
 	
-	$('#startsOn').datepicker({defaultDate: +1 ,minDate:"+1d"});
-	$('#endsOnDate').datepicker({defaultDate: +1 ,minDate:"+1d"});
+	$('#startsOn').datepicker({defaultDate: +1 ,minDate:"+1d",autoclose:true})
+    .on('changeDate', function(e){
+        $("#hasDatepicker").val($(this).val());
+    });
+	$('#endsOnDate').datepicker({defaultDate: +1 ,minDate:"+1d",autoclose:true});
 	
     if($("#repeatWeeklyBtn").prop('checked')==true) {
   		$("#repeatWeeklyBlock").show();	

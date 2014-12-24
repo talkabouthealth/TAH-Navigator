@@ -835,6 +835,11 @@ public class CarePatien  extends Controller {
 //					after : after some occurences
 					appGroup = new AppointmentGroupDTO();
 					appGroup.setStartson(appStartsOn);
+					Calendar cal  = Calendar.getInstance();
+					cal.setTime(appStartsOn);
+					cal.add(Calendar.DATE, 7);
+					appStartsOn = cal.getTime();
+
 					if("endsOn".equalsIgnoreCase(endsOnCheck)) {
 						appGroup.setEndsondate(appEndsOnDate);	
 					} else if("never".equalsIgnoreCase(endsOnCheck)) {
@@ -845,14 +850,7 @@ public class CarePatien  extends Controller {
 					appGroup.setAddressid(address.getId());
 					BaseDAO.save(appGroup);
 				}
-
-				
 				UserDTO patient = UserDAO.getUserBasicByField("id", patientId);
-				
-
-				
-				
-				
 				AppointmentDTO app = new AppointmentDTO();
 				app.setAddedby(addedby);
 				app.setAddedon(new Date());
@@ -891,7 +889,7 @@ public class CarePatien  extends Controller {
 				
 				if(appGroup != null){
 					if("after".equalsIgnoreCase(endsOnCheck) && occurences > 0) {
-						for(int i = 0; i < occurences; i++) {
+						for(int i = 0; i < occurences-1; i++) {
 							app = new AppointmentDTO();
 							app.setAddedby(addedby);
 							app.setAddedon(new Date());
@@ -948,7 +946,7 @@ public class CarePatien  extends Controller {
 							cal.add(Calendar.DATE, 7);
 							appStartsOn = cal.getTime();
 						}
-					}else if("never".equalsIgnoreCase(endsOnCheck)){
+					} else if("never".equalsIgnoreCase(endsOnCheck)) {
 						// Calculate endDate for 1 year
 						Calendar cal  = Calendar.getInstance();
 						cal.setTime(appointmentDate);
