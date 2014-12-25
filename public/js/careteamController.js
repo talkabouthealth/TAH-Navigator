@@ -858,7 +858,7 @@ var careTeamController = (function() {
         	var initFlag = $('#diagnosis-edit-form').attr('init-flag');
         	if (initFlag == '0') {
         		
-        		$("#psascore").autocomplete({source: psaScoreArray,minLenght:1 });
+        		$("#psascore").autocomplete({source: psaScoreArray,minLength:1 });
         		
         		$('#diagnosis-edit-form').attr('init-flag', '1');
         		var diseases = data.diseases;
@@ -887,7 +887,9 @@ var careTeamController = (function() {
             		}
             		if(length>0){    
 						$('#stage').autocomplete({
-							source: stageData
+							source: stageData, minLength: 0
+						}).bind("focus", function(e) {
+							$(this).autocomplete("search");
 						});
 						$('#stage').val(selectedStageData);						
 						$('#stage_div').show();
@@ -939,9 +941,12 @@ var careTeamController = (function() {
 							terms.push( "" );
 							this.value = terms.join( ", " );
 							return false;
-						}
+						},
+						minLength: 0
+					}).bind("focus", function(e) {
+						$(this).autocomplete("search");
 					});					
-					
+				
         	        if (mutationLength>0) {
 						$('#mutations').val(selectedMutationsData.join(", "));        	        	
         	        	$("#mutation_div").show();        	        	
@@ -969,14 +974,18 @@ var careTeamController = (function() {
 	       	        	 $('#psascore_div').hide();
 	       	        	 $('#gleasonscore_div').hide();
 	       	        } else {
-						 var riskData = ["Low", "Moderate", "High"];
-						 $('#risklevel').autocomplete({
-							source: riskData
-						 });
+						var riskData = ["Low", "Moderate", "High"];
+						$('#risklevel').autocomplete({
+							source: riskData, minLength: 0
+						}).bind("focus", function(e) {
+							$(this).autocomplete("search");
+						});
 						 var gleasonData = ["X", "6", "7", "8", "9", "10"];
 						 $('#gleasonscore').autocomplete({
-							source: gleasonData
-						 });
+							source: gleasonData, minLength: 0
+						 }).bind("focus", function(e) {
+							$(this).autocomplete("search");
+						});	
 						 
 	       	        	 $('#risklevel_div').show();
 	       	        	 $('#psascore_div').show();
@@ -998,8 +1007,10 @@ var careTeamController = (function() {
             		}
             		if(subTypeLenght>0) {
 						$('#cancersubtype').autocomplete({
-							source: cancersubtypeData
-						});
+							source: cancersubtypeData, minLength: 0
+						}).bind("focus", function(e) {
+							$(this).autocomplete("search");
+						});	
 						$('#cancersubtype').val(selectedCancersubtypeData);
 						
             			$('#cancersubtype_div').show();
@@ -1022,7 +1033,9 @@ var careTeamController = (function() {
             		}
             		if(rootTypeLenght>0) {
 						$('#cancertype').autocomplete({
-							source: cancerTypeData
+							source: cancerTypeData, minLength: 0
+						}).bind("focus", function(e) {
+							$(this).autocomplete("search");
 						});						
 						$('#cancertype').val(selectedCancerTypeData);
             			$('#cancertype_div').show();
@@ -1046,8 +1059,10 @@ var careTeamController = (function() {
             		}
             		if(rootTypeLenght>0) {
 						$('#invasiveness').autocomplete({
-							source: invasionData
-						});
+							source: invasionData, minLength: 0
+						}).bind("focus", function(e) {
+							$(this).autocomplete("search");
+						});	
 						$('#invasiveness').val(selectedInvasionData);						
             			$("#invasiveness_div").show();
             		} else {
@@ -1069,8 +1084,10 @@ var careTeamController = (function() {
             		}
             		if(rootTypeLenght>0) {
 						$('#grade').autocomplete({
-							source: gradeData
-						});
+							source: gradeData, minLength: 0
+						}).bind("focus", function(e) {
+							$(this).autocomplete("search");
+						});	
 						$('#grade').val(selectedGradeData);						
             			$("#grade_div").show();
             		} else {
@@ -1091,8 +1108,10 @@ var careTeamController = (function() {
             		}
             		if(rootTypeLenght>0) {
 						$('#phase').autocomplete({
-							source: phaseData
-						});
+							source: phaseData, minLength: 0
+						}).bind("focus", function(e) {
+							$(this).autocomplete("search");
+						});	
 						$('#phase').val(selectedPhaseData);						
             			$("#phase_div").show();
             		} else {
@@ -1143,8 +1162,10 @@ var careTeamController = (function() {
 							terms.push( "" );
 							this.value = terms.join( ", " );
 							return false;
-						}
-					});					
+						}, minLength: 0
+					}).bind("focus", function(e) {
+						$(this).autocomplete("search");
+					});						
             		if(rootTypeLenght>0) {						
             		    //$('#chromosome').val(chromosomesIds);
 						$('#chromosome').val(selectedChromosomeData.join(", "));
@@ -1168,8 +1189,10 @@ var careTeamController = (function() {
             		}
             		if(rootTypeLenght>0) {
 						$('#fab').autocomplete({
-							source: fabData
-						});
+							source: fabData, minLength: 0
+						}).bind("focus", function(e) {
+							$(this).autocomplete("search");
+						});	
 						$('#fab').val(selectedFabData);						
             			$('#fab_div').show();
             		} else {
@@ -1191,8 +1214,10 @@ var careTeamController = (function() {
             		}
             		if(rootTypeLenght>0) {
 						$('#who').autocomplete({
-							source: whoData
-						});
+							source: whoData, minLength: 0
+						}).bind("focus", function(e) {
+							$(this).autocomplete("search");
+						});	
 						$('#who').val(selectedWhoData);						
             			$('#who_div').show();
             		} else {
