@@ -13,6 +13,7 @@ import models.CancerChromosomeDTO;
 import models.CancerFabClassificationDTO;
 import models.CancerGradeDTO;
 import models.CancerInvasiveDTO;
+import models.CancerMutationDTO;
 import models.CancerPhaseDTO;
 import models.CancerTypeDTO;
 import models.CancerWhoClassificationDTO;
@@ -80,7 +81,20 @@ public class CancerDAO {
 		}	
 		return info;
 	}
-	
+	public static Integer getCancerTypeId(Integer diseaseId, String name) {
+		Integer id = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		TypedQuery<CancerTypeDTO> query = em.createQuery("SELECT c FROM CancerTypeDTO c WHERE c.diseaseid = :diseaseid AND c.name = :name", CancerTypeDTO.class);
+		query.setParameter("diseaseid", diseaseId);
+		query.setParameter("name", name);
+		try {
+			CancerTypeDTO dto = query.getSingleResult();
+			id = dto.getId();			
+		} catch (NoResultException e) {
+			
+		}
+		return id;
+	}
 	public static Integer createCancerType(Integer diseaseId, String name, boolean rootType) {
 		EntityManager em = JPAUtil.getEntityManager();
 		CancerTypeDTO cancerType = new CancerTypeDTO();
@@ -93,6 +107,21 @@ public class CancerDAO {
 		return cancerType.getId();
 	}
 	
+	public static Integer getCancerStageId(Integer diseaseId, String name) {
+		Integer id = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		TypedQuery<BreastCancerStageDTO> query = em.createQuery("SELECT b FROM BreastCancerStageDTO b WHERE b.diseaseid = :diseaseid AND b.name = :name", BreastCancerStageDTO.class);
+		query.setParameter("diseaseid", diseaseId);
+		query.setParameter("name", name);
+		try {
+			BreastCancerStageDTO dto = query.getSingleResult();
+			id = dto.getId();
+		} catch (NoResultException e) {
+			
+		}
+		return id;
+	}
+	
 	public static Integer createCancerStage(Integer diseaseId, String name) {
 		EntityManager em = JPAUtil.getEntityManager();
 		BreastCancerStageDTO stage = new BreastCancerStageDTO();
@@ -103,6 +132,19 @@ public class CancerDAO {
 		em.getTransaction().commit();
 		return stage.getId();
 	}
+	public static CancerInvasiveDTO getCancerInvasion(Integer diseaseId, String name) {
+		CancerInvasiveDTO dto = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		TypedQuery<CancerInvasiveDTO> query = em.createQuery("SELECT c FROM CancerInvasiveDTO c WHERE c.diseaseid = :diseaseid AND c.invname = :invname", CancerInvasiveDTO.class);
+		query.setParameter("diseaseid", diseaseId);
+		query.setParameter("invname", name);
+		try {
+			dto = query.getSingleResult();					
+		} catch (NoResultException e) {
+			
+		}
+		return dto;
+	}	
 	public static CancerInvasiveDTO createCancerInvasion(Integer diseaseId, String name) {
 		EntityManager em = JPAUtil.getEntityManager();
 		CancerInvasiveDTO invasion = new CancerInvasiveDTO();
@@ -112,6 +154,20 @@ public class CancerDAO {
 		em.persist(invasion);
 		em.getTransaction().commit();
 		return invasion;
+	}
+	
+	public static CancerGradeDTO getCancerGrade(Integer diseaseId, String name) {
+		CancerGradeDTO dto = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		TypedQuery<CancerGradeDTO> query = em.createQuery("SELECT c FROM CancerGradeDTO c WHERE c.diseaseid = :diseaseid AND c.gradename = :gradename", CancerGradeDTO.class);
+		query.setParameter("diseaseid", diseaseId);
+		query.setParameter("gradename", name);
+		try {
+			dto = query.getSingleResult();					
+		} catch (NoResultException e) {
+			
+		}
+		return dto;
 	}
 	
 	public static CancerGradeDTO createCancerGrade(Integer diseaseId, String name) {
@@ -169,4 +225,14 @@ public class CancerDAO {
 		return chromosome;
 	}
 	
+	public static CancerMutationDTO createCancerMutation(Integer diseaseId, String name) {
+		EntityManager em = JPAUtil.getEntityManager();
+		CancerMutationDTO mutation = new CancerMutationDTO();
+		mutation.setDiseaseid(diseaseId);
+		mutation.setMutation(name);
+		em.getTransaction().begin();
+		em.persist(mutation);
+		em.getTransaction().commit();
+		return mutation;
+	}
 }
