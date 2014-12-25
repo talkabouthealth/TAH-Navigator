@@ -180,7 +180,19 @@ public class CancerDAO {
 		em.getTransaction().commit();
 		return grade;
 	}
-	
+	public static CancerPhaseDTO getCancerPhase(Integer diseaseId, String name) {
+		CancerPhaseDTO dto = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		TypedQuery<CancerPhaseDTO> query = em.createQuery("SELECT c FROM CancerPhaseDTO c WHERE c.diseaseid = :diseaseid AND c.name = :name", CancerPhaseDTO.class);
+		query.setParameter("diseaseid", diseaseId);
+		query.setParameter("name", name);
+		try {
+			dto = query.getSingleResult();					
+		} catch (NoResultException e) {
+			
+		}
+		return dto;
+	}
 	public static CancerPhaseDTO createCancerPhase(Integer diseaseId, String name) {
 		EntityManager em = JPAUtil.getEntityManager();
 		CancerPhaseDTO phase = new CancerPhaseDTO();
@@ -191,7 +203,19 @@ public class CancerDAO {
 		em.getTransaction().commit();
 		return phase;
 	}
-	
+	public static CancerFabClassificationDTO getCancerFabClass(Integer diseaseId, String name) {
+		CancerFabClassificationDTO dto = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		TypedQuery<CancerFabClassificationDTO> query = em.createQuery("SELECT c FROM CancerFabClassificationDTO c WHERE c.diseaseid = :diseaseid AND c.fabname = :fabname", CancerFabClassificationDTO.class);
+		query.setParameter("diseaseid", diseaseId);
+		query.setParameter("fabname", name);
+		try {
+			dto = query.getSingleResult();					
+		} catch (NoResultException e) {
+			
+		}
+		return dto;
+	}
 	public static CancerFabClassificationDTO createCancerFabClass(Integer diseaseId, String name) {
 		EntityManager em = JPAUtil.getEntityManager();
 		CancerFabClassificationDTO fab = new CancerFabClassificationDTO();
@@ -201,6 +225,20 @@ public class CancerDAO {
 		em.persist(fab);
 		em.getTransaction().commit();
 		return fab;
+	}
+	
+	public static CancerWhoClassificationDTO getCancerWHOClass(Integer diseaseId, String name) {
+		CancerWhoClassificationDTO dto = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		TypedQuery<CancerWhoClassificationDTO> query = em.createQuery("SELECT c FROM CancerWhoClassificationDTO c WHERE c.diseaseid = :diseaseid AND c.whoname = :whoname", CancerWhoClassificationDTO.class);
+		query.setParameter("diseaseid", diseaseId);
+		query.setParameter("whoname", name);
+		try {
+			dto = query.getSingleResult();					
+		} catch (NoResultException e) {
+			
+		}
+		return dto;
 	}
 	
 	public static CancerWhoClassificationDTO createCancerWHOClass(Integer diseaseId, String name) {
@@ -214,6 +252,20 @@ public class CancerDAO {
 		return who;
 	}
 	
+	public static CancerChromosomeDTO getCancerChromosome(Integer diseaseId, String name) {
+		CancerChromosomeDTO dto = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		TypedQuery<CancerChromosomeDTO> query = em.createQuery("SELECT c FROM CancerChromosomeDTO c WHERE c.diseaseid = :diseaseid AND c.chromosomename = :chromosomename", CancerChromosomeDTO.class);
+		query.setParameter("diseaseid", diseaseId);
+		query.setParameter("chromosomename", name);
+		try {
+			dto = query.getSingleResult();					
+		} catch (NoResultException e) {
+			
+		}
+		return dto;
+	}
+	
 	public static CancerChromosomeDTO createCancerChromosome(Integer diseaseId, String name) {
 		EntityManager em = JPAUtil.getEntityManager();
 		CancerChromosomeDTO chromosome = new CancerChromosomeDTO();
@@ -223,6 +275,20 @@ public class CancerDAO {
 		em.persist(chromosome);
 		em.getTransaction().commit();
 		return chromosome;
+	}
+	
+	public static CancerMutationDTO getCancerMutation(Integer diseaseId, String name) {
+		CancerMutationDTO dto = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		TypedQuery<CancerMutationDTO> query = em.createQuery("SELECT c FROM CancerMutationDTO c WHERE c.diseaseid = :diseaseid AND c.mutation = :mutation", CancerMutationDTO.class);
+		query.setParameter("diseaseid", diseaseId);
+		query.setParameter("mutation", name);
+		try {
+			dto = query.getSingleResult();					
+		} catch (NoResultException e) {
+			
+		}
+		return dto;
 	}
 	
 	public static CancerMutationDTO createCancerMutation(Integer diseaseId, String name) {

@@ -14,6 +14,7 @@ import javax.persistence.TypedQuery;
 import javax.sound.midi.MidiDevice.Info;
 
 import org.apache.commons.lang.StringUtils;
+import org.eclipse.jdt.internal.core.search.SubTypeSearchJob;
 
 import models.AddressDTO;
 import models.AppointmentDTO;
@@ -639,32 +640,26 @@ public class PatientDetailDAO {
 		
 		
 		str = diseaseInfo.get("fab_id");
-		if (StringUtils.isBlank(str)) {
-			stageId = null;
+		if (StringUtils.isBlank(str)) {			
 			breastCancerInfo.setFabclass(null);
-		} else {
-			try {
-				stageId = new Integer(str);
-				breastCancerInfo.setFabclass(Disease.getCancerFABClasseById(stageId));
-			} catch (Exception e) {
-				CancerFabClassificationDTO fabDto = CancerDAO.createCancerFabClass(diseaseId, str);
-				breastCancerInfo.setFabclass(fabDto);
+		} else {			
+			CancerFabClassificationDTO fabDto = CancerDAO.getCancerFabClass(diseaseId, str);
+			if (fabDto == null) {
+				fabDto = CancerDAO.createCancerFabClass(diseaseId, str);
 			}
+			breastCancerInfo.setFabclass(fabDto);			
 		}
 		
 		
 		str = diseaseInfo.get("who_id");
-		if (StringUtils.isBlank(str)) {
-			stageId = null;
+		if (StringUtils.isBlank(str)) {			
 			breastCancerInfo.setWhoclass(null);
 		} else {
-			try {
-				stageId = new Integer(str);
-				breastCancerInfo.setWhoclass(Disease.getCancerWHOClasseById(stageId));
-			} catch (Exception e) {
-				CancerWhoClassificationDTO whoDto = CancerDAO.createCancerWHOClass(diseaseId, str);
-				breastCancerInfo.setWhoclass(whoDto);
+			CancerWhoClassificationDTO whoDto = CancerDAO.getCancerWHOClass(diseaseId, str);
+			if (whoDto == null) {
+				whoDto = CancerDAO.createCancerWHOClass(diseaseId, str);
 			}
+			breastCancerInfo.setWhoclass(whoDto);			
 		}
 		
 		str = diseaseInfo.get("grade");
@@ -681,18 +676,15 @@ public class PatientDetailDAO {
 		
 		
 		str = diseaseInfo.get("phase");
-		Integer phase;
-		if (StringUtils.isBlank(str)) {
-			phase = null;
+		
+		if (StringUtils.isBlank(str)) {			
 			breastCancerInfo.setPhase(null);
-		} else {
-			try {
-				phase = new Integer(str);			
-				breastCancerInfo.setPhase(Disease.getCancerPhaseById(phase));
-			} catch (Exception e) {
-				CancerPhaseDTO phaseDto = CancerDAO.createCancerPhase(diseaseId, str);
-				breastCancerInfo.setPhase(phaseDto);
+		} else {			
+			CancerPhaseDTO phaseDto = CancerDAO.getCancerPhase(diseaseId, str);
+			if (phaseDto == null) {
+				phaseDto = CancerDAO.createCancerPhase(diseaseId, str);
 			}
+			breastCancerInfo.setPhase(phaseDto);			
 		}
 		
 		str = diseaseInfo.get("invasiveness");		
@@ -757,55 +749,44 @@ public class PatientDetailDAO {
 		if (StringUtils.isBlank(str)) {
 			breastCancerInfo.setSubtypeid(null);
 		} else {
-			try {
-				breastCancerInfo.setSubtypeid( new Integer(str));
-			} catch (Exception e) {
-				breastCancerInfo.setSubtypeid(CancerDAO.createCancerType(diseaseId, str, true));
+			Integer subTypeId = CancerDAO.getCancerTypeId(diseaseId, str);
+			if (subTypeId == null) {
+				subTypeId = CancerDAO.createCancerType(diseaseId, str, true);
 			}
+			breastCancerInfo.setSubtypeid(subTypeId);			
 		}
 		String mustr = diseaseInfo.get("mutation_id");
 		if (StringUtils.isNotBlank(mustr)) {
 			String muIds [] = mustr.split(",");
-			Integer muId;
+			
 			for (String string : muIds) {
 				string = string.trim();
-				if (StringUtils.isNotBlank(string)) {
-					try {
-						muId = new Integer(string);
-						PatientMutationDTO pmDto = new PatientMutationDTO();
-						pmDto.setMutationid(muId);
-						pmDto.setPatientid(new Integer(patientId));
-						BaseDAO.save(pmDto);
-					} catch (Exception e) {
-						CancerMutationDTO mutationDto = CancerDAO.createCancerMutation(diseaseId, string);
-						PatientMutationDTO pmDto = new PatientMutationDTO();
-						pmDto.setMutationid(mutationDto.getId());
-						pmDto.setPatientid(new Integer(patientId));
-						BaseDAO.save(pmDto);
+				if (StringUtils.isNotBlank(string)) {					
+					CancerMutationDTO mutationDto = CancerDAO.getCancerMutation(diseaseId, string);
+					if (mutationDto == null) {
+						mutationDto = CancerDAO.createCancerMutation(diseaseId, string);
 					}
+					PatientMutationDTO pmDto = new PatientMutationDTO();
+					pmDto.setMutationid(mutationDto.getId());
+					pmDto.setPatientid(new Integer(patientId));
+					BaseDAO.save(pmDto);					
 				}
 			}
 		}
 		mustr = diseaseInfo.get("chromosome_id");
 		if (StringUtils.isNotBlank(mustr)) {
-			String muIds [] = mustr.split(",");
-			Integer muId;
+			String muIds [] = mustr.split(",");			
 			for (String string : muIds) {
 				string = string.trim();
-				if (StringUtils.isNotBlank(string)) {
-					try {
-						muId = new Integer(string);
-						PatientChromosomeDTO pmDto = new PatientChromosomeDTO();
-						pmDto.setChromosomeid(muId);
-						pmDto.setPatientid(new Integer(patientId));
-						BaseDAO.save(pmDto);
-					} catch (Exception e) {
-						CancerChromosomeDTO chromosomeDto = CancerDAO.createCancerChromosome(diseaseId, string);
-						PatientChromosomeDTO pmDto = new PatientChromosomeDTO();
-						pmDto.setChromosomeid(chromosomeDto.getId());
-						pmDto.setPatientid(new Integer(patientId));
-						BaseDAO.save(pmDto);
+				if (StringUtils.isNotBlank(string)) {					
+					CancerChromosomeDTO chromosomeDto = CancerDAO.getCancerChromosome(diseaseId, string);
+					if (chromosomeDto == null) {
+						chromosomeDto = CancerDAO.createCancerChromosome(diseaseId, string);
 					}
+					PatientChromosomeDTO pmDto = new PatientChromosomeDTO();
+					pmDto.setChromosomeid(chromosomeDto.getId());
+					pmDto.setPatientid(new Integer(patientId));
+					BaseDAO.save(pmDto);					
 				}
 			}
 		}
