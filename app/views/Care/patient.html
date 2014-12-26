@@ -7,7 +7,7 @@
 			<ul id="tabs" class="nav nav-tabs">
 				<li class="active"><a href="#summary" data-url="@{CarePatien.summary(patientId)}">SUMMARY</a></li>
 				<li><a class="appointment" href="#appointment" data-url="@{CarePatien.appointment(patientId)}">APPOINTMENTS</a></li>
-				<li><a class="careteam" href="#careteam" data-url="@{CarePatien.careteam(patientId)}">CARE TEAM</a></li>
+<!-- 				<li><a class="careteam" href="#careteam" data-url="@{CarePatien.careteam(patientId)}">CARE TEAM</a></li> -->
 				<li><a class="medication" href="#medication" data-url="@{CarePatien.medication(patientId)}">MEDICATIONS</a></li>
 				<li><a class="treatmentplan" href="#treatmentplan" data-url="@{CarePatien.treatmentPlan(patientId)}">TREATMENT PLAN</a></li>
 				<li><a class="followupplan" href="#followupplan" data-url="@{CarePatien.followupPlan(patientId)}">FOLLOW-UP CARE PLAN</a></li>
@@ -19,7 +19,7 @@
                     #{include '/CarePatien/summary.html' /}                    
                 </div>
                 <div class="tab-pane" id="appointment"></div>
-                <div class="tab-pane" id="careteam"></div>
+<!--                 <div class="tab-pane" id="careteam"></div> -->
                 <div class="tab-pane" id="medication"></div>
                 <div class="tab-pane" id="treatmentplan"></div>
                 <div class="tab-pane" id="followupplan"></div>
