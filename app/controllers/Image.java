@@ -69,7 +69,7 @@ public class Image extends Controller {
 		response.setHeader("Content-Type", "image/png");
 		response.setHeader("Cache-Control", "no-cache");
 		if (imgdto != null && imgdto.getLogo()  == null) {
-			renderBinary(DEFAULT_IMAGE_MEDICINE_FILE);
+			renderText("");
 		} else {
 			try{
 				if(imgdto != null && imgdto.getLogo() != null)
