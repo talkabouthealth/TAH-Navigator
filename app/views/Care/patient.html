@@ -753,7 +753,8 @@ $(document).ready(function() {
 
 	$('#datepickerRange').datepicker({
 		defaultDate: +1 ,minDate:"+1d",          
-          format: "mm/dd/yyyy"
+        format: "mm/dd/yyyy",
+        forceParse:false
     });
 
 	$('body').on('click', 'button.medicationBtn', function() {
