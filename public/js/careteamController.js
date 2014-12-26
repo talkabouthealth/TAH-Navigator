@@ -837,19 +837,7 @@ var careTeamController = (function() {
         }
     };
     
-    var diagnosis = function(domElement) {
-		var createSearchChoice = function(term, data) {
-			if ($(data).filter(function() { return this.text.localeCompare(term)===0; }).length === 0) {	
-				return {id:term, text:term};
-			}
-		};
-		var split = function( val ) {
-			return val.split( /,\s*/ );
-		};
-		
-		var extractLast = function( term ) {
-			return split( term ).pop();
-		};		
+    var diagnosis = function(domElement) {				
         var patientId = $(domElement).attr("patient_id");
         $.post(actions['ctp_diagnosis_json'], {
                patientId: patientId
@@ -857,7 +845,7 @@ var careTeamController = (function() {
         	curStageId = data.stageId;
         	var initFlag = $('#diagnosis-edit-form').attr('init-flag');
         	if (initFlag == '0') {
-        		
+        		$('#diagnosis-edit-form').attr('init-flag', 1);
         		$("#psascore").autocomplete({source: psaScoreArray,minLength:1 });
         		
         		$('#diagnosis-edit-form').attr('init-flag', '1');
@@ -878,8 +866,10 @@ var careTeamController = (function() {
 					var selectedStageData;
             		for (var i = 0; i < bcStages.length; i++) {
             			if(disease_id == bcStages[i].diseaseid) {
-            				length = length + 1;							
-							stageData.push(bcStages[i].name);
+            				length = length + 1;	
+							if (!bcStages[i].userDefined) {
+								stageData.push(bcStages[i].name);
+							}
             				if(bcStages[i].id == curStageId) {
 								selectedStageData = bcStages[i].name;            					
             				}
@@ -897,59 +887,29 @@ var careTeamController = (function() {
             			$('#stage_div').hide();	
             		}
 					
-            		var mutations = data.mutations;            		
-					var mutationsData = [];
-					var selectedMutationsData = [];
+					
+            		var mutations = data.mutations;            							
             		var mutationLength = 0;
+					$('#mutations').empty();
             		for (var i = 0; i < mutations.length; i++) {
             			if(disease_id == mutations[i].diseaseid) {
-            				mutationLength = mutationLength + 1;           					
-							mutationsData.push(mutations[i].mutation);
-							if ($.inArray('' + mutations[i].id, genetics) != -1) {
-								selectedMutationsData.push(mutations[i].mutation);
-							}
+            				mutationLength = mutationLength + 1;							
+							$('#mutations').append('<option value="' + mutations[i].id + '">' + mutations[i].mutation + '</option>');
+							
             			}
             		}
-					$('#mutations').autocomplete({
-						source: function( request, response ) {
-						  // delegate back to autocomplete, but extract the last term						  
-						  var arr = split( $('#mutations').val() );
-						  if (arr.length > 0) {
-							arr.pop();
-						  }
-						  var tmpArr = [];
-						  for (var i = 0; i < mutationsData.length; i++) {
-							if ($.inArray(mutationsData[i], arr) == -1) {
-								tmpArr.push(mutationsData[i]);
-							}
-						  }
-						  
-						  response( $.ui.autocomplete.filter(
-							tmpArr, extractLast( request.term ) ) );
-						},
-						focus: function() {
-						  // prevent value inserted on focus
-						  return false;
-						},
-						select: function( event, ui ) {
-							var terms = split( this.value );
-							// remove the current input
-							terms.pop();
-							// add the selected item
-							terms.push( ui.item.value );
-							// add placeholder to get the comma-and-space at the end
-							terms.push( "" );
-							this.value = terms.join( ", " );
-							return false;
-						},
-						minLength: 0
-					}).bind("focus", function(e) {
-						$(this).autocomplete("search");
-					});					
-				
-        	        if (mutationLength>0) {
-						$('#mutations').val(selectedMutationsData.join(", "));        	        	
-        	        	$("#mutation_div").show();        	        	
+					if (mutationLength>0) {
+						if (initFlag == '0') {
+							$('#mutations').multiselect({
+								maxHeight: 120,
+								buttonClass: 'inputdropdown',
+								buttonWidth: '310px'
+							});
+						}
+        	        	$("#mutation_div").show();						
+						$('#mutations').val(genetics);
+						$('#mutations').multiselect('refresh');
+						
         	        } else {
         	        	$("#mutation_div").hide();
         	        }
@@ -998,8 +958,10 @@ var careTeamController = (function() {
 					var selectedCancersubtypeData;
             		for (var i = 0; i < roottype.length; i++) {
             			if(disease_id == roottype[i].diseaseid) {
-            				subTypeLenght = subTypeLenght +1;           					
-							cancersubtypeData.push(roottype[i].name);
+            				subTypeLenght = subTypeLenght +1;    
+							if (!roottype[i].userDefined) {
+								cancersubtypeData.push(roottype[i].name);
+							}
 							if (csrsubtype == roottype[i].id) {
 								selectedCancersubtypeData = roottype[i].name;
 							}
@@ -1021,17 +983,19 @@ var careTeamController = (function() {
     	        	var roottype = data.roottype;            		
 					var cancerTypeData = [];
 					var selectedCancerTypeData;
-            		var rootTypeLenght = 0;
+            		var rootTypeLength = 0;
             		for (var i = 0; i < roottype.length; i++) {
             			if(disease_id == roottype[i].diseaseid) {
-            				rootTypeLenght = rootTypeLenght +1 ;           					
-							cancerTypeData.push(roottype[i].name);
+            				rootTypeLength = rootTypeLength +1 ;  
+							if (!roottype[i].userDefined) {
+								cancerTypeData.push(roottype[i].name);
+							}
 							if (roottype[i].id ==  csrtype) {
 								selectedCancerTypeData = roottype[i].name;
 							}
             			}
             		}
-            		if(rootTypeLenght>0) {
+            		if(rootTypeLength>0) {
 						$('#cancertype').autocomplete({
 							source: cancerTypeData, minLength: 0
 						}).bind("focus", function(e) {
@@ -1047,17 +1011,19 @@ var careTeamController = (function() {
             		var invasion = data.invasion;            		
 					var invasionData = [];
 					var selectedInvasionData;
-            		rootTypeLenght = 0;
+            		rootTypeLength = 0;
             		for (var i = 0; i < invasion.length; i++) {
             			if(disease_id == invasion[i].diseaseid) {
-            				rootTypeLenght = rootTypeLenght +1 ;           					
-							invasionData.push(invasion[i].invname);
+            				rootTypeLength = rootTypeLength +1 ; 
+							if (!invasion[i].userDefined) {
+								invasionData.push(invasion[i].invname);
+							}
 							if (invasionVal == invasion[i].id) {
 								selectedInvasionData = invasion[i].invname;
 							}
             			}
             		}
-            		if(rootTypeLenght>0) {
+            		if(rootTypeLength>0) {
 						$('#invasiveness').autocomplete({
 							source: invasionData, minLength: 0
 						}).bind("focus", function(e) {
@@ -1072,17 +1038,19 @@ var careTeamController = (function() {
             		var grade = data.grade;            	
 					var gradeData = [];
 					var selectedGradeData;
-            		rootTypeLenght = 0;
+            		rootTypeLength = 0;
             		for (var i = 0; i < grade.length; i++) {
             			if(disease_id == grade[i].diseaseid) {
-            				rootTypeLenght = rootTypeLenght +1 ;           					
-							gradeData.push(grade[i].gradename);
+            				rootTypeLength = rootTypeLength +1;
+							if (!grade[i].userDefined) {
+								gradeData.push(grade[i].gradename);
+							}
 							if (gradeVal == grade[i].id) {
 								selectedGradeData = grade[i].gradename;
 							}
             			}
             		}
-            		if(rootTypeLenght>0) {
+            		if(rootTypeLength>0) {
 						$('#grade').autocomplete({
 							source: gradeData, minLength: 0
 						}).bind("focus", function(e) {
@@ -1096,17 +1064,19 @@ var careTeamController = (function() {
             		var phase = data.phase;            		
 					var phaseData = [];
 					var selectedPhaseData;
-            		rootTypeLenght = 0;
+            		rootTypeLength = 0;
             		for (var i = 0; i < phase.length; i++) {
             			if(disease_id == phase[i].diseaseid) {
-            				rootTypeLenght = rootTypeLenght +1 ;           					
-							phaseData.push(phase[i].name);
+            				rootTypeLength = rootTypeLength +1;           					
+							if (!phase[i].userDefined) {
+								phaseData.push(phase[i].name);
+							}
 							if (csrphase == phase[i].id) {
 								selectedPhaseData = phase[i].name;
 							}
             			}
             		}
-            		if(rootTypeLenght>0) {
+            		if(rootTypeLength>0) {
 						$('#phase').autocomplete({
 							source: phaseData, minLength: 0
 						}).bind("focus", function(e) {
@@ -1117,77 +1087,45 @@ var careTeamController = (function() {
             		} else {
             			$("#phase_div").hide();
             		}
-            		var chromosome = data.chromosome;					
-					var chromosomeData = [];
-					var selectedChromosomeData = [];					
-            		rootTypeLenght = 0;
+            		var chromosome = data.chromosome;									
+            		rootTypeLength = 0;
+					$('#chromosome').empty();
             		for (var i = 0; i < chromosome.length; i++) {
             			if(disease_id == chromosome[i].diseaseid) {
-            				rootTypeLenght = rootTypeLenght +1 ;           					
-							chromosomeData.push(chromosome[i].chromosomename);
-							if ($.inArray(''+chromosome[i].id, chromosomesIds) != -1) {
-								selectedChromosomeData.push(chromosome[i].chromosomename);								
-							}
+            				rootTypeLength = rootTypeLength +1;           												
+							$('#chromosome').append('<option value="' + chromosome[i].id + '">' + chromosome[i].chromosomename + '</option>');							
             			}
-            		}
-					
-					$('#chromosome').autocomplete({
-						source: function( request, response ) {
-						  // delegate back to autocomplete, but extract the last term						  
-						  var arr = split( $('#chromosome').val() );
-						  if (arr.length > 0) {
-							arr.pop();
-						  }
-						  var tmpArr = [];
-						  for (var i = 0; i < chromosomeData.length; i++) {
-							if ($.inArray(chromosomeData[i], arr) == -1) {
-								tmpArr.push(chromosomeData[i]);
-							}
-						  }
-						  
-						  response( $.ui.autocomplete.filter(
-							tmpArr, extractLast( request.term ) ) );
-						},
-						focus: function() {
-						  // prevent value inserted on focus
-						  return false;
-						},
-						select: function( event, ui ) {
-							var terms = split( this.value );
-							// remove the current input
-							terms.pop();
-							// add the selected item
-							terms.push( ui.item.value );
-							// add placeholder to get the comma-and-space at the end
-							terms.push( "" );
-							this.value = terms.join( ", " );
-							return false;
-						}, minLength: 0
-					}).bind("focus", function(e) {
-						$(this).autocomplete("search");
-					});						
-            		if(rootTypeLenght>0) {						
-            		    //$('#chromosome').val(chromosomesIds);
-						$('#chromosome').val(selectedChromosomeData.join(", "));
-            			$("#chromosome_div").show();
-            			//$('#chromosome').multiselect({enableFiltering: false, buttonWidth: '310px',buttonClass: 'inputdropdown'});
+            		}									
+            		if(rootTypeLength>0) {	
+						if (initFlag == '0') {
+							$('#chromosome').multiselect({
+								maxHeight: 120,
+								buttonClass: 'inputdropdown',
+								buttonWidth: '310px'
+							});	   					
+						}						
+            			$("#chromosome_div").show();  						
+						$('#chromosome').val(chromosomesIds);
+						$('#chromosome').multiselect('refresh');						
             		} else {
             			$("#chromosome_div").hide();
             		}
     	        	roottype = data.fab;            		
 					var fabData = [];
 					var selectedFabData;
-            		rootTypeLenght = 0;
+            		rootTypeLength = 0;
             		for (var i = 0; i < roottype.length; i++) {
             			if(disease_id == roottype[i].diseaseid) {
-            				rootTypeLenght = rootTypeLenght +1 ;           					
-							fabData.push(roottype[i].fabname);
+            				rootTypeLength = rootTypeLength +1;           					
+							if (!roottype[i].userDefined) {
+								fabData.push(roottype[i].fabname);
+							}
 							if (fabId == roottype[i].id) {
 								selectedFabData = roottype[i].fabname;
 							}
             			}
             		}
-            		if(rootTypeLenght>0) {
+            		if(rootTypeLength>0) {
 						$('#fab').autocomplete({
 							source: fabData, minLength: 0
 						}).bind("focus", function(e) {
@@ -1202,17 +1140,19 @@ var careTeamController = (function() {
             		roottype = data.who;            		
 					var whoData = [];
 					var selectedWhoData;
-            		rootTypeLenght = 0;
+            		rootTypeLength = 0;
             		for (var i = 0; i < roottype.length; i++) {
             			if(disease_id == roottype[i].diseaseid) {
-            				rootTypeLenght = rootTypeLenght +1 ;           					
-							whoData.push(roottype[i].whoname);
+            				rootTypeLength = rootTypeLength +1;           					
+							if (!roottype[i].userDefined) {
+								whoData.push(roottype[i].whoname);
+							}
 							if (whoId == roottype[i].id) {
 								selectedWhoData = roottype[i].whoname;
 							}
             			}
             		}
-            		if(rootTypeLenght>0) {
+            		if(rootTypeLength>0) {
 						$('#who').autocomplete({
 							source: whoData, minLength: 0
 						}).bind("focus", function(e) {
@@ -1276,16 +1216,13 @@ var careTeamController = (function() {
            	  	$('#psascore').val(data.psascore);
            	  	$('#gleasonscore').val(data.gleasonscore);
            	  	$('#gleasonscore').val(data.gleasonscore);
-           	  	csrtype = data.csrtype;
-           	  	csrsubtype = data.csrsubtype;
-           	  	genetics = data.genetics;
-           	  	csrphase = data.phaseId;
-           	  	chromosomesIds = data.chromosomesIds;
+           	  	           	  	          	  
+           	  	csrphase = data.phaseId;           	  	
            	  	fabId = data.fabId;
            	  	whoId = data.fabId;
            	  	$('#cancertype').val(data.csrtype);
-           	  	$('#cancersubtype').val(data.csrsubtype);
-           	
+           	  	$('#cancersubtype').val(data.csrsubtype);							
+				
             } else {
             	$('#diseaseId').val('');
             }
@@ -1298,9 +1235,22 @@ var careTeamController = (function() {
                 $('#dob').val(formatDate(new Date(data.dateOfBirth), 'mm/dd/yyyy'));
             } else {
             	$('#dob').val('');
-            }            
+            }	
+		    if ('genetics' in data) {
+				genetics = data.genetics;
+			}
+			if ('chromosomesIds' in data) {
+				chromosomesIds = data.chromosomesIds;	
+			}
+			if ('csrtype' in data) {
+				csrtype = data.csrtype;
+			}
+			if ('csrsubtype' in data) {
+				csrsubtype = data.csrsubtype; 
+			}
             $('#diagnosis-edit-form').find('#family-risk').val(data['familyRisk'] || '');            
             $('#disease').change(); 
+			
         	$('#diagnosis-edit-form').modal({
         		keyboard: false,
         		backdrop: 'static'

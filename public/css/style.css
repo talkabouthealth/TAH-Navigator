@@ -2086,6 +2086,29 @@ td.beauty-hover {
 	color: black;
 }
 
+.ui-autocomplete {
+    max-height: 100px;
+    overflow-y: auto;    
+    overflow-x: hidden;
+}
+
+.multiselect-container.dropdown-menu li {
+	background: white !important;	
+}
+.multiselect-container.dropdown-menu li:hover {
+	background: #44484c !important;	
+}
+
+.multiselect-container.dropdown-menu a {	
+	color: #44484c !important;
+}
+.multiselect-container.dropdown-menu a:hover {	
+	color: white !important;
+}
+
+.multiselect-container.dropdown-menu  .active a:hover {
+	background: #44484c !important;
+}
 
 .modal-content {
 	color: black;

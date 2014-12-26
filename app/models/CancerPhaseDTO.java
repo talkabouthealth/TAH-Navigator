@@ -22,7 +22,9 @@ public class CancerPhaseDTO {
 
 	@Column(name="phase")
 	private String name;
-
+	
+	@Column(name="user_defined")	
+	private boolean userDefined;
 	public String getName() {
 		return name;
 	}
@@ -45,5 +47,13 @@ public class CancerPhaseDTO {
 
 	public void setDiseaseid(Integer diseaseid) {
 		this.diseaseid = diseaseid;
+	}
+
+	public boolean isUserDefined() {
+		return userDefined;
+	}
+
+	public void setUserDefined(boolean userDefined) {
+		this.userDefined = userDefined;
 	}
 }

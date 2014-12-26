@@ -1,6 +1,7 @@
 package nav.dao;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
@@ -95,12 +96,13 @@ public class CancerDAO {
 		}
 		return id;
 	}
-	public static Integer createCancerType(Integer diseaseId, String name, boolean rootType) {
+	public static Integer createCancerType(Integer diseaseId, String name, boolean rootType, boolean userDefined) {
 		EntityManager em = JPAUtil.getEntityManager();
 		CancerTypeDTO cancerType = new CancerTypeDTO();
 		cancerType.setDiseaseid(diseaseId);
 		cancerType.setRoottype(rootType);
 		cancerType.setName(name);
+		cancerType.setUserDefined(userDefined);
 		em.getTransaction().begin();
 		em.persist(cancerType);
 		em.getTransaction().commit();
@@ -122,11 +124,12 @@ public class CancerDAO {
 		return id;
 	}
 	
-	public static Integer createCancerStage(Integer diseaseId, String name) {
+	public static Integer createCancerStage(Integer diseaseId, String name, boolean userDefined) {
 		EntityManager em = JPAUtil.getEntityManager();
 		BreastCancerStageDTO stage = new BreastCancerStageDTO();
 		stage.setDiseaseid(diseaseId);
 		stage.setName(name);
+		stage.setUserDefined(userDefined);
 		em.getTransaction().begin();
 		em.persist(stage);
 		em.getTransaction().commit();
@@ -145,11 +148,12 @@ public class CancerDAO {
 		}
 		return dto;
 	}	
-	public static CancerInvasiveDTO createCancerInvasion(Integer diseaseId, String name) {
+	public static CancerInvasiveDTO createCancerInvasion(Integer diseaseId, String name, boolean userDefined) {
 		EntityManager em = JPAUtil.getEntityManager();
 		CancerInvasiveDTO invasion = new CancerInvasiveDTO();
 		invasion.setDiseaseid(diseaseId);
 		invasion.setInvname(name);
+		invasion.setUserDefined(userDefined);
 		em.getTransaction().begin();
 		em.persist(invasion);
 		em.getTransaction().commit();
@@ -170,11 +174,12 @@ public class CancerDAO {
 		return dto;
 	}
 	
-	public static CancerGradeDTO createCancerGrade(Integer diseaseId, String name) {
+	public static CancerGradeDTO createCancerGrade(Integer diseaseId, String name, boolean userDefined) {
 		EntityManager em = JPAUtil.getEntityManager();
 		CancerGradeDTO grade = new CancerGradeDTO();
 		grade.setDiseaseid(diseaseId);
 		grade.setGradename(name);
+		grade.setUserDefined(userDefined);
 		em.getTransaction().begin();
 		em.persist(grade);
 		em.getTransaction().commit();
@@ -193,11 +198,12 @@ public class CancerDAO {
 		}
 		return dto;
 	}
-	public static CancerPhaseDTO createCancerPhase(Integer diseaseId, String name) {
+	public static CancerPhaseDTO createCancerPhase(Integer diseaseId, String name, boolean userDefined) {
 		EntityManager em = JPAUtil.getEntityManager();
 		CancerPhaseDTO phase = new CancerPhaseDTO();
 		phase.setDiseaseid(diseaseId);
 		phase.setName(name);
+		phase.setUserDefined(userDefined);
 		em.getTransaction().begin();
 		em.persist(phase);
 		em.getTransaction().commit();
@@ -216,11 +222,12 @@ public class CancerDAO {
 		}
 		return dto;
 	}
-	public static CancerFabClassificationDTO createCancerFabClass(Integer diseaseId, String name) {
+	public static CancerFabClassificationDTO createCancerFabClass(Integer diseaseId, String name, boolean userDefined) {
 		EntityManager em = JPAUtil.getEntityManager();
 		CancerFabClassificationDTO fab = new CancerFabClassificationDTO();
 		fab.setDiseaseid(diseaseId);
 		fab.setFabname(name);
+		fab.setUserDefined(userDefined);
 		em.getTransaction().begin();
 		em.persist(fab);
 		em.getTransaction().commit();
@@ -241,11 +248,12 @@ public class CancerDAO {
 		return dto;
 	}
 	
-	public static CancerWhoClassificationDTO createCancerWHOClass(Integer diseaseId, String name) {
+	public static CancerWhoClassificationDTO createCancerWHOClass(Integer diseaseId, String name, boolean userDefined) {
 		EntityManager em = JPAUtil.getEntityManager();
 		CancerWhoClassificationDTO who = new CancerWhoClassificationDTO();
 		who.setDiseaseid(diseaseId);
 		who.setWhoname(name);
+		who.setUserDefined(userDefined);
 		em.getTransaction().begin();
 		em.persist(who);
 		em.getTransaction().commit();
@@ -300,5 +308,19 @@ public class CancerDAO {
 		em.persist(mutation);
 		em.getTransaction().commit();
 		return mutation;
+	}
+	
+	public static List<CancerTypeDTO> defaultCancerTypes(boolean isRoot) {
+		List<CancerTypeDTO> types = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			TypedQuery<CancerTypeDTO> query = em.createQuery("SELECT c FROM CancerTypeDTO c where c.roottype = :f2  and c.userDefined = :userDefined order by c.name", CancerTypeDTO.class);
+			query.setParameter("f2", isRoot);
+			query.setParameter("userDefined", false);
+			types = query.getResultList();
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		return types;
 	}
 }
