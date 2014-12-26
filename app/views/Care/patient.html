@@ -6,7 +6,8 @@
 		<div>
 			<ul id="tabs" class="nav nav-tabs">
 				<li class="active"><a href="#summary" data-url="@{CarePatien.summary(patientId)}">SUMMARY</a></li>
-				<li><a class="appointment" href="#appointment" data-url="@{CarePatien.appointment(patientId)}">APPOINTMENTS</a></li>				
+				<li><a class="appointment" href="#appointment" data-url="@{CarePatien.appointment(patientId)}">APPOINTMENTS</a></li>
+				<li><a class="careteam" href="#careteam" data-url="@{CarePatien.careteam(patientId)}">CARE TEAM</a></li>
 				<li><a class="medication" href="#medication" data-url="@{CarePatien.medication(patientId)}">MEDICATIONS</a></li>
 				<li><a class="treatmentplan" href="#treatmentplan" data-url="@{CarePatien.treatmentPlan(patientId)}">TREATMENT PLAN</a></li>
 				<li><a class="followupplan" href="#followupplan" data-url="@{CarePatien.followupPlan(patientId)}">FOLLOW-UP CARE PLAN</a></li>
@@ -305,8 +306,8 @@
                 <div class="form-group form-group-sm">
                         <label class="col-xs-4 control-label" for="rt_schedule">Frequency</label>
                         <div class="col-xs-8 form-group input-group">
-                           <input type="text" class="form-control" name="frequency" required />
-                           <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+                           <input type="text" class="form-control" name="frequency"/>
+                           <!-- <span class="input-group-addon has-error"><i class="fa fa-star"></i></span> -->
                         </div>
                 </div>
 
@@ -954,11 +955,22 @@ operationMedication = function(operation,id) {
 				$("#addEditmedication input[name='brandname']").val(data.medicine.brandname);
 				$("#addEditmedication input[name='frequency']").val(data.frequency);
 				//Jan 20, 2014 12:09:00 AM
-				var d = moment(data.startdate, 'MMM DD, YYYY hh:mm:ss A');
-				$("#addEditmedication input[name='startDate']").val(d.format('MM/DD/YYYY'));
+				//var d = moment(data.startdate, 'MMM DD, YYYY hh:mm:ss A');
+				/* if(moment(data.startdate, 'MMM DD, YYYY hh:mm:ss A').isValid())
+					$("#addEditmedication input[name='startDate']").val(moment(data.startdate, 'MMM DD, YYYY hh:mm:ss A').format('MM/DD/YYYY'));
+				else  */if(moment(data.startdate, 'MM/DD/YYYY',true).isValid())
+					$("#addEditmedication input[name='startDate']").val(moment(data.startdate, 'MM/DD/YYYY').format('MM/DD/YYYY'));
+				else
+					$("#addEditmedication input[name='startDate']").val(data.startdate);
 
-				d = moment(data.enddate, 'MMM DD, YYYY hh:mm:ss A');
-				$("#addEditmedication input[name='endDate']").val(d.format('MM/DD/YYYY'));
+				//d = moment(data.enddate, 'MMM DD, YYYY hh:mm:ss A');
+				
+				/* if(moment(data.enddate, 'MMM DD, YYYY hh:mm:ss A').isValid())
+					$("#addEditmedication input[name='endDate']").val(moment(data.enddate, 'MMM DD, YYYY hh:mm:ss A').format('MM/DD/YYYY'));
+				else  */if(moment(data.enddate, 'MM/DD/YYYY',true).isValid())
+					$("#addEditmedication input[name='endDate']").val(moment(data.enddate, 'MM/DD/YYYY').format('MM/DD/YYYY'));
+				else
+					$("#addEditmedication input[name='endDate']").val(data.enddate);
 
 				$('#datepickerRange').datepicker({ startDate: data.startdate, endDate: data.enddate});                
 				$("#addEditmedication input[name='deleteMD']").show();

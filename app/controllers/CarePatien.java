@@ -675,8 +675,7 @@ public class CarePatien  extends Controller {
 		//10/15/2014 : 10/15/2014
 		try {
 			if("add".equalsIgnoreCase(operation)) {
-				Date startDt = new SimpleDateFormat("MM/dd/yyyy").parse(startDate);
-				Date endDt = new SimpleDateFormat("MM/dd/yyyy").parse(endDate);
+				
 //				System.out.println("catlogId: " + catlogId);
 				MedicineCatlogDTO catlog = MedicationDAO.getMedicineCatloagByField("id",new Integer(catlogId));
 				MedicineMasterDTO medicineMasterDTO = new MedicineMasterDTO();
@@ -699,7 +698,7 @@ public class CarePatien  extends Controller {
 				patientMedicationDTO.setAdddate(new Date());
 				patientMedicationDTO.setCaremember(drUser);
 				patientMedicationDTO.setCaremembername(memberid);
-				patientMedicationDTO.setEnddate(new Date());
+				//patientMedicationDTO.setEnddate(new Date());
 				patientMedicationDTO.setFrequency(frequency);
 				patientMedicationDTO.setMedicine(medicineMasterDTO);
 				
@@ -707,13 +706,28 @@ public class CarePatien  extends Controller {
 				patientMedicationDTO.setPatientid(patientId);
 				patientMedicationDTO.setSpecialinstruction(otherdetails);
 				
-				patientMedicationDTO.setStartdate(startDt);
-				patientMedicationDTO.setEnddate(endDt);
+				Date startDt = null, endDt = null;
+				
+				try{
+					/*startDt = new SimpleDateFormat("MM/dd/yyyy").parse(startDate);
+					patientMedicationDTO.setStartdate(startDt.toString());
+					startDt =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSX").parse(startDate);*/
+					patientMedicationDTO.setStartdate(startDate.toString());
+				}catch(Exception e){
+					patientMedicationDTO.setStartdate(startDate.toString());
+				}
+				
+				try{
+					/*endDt = new SimpleDateFormat("MM/dd/yyyy").parse(endDate);
+					patientMedicationDTO.setEnddate(endDt.toString());*/
+					patientMedicationDTO.setEnddate(endDate.toString());
+				}catch(Exception e){
+					patientMedicationDTO.setEnddate(endDate.toString());
+				}
 				
 				BaseDAO.save(patientMedicationDTO);
 			} else if("edit".equalsIgnoreCase(operation)) {
-				Date startDt = new SimpleDateFormat("MM/dd/yyyy").parse(startDate);
-				Date endDt = new SimpleDateFormat("MM/dd/yyyy").parse(endDate);
+				
 				Integer idField = new Integer(id);
 				PatientMedicationDTO  patientMedicationDTO = MedicationDAO.getMedicineByField("id", idField);
 				if(patientMedicationDTO != null) {
@@ -728,8 +742,23 @@ public class CarePatien  extends Controller {
 					patientMedicationDTO.setMedicine(medicineMasterDTO);
 					patientMedicationDTO.setSpecialinstruction(otherdetails);
 
-					patientMedicationDTO.setStartdate(startDt);
-					patientMedicationDTO.setEnddate(endDt);
+					Date startDt = null, endDt = null;
+					
+					try{
+						/*startDt = new SimpleDateFormat("MM/dd/yyyy").parse(startDate);
+						patientMedicationDTO.setStartdate(startDt.toString());*/
+						patientMedicationDTO.setStartdate(startDate.toString());
+					}catch(Exception e){
+						patientMedicationDTO.setStartdate(startDate.toString());
+					}
+					
+					try{
+						/*endDt = new SimpleDateFormat("MM/dd/yyyy").parse(endDate);
+						patientMedicationDTO.setEnddate(endDt.toString());*/
+						patientMedicationDTO.setEnddate(endDate.toString());
+					}catch(Exception e){
+						patientMedicationDTO.setEnddate(endDate.toString());
+					}
 
 					BaseDAO.update(patientMedicationDTO);
 					

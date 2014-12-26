@@ -15,6 +15,7 @@
 					<thead>
 		  			<tr>
 		  				<th>Name</th>
+		  				<th>Edit</th>
 		  			</tr>
 		  			</thead>
 		  			<tbody id="teamList">
@@ -22,8 +23,9 @@
 		  			#{if list != null}
 						#{list list, as:'seq'}
 							#{set cssClass = '' /}
-							<tr ${cssClass}>
-					  			<td><a href="@{Admin.editCareTeam(seq.id)}" >${seq.name} CARE TEAM</a></td>
+							<tr ${cssClass} >
+					  			<td  ><a href="@{Admin.editCareTeam(seq.id)}" id="c_${seq.id}">${seq.name}</a></td>
+					  			<td><a href="javaScript:edit(${seq.id})" >Edit</a></td>
 					  		</tr>
 						#{/list}
 					#{/if}
@@ -41,7 +43,7 @@
 <div class="modal fade" id="addCareTeam" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-lg">
    <div class="modal-content col-xs-12 col-sm-12">
-   #{form @Admin.createCareTeam() , id:'teamForm' }
+   #{form @Admin.createCareTeam() , id:'teamForm', enctype:'multipart/form-data' }
       	<input type="hidden" name="operation" />
       	<input type="hidden" name="id" />
    		<input type="hidden" name="patientId" value="${patientId}"/>
@@ -50,6 +52,13 @@
         		<h4 class="modal-title" id="myModalLabel_note">NEW CARE TEAM</h4>
       		</div>
         	<div class="modal-body" style="display:block;">
+        			<div class="form-group form-group-sm">
+                        <label class="col-xs-3 control-label" for="rt_schedule">Center/Clinic Name</label>
+                        <div class="col-xs-9 form-group input-group">
+                            <input type="text"  name="center" placeholder="i.e. Moffitt Cancer Center TVRH" value="Moffitt Cancer Center TVRH" class="form-control clinicField" required data-provide="typeahead" autocomplete="off">
+                            <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+                        </div>
+                    </div>
                     <div class="form-group form-group-sm">
                         <label class="col-xs-3 control-label" for="rt_schedule">Type of Care Team</label>
                         <div class="col-xs-9 form-group input-group">
@@ -57,10 +66,10 @@
                             <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
                         </div>
                     </div>
-					<div class="form-group form-group-sm">
-                        <label class="col-xs-3 control-label" for="rt_schedule">Center/Clinic Name</label>
+                    <div class="form-group form-group-sm">
+                        <label class="col-xs-3 control-label" for="rt_schedule">Phone</label>
                         <div class="col-xs-9 form-group input-group">
-                            <input type="text"  name="center" placeholder="i.e. Moffitt Cancer Center TVRH" value="Moffitt Cancer Center TVRH" class="form-control" required>
+                            <input type="text"  name="phone" placeholder="Phone number" class="form-control" required>
                             <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
                         </div>
                     </div>
@@ -101,101 +110,139 @@
                             <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
                         </div>
                     </div>
+                    <div class="form-group form-group-sm">
+                        <label class="col-xs-3 control-label" for="rt_schedule">Upload Logo</label>
+                        <div class="col-xs-9">
+	                        <div class="col-xs-6">
+	                            <img id="teamImage" style="height:50px;" src="/public/images/top-p.png">
+	                        </div>
+	                        <div class="col-xs-6">
+	                            <input type="file"  name="logo"><br/>
+	                            <span style="color: #a94442;" id="imageError"></span>
+							</div>
+						</div>
+                    </div>
     		</div>
      		<div class="modal-footer col-xs-12 col-sm-12" >
+     			<button type="button" class="btn btn-default" data-next="3" id="teatmDelete"> DELETE </button>
        			<button type="submit" class="btn btn-default" data-next="3"> SUBMIT </button>
     		</div>
       #{/form}
 		</div>
 	</div>
 </div>
-	<div id="ajax-panel"></div>
-
+<div id="ajax-panel"></div>
 <script type="text/javascript">
 <!-- -->
 var typeArray = ["Radiation Oncology","Oncology","Surgery","Radiology","Urology","Gastroenterology","OBGYN","Primary Care","Cardiology","Hematology"];
+var clinicArray = ["Moffitt Cancer Center TVRH","Adrian Finol, MD"];
 
 $(document).ready(function() {
-	
+
 	$('body').on('click', 'button.addcareteam', function() {
-		$("#appointmentForm input[name='teamtype']").val("");
+		$("#teamForm input[name='operation']").val("create");
+		$("#teamForm input[name='id']").val("");
+		$("#teamForm input[name='center']").val("");
+		$("#teamForm input[name='teamtype']").val("");
+		$("#teamForm input[name='phone']").val("3527518161");
+		$("#teamForm input[name='address1']").val("1400 U.S. Highway 441");
+		$("#teamForm input[name='city']").val("The Villages");
+		$("#teamForm input[name='state']").val("FL");
+		$("#teamForm input[name='zip']").val("32159");
+		$("#teatmDelete").hide();
+		$("#imageError").html('');
 		$('#addCareTeam').appendTo("body").modal();
 	});
-	
+
+	$("#teatmDelete").click(function(e){
+		event.preventDefault();
+		$("#teamForm input[name='operation']").val("delete");
+		$('#teamForm').submit();
+	});
+
 	$("input.typeField").typeahead({ source: typeArray,minLength: 0 });
+	$("input.clinicField").typeahead({ source: clinicArray,minLength: 0
+		,updater: function(item) {
+            if (item && $("#teamForm input[name='operation']").val() == 'create') {
+	            if(item  == 'Moffitt Cancer Center TVRH') {
+	        		$("#teamForm input[name='phone']").val("3527518161");
+	        		$("#teamForm input[name='address1']").val("1400 U.S. Highway 441");
+	        		$("#teamForm input[name='city']").val("The Villages");
+	        		$("#teamForm input[name='state']").val("FL");
+	        		$("#teamForm input[name='zip']").val("32159");
+    	        } else if (item == 'Adrian Finol, MD') {
+    	    		$("#teamForm input[name='phone']").val("");
+    	    		$("#teamForm input[name='address1']").val("");
+    	    		$("#teamForm input[name='city']").val("");
+    	    		$("#teamForm input[name='state']").val("");
+    	    		$("#teamForm input[name='zip']").val("");
+    	        }
+            }
+            return item;
+        }
+	});
 	
 	$('#teamForm').submit(function(event) {
+		if ($("#teamForm input[name='logo']").val() != '' && !$("#teamForm input[name='logo']").val().match(/\.(jpg|jpeg|png|gif)$/)) {
+		    $("#imageError").html('not an image');
+		    return false;
+		}
+		/*
 		var postData = $("#teamForm").serializeArray();
 		var formURL = $("#teamForm").attr("action");
 		$.post(formURL, postData, function( data ) {
-			$("#teamList").append(data);
+			if($("#teamForm input[name='operation']").val() == 'create') {
+				$("#teamList").append("<tr><td><a id='c_"+data.id+"' href='/admin/editcareteam?careTeamId="+data.id+"'>"+data.name+"</a></td><td><a href='javaScript:edit("+data.id+")'>Edit</a></td></tr>");
+			} else if($("#teamForm input[name='operation']").val() == 'delete') {
+				$("#c_"+data.id).parent().parent().remove();
+			} else {
+				$("#c_"+data.id).html(data.name);
+			}
 			$('#ajax-panel').empty();
 			$('#ajax-panel').append('<strong>Care Team</strong>:New CareTeam Created.');
 			$('#addCareTeam').modal('hide');
-		}).always(function() {
+		},"json").always(function() {
 			setTimeout(function(){removeAjaxPanel();}, 2000);
 		});
- 		event.preventDefault();
-	});
-	
-	
-	$(".userVerifiedCheckbox").click(function(){
-		var userId = $(this).data('for');
-		var isVerified = 'false';
-		if ($(this).prop('checked')==true) {
-			isVerified = 'true';
-		}
-		$.ajax({
-			  type: 'POST',
-			  url: '/admin/adminAjaxOperation',
-			  data: { 'userId': userId,'op':'v' , 'flag': isVerified },
-			  beforeSend:function(){
-			    $('#ajax-panel').show();
-			    $('#ajax-panel').html('Loading... <i class="fa fa-spinner fa-spin"></i>');
-			  },
-			  success:function(data){
-			    $('#ajax-panel').empty();
-			      $('#ajax-panel').append('<strong>' + data.status + '</strong>:' + data.messages + '');
-			  },
-			  error:function(){
-			    $('#ajax-panel').html('<strong>Oops!</strong> Try that again in a few moments.');
-			   
-			  }
-		}).always(function() {
-			setTimeout(function(){removeAjaxPanel();}, 2000);
-		});
-	});
-	
-	$(".userActivateCheckbox").click(function(){
-		var userId = $(this).data('for');
-		var isVerified = 'false';
-		if ($(this).prop('checked')==true) {
-			isVerified = 'true';
-		}
-		$.ajax({
-			  type: 'POST',
-			  url: '/admin/adminAjaxOperation',
-			  data: { 'userId': userId,'op':'a' , 'flag': isVerified },
-			  beforeSend:function(){
-			    $('#ajax-panel').show();
-			    $('#ajax-panel').html('Loading... <i class="fa fa-spinner fa-spin"></i>');
-			  },
-			  success:function(data){
-			    $('#ajax-panel').empty();
-			      $('#ajax-panel').append('<strong>' + data.status + '</strong>:' + data.messages + '');
-			  },
-			  error:function(){
-			    $('#ajax-panel').html('<strong>Oops!</strong> Try that again in a few moments.');
-			   
-			  }
-		}).always(function() {
-			setTimeout(function(){removeAjaxPanel();}, 2000);
-		});
+ 		*/
 	});
 });
+
 removeAjaxPanel = function() {
 	$('#ajax-panel').fadeOut("fast", function() {
 		$('#ajax-panel').empty();
+	});
+}
+edit = function(id) {
+	$.ajax({
+		  type: 'POST',
+		  url: '/admin/getCareTeam',
+		  data: { 'careTeamId': id},
+		  beforeSend:function(){
+		    $('#ajax-panel').show();
+		    $('#ajax-panel').html('Loading... <i class="fa fa-spinner fa-spin"></i>');
+		  },
+		  success:function(data){
+			$("#imageError").html('');
+		  	$("#teamForm input[name='operation']").val("edit");
+			$("#teamForm input[name='id']").val(data.id);
+			$("#teamForm input[name='center']").val(data.address.line1);
+			$("#teamForm input[name='teamtype']").val(data.name);
+			$("#teamForm input[name='phone']").val(data.address.phone);
+			$("#teamForm input[name='address1']").val(data.address.line2);
+			$("#teamForm input[name='city']").val(data.address.city);
+			$("#teamForm input[name='state']").val(data.address.state);
+			$("#teamForm input[name='zip']").val(data.address.zip);
+			$("#teamImage").attr("src",data.logoString)
+			$("#teatmDelete").show();
+			$('#addCareTeam').appendTo("body").modal();
+			removeAjaxPanel();
+		  },
+		  error:function(){
+		    $('#ajax-panel').html('<strong>Oops!</strong> Try that again in a few moments.');
+		  }
+	}, "json").always(function() {
+		setTimeout(function(){removeAjaxPanel();}, 1000);
 	});
 }
 </script>

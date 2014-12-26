@@ -8,6 +8,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 @Table(name = "nav.careteammaster")
@@ -26,6 +27,15 @@ public class CareTeamMasterDTO {
 	@OneToOne
 	@JoinColumn(name = "address")
 	private AddressDTO address;
+	
+	@Column(name = "logo")
+	private byte [] logo;
+
+	@Column(name = "active")
+	private boolean active;
+	
+	@Transient
+	private String logoString;
 
 	public int getId() {
 		return id;
@@ -50,4 +60,29 @@ public class CareTeamMasterDTO {
 	public void setAddress(AddressDTO address) {
 		this.address = address;
 	}
+
+	public byte[] getLogo() {
+		return logo;
+	}
+
+	public void setLogo(byte[] logo) {
+		this.logo = logo;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public void setActive(boolean active) {
+		this.active = active;
+	}
+
+	public String getLogoString() {
+		return logoString;
+	}
+
+	public void setLogoString(String logoString) {
+		this.logoString = logoString;
+	}
+	
 }

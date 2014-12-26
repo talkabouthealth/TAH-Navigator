@@ -302,12 +302,21 @@ public class Patient extends Controller {
 				if(mDto.getCaremembername() == null) {
 					mDto.setCaremembername(UserDAO.getUserName(mDto.getCaremember().getId()));
 				}
-				if ((today.compareTo(mDto.getStartdate()) >= 0) && (today.compareTo(mDto.getEnddate()) <=0)) {
+				try{
+					Date startDt = new SimpleDateFormat("MM/dd/yyyy").parse(mDto.getStartdate());
+					Date endDt = new SimpleDateFormat("MM/dd/yyyy").parse(mDto.getEnddate());
+					
+					if ((today.compareTo(startDt) >= 0) && (today.compareTo(endDt) <=0)) {
+						currentMedications.add(mDto);
+					}
+					else if(today.compareTo(endDt) > 0){
+						pastMedications.add(mDto);
+					}
+				}catch(Exception e){
+					e.printStackTrace();
 					currentMedications.add(mDto);
 				}
-				else {
-					pastMedications.add(mDto);
-				}
+				
 			}
 			render(user,userDto,patientOtherDetails,medicationList, breastCancerId, breastCancerInfo, currentMedications, pastMedications);
 		} else {
