@@ -709,20 +709,18 @@ public class CarePatien  extends Controller {
 				Date startDt = null, endDt = null;
 				
 				try{
-					/*startDt = new SimpleDateFormat("MM/dd/yyyy").parse(startDate);
-					patientMedicationDTO.setStartdate(startDt.toString());
-					startDt =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSX").parse(startDate);*/
-					patientMedicationDTO.setStartdate(startDate.toString());
+					startDt = new SimpleDateFormat("MM/dd/yyyy").parse(startDate);
+					patientMedicationDTO.setStartdate(startDt);					
 				}catch(Exception e){
-					patientMedicationDTO.setStartdate(startDate.toString());
+					//patientMedicationDTO.setStartdate(startDate.toString());
 				}
 				
 				try{
-					/*endDt = new SimpleDateFormat("MM/dd/yyyy").parse(endDate);
-					patientMedicationDTO.setEnddate(endDt.toString());*/
-					patientMedicationDTO.setEnddate(endDate.toString());
+					endDt = new SimpleDateFormat("MM/dd/yyyy").parse(endDate);
+					patientMedicationDTO.setEnddate(endDt);
+					
 				}catch(Exception e){
-					patientMedicationDTO.setEnddate(endDate.toString());
+					//patientMedicationDTO.setEnddate(endDate.toString());
 				}
 				
 				BaseDAO.save(patientMedicationDTO);
@@ -745,19 +743,19 @@ public class CarePatien  extends Controller {
 					Date startDt = null, endDt = null;
 					
 					try{
-						/*startDt = new SimpleDateFormat("MM/dd/yyyy").parse(startDate);
-						patientMedicationDTO.setStartdate(startDt.toString());*/
-						patientMedicationDTO.setStartdate(startDate.toString());
+						startDt = new SimpleDateFormat("MM/dd/yyyy").parse(startDate);
+						patientMedicationDTO.setStartdate(startDt);
+						
 					}catch(Exception e){
-						patientMedicationDTO.setStartdate(startDate.toString());
+						//patientMedicationDTO.setStartdate(startDate.toString());
 					}
 					
 					try{
-						/*endDt = new SimpleDateFormat("MM/dd/yyyy").parse(endDate);
-						patientMedicationDTO.setEnddate(endDt.toString());*/
-						patientMedicationDTO.setEnddate(endDate.toString());
+						endDt = new SimpleDateFormat("MM/dd/yyyy").parse(endDate);
+						patientMedicationDTO.setEnddate(endDt);
+						
 					}catch(Exception e){
-						patientMedicationDTO.setEnddate(endDate.toString());
+						//patientMedicationDTO.setEnddate(endDate.toString());
 					}
 
 					BaseDAO.update(patientMedicationDTO);

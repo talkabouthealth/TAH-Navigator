@@ -1,0 +1,60 @@
+*{ parameters are : futureAppointments, pastAppointments }*
+#{set futureAppointments: _futureAppointments /}
+#{set pastAppointments: _pastAppointments /}
+
+<div class="print-appointments">
+#{if futureAppointments.size() > 0}
+	<h1>Upcoming Appointments</h1>
+	#{list futureAppointments, as:'appointment'}	
+	<div class="clearfix para">
+		<div class="col-xs-6">
+			<div>${appointment.appointmentdate.format('EEEE MMMM dd yyyy')}</div>
+			<div>${appointment.appointmenttime} ${appointment.purposeText}</div>
+		</div>
+		<div class="col-xs-6">
+			<div>
+		#{if appointment.caremember != null}
+			#{userName userName: appointment.caremember.name, userId:appointment.caremember.id /}
+		#{/if}
+		#{else}
+			${appointment.careMemberName}
+		#{/else}		
+			</div>
+			<div>${appointment.appointmentcenter}</div>
+		</div>
+	</div>
+	#{/list}	
+#{/if}
+#{else}
+	<h1>No Upcoming appointments</h1>
+#{/else}
+
+
+#{if pastAppointments.size() > 0}
+	<h1>Past Appointments</h1>
+	#{list pastAppointments, as:'appointment'}	
+	<div class="clearfix para">
+		<div class="col-xs-6">
+			<div>${appointment.appointmentdate.format('EEEE MMMM dd yyyy')}</div>
+			<div>${appointment.appointmenttime} ${appointment.purposeText}</div>
+		</div>
+		<div class="col-xs-6">
+			<div>
+		#{if appointment.caremember != null}
+			#{userName userName: appointment.caremember.name, userId:appointment.caremember.id /}
+		#{/if}
+		#{else}
+			${appointment.careMemberName}
+		#{/else}		
+			</div>
+			<div>${appointment.appointmentcenter}</div>
+		</div>
+	</div>
+	#{/list}	
+#{/if}
+#{else}
+	<h1>No Past Appointments.</h1>
+#{/else}
+	
+	
+</div>

@@ -754,7 +754,8 @@ $(document).ready(function() {
 	$('#datepickerRange').datepicker({
 		defaultDate: +1 ,minDate:"+1d",          
         format: "mm/dd/yyyy",
-        forceParse:false
+		forceParse: false
+        
     });
 
 	$('body').on('click', 'button.medicationBtn', function() {
@@ -943,6 +944,21 @@ selectExpert = function() {
 	$('.memberselect').select2();
 	$("#appointmentFormPurpose").select2();
 }
+var formatDate = function(date, format) {
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+        if (day < 10) {
+            day = '0' + day;
+        }
+        if (month < 10) {
+            month = '0' + month;
+        }
+        format = format.replace('yyyy', year);
+        format = format.replace('mm', month);
+        format = format.replace('dd', day);
+        return format;
+    };
 operationMedication = function(operation,id) {
 	if(operation == 'edit') {
 		var formURL = "/carePatien/patientMedication";
@@ -954,25 +970,9 @@ operationMedication = function(operation,id) {
 				$("#addEditmedication input[name='id']").val(data.id);
 				$("#addEditmedication input[name='genericname']").val(data.medicine.genericname);
 				$("#addEditmedication input[name='brandname']").val(data.medicine.brandname);
-				$("#addEditmedication input[name='frequency']").val(data.frequency);
-				//Jan 20, 2014 12:09:00 AM
-				//var d = moment(data.startdate, 'MMM DD, YYYY hh:mm:ss A');
-				/* if(moment(data.startdate, 'MMM DD, YYYY hh:mm:ss A').isValid())
-					$("#addEditmedication input[name='startDate']").val(moment(data.startdate, 'MMM DD, YYYY hh:mm:ss A').format('MM/DD/YYYY'));
-				else  */if(moment(data.startdate, 'MM/DD/YYYY',true).isValid())
-					$("#addEditmedication input[name='startDate']").val(moment(data.startdate, 'MM/DD/YYYY').format('MM/DD/YYYY'));
-				else
-					$("#addEditmedication input[name='startDate']").val(data.startdate);
-
-				//d = moment(data.enddate, 'MMM DD, YYYY hh:mm:ss A');
-				
-				/* if(moment(data.enddate, 'MMM DD, YYYY hh:mm:ss A').isValid())
-					$("#addEditmedication input[name='endDate']").val(moment(data.enddate, 'MMM DD, YYYY hh:mm:ss A').format('MM/DD/YYYY'));
-				else  */if(moment(data.enddate, 'MM/DD/YYYY',true).isValid())
-					$("#addEditmedication input[name='endDate']").val(moment(data.enddate, 'MM/DD/YYYY').format('MM/DD/YYYY'));
-				else
-					$("#addEditmedication input[name='endDate']").val(data.enddate);
-
+				$("#addEditmedication input[name='frequency']").val(data.frequency);												
+				$("#addEditmedication input[name='startDate']").val(formatDate(new Date(data.startdate), 'mm/dd/yyyy'));
+				$("#addEditmedication input[name='endDate']").val(formatDate(new Date(data.enddate), 'mm/dd/yyyy'));
 				$('#datepickerRange').datepicker({ startDate: data.startdate, endDate: data.enddate});                
 				$("#addEditmedication input[name='deleteMD']").show();
 				$("#addEditmedication input[name='deleteMD']").click(function() {

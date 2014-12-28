@@ -15,6 +15,7 @@ import models.AppointmentGroupDTO;
 import models.NoteDTO;
 import models.PatientMedicationDTO;
 import models.UserDTO;
+import models.UserDetailsDTO;
 
 
 public class AppointmentDAO {
@@ -208,5 +209,44 @@ public class AppointmentDAO {
 		} finally {
 		}
 		return dto;
+	}
+	
+	public static List<AppointmentDTO> futureAppointments(int patientId) {
+		List<AppointmentDTO> appointments = new ArrayList<AppointmentDTO>();
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			TypedQuery<AppointmentDTO> query = em.createQuery("SELECT a FROM AppointmentDTO a WHERE a.patientid.id = :patientId and a.deleteflag = false and a.appointmentdate  >= :date order by appointmentdate asc", AppointmentDTO.class);
+			query.setParameter("patientId", patientId);
+			query.setParameter("date", new Date());			
+			appointments = query.getResultList();
+			for (AppointmentDTO dto : appointments) {
+				if (dto.getCaremember() != null) {
+					UserDetailsDTO userDetails = UserDAO.getDetailsById(dto.getCaremember().getId());
+					dto.setExpertMobile(userDetails.getMobile());
+				}				
+			}
+		} catch(Exception e) {
+			//e.printStackTrace();
+		} 
+		return appointments;
+	}
+	public static List<AppointmentDTO> pastAppointments(int patientId) {
+		List<AppointmentDTO> appointments = new ArrayList<AppointmentDTO>();
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			TypedQuery<AppointmentDTO> query = em.createQuery("SELECT a FROM AppointmentDTO a WHERE a.patientid.id = :patientId and a.deleteflag = false and a.appointmentdate  < :date order by appointmentdate desc", AppointmentDTO.class);
+			query.setParameter("patientId", patientId);
+			query.setParameter("date", new Date());			
+			appointments = query.getResultList();
+			for (AppointmentDTO dto : appointments) {
+				if (dto.getCaremember() != null) {
+					UserDetailsDTO userDetails = UserDAO.getDetailsById(dto.getCaremember().getId());
+					dto.setExpertMobile(userDetails.getMobile());
+				}				
+			}
+		} catch(Exception e) {
+			//e.printStackTrace();
+		} 
+		return appointments;
 	}
 }

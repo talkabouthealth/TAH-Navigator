@@ -1,0 +1,47 @@
+*{ parameters are : currentMedications, pastMedications }*
+#{set currentMedications: _currentMedications /}
+#{set pastMedications: _pastMedications /}
+
+
+<div class="print-medications">
+#{if currentMedications.size() > 0}	
+	<h1>Current Medications</h1>        
+    #{list currentMedications, as:'medication'}    	
+	<h2>${medication.medicine.genericname}</h2>
+	<p>BRAND NAME: ${medication.medicine.brandname}</p>
+		#{if medication.frequency}
+	<p>FREQUENCY: ${medication.frequency}</p>
+		#{/if}		
+	<p>DATES: ${medication.startdate.format('MM/dd/yyyy')} - ${medication.enddate.format('MM/dd/yyyy')}</p>		
+	<p>SPECIAL INSTRUCTIONS: ${medication.specialinstruction}</p>
+		#{if medication.caremembername}
+	<p>PRESCRIBING PYSICIAN: ${medication.caremembername}</p>
+		#{/if}		  
+	
+	<div class="line"></div>
+    #{/list}
+#{/if}
+
+#{if pastMedications.size() > 0}	
+	<h1>Past Medications</h1>        
+    #{list currentMedications, as:'medication'}    	
+	<h2>${medication.medicine.genericname}</h2>
+	<p>BRAND NAME: ${medication.medicine.brandname}</p>
+		#{if medication.frequency}
+	<p>FREQUENCY: ${medication.frequency}</p>
+		#{/if}		
+	<p>DATES: ${medication.startdate.format('MM/dd/yyyy')} - ${medication.enddate.format('MM/dd/yyyy')}</p>		
+	<p>SPECIAL INSTRUCTIONS: ${medication.specialinstruction}</p>
+		#{if medication.caremembername}
+	<p>PRESCRIBING PYSICIAN: ${medication.caremembername}</p>
+		#{/if}		  
+	<div class="line"></div>
+    #{/list}
+#{/if}
+
+#{if currentMedications.size() == 0 && pastMedications == 0}
+	<h1>No medication added.</h1>
+#{/if}
+
+
+</div>

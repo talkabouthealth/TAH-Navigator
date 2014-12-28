@@ -57,9 +57,9 @@ public class CancerDAO {
 		TypedQuery<BreastCancerInfoDTO> query = em.createQuery("SELECT b FROM BreastCancerInfoDTO b WHERE b.id = :id", BreastCancerInfoDTO.class);
 		query.setParameter("id", patientDetails.getId());
 		try {
-			BreastCancerInfoDTO breastCancerInfo = query.getSingleResult();
+			BreastCancerInfoDTO breastCancerInfo = query.getSingleResult();			
 			info.put("stageId", String.valueOf(breastCancerInfo.getBcStage().getId()));
-			info.put("stageName", breastCancerInfo.getBcStage().getName());
+			info.put("stageName", breastCancerInfo.getBcStage().getName());			
 			Character er = breastCancerInfo.getEr();
 			Character pr = breastCancerInfo.getPr();
 			Character her2 = breastCancerInfo.getHer2();
@@ -76,7 +76,7 @@ public class CancerDAO {
 			if (brca != null && (String.valueOf(brca).equalsIgnoreCase("+") || String.valueOf(brca).equalsIgnoreCase("-"))) {
 				info.put("brca", String.valueOf(brca));
 			}
-		} catch (NoResultException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	

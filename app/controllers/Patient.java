@@ -112,7 +112,7 @@ public class Patient extends Controller {
 			PatientDetailDTO patientOtherDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
 			BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
 			int breastCancerId = Disease.BREAST_CANCER_ID;
-			
+			/*
 			List<AppointmentDTO> list = new ArrayList<AppointmentDTO>();
 			UserDetailsDTO userDetails = null;
 			Date curreDate = new Date();
@@ -127,8 +127,7 @@ public class Patient extends Controller {
 				}
 			} else {
 				list = null;
-			}
-	
+			}			
 			List<AppointmentDTO> expListOther = AppointmentDAO.getAppointmentListByField("patientid.id" , userDto.getId(), curreDate, "past",0 );
 			List<AppointmentDTO> listOld = new ArrayList<AppointmentDTO>();
 			if(expListOther != null) {
@@ -142,6 +141,10 @@ public class Patient extends Controller {
 			} else {
 				listOld = null;
 			}
+			*/
+			Date curreDate = new Date();
+			List<AppointmentDTO> list = AppointmentDAO.futureAppointments(userDto.getId());
+			List<AppointmentDTO> listOld = AppointmentDAO.pastAppointments(userDto.getId());
 			ArrayList<Integer> totalUp = AppointmentDAO.getTotalappointments("patientid.id", userDto.getId(), curreDate, "upcomming" );
 			ArrayList<Integer> totalPast = AppointmentDAO.getTotalappointments("patientid.id", userDto.getId(), curreDate, "past" );
 	        render(user,userDto,patientOtherDetails,list,listOld, breastCancerId, breastCancerInfo,totalUp,totalPast);
@@ -295,6 +298,7 @@ public class Patient extends Controller {
 			
 			System.out.println(session.getId());
 			List<PatientMedicationDTO> medicationList = MedicationDAO.getMedicine("patientid", userDto.getId());
+			/*
 			List<PatientMedicationDTO> currentMedications = new ArrayList<PatientMedicationDTO>();
 			List<PatientMedicationDTO> pastMedications = new ArrayList<PatientMedicationDTO>();
 			Date today = new Date();
@@ -318,6 +322,9 @@ public class Patient extends Controller {
 				}
 				
 			}
+			*/
+			List<PatientMedicationDTO> currentMedications = MedicationDAO.currentMedications(userDto.getId());
+			List<PatientMedicationDTO> pastMedications = MedicationDAO.pastMedications(userDto.getId());
 			render(user,userDto,patientOtherDetails,medicationList, breastCancerId, breastCancerInfo, currentMedications, pastMedications);
 		} else {
 			index();

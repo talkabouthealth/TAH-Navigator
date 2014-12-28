@@ -531,7 +531,23 @@ $(document).ready(function(){
 				});
 			}
 		});
+		var compressHtml = function(node) {
+			if (typeof node == 'undefined') {
+				return;
+			}
+			var i;
+			var childNodes = node.childNodes;
+			for (i = 0; i < childNodes.length; i++) {
+				if (childNodes[i].nodeType == 3) {
+					var txt = $(childNodes[i]).text();
+					childNodes[i].textContent = $.trim(txt);
+				}
+				else {
+					arguments.callee(childNodes[i]);
+				}
 
+			}
+		};
 		$(document).on('click', '#print-pages-modal-btn', function(e) {
 			var filter = [];
 			$(formId).find('input[type="checkbox"]:checked').each(function(index, elm) {
@@ -544,8 +560,10 @@ $(document).ready(function(){
 			$.post('/printpages/patient',  {
 				filter: filter,
 				patientId: $(formId).attr('patientId')
-			}, function(htmlText) {
+			}, function(htmlText) {				
 				$('.print-section').html(htmlText);
+				var arr = document.getElementsByClassName('print-section');
+				compressHtml(arr[0]);
 				window.print();
 			});
 		});

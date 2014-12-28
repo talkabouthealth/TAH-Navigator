@@ -4,14 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import nav.dao.AppointmentDAO;
 import nav.dao.CancerDAO;
 import nav.dao.CareTeamDAO;
 import nav.dao.FollowUp;
+import nav.dao.MedicationDAO;
 import nav.dao.PatientDetailDAO;
 import nav.dao.Treatment;
 import nav.dao.UserDAO;
 import nav.dto.CareTeam;
 import nav.dto.ExpertBean;
+import models.AppointmentDTO;
 import models.BreastCancerInfoDTO;
 import models.PatienCareTeamDTO;
 import models.PatientChemoTreatmentDTO;
@@ -19,6 +22,7 @@ import models.PatientConcernDTO;
 import models.PatientDetailDTO;
 import models.PatientFollowUpCareItemDTO;
 import models.PatientGoalDTO;
+import models.PatientMedicationDTO;
 import models.PatientRadiationTreatmentDTO;
 import models.PatientSurgeryInfoDTO;
 import models.UserDTO;
@@ -43,6 +47,12 @@ public class PrintPages extends Controller {
 		List<PatientFollowUpCareItemDTO> careItems = FollowUp.getPatientCareItems(user.getId());							
 		// care team		
 		List<CareTeam> careTeams = CareTeamDAO.patientTeams(patientId);		
+		// appointments
+		List<AppointmentDTO> futureAppointments = AppointmentDAO.futureAppointments(patientId.intValue());
+		List<AppointmentDTO> pastAppointments = AppointmentDAO.pastAppointments(patientId.intValue());
+		// medication
+		List<PatientMedicationDTO> currentMedications = MedicationDAO.currentMedications(patientId.intValue());
+		List<PatientMedicationDTO> pastMedications = MedicationDAO.pastMedications(patientId.intValue());
 		
 		for(String str: filter) {
 			renderArgs.put(str, true);
@@ -59,6 +69,10 @@ public class PrintPages extends Controller {
 		renderArgs.put("goals", goals);
 		renderArgs.put("careItems", careItems);
 		renderArgs.put("careTeams", careTeams);
+		renderArgs.put("futureAppointments", futureAppointments);
+		renderArgs.put("pastAppointments", pastAppointments);
+		renderArgs.put("currentMedications", currentMedications);
+		renderArgs.put("pastMedications", pastMedications);
 		render();
 	}
 	

@@ -53,10 +53,10 @@ public class PatientMedicationDTO {
 	private Date adddate;	
 
 	@Column(name = "startdate")
-	private String startdate;		
+	private Date startdate;		
 
 	@Column(name = "enddate")
-	private String enddate;		
+	private Date enddate;		
 
 	@Column(name = "active")
 	private boolean active;
@@ -125,22 +125,6 @@ public class PatientMedicationDTO {
 		this.adddate = adddate;
 	}
 
-	public String getStartdate() {
-		return startdate;
-	}
-
-	public void setStartdate(String startdate) {
-		this.startdate = startdate;
-	}
-
-	public String getEnddate() {
-		return enddate;
-	}
-
-	public void setEnddate(String enddate) {
-		this.enddate = enddate;
-	}
-
 	public boolean isActive() {
 		return active;
 	}
@@ -163,5 +147,21 @@ public class PatientMedicationDTO {
 
 	public void setCaremembername(String caremembername) {
 		this.caremembername = caremembername;
+	}
+
+	public Date getStartdate() {
+		return startdate;
+	}
+
+	public void setStartdate(Date startdate) {
+		this.startdate = startdate;
+	}
+
+	public Date getEnddate() {
+		return enddate;
+	}
+
+	public void setEnddate(Date enddate) {
+		this.enddate = enddate;
 	}
 }
