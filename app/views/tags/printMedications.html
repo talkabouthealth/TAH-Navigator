@@ -24,7 +24,7 @@
 
 #{if pastMedications.size() > 0}	
 	<h1>Past Medications</h1>        
-    #{list currentMedications, as:'medication'}    	
+    #{list pastMedications, as:'medication'}    	
 	<h2>${medication.medicine.genericname}</h2>
 	<p>BRAND NAME: ${medication.medicine.brandname}</p>
 		#{if medication.frequency}
