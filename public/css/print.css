@@ -48,8 +48,8 @@ div.print-secton .fa {
 .print-summary {
 	display: block;	
 	background-color: #ccc;
-	border-bottom: 2px solid #ccc;
-	height: 70px;
+	border-bottom: 1px solid #ccc;
+	padding-bottom: 5px;
 	margin-bottom: 5px;
 	page-break-before:always;	
 }
