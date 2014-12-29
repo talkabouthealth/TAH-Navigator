@@ -31,11 +31,10 @@
 	<div id="ajax-content"></div>
 </div>
 
-<div class="modal fade" id="addEditAppointment" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal" id="addEditAppointment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<div class="modal-header">				
 				<h4 class="modal-title" id="myModalLabel_appointment">ADD NEW APPOINTMENT</h4>
 			</div>
 			#{form @CarePatien.appointmentOperation() , id:'appointmentForm', class: 'form-horizontal' }
@@ -173,8 +172,9 @@
                 </div>
       		</div>
       		<div class="modal-footer">
-      			<input name="deleteAP" type="button" class="btn btn-default" value = "DELETE"></input>
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         		<button type="submit" class="btn btn-default">SAVE</button>
+				<input name="deleteAP" type="button" class="btn btn-default" value="DELETE"></input>
       		</div>
       		#{/form}
 		</div>
@@ -274,11 +274,10 @@
 	</div>
 </div>
 
-<div class="modal fade" id="addEditmedication" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal" id="addEditmedication" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+			<div class="modal-header">				
 				<h4 class="modal-title" id="myModalLabel">ADD NEW MEDICATION</h4>
 			</div>
 			#{form @CarePatien.medicationOperation() , id:'medicationForm'}
@@ -337,23 +336,23 @@
 				</table>
 	      		</div>
 				<div class="modal-footer">
-					<input name="deleteMD" type="button" class="btn btn-default" value="DELETE"></input>
-	        		<button type="submit" class="btn btn-default">SAVE</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+					<button type="submit" class="btn btn-default">SAVE</button>
+					<input name="deleteMD" type="button" class="btn btn-default" value="DELETE"></input>	        		
 	      		</div>
       		#{/form}
 		</div>
 	</div>
 </div>
 
-<div class="modal fade" id="addEditNote" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal" id="addEditNote" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
    <div class="modal-dialog modal-m">
    <div class="modal-content col-xs-12 col-sm-12">
    #{form @CarePatien.noteOperation() , id:'noteForm' }
       	<input type="hidden" name="operation" />
       	<input type="hidden" name="id" />
    		<input type="hidden" name="patientId" value="${patientId}"/>
-      		<div class="modal-header">
-        		<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+      		<div class="modal-header">        		
         		<h4 class="modal-title" id="myModalLabel_note">NEW NOTE</h4>
       		</div>
         	<div class="modal-body" style="display:block;">
@@ -372,9 +371,10 @@
                         </div>
                     </div>
     		</div>
-     		<div class="modal-footer col-xs-12 col-sm-12" >
-     			<input type="button" name="deleteNote" class="btn btn-default" data-next="3" value="DELETE"></input>
-       			<button type="submit" class="btn btn-default" data-next="3"> SAVE </button>
+     		<div class="modal-footer col-xs-12 col-sm-12">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-default" data-next="3"> SAVE </button>
+     			<input type="button" name="deleteNote" class="btn btn-default" data-next="3" value="DELETE"></input>       			
     		</div>
       #{/form}
 		</div>
