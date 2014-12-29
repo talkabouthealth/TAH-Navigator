@@ -46,6 +46,11 @@ div.print-secton .fa {
 }
 
 .print-summary {
+	display: block;	
+	background-color: #ccc;
+	border-bottom: 2px solid #ccc;
+	height: 70px;
+	margin-bottom: 5px;
 	page-break-before:always;	
 }
 
@@ -55,13 +60,13 @@ div.print-secton .fa {
 .print-care-plan,
 .print-care-team,
 .print-appointments,
-.print-medications {		
+.print-medications,
+.print-distress-data {		
 	display: block;
-	text-align: left;
 	margin: 10px;
+	text-align: left;	
 	clear:both;
 }
-
 
 
 

@@ -35,5 +35,6 @@
 
 #{if distress_data || all}
 #{printSummary user: user, userDetails: userDetails, patientDetails: patientDetails, cancerInfo: cancerInfo /}
-<div>Distress Data</div>
+#{printDistress lastDistress: lastDistress, lastWeekProblems: lastWeekProblems,  lastMonthProblems: lastMonthProblems, lastThreeMonthProblems: lastThreeMonthProblems, lastSixMonthProblems: lastSixMonthProblems, lastYearProblems: lastYearProblems, allProblems: allProblems /}
+
 #{/if}

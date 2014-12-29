@@ -1,0 +1,68 @@
+*{ parameters are : lastDistress, lastWeekProblems, lastMonthProblems, lastThreeMonthProblems, lastSixMonthProblems, lastYearProblems, allProblems }*
+#{set lastDistress: _lastDistress /}
+#{set lastWeekProblems: _lastWeekProblems /}
+#{set lastMonthProblems: _lastMonthProblems /}
+#{set lastThreeMonthProblems: _lastThreeMonthProblems /}
+#{set lastSixMonthProblems: _lastSixMonthProblems /}
+#{set lastYearProblems: _lastYearProblems /}
+#{set allProblems: _allProblems /}
+
+<div class="print-distress-data">
+	<h1>Distress</h1>
+#{if lastDistress}
+	<p>Last Updated ${lastDistress.distressDate.format('MM/dd/yyyy')}</p>
+	<p>${lastDistress.curDist} - 
+	#{if lastDistress.curDist < 5}
+		MILD DISTRESS
+    #{/if}
+    #{if lastDistress.curDist == 5}
+		MEDIUM DISTRESS
+	#{/if}
+    #{if lastDistress.curDist > 5}
+		SEVERE DISTRESS
+    #{/if}
+	</p>
+	
+	#{if lastWeekProblems?.size() > 0}
+	<h2>Current Problems</h2>
+		#{list items: lastWeekProblems, as: 'problem'}
+	<p>- ${problem}</p>
+        #{/list}
+	#{/if}
+	
+	#{if lastMonthProblems?.size() > 0}
+	<h2>Last Month Problems</h2>
+		#{list items: lastMonthProblems, as: 'problem'}
+	<p>- ${problem}</p>
+        #{/list}
+	#{/if}
+	
+	#{if lastThreeMonthProblems?.size() > 0}
+	<h2>Last 3 Months Problems</h2>
+		#{list items: lastThreeMonthProblems, as: 'problem'}
+	<p>- ${problem}</p>
+        #{/list}
+	#{/if}
+	
+	#{if lastSixMonthProblems?.size() > 0}
+	<h2>Last 6 Months Problems</h2>
+		#{list items: lastSixMonthProblems, as: 'problem'}
+	<p>- ${problem}</p>
+        #{/list}
+	#{/if}
+	
+	#{if lastYearProblems?.size() > 0}
+	<h2>Last Year Problems</h2>
+		#{list items: lastYearProblems, as: 'problem'}
+	<p>- ${problem}</p>
+        #{/list}
+	#{/if}
+	
+	#{if allProblems?.size() > 0}
+	<h2>All Problems</h2>
+		#{list items: allProblems, as: 'problem'}
+	<p>- ${problem}</p>
+        #{/list}
+	#{/if}
+#{/if}	
+</div>

@@ -16,6 +16,8 @@
           #{else}
           <button type="button" class="btn validate_btn" verified="no" patient_id="${ps.userId}" onclick="careTeamController.evtMsgHandler('toggle_validate', this);">Validate Now</button>
           #{/else}
+		  
+		  <button class="btn" style="margin-left: 20px;" id="print-pages" patientId="${ps.userId}">Print Pages</button>
         </div><!-- validate -->
 
         <div class="disease">
