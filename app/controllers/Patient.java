@@ -298,33 +298,47 @@ public class Patient extends Controller {
 			
 			System.out.println(session.getId());
 			List<PatientMedicationDTO> medicationList = MedicationDAO.getMedicine("patientid", userDto.getId());
-			/*
 			List<PatientMedicationDTO> currentMedications = new ArrayList<PatientMedicationDTO>();
 			List<PatientMedicationDTO> pastMedications = new ArrayList<PatientMedicationDTO>();
 			Date today = new Date();
+			
+			DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+			DateFormat dfDisplay = new SimpleDateFormat("mm/dd/yyyy");
 			for (PatientMedicationDTO mDto : medicationList) {
+				Date startDt = null;
+				Date endDt = null;
 				if(mDto.getCaremembername() == null) {
 					mDto.setCaremembername(UserDAO.getUserName(mDto.getCaremember().getId()));
 				}
-				try{
-					Date startDt = new SimpleDateFormat("MM/dd/yyyy").parse(mDto.getStartdate());
-					Date endDt = new SimpleDateFormat("MM/dd/yyyy").parse(mDto.getEnddate());
-					
-					if ((today.compareTo(startDt) >= 0) && (today.compareTo(endDt) <=0)) {
+				
+				try {
+					startDt = df.parse(mDto.getStartdate());
+					mDto.setStartdate(dfDisplay.format(startDt));
+				} catch(Exception e) {
+//					e.printStackTrace();
+				}
+				try {
+					endDt = df.parse(mDto.getEnddate());
+					mDto.setEnddate(dfDisplay.format(endDt));
+				} catch(Exception e) {
+//					e.printStackTrace();
+				}
+				if(startDt != null && endDt != null) {
+					System.out.println(startDt + " to " + endDt);
+					System.out.println(today.compareTo(startDt) + " to " + today.compareTo(endDt));
+					if ((today.compareTo(startDt) < 0) && (today.compareTo(endDt) < 0)) {
 						currentMedications.add(mDto);
-					}
-					else if(today.compareTo(endDt) > 0){
+						System.out.println("Adding in curr:" + today);
+					} else if(today.compareTo(endDt) < 0) {
+						currentMedications.add(mDto);
+						System.out.println("Adding in past:" + today);
+					} else {
 						pastMedications.add(mDto);
 					}
-				}catch(Exception e){
-					e.printStackTrace();
+				} else {
 					currentMedications.add(mDto);
 				}
-				
 			}
-			*/
-			List<PatientMedicationDTO> currentMedications = MedicationDAO.currentMedications(userDto.getId());
-			List<PatientMedicationDTO> pastMedications = MedicationDAO.pastMedications(userDto.getId());
 			render(user,userDto,patientOtherDetails,medicationList, breastCancerId, breastCancerInfo, currentMedications, pastMedications);
 		} else {
 			index();

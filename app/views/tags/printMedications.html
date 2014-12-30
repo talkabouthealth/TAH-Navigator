@@ -12,7 +12,7 @@
 		#{if medication.frequency}
 	<p>FREQUENCY: ${medication.frequency}</p>
 		#{/if}		
-	<p>DATES: ${medication.startdate.format('MM/dd/yyyy')} - ${medication.enddate.format('MM/dd/yyyy')}</p>		
+	<p>DATES: ${medication.startdate} - ${medication.enddate}</p>		
 	<p>SPECIAL INSTRUCTIONS: ${medication.specialinstruction}</p>
 		#{if medication.caremembername}
 	<p>PRESCRIBING PYSICIAN: ${medication.caremembername}</p>
@@ -30,7 +30,7 @@
 		#{if medication.frequency}
 	<p>FREQUENCY: ${medication.frequency}</p>
 		#{/if}		
-	<p>DATES: ${medication.startdate.format('MM/dd/yyyy')} - ${medication.enddate.format('MM/dd/yyyy')}</p>		
+	<p>DATES: ${medication.startdate} - ${medication.enddate}</p>		
 	<p>SPECIAL INSTRUCTIONS: ${medication.specialinstruction}</p>
 		#{if medication.caremembername}
 	<p>PRESCRIBING PYSICIAN: ${medication.caremembername}</p>

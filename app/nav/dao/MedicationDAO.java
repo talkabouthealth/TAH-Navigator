@@ -17,12 +17,11 @@ public class MedicationDAO extends BaseDAO{
 
 	public static List<PatientMedicationDTO> getMedicine(String fieldName, Object value) {
 		System.out.println(fieldName +" : " + value.toString());
-		List<PatientMedicationDTO> dto = new ArrayList<PatientMedicationDTO>();
+		List<PatientMedicationDTO> dto = null;
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
 			TypedQuery<PatientMedicationDTO> query = em.createQuery("SELECT c FROM PatientMedicationDTO c WHERE c."+fieldName+" = :field and c.active=true order by id", PatientMedicationDTO.class); 
 			query.setParameter("field", value);
-
 			dto = query.getResultList();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -80,6 +79,7 @@ public class MedicationDAO extends BaseDAO{
 		return dto;
 	}
 	
+	/*
 	public static List<PatientMedicationDTO> futureMedications(int patientId) {
 		List<PatientMedicationDTO> medications = new ArrayList<PatientMedicationDTO>();
 		EntityManager em = JPAUtil.getEntityManager();
@@ -94,15 +94,17 @@ public class MedicationDAO extends BaseDAO{
 		} 
 		return medications;
 	}
-	
+	*/
+
 	public static List<PatientMedicationDTO> currentMedications(int patientId) {
 		List<PatientMedicationDTO> medications = new ArrayList<PatientMedicationDTO>();
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
-			TypedQuery<PatientMedicationDTO> query = em.createQuery("SELECT p FROM PatientMedicationDTO p WHERE p.patientid = :patientId and p.active= :active and p.startdate <= :currentdate and p.enddate >= :currentdate order by p.enddate asc", PatientMedicationDTO.class); 
+			TypedQuery<PatientMedicationDTO> query = em.createQuery("SELECT p FROM PatientMedicationDTO p WHERE p.patientid = :patientId and p.active= :active order by p.enddate asc", PatientMedicationDTO.class);
+			// and p.startdate <= :currentdate and p.enddate >= :currentdate 
 			query.setParameter("patientId", patientId);
 			query.setParameter("active", true);
-			query.setParameter("currentdate", new Date());
+//			query.setParameter("currentdate", new Date());
 			medications = query.getResultList();
 		} catch(Exception e) {
 			//e.printStackTrace();
@@ -114,10 +116,11 @@ public class MedicationDAO extends BaseDAO{
 		List<PatientMedicationDTO> medications = new ArrayList<PatientMedicationDTO>();
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
-			TypedQuery<PatientMedicationDTO> query = em.createQuery("SELECT p FROM PatientMedicationDTO p WHERE p.patientid = :patientId and p.active= :active and p.enddate < :currentdate order by p.enddate desc", PatientMedicationDTO.class); 
+			TypedQuery<PatientMedicationDTO> query = em.createQuery("SELECT p FROM PatientMedicationDTO p WHERE p.patientid = :patientId and p.active= :active order by p.enddate desc", PatientMedicationDTO.class);
+			//and p.enddate < :currentdate
 			query.setParameter("patientId", patientId);
 			query.setParameter("active", true);
-			query.setParameter("currentdate", new Date());
+//			query.setParameter("currentdate", new Date());
 			medications = query.getResultList();
 		} catch(Exception e) {
 			//e.printStackTrace();

@@ -1,6 +1,9 @@
 package controllers;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -53,8 +56,43 @@ public class PrintPages extends Controller {
 		List<AppointmentDTO> futureAppointments = AppointmentDAO.futureAppointments(patientId);
 		List<AppointmentDTO> pastAppointments = AppointmentDAO.pastAppointments(patientId);
 		// medication
-		List<PatientMedicationDTO> currentMedications = MedicationDAO.currentMedications(patientId);
-		List<PatientMedicationDTO> pastMedications = MedicationDAO.pastMedications(patientId);
+//		List<PatientMedicationDTO> currentMedications = MedicationDAO.currentMedications(patientId);
+//		List<PatientMedicationDTO> pastMedications = MedicationDAO.pastMedications(patientId);
+		
+		List<PatientMedicationDTO> medicationList = MedicationDAO.getMedicine("patientid", patientId);
+		List<PatientMedicationDTO> currentMedications = new ArrayList<PatientMedicationDTO>();
+		List<PatientMedicationDTO> pastMedications = new ArrayList<PatientMedicationDTO>();
+		Date today = new Date();
+		
+		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+		DateFormat dfDisplay = new SimpleDateFormat("mm/dd/yyyy");
+		Date startDt = null;
+		Date endDt = null;
+		for (PatientMedicationDTO mDto : medicationList) {
+			if(mDto.getCaremembername() == null) {
+				mDto.setCaremembername(UserDAO.getUserName(mDto.getCaremember().getId()));
+			}
+			try {
+				startDt = df.parse(mDto.getStartdate());
+				mDto.setStartdate(dfDisplay.format(startDt));
+			} catch(Exception e) { }
+			try {
+				endDt = df.parse(mDto.getEnddate());
+				mDto.setEnddate(dfDisplay.format(endDt));
+			} catch(Exception e) { }
+			if(startDt != null && endDt != null) {
+				if ((today.compareTo(startDt) < 0) && (today.compareTo(endDt) < 0)) {
+					currentMedications.add(mDto);
+				} else if(today.compareTo(endDt) < 0) {
+					currentMedications.add(mDto);
+				} else {
+					pastMedications.add(mDto);
+				}
+			} else {
+				currentMedications.add(mDto);
+			}
+		}
+		
 		// distress data
 		DistressBean lastDistress = DistressDAO.getLastDistress(user);
 		List<String> lastWeekProblems = DistressDAO.problemList(patientId, 7);
