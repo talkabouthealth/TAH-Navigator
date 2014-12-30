@@ -1,6 +1,8 @@
 <div class="col-sm-12" style="padding-top:15px;">
+#{if expertBeanHead.userDetails != null}
 	<div class="col-lg-8">
 		<div class="user-panel_02">
+			
 			<div><img src="@{Image.show(expertBeanHead.userDetails.user.id)}" class="user_img img-responsive"></div>
 			<div class="user_name">
 				<p>
@@ -16,8 +18,8 @@
 				<p class="large-f">${expertBeanHead.userDetails.mobile}
 				*{ &nbsp;|&nbsp;${expertBeanHead.userDetails.email} }*
 				</p>
-				<!-- <b>office Hours :</b> Mon-Thurs 8am-5pm, Sunday 8am-1pm -->
 			</div>
+			
 		</div>
 	</div>
 	<div class="col-lg-4 common_05 ">
@@ -38,6 +40,10 @@
 		<p>&nbsp;</p>
 		<p class="text-center"><a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${careteam.address.line1}+${careteam.address.line2},${careteam.address.city},${careteam.address.state},${careteam.address.country} - ${careteam.address.zip}" class="btn btn-default-small">GET DIRECTIONS</a></p>
 	</div>
+	#{/if}
+	#{else}
+		Not found
+	#{/else}
 </div>
 #{if otherExpert.size() > 0}
 <div class="common_04"></div>

@@ -14,7 +14,7 @@
 				<table class="table table-striped table-bordered table-hover table-heading no-border-bottom">
 					<thead>
 		  			<tr>
-		  				<th>Name</th>
+		  				<th>Center/Clinic Name</th>
 		  				<th>Edit</th>
 		  			</tr>
 		  			</thead>
@@ -24,7 +24,7 @@
 						#{list list, as:'seq'}
 							#{set cssClass = '' /}
 							<tr ${cssClass} >
-					  			<td  ><a href="@{Admin.editCareTeam(seq.id)}" id="c_${seq.id}">${seq.name}</a></td>
+					  			<td  ><a href="@{Admin.editCareTeam(seq.id)}" id="c_${seq.id}">${seq.address.line1}</a></td>
 					  			<td><a href="javaScript:edit(${seq.id})" >Edit</a></td>
 					  		</tr>
 						#{/list}
@@ -76,7 +76,7 @@
                     <div class="form-group form-group-sm">
                         <label class="col-xs-3 control-label" for="rt_schedule">Address</label>
                         <div class="col-xs-9 form-group input-group">
-                            <input type="text"  name="address1" placeholder="i.e. 1400 U.S. Highway 441" value="1400 U.S. Highway 441" class="form-control" required>
+                            <input type="text"  name="address1" placeholder="i.e. 1400 U.S. Highway 441, Suite 540" value="1400 U.S. Highway 441, Suite 540" class="form-control" required>
                             <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
                         </div>
                     </div>
@@ -145,7 +145,7 @@ $(document).ready(function() {
 		$("#teamForm input[name='center']").val("");
 		$("#teamForm input[name='teamtype']").val("");
 		$("#teamForm input[name='phone']").val("3527518161");
-		$("#teamForm input[name='address1']").val("1400 U.S. Highway 441");
+		$("#teamForm input[name='address1']").val("1400 U.S. Highway 441, Suite 540");
 		$("#teamForm input[name='city']").val("The Villages");
 		$("#teamForm input[name='state']").val("FL");
 		$("#teamForm input[name='zip']").val("32159");
@@ -166,7 +166,7 @@ $(document).ready(function() {
             if (item && $("#teamForm input[name='operation']").val() == 'create') {
 	            if(item  == 'Moffitt Cancer Center TVRH') {
 	        		$("#teamForm input[name='phone']").val("3527518161");
-	        		$("#teamForm input[name='address1']").val("1400 U.S. Highway 441");
+	        		$("#teamForm input[name='address1']").val("1400 U.S. Highway 441, Suite 540");
 	        		$("#teamForm input[name='city']").val("The Villages");
 	        		$("#teamForm input[name='state']").val("FL");
 	        		$("#teamForm input[name='zip']").val("32159");
