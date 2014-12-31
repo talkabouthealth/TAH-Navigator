@@ -735,7 +735,7 @@ $(document).ready(function() {
 		$('#tabs li a.'+window.location.hash.substring(1)).click();
 	}
 
-	$("#addEditmedication input[name='genericname']").autocomplete({source:  "/carePatien/autoCompleteMedic", minLength: 1,select: function( event, ui ) {
+	$("#addEditmedication input[name='genericname']").autocomplete({source:  "/carePatien/autoCompleteMedic", minLength: 0,select: function( event, ui ) {
 // 		if($("#addEditmedication input[name='operation']").val() == 'add') {
 	      	$("#addEditmedication input[name='brandname']").val(ui.item.brandname);
     	  	$("#addEditmedication input[name='frequency']").val(ui.item.frequency);
@@ -754,7 +754,11 @@ $(document).ready(function() {
 	$('#datepickerRange').datepicker({
 		defaultDate: +1 ,minDate:"+1d",          
         format: "mm/dd/yyyy",
-        forceParse:false
+        forceParse:false,
+        autoclose: true,
+        forceParse: false,
+        keyboardNavigation: false,
+        doValidate: false
     });
 
 	$('body').on('click', 'button.medicationBtn', function() {
@@ -988,7 +992,17 @@ operationMedication = function(operation,id) {
 				else
 					$("#addEditmedication input[name='endDate']").val(data.enddate);
 
-				$('#datepickerRange').datepicker({ startDate: data.startdate, endDate: data.enddate});                
+// 				$('#datepickerRange').datepicker({ startDate: data.startdate, endDate: data.enddate});    
+				$('#datepickerRange').datepicker({
+					startDate: data.startdate, endDate: data.enddate,
+					defaultDate: +1 ,minDate:"+1d",          
+			        format: "mm/dd/yyyy",
+			        forceParse:false,
+			        autoclose: true,
+			        forceParse: false,
+			        keyboardNavigation: false,
+			        doValidate: false
+			    });
 				$("#addEditmedication input[name='deleteMD']").show();
 				$("#addEditmedication input[name='deleteMD']").click(function() {
 					operationMedication('delete',data.id);

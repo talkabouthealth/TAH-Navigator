@@ -1274,6 +1274,7 @@
 			});
 		},
 		dateUpdated: function(e){
+			
 			// `this.updating` is a workaround for preventing infinite recursion
 			// between `changeDate` triggering and `setUTCDate` calling.  Until
 			// there is a better mechanism.
@@ -1292,21 +1293,20 @@
 				if (!p.getUTCDate())
 					p.setUTCDate(new_date);
 			});
-
-			if (new_date < this.dates[i]){
-				// Date being moved earlier/left
-				while (i >= 0 && new_date < this.dates[i]){
-					this.pickers[i--].setUTCDate(new_date);
-				}
-			}
-			else if (new_date > this.dates[i]){
-				// Date being moved later/right
-				while (i < l && new_date > this.dates[i]){
-					this.pickers[i++].setUTCDate(new_date);
+			if (this.o.doValidate) {
+				if (new_date < this.dates[i]) {
+					// Date being moved earlier/left
+					while (i >= 0 && new_date < this.dates[i]) {
+						this.pickers[i--].setUTCDate(new_date);
+					}
+				} else if (new_date > this.dates[i]) {
+					// Date being moved later/right
+					while (i < l && new_date > this.dates[i]) {
+						this.pickers[i++].setUTCDate(new_date);
+					}
 				}
 			}
 			this.updateDates();
-
 			delete this.updating;
 		},
 		remove: function(){
@@ -1389,7 +1389,7 @@
 	};
 
 	var defaults = $.fn.datepicker.defaults = {
-		autoclose: false,
+		autoclose: true,
 		beforeShowDay: $.noop,
 		calendarWeeks: false,
 		clearBtn: false,
@@ -1408,7 +1408,8 @@
 		startView: 0,
 		todayBtn: false,
 		todayHighlight: false,
-		weekStart: 0
+		weekStart: 0,
+		doValidate: false
 	};
 	var locale_opts = $.fn.datepicker.locale_opts = [
 		'format',

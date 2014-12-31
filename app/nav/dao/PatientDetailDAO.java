@@ -249,7 +249,7 @@ public class PatientDetailDAO {
 			breastCancerInfo.setBcStage(bcStage);
 			/****          Eliminate Cache Problem (not sure) **************/
 		} catch(NoResultException e) {
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 			
 		if(breastCancerInfo != null ) {
@@ -261,7 +261,7 @@ public class PatientDetailDAO {
 				CancerTypeDTO type = query5.getSingleResult();
 				breastCancerInfo.setType(type);
 			} catch(NoResultException e) {
-				e.printStackTrace();
+//				e.printStackTrace();
 			}
 			try {
 				TypedQuery<CancerTypeDTO> query5 = em.createQuery("SELECT c FROM CancerTypeDTO c WHERE c.id = :id", CancerTypeDTO.class);
@@ -269,7 +269,7 @@ public class PatientDetailDAO {
 				CancerTypeDTO type = query5.getSingleResult();
 				breastCancerInfo.setSubtype(type);
 			} catch(NoResultException e) {
-				e.printStackTrace();
+//				e.printStackTrace();
 			}
 		}
 		

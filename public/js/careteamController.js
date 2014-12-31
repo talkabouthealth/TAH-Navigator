@@ -1865,6 +1865,7 @@ var careTeamController = (function() {
         
         $('#datepickerRangeRadForm').datepicker({
               defaultDate: +1 ,minDate:"+1d",              
+              autoclose: true,
               format: "mm/dd/yyyy"
         });        
         var treatmentRegions = data.treatmentRegions;
@@ -1981,7 +1982,7 @@ var careTeamController = (function() {
         if (prtDto.endDate) {
             $('#rt_end_date').val(formatDate(new Date(prtDto.endDate), 'mm/dd/yyyy'));
         }
-        $('#datepickerRangeRadForm').datepicker({ startDate: prtDto.startDate, endDate: prtDto.endDate});
+        $('#datepickerRangeRadForm').datepicker({ autoclose: true,startDate: prtDto.startDate, endDate: prtDto.endDate});
         if ('trDto' in prtDto) {
             $('#rt_region').val(prtDto.trDto.region);
         }

@@ -134,7 +134,7 @@ public class AppointmentDAO {
 			query.setParameter("date",date);
 			dto = query.getSingleResult();
 		} catch(Exception e) {
-			System.out.println(e.getMessage());
+//			System.out.println(e.getMessage());
 		} finally {
 		}
 		return dto;
@@ -173,7 +173,7 @@ public class AppointmentDAO {
 		try {
 			dto = query.getSingleResult();
 		} catch (NoResultException e) {			
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return dto;
 	}
