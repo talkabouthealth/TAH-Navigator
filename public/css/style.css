@@ -2122,4 +2122,15 @@ div.print-section {
     display: none;
 }
 
+.account-data h3 {
+	margin: auto;
+}
 
+.log_header {
+	height: 90px;
+}
+
+.log_heading {   
+  text-align: right !important;
+  margin-right: 30px;  
+}
