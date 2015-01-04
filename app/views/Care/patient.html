@@ -149,6 +149,13 @@
                            	<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
                         </div>
                 </div>
+				<div class="form-group form-group-sm">
+                        <label class="col-xs-3 control-label" for="rt_schedule">Telephone</label>
+                        <div class="col-xs-8 form-group input-group">
+                          	<input type="text" class="form-control nomargin" name="phone">
+                           	<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+                        </div>
+                </div>
                 <div class="form-group form-group-sm">
                         <label class="col-xs-3 control-label" for="rt_schedule">City</label>
                         <div class="col-xs-8 form-group input-group">
@@ -1149,6 +1156,7 @@ operationAppointment = function(operation, id) {
                     });
                 }
 				$("#appointmentForm input[name='time']").val(data.appointmenttime);
+				$("#appointmentForm input[name='phone']").val(data.phone);
 				$("#appointmentForm input[name='schDate']").val($.datepicker.formatDate('mm/dd/yy', new Date(data.appointmentdate)));
 // 				$("#appointmentForm input[name='schDate']").prop("disabled", true);
 

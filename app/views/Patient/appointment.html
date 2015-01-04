@@ -21,12 +21,7 @@ div.green-title{cursor: pointer;}
               </div>
               <div class="col-sm-6" style="padding-top: 10px;">
                 <p>
-                #{if seq.caremember != null}
-                     #{userName userName: seq.caremember.name, userId:seq.caremember.id /}
-                #{/if}
-                #{else}
-                ${seq.careMemberName}
-                #{/else}
+                #{if seq.caremember != null}#{userName userName: seq.caremember.name, userId:seq.caremember.id /}#{/if}#{else}${seq.careMemberName}#{/else}#{if seq.phone}, ${seq.phone } #{/if}
                 <br/>
                 ${seq.appointmentcenter}</p>
               </div>
@@ -120,12 +115,7 @@ div.green-title{cursor: pointer;}
               </div>
               <div class="col-sm-5" style="padding-top: 10px;">
                 <p>
-                                #{if seq.caremember != null}
-                     #{userName userName: seq.caremember.name, userId:seq.caremember.id /}
-                #{/if}
-                #{else}
-                ${seq.careMemberName}
-                #{/else}
+                                #{if seq.caremember != null}#{userName userName: seq.caremember.name, userId:seq.caremember.id /}#{/if}#{else}${seq.careMemberName}#{/else}#{if seq.phone}, ${seq.phone } #{/if}
                     <br/> ${seq.appointmentcenter}</p>
               </div>
             </div>

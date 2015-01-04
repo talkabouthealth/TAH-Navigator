@@ -5,5 +5,6 @@ ALTER TABLE nav.cancergrademaster ADD COLUMN user_defined boolean DEFAULT 'f';
 ALTER TABLE nav.cancerphasemaster ADD COLUMN user_defined boolean DEFAULT 'f';
 ALTER TABLE nav.cancerfabclassificationmaster ADD COLUMN user_defined boolean DEFAULT 'f';
 ALTER TABLE nav.cancerwhoclassificationmaster ADD COLUMN user_defined boolean DEFAULT 'f';
-ALTER TABLE nav.patientmedication ALTER COLUMN startdate TYPE date USING to_date(startdate, 'YYYY-MM-DD');
-ALTER TABLE nav.patientmedication ALTER COLUMN enddate TYPE date USING to_date(enddate, 'YYYY-MM-DD');
+ALTER TABLE nav.appointment ADD COLUMN phone char(17);
+
+

@@ -855,9 +855,59 @@ public class CarePatien  extends Controller {
 		render("CarePatien/careteamblock.html",careteam,otherExpert,expertBeanHead);
 	}
 	
-	public static void appointmentOperation(String operation,int patientId,int id,String purpose, String purposeText, String treatmentProcessStep, String time,String schDate, 
-			boolean repeatWeeklyBtn, String startsOn, String endsOnCheck, int occurences, String endsOnDate, String editOccurencesAction, String center,
-			int memberid, String membername, String address1,String city,String state,String zip) {
+	public static void appointmentOperation() {		
+		String operation = params.get("operation");
+		int patientId = 0;
+		try {
+			patientId = params.get("patientId", Integer.class);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		int id = 0;
+		try {
+			id = params.get("id", Integer.class);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		String purpose = params.get("purpose");
+		String purposeText = params.get("purposeText"); 
+		String treatmentProcessStep = params.get("treatmentProcessStep");
+	    String time = params.get("time");
+		String schDate = params.get("schDate"); 		
+		boolean repeatWeeklyBtn = false;
+		try {
+			repeatWeeklyBtn = params.get("repeatWeeklyBtn", Boolean.class);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}		 
+		String startsOn = params.get("startsOn");		
+		String endsOnCheck = params.get("endsOnCheck"); 
+		int occurences = 0;
+		try {
+			occurences = params.get("occurences", Integer.class);
+		} catch (Exception e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		} 
+		String endsOnDate = params.get("endsOnDate"); 
+		String editOccurencesAction = params.get("editOccurencesAction"); 
+		String center = params.get("center");
+		int memberid = 0;
+		try {
+			memberid = params.get("memberid", Integer.class);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} 
+		String membername = params.get("membername"); 
+		String address1 = params.get("address1");
+		String city = params.get("city");
+		String state = params.get("state");
+		String zip = params.get("zip");
+		String phone = params.get("phone");
 		
 		UserBean user = CommonUtil.loadCachedUser(session);
 		UserDTO addedby = UserDAO.getUserBasicByField("id",user.getId());
@@ -917,6 +967,7 @@ public class CarePatien  extends Controller {
 				app.setAddedon(new Date());
 				app.setAddressid(address);
 				app.setAppointmentcenter(center);
+				app.setPhone(phone);
 				//08/19/2014
 				//mm/dd/yyyy
 				Date appointmentDate = new SimpleDateFormat("MM/dd/yyyy").parse(schDate);
@@ -1056,7 +1107,7 @@ public class CarePatien  extends Controller {
 					}
 					app.setTreatementStep(treatmentProcessStep);
 					app.setPurposeText(purposeText);
-					
+					app.setPhone(phone);
 					app.setAppointmenttime(time);
 					app.setAppointmentcenter(center);
 					if (memberid > 0) {

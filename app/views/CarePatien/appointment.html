@@ -18,7 +18,7 @@
 					#{/else}
 				</td>
 				<td>
-					<p>${seq.careMemberName}</p>
+					<p>${seq.careMemberName}#{if seq.phone}, ${seq.phone } #{/if}</p>
 					<p>${seq.appointmentcenter}</p>
 				</td>
 			</tr>
@@ -64,7 +64,7 @@
 					</td>
 					<td>
 						*{ <p>#{userName userName: seq.caremember.name, userId:seq.caremember.id /}</p> }*
-						<p>${seq.careMemberName}</p>
+						<p>${seq.careMemberName}#{if seq.phone}, ${seq.phone } #{/if}</p>
 						<p>${seq.appointmentcenter}</p>
 					</td>
 				</tr>

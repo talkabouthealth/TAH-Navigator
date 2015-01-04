@@ -76,6 +76,9 @@ public class AppointmentDTO {
 	
 	@Column(name="appointmentgroupid")
 	private Integer appointmentgroupid;
+	
+	@Column(name="phone")
+	private String phone;
 
 	public int getId() {
 		return id;
@@ -211,6 +214,14 @@ public class AppointmentDTO {
 
 	public void setAppointmentgroupid(Integer appointmentgroupid) {
 		this.appointmentgroupid = appointmentgroupid;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 	
 }
