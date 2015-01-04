@@ -66,6 +66,7 @@ import play.mvc.Controller;
 import play.mvc.With;
 import util.CommonUtil;
 import util.EmailUtil;
+import util.TemplateExtensions;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -107,6 +108,7 @@ public class Care extends Controller {
 	public static void sendInvitation(String email,String firstname,String lastname,String purposeText, String treatmentProcessStep, String time,String schDate,String center,int memberid, 
 			String address1,String city,String state,String zip,String membername,String purpose,int withapp) {
 		 validation.clear();
+		Map<String, Object> vars;
 		System.out.println("email: "+ email);
 		System.out.println("firstname: "+ firstname);
 		System.out.println("lastname: "+ lastname);
@@ -159,14 +161,15 @@ public class Care extends Controller {
 
 				Date appointmentDate = new SimpleDateFormat("MM/dd/yyyy").parse(schDate);
 				app.setAppointmentdate(appointmentDate);
-				app.setAppointmentcenter(center);
+				app.setAppointmentcenter(center);				
 				if (memberid > 0) {
 					UserDTO caremember = UserDAO.getUserBasicByField("id", memberid);
 					app.setCaremember(caremember);
+					
 				}
 				app.setCareMemberName(membername);
+				
 			}
-
 			UserBean user = CommonUtil.loadCachedUser(session);
 			UserDTO addedby = UserDAO.getUserBasicByField("id",user.getId());
 			app.setAddedby(addedby);
@@ -177,13 +180,16 @@ public class Care extends Controller {
 			app.setFirstname(firstname);
 			app.setLastname(lastname);
 			BaseDAO.save(app);
-   		 	String url = "http://"+request.host;
-
-   		 	Map<String, Object> vars = new HashMap<String, Object>();
-   		 	vars.put("username", firstname + " " + lastname);
-   		 	vars.put("signupurl", url + "/invited-registration/"+app.getId());
-   		 	EmailUtil.sendEmail(EmailUtil.MOFFITT_WELCOME,vars,email);
-
+			
+			
+   		 	if (withapp == 1) {
+   		 		vars = InvitationDAO.mailVariables(EmailUtil.TVRH_INVITE_APPOINTMENT_SCHEDULED, app);
+   		 		EmailUtil.sendEmail(EmailUtil.TVRH_INVITE_APPOINTMENT_SCHEDULED, vars, email);
+   		 	}
+   		 	else {   		 		
+   		 		vars = InvitationDAO.mailVariables(EmailUtil.TVRH_INVITE_NO_APPOINTMENT_SCHEDULED, app);
+   		 		EmailUtil.sendEmail(EmailUtil.TVRH_INVITE_NO_APPOINTMENT_SCHEDULED, vars, email);
+   		 	}
 		} catch(Exception e) {
 			e.printStackTrace();
 			JsonObject obj = new JsonObject();

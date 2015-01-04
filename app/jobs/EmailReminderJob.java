@@ -27,12 +27,15 @@ public class EmailReminderJob  extends Job {
 		List<InvitedDTO> invitedUsers = InvitationDAO.getReminders();
 		for (InvitedDTO invitedDTO : invitedUsers) {
 			System.out.println("Email: "+invitedDTO.getEmail());
-			String url = "http://tvrhnavigator.com/";
-   		 	Map<String, Object> vars = new HashMap<String, Object>();
-   		 	vars.put("username", invitedDTO.getFirstname() + " " + invitedDTO.getLastname()); //+ "[" + invitedDTO.getEmail() + "]"
-   		 	vars.put("signupurl", url + "/invited-registration/" + invitedDTO.getId());
-   		 	EmailUtil.sendEmail(EmailUtil.MOFFITT_WELCOMEREMINDER,vars,invitedDTO.getEmail());
-//   		 	EmailUtil.sendEmail(EmailUtil.MOFFITT_WELCOMEREMINDER,vars,"murray@talkabouthealth.com");
+			Map<String, Object> vars;
+			if (invitedDTO.getAppointmentdate() != null) {
+				vars = InvitationDAO.mailVariables(EmailUtil.TVRH_INVITE_REMINDER_APPOINTMENT_SCHEDULED, invitedDTO);
+				EmailUtil.sendEmail(EmailUtil.TVRH_INVITE_REMINDER_APPOINTMENT_SCHEDULED, vars,invitedDTO.getEmail());
+			}
+			else {
+				vars = InvitationDAO.mailVariables(EmailUtil.TVRH_INVITE_REMINDER_NO_APPOINTMENT_SCHEDULED, invitedDTO);
+				EmailUtil.sendEmail(EmailUtil.TVRH_INVITE_REMINDER_NO_APPOINTMENT_SCHEDULED, vars,invitedDTO.getEmail());
+			}			
 		}
 		return true;
 	}

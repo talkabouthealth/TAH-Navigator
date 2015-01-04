@@ -28,6 +28,11 @@ public class EmailUtil {
 	public static final String MOFFITT_THANKYOU_FOR_SIGNUP = "Moffitt-Thankyou-For-Signing-Up";
 	public static final String MOFFITT_PASSWORDRECOVERY = "Moffitt-PasswordRecovery";
 	public static final String MOFFITT_WELCOMEREMINDER = "Moffitt-Welcome-Reminder";
+	public static final String TVRH_INVITE_APPOINTMENT_SCHEDULED = "TVRH-Invite-Appointment-Scheduled";
+	public static final String TVRH_INVITE_NO_APPOINTMENT_SCHEDULED = "TVRH-Invite-No-Appointment-Scheduled";
+	public static final String TVRH_INVITE_REMINDER_APPOINTMENT_SCHEDULED = "TVRH-Invite-Reminder-Appointment-Scheduled";
+	public static final String TVRH_INVITE_REMINDER_NO_APPOINTMENT_SCHEDULED = "TVRH-Invite-Reminder-No-Appointment-Scheduled";	
+	
 	
 	public static boolean sendEmail(String template,Map<String, Object> vars,String to ){
         SailthruClient client = new SailthruClient(SAILTHRU_APIKEY, SAILTHRU_SECRET);
