@@ -5,6 +5,7 @@ public class CareMember {
 	private String firstName;
 	private String lastName;
 	private String designation;
+	private String phone;
 	public Integer getId() {
 		return id;
 	}
@@ -28,5 +29,11 @@ public class CareMember {
 	}
 	public void setDesignation(String designation) {
 		this.designation = designation;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 }

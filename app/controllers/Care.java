@@ -267,6 +267,7 @@ public class Care extends Controller {
 		List<CareMember> members = UserDAO.verifiedCareMembers();
 		List<AppointmentMasterDTO> appList = AppointmentMasterDAO.getAllAppointments();
 		Map<Integer, String> memberNames = new HashMap<Integer, String>();
+		Map<Integer, String> phones = new HashMap<Integer, String>();
 		for(CareMember cm : members) {			
 			StringBuilder name = new StringBuilder("");
 			if (cm.getFirstName() != null) {
@@ -292,9 +293,11 @@ public class Care extends Controller {
 			}
 			*/
 			memberNames.put(cm.getId(), name.toString());
+			phones.put(cm.getId(), cm.getPhone());
 		}
 		jsonData.put("members", memberNames);
 		jsonData.put("purposes", appList);
+		jsonData.put("phones", phones);
 		renderJSON(jsonData);
 	}
 	

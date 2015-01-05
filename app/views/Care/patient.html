@@ -1091,13 +1091,25 @@ operationAppointment = function(operation, id) {
             var purposes = data.purposes;
             $avm.data("careMembers", members);
             $ap.data("purposes", purposes);
+			$avm.data("phones", data.phones);
             var arr = [];                        
             for (var id in members) {
                 arr.push(members[id]);
             }                              
             $avm.typeahead({
                 source: arr,
-                minLength: 0                
+                minLength: 0,
+				updater: function(item) {
+					var members = $avm.data('careMembers');
+					var phones = $avm.data('phones');					
+					for (var id in members) {
+						if (members[id] == item) {
+							$("#appointmentForm input[name='phone']").val(phones[id]);
+							break;
+						}
+					}
+					return item;
+				}
 	        });    
             var purposeList = [];
             var length = purposes.length;
