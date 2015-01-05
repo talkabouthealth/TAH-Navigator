@@ -228,8 +228,13 @@ public class UserDAO {
 				}				
 		    	cm.setId(u.getId());
 		    	cm.setFirstName(details.getFirstName());
-		    	cm.setLastName(details.getLastName());	
-		    	cm.setPhone(details.getHomePhone());
+		    	cm.setLastName(details.getLastName());
+		    	if (details.getMobile() != null) {
+		    		cm.setPhone(details.getMobile());
+		    	}
+		    	else {
+		    		cm.setPhone(details.getHomePhone());
+		    	}
 		    	if (expert != null) {
 		    		cm.setDesignation(expert.getDesignation().getAbbr());
 		    	}		    	
