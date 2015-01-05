@@ -1011,6 +1011,7 @@ public class CarePatien  extends Controller {
 							app.setAppointmenttime(time);
 							app.setCaremember(caremember);
 							app.setCareMemberName(membername);
+							app.setPhone(phone);
 							if (Integer.valueOf(purpose) > 0) {
 								app.setPurpose(purpose);
 								app.setAppointmentid(AppointmentMasterDAO.getAppointmentByField("id", appIdInt));
@@ -1040,6 +1041,7 @@ public class CarePatien  extends Controller {
 							app.setAppointmenttime(time);
 							app.setCaremember(caremember);
 							app.setCareMemberName(membername);
+							app.setPhone(phone);
 							if (Integer.valueOf(purpose) > 0) {
 								app.setPurpose(purpose);
 								app.setAppointmentid(AppointmentMasterDAO.getAppointmentByField("id", appIdInt));
@@ -1073,6 +1075,7 @@ public class CarePatien  extends Controller {
 							app.setAppointmentdate(appStartsOn);
 							app.setAppointmenttime(time);
 							app.setCaremember(caremember);
+							app.setPhone(phone);
 							app.setCareMemberName(membername);
 							if (Integer.valueOf(purpose) > 0) {
 								app.setPurpose(purpose);
@@ -1154,7 +1157,7 @@ public class CarePatien  extends Controller {
 
 					EntityManager em = JPAUtil.getEntityManager();
 					String hql ="update AppointmentDTO set purpose = :fp1, appointmentid = :fp2, treatment_process_step = :fp4, purpose_text = :fp5, "
-					+"appointmenttime = :fp6, appointmentcenter = :fp8, caremember = :fp9, caremember_name = :fp10 where appointmentgroupid = :f0";
+					+"appointmenttime = :fp6, appointmentcenter = :fp8, caremember = :fp9, caremember_name = :fp10, phone = :fp11  where appointmentgroupid = :f0";
 					if(!em.getTransaction().isActive())
 						em.getTransaction().begin();	
 					
@@ -1180,8 +1183,8 @@ public class CarePatien  extends Controller {
 						query.setParameter("fp9", null);
 					}
 					query.setParameter("fp10", membername);
-					
 					query.setParameter("f0", appointmentGroupId);
+					query.setParameter("fp11", phone);
 					query.executeUpdate();
 					em.getTransaction().commit();
 					
