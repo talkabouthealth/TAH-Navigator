@@ -74,6 +74,12 @@ public class AppointmentDTO {
 	@Column(name="treatment_process_step")
 	private String treatementStep;
 	
+	@Column(name="appointmentgroupid")
+	private Integer appointmentgroupid;
+	
+	@Column(name="phone")
+	private String phone;
+
 	public int getId() {
 		return id;
 	}
@@ -201,4 +207,21 @@ public class AppointmentDTO {
 	public void setTreatementStep(String treatementStep) {
 		this.treatementStep = treatementStep;
 	}
+
+	public Integer getAppointmentgroupid() {
+		return appointmentgroupid;
+	}
+
+	public void setAppointmentgroupid(Integer appointmentgroupid) {
+		this.appointmentgroupid = appointmentgroupid;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	
 }

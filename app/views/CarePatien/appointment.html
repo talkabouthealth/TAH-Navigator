@@ -3,23 +3,43 @@
 	<button class="btn btn-default btn-sm appointmentBtn">+ New Appointment</button>
 
 	#{if list != null && list.size()>0}
-	<h3>Upcoming Appointments</h3>
-	<table class="simple">
+	<h3 class="upcoming">Upcoming Appointments</h3>
+	<table class="simple" id="upcomingTable">
 		<tbody>
 			#{list list, as:'seq'}
 			<tr>
 				<td>
 					<label>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}</label>
+					#{if seq.appointmenttime}
 					<p>${seq.appointmenttime} - <a href="javaScript:operationAppointment('edit','${seq.id}')">${seq.purposeText}</a></p>
+					#{/if}
+					#{else}
+					<p><a href="javaScript:operationAppointment('edit','${seq.id}')">${seq.purposeText}</a></p>
+					#{/else}
 				</td>
 				<td>
-					<p>${seq.careMemberName}</p>
+					<p>${seq.careMemberName}#{if seq.phone}, ${seq.phone } #{/if}</p>
 					<p>${seq.appointmentcenter}</p>
 				</td>
 			</tr>
 			#{/list}
 		</tbody>
 	</table>
+	
+	#{if totalUp != null && totalUp.size()>0}
+	#{set fclass = 'active' /}
+	<div class="row">		
+		<div class="col-xs-12">
+			<ul class="pagination pagination-lg">
+			#{list totalUp, as:'seq'}
+<!-- 				<li><a href="javaScript:getNextAppointmentPage(${seq},'upcomming')">${seq}</a></li> -->
+				<li class='${fclass}' data-type="upcoming" data-seq="${seq}"><a>${seq}</a></li>
+					#{set fclass = '' /}
+				#{/list}
+			</ul>
+		</div>
+	</div>
+	#{/if}
 	#{/if}
 	#{else}
 	<div class="col-xs-12 col-sm-12 nav-tabs">No appointment added.</div>
@@ -28,18 +48,23 @@
 
 	#{if expList != null && expList.size()>0}
 	<div class="past-appointments">
-		<h3>Past Appointments</h3>
-		<table class="simple">
+		<h3 class="past">Past Appointments</h3>
+		<table class="simple" id="pastTable">
 			<tbody>
 				#{list expList, as:'seq'}
 				<tr>
 					<td>
 						<label>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}</label>
-						<p>${seq.appointmenttime} - <a href="javaScript:operationAppointment('edit','${seq.id}')">${seq.purposeText}</a></p>
+						#{if seq.appointmenttime}
+					<p>${seq.appointmenttime} - <a href="javaScript:operationAppointment('edit','${seq.id}')">${seq.purposeText}</a></p>
+					#{/if}
+					#{else}
+					<p><a href="javaScript:operationAppointment('edit','${seq.id}')">${seq.purposeText}</a></p>
+					#{/else}
 					</td>
 					<td>
 						*{ <p>#{userName userName: seq.caremember.name, userId:seq.caremember.id /}</p> }*
-						<p>${seq.careMemberName}</p>
+						<p>${seq.careMemberName}#{if seq.phone}, ${seq.phone } #{/if}</p>
 						<p>${seq.appointmentcenter}</p>
 					</td>
 				</tr>
@@ -47,5 +72,22 @@
 				</tbody>
 		</table>
 	</div><!-- past-appointments -->
+	
+	#{if totalPast != null && totalPast.size()>0}
+	#{set fclass = 'active' /}
+	<div class="row">		
+		<div class="col-xs-12">
+			<ul class="pagination pagination-lg">
+			#{list totalPast, as:'seq'}
+<!-- 				<li><a href="javaScript:getNextAppointmentPage(${seq},'past')">${seq}</a></li> -->
+				<li class='${fclass}' data-type="past" data-seq="${seq}"><a>${seq}</a></li>
+					#{set fclass = '' /}
+				#{/list}
+			</ul>
+		</div>
+	</div>
+	#{/if}
+	
+				
 	#{/if}
 </div><!-- appointments -->

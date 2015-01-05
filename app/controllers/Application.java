@@ -184,6 +184,7 @@ public class Application extends Controller {
 			    InvitedDTO invitationdto = InvitationDAO.getDetailsByEmail("email",member.getEmail());
     			 if(invitationdto != null) {
     					AppointmentDTO app = new AppointmentDTO();
+    					app.setAppointmentgroupid(null);
     					app.setAddedby(invitationdto.getAddedby());
     					app.setAddedon(invitationdto.getAddedon());
     					app.setAddressid(invitationdto.getAddressid());

@@ -4,17 +4,24 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
+import org.apache.commons.lang.StringUtils;
 
 import models.AddressDTO;
 import models.AppointmentDTO;
+import models.AppointmentGroupDTO;
 import models.AppointmentMasterDTO;
 import models.BreastCancerInfoDTO;
 import models.BreastCancerStageDTO;
@@ -71,6 +78,7 @@ import play.mvc.Controller;
 import play.mvc.With;
 import util.CommonUtil;
 import util.ImageUtil;
+import util.JPAUtil;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -82,11 +90,23 @@ public class CarePatien  extends Controller {
 	public static void appointment(int patientId) {
 		Integer idField = new Integer(patientId);
 		Date curreDate = new Date();
-		List<AppointmentDTO> list = AppointmentDAO.getAppointmentListByField("patientid.id", idField, curreDate, "upcomming" );
-		List<AppointmentDTO> expList = AppointmentDAO.getAppointmentListByField("patientid.id" , idField, curreDate, "past" );
+		int pageId = 0;
+		List<AppointmentDTO> list = AppointmentDAO.getAppointmentListByField("patientid.id", idField, curreDate, "upcomming",pageId );
+		ArrayList<Integer> totalUp = AppointmentDAO.getTotalappointments("patientid.id", idField, curreDate, "upcomming" );
+		List<AppointmentDTO> expList = AppointmentDAO.getAppointmentListByField("patientid.id" , idField, curreDate, "past",pageId );
+		ArrayList<Integer> totalPast = AppointmentDAO.getTotalappointments("patientid.id", idField, curreDate, "past" );
 		Map <String, Object> ps = PatientDetailDAO.patientSummary(patientId);
-		render(patientId,list,expList, ps);
+		render(patientId,list,expList, ps,totalUp,totalPast);
 	}
+	
+	public static void appointmentNextPage(int patientId, int pageId,String type) {
+		Integer idField = new Integer(patientId);
+		Date curreDate = new Date();
+		pageId = (pageId -1)*10;
+		List<AppointmentDTO> list = AppointmentDAO.getAppointmentListByField("patientid.id", idField, curreDate, type,pageId );
+		render("tags/appointment.html",patientId,list);
+	}
+	
 	public static void summary(Integer patientId) {
 		UserBean user = CommonUtil.loadCachedUser(session);
 		ExpertDetailDTO expertDetail = ProfileDAO.getExpertByField("id", user.getId());
@@ -131,14 +151,31 @@ public class CarePatien  extends Controller {
 	public static void medication(int patientId) {
 		UserDetailsDTO userDto = UserDAO.getDetailsById(patientId);
 		List<PatientMedicationDTO> medicationList = MedicationDAO.getMedicine("patientid", userDto.getId());
+		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+		DateFormat dfDisplay = new SimpleDateFormat("mm/dd/yyyy");
+		Date startDt = null;
+		Date endDt = null;
 		for (PatientMedicationDTO patientMedicationDTO : medicationList) {
 			if(patientMedicationDTO.getCaremembername() == null) {
 				patientMedicationDTO.setCaremembername(UserDAO.getUserName(patientMedicationDTO.getCaremember().getId()));
+			}
+			try {
+				startDt = df.parse(patientMedicationDTO.getStartdate());
+				patientMedicationDTO.setStartdate(dfDisplay.format(startDt));
+			} catch(Exception e) {
+//				e.printStackTrace();
+			}
+			try {
+				endDt = df.parse(patientMedicationDTO.getEnddate());
+				patientMedicationDTO.setEnddate(dfDisplay.format(endDt));
+			} catch(Exception e) {
+//				e.printStackTrace();
 			}
 		}
 		Map <String, Object> ps = PatientDetailDAO.patientSummary(patientId);
 		render(patientId,medicationList, ps);
 	}
+
 	public static void verify(Integer patientId, boolean isVerified) {
 		PatientDetailDAO.patientVerify(patientId, isVerified);
 		Map<String, String> jsonData = new HashMap<String, String>();
@@ -583,13 +620,32 @@ public class CarePatien  extends Controller {
 	
 	public static void patientMedication(int id) {
 		Integer idField = new Integer(id);
-		PatientMedicationDTO  dto = MedicationDAO.getMedicineByField("id", idField);
-		
+		PatientMedicationDTO dto = null;
+		dto = MedicationDAO.getMedicineByField("id", idField);
+		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+		DateFormat dfDisplay = new SimpleDateFormat("mm/dd/yyyy");
+		Date startDt = null;
+		Date endDt = null;
+
+		if(dto != null) {
 			if(dto.getCaremembername() == null) {
 				dto.setCaremembername(UserDAO.getUserName(dto.getCaremember().getId()));
 			}
-		
-		if(dto != null) {
+			
+			if(dto.getCaremembername() == null) {
+				dto.setCaremembername(UserDAO.getUserName(dto.getCaremember().getId()));
+			}
+			try {
+				startDt = df.parse(dto.getStartdate());
+				dto.setStartdate(dfDisplay.format(startDt));
+			} catch(Exception e) {
+			}
+			try {
+				endDt = df.parse(dto.getEnddate());
+				dto.setEnddate(dfDisplay.format(endDt));
+			} catch(Exception e) {
+			}
+			
 			renderJSON(dto);
 		} else {
 			renderText(".");
@@ -657,8 +713,7 @@ public class CarePatien  extends Controller {
 		//10/15/2014 : 10/15/2014
 		try {
 			if("add".equalsIgnoreCase(operation)) {
-				Date startDt = new SimpleDateFormat("MM/dd/yyyy").parse(startDate);
-				Date endDt = new SimpleDateFormat("MM/dd/yyyy").parse(endDate);
+				
 //				System.out.println("catlogId: " + catlogId);
 				MedicineCatlogDTO catlog = MedicationDAO.getMedicineCatloagByField("id",new Integer(catlogId));
 				MedicineMasterDTO medicineMasterDTO = new MedicineMasterDTO();
@@ -681,7 +736,7 @@ public class CarePatien  extends Controller {
 				patientMedicationDTO.setAdddate(new Date());
 				patientMedicationDTO.setCaremember(drUser);
 				patientMedicationDTO.setCaremembername(memberid);
-				patientMedicationDTO.setEnddate(new Date());
+				//patientMedicationDTO.setEnddate(new Date());
 				patientMedicationDTO.setFrequency(frequency);
 				patientMedicationDTO.setMedicine(medicineMasterDTO);
 				
@@ -689,13 +744,25 @@ public class CarePatien  extends Controller {
 				patientMedicationDTO.setPatientid(patientId);
 				patientMedicationDTO.setSpecialinstruction(otherdetails);
 				
-				patientMedicationDTO.setStartdate(startDt);
-				patientMedicationDTO.setEnddate(endDt);
+				Date startDt = null, endDt = null;
+				
+				try{
+					startDt = new SimpleDateFormat("mm/dd/yyyy").parse(startDate);
+					patientMedicationDTO.setStartdate(new SimpleDateFormat("yyyy-mm-dd").format(startDt));
+				}catch(Exception e){
+					patientMedicationDTO.setStartdate(startDate);
+				}
+				
+				try{
+					endDt = new SimpleDateFormat("mm/dd/yyyy").parse(endDate);
+					patientMedicationDTO.setEnddate(new SimpleDateFormat("yyyy-mm-dd").format(endDt));
+				}catch(Exception e){
+					patientMedicationDTO.setEnddate(endDate);
+				}
 				
 				BaseDAO.save(patientMedicationDTO);
 			} else if("edit".equalsIgnoreCase(operation)) {
-				Date startDt = new SimpleDateFormat("MM/dd/yyyy").parse(startDate);
-				Date endDt = new SimpleDateFormat("MM/dd/yyyy").parse(endDate);
+				
 				Integer idField = new Integer(id);
 				PatientMedicationDTO  patientMedicationDTO = MedicationDAO.getMedicineByField("id", idField);
 				if(patientMedicationDTO != null) {
@@ -710,8 +777,20 @@ public class CarePatien  extends Controller {
 					patientMedicationDTO.setMedicine(medicineMasterDTO);
 					patientMedicationDTO.setSpecialinstruction(otherdetails);
 
-					patientMedicationDTO.setStartdate(startDt);
-					patientMedicationDTO.setEnddate(endDt);
+					Date startDt = null, endDt = null;
+					try{
+						startDt = new SimpleDateFormat("mm/dd/yyyy").parse(startDate);
+						patientMedicationDTO.setStartdate(new SimpleDateFormat("yyyy-mm-dd").format(startDt));
+					}catch(Exception e){
+						patientMedicationDTO.setStartdate(startDate);
+					}
+					
+					try{
+						endDt = new SimpleDateFormat("mm/dd/yyyy").parse(endDate);
+						patientMedicationDTO.setEnddate(new SimpleDateFormat("yyyy-mm-dd").format(endDt));
+					}catch(Exception e){
+						patientMedicationDTO.setEnddate(endDate);
+					}
 
 					BaseDAO.update(patientMedicationDTO);
 					
@@ -776,113 +855,385 @@ public class CarePatien  extends Controller {
 		render("CarePatien/careteamblock.html",careteam,otherExpert,expertBeanHead);
 	}
 	
-	public static void appointmentOperation(String operation,int patientId,int id,String purpose, String purposeText, String treatmentProcessStep, String time,String schDate,String center,int memberid, String membername, String address1,String city,String state,String zip) {
+	public static void appointmentOperation() {		
+		String operation = params.get("operation");
+		int patientId = 0;
+		try {
+			patientId = params.get("patientId", Integer.class);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		int id = 0;
+		try {
+			id = params.get("id", Integer.class);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		String purpose = params.get("purpose");
+		String purposeText = params.get("purposeText"); 
+		String treatmentProcessStep = params.get("treatmentProcessStep");
+	    String time = params.get("time");
+		String schDate = params.get("schDate"); 		
+		boolean repeatWeeklyBtn = false;
+		try {
+			repeatWeeklyBtn = params.get("repeatWeeklyBtn", Boolean.class);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}		 
+		String startsOn = params.get("startsOn");		
+		String endsOnCheck = params.get("endsOnCheck"); 
+		int occurences = 0;
+		try {
+			occurences = params.get("occurences", Integer.class);
+		} catch (Exception e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		} 
+		String endsOnDate = params.get("endsOnDate"); 
+		String editOccurencesAction = params.get("editOccurencesAction"); 
+		String center = params.get("center");
+		int memberid = 0;
+		try {
+			memberid = params.get("memberid", Integer.class);
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} 
+		String membername = params.get("membername"); 
+		String address1 = params.get("address1");
+		String city = params.get("city");
+		String state = params.get("state");
+		String zip = params.get("zip");
+		String phone = params.get("phone");
 		
 		UserBean user = CommonUtil.loadCachedUser(session);
 		UserDTO addedby = UserDAO.getUserBasicByField("id",user.getId());
 		
-		System.out.println("operation : " + operation);
-		System.out.println("patientId : " + patientId);
-		System.out.println("id : " + id);
-		System.out.println("purpose : " + purpose);
-		System.out.println("Other : time: " + time + " : "+schDate+center+memberid+address1+city+state+zip);
+//		System.out.println("repeatWeeklyBtn : " + repeatWeeklyBtn);
+//		System.out.println("startsOn : " + startsOn);
+//		System.out.println("endsOnCheck : " + endsOnCheck);
+//		System.out.println("occurences : " + occurences);
+//		System.out.println("endsOnDate: " + endsOnDate);
+
 		try {
 			if("add".equalsIgnoreCase(operation)) {
+				
 				AddressDTO address = new AddressDTO();
 				address.setCity(city);
 				address.setLine1(address1);
 				address.setState(state);
 				address.setZip(zip);
-
 				BaseDAO.save(address);
+				AppointmentGroupDTO appGroup = null;
+				Date appStartsOn = null;
+				if(startsOn != null && !startsOn.equals("")){
+					appStartsOn = new SimpleDateFormat("MM/dd/yyyy").parse(startsOn);
+				}
+				Date appEndsOnDate = null;
+				if(endsOnDate != null && !endsOnDate.equals("")){
+					appEndsOnDate = new SimpleDateFormat("MM/dd/yyyy").parse(endsOnDate);
+				}
+
+				if(StringUtils.isBlank(endsOnCheck)) {
+					endsOnCheck = "";
+				}
+				if(repeatWeeklyBtn) {
+//					endsOn : Given Date
+//					never : never
+//					after : after some occurences
+					appGroup = new AppointmentGroupDTO();
+					appGroup.setStartson(appStartsOn);
+					Calendar cal  = Calendar.getInstance();
+					cal.setTime(appStartsOn);
+					cal.add(Calendar.DATE, 7);
+					appStartsOn = cal.getTime();
+
+					if("endsOn".equalsIgnoreCase(endsOnCheck)) {
+						appGroup.setEndsondate(appEndsOnDate);	
+					} else if("never".equalsIgnoreCase(endsOnCheck)) {
+						appGroup.setEndneverflag(true);	
+					} else if("after".equalsIgnoreCase(endsOnCheck)) {
+						appGroup.setOccurences(occurences);	
+					}
+					appGroup.setAddressid(address.getId());
+					BaseDAO.save(appGroup);
+				}
 				UserDTO patient = UserDAO.getUserBasicByField("id", patientId);
-				
-				
-
-				//08/19/2014
-				//mm/dd/yyyy
-				Date appointmentDate = new SimpleDateFormat("MM/dd/yyyy").parse(schDate);
-
 				AppointmentDTO app = new AppointmentDTO();
 				app.setAddedby(addedby);
 				app.setAddedon(new Date());
 				app.setAddressid(address);
 				app.setAppointmentcenter(center);
-				app.setAppointmentdate(appointmentDate);
-				app.setAppointmenttime(time);
-				if (memberid > 0) {
-					UserDTO caremember = UserDAO.getUserBasicByField("id", memberid);
-					app.setCaremember(caremember);
-				}
-				app.setCareMemberName(membername);
-				if (Integer.valueOf(purpose) > 0) {
-					app.setPurpose(purpose);
-					Integer appIdInt = new Integer(purpose);
-					app.setAppointmentid(AppointmentMasterDAO.getAppointmentByField("id", appIdInt));
-				}
-				//else {
-					app.setTreatementStep(treatmentProcessStep);
-				//}
-				app.setPurposeText(purposeText);
-				
-				app.setPatientid(patient);				
-				BaseDAO.save(app);
-				if (treatmentProcessStep.equalsIgnoreCase(PatientAlert.APPOINTMENT_STEP_FIRST_APPOINTMENT)) {
-				PatientAlert.firstAppointmentScheduledAlert(patient, app);
-				}
-				/*
-				if (treatmentProcessStep.equalsIgnoreCase(PatientAlert.APPOINTMENT_STEP_FIRST_APPOINTMENT)) {
-					UserDetailsDTO userDetails = UserDAO.getDetailsById(patient.getId());
-					String email = patient.getEmail();
-					String firstName = userDetails.getFirstName();
-					boolean success = PatientAlert.emailAppointmentReminder_asSoonAsScheduled(email, firstName, schDate, time);
-					System.out.println(email + ": " + firstName + " : " + schDate + " : " + time);					
-					if (success) {
-						int appointmentId = app.getId();
-						PatientAlert.logEmailAppointmentReminder(appointmentId, PatientAlert.EMAIL, PatientAlert.AR_FIRST_APPOINTMENT_AS_SOON_AS_SCHEDULED, new Date());
-					}					
-				}
-				*/
-			} else if("edit".equalsIgnoreCase(operation)) {
-				//Need to code this.
-				Integer appId =  new Integer(id);
-				AppointmentDTO app = AppointmentDAO.getAppointmentByField("id",appId);
-				if (Integer.valueOf(purpose) > 0) {
-					app.setPurpose(purpose);
-					Integer appIdInt = new Integer(purpose);
-					app.setAppointmentid(AppointmentMasterDAO.getAppointmentByField("id", appIdInt));
-					app.setTreatementStep(null);
-				}
-				//else {
-					app.setTreatementStep(treatmentProcessStep);
-				//}
-				app.setPurposeText(purposeText);
-				
-				app.setAppointmenttime(time);
+				app.setPhone(phone);
+				//08/19/2014
+				//mm/dd/yyyy
 				Date appointmentDate = new SimpleDateFormat("MM/dd/yyyy").parse(schDate);
 				app.setAppointmentdate(appointmentDate);
-				app.setAppointmentcenter(center);
+				app.setAppointmenttime(time);
+				UserDTO caremember = null;
 				if (memberid > 0) {
-					UserDTO caremember = UserDAO.getUserBasicByField("id", memberid);
+					caremember = UserDAO.getUserBasicByField("id", memberid);
 					app.setCaremember(caremember);
 				}
 				app.setCareMemberName(membername);
+				Integer appIdInt = null;
+				if (Integer.valueOf(purpose) > 0) {
+					app.setPurpose(purpose);
+					appIdInt = new Integer(purpose);
+					app.setAppointmentid(AppointmentMasterDAO.getAppointmentByField("id", appIdInt));
+				}
+				app.setTreatementStep(treatmentProcessStep);
+				app.setPurposeText(purposeText);
 				
-				AddressDTO address = app.getAddressid();
-				address.setCity(city);
-				address.setLine1(address1);
-				address.setState(state);
-				address.setZip(zip);
+				app.setPatientid(patient);
 
-				BaseDAO.update(address);
-				BaseDAO.update(app);
+				if(appGroup!= null)
+					app.setAppointmentgroupid(new Integer(appGroup.getId()));
 
+				BaseDAO.save(app);
+
+				if (treatmentProcessStep.equalsIgnoreCase(PatientAlert.APPOINTMENT_STEP_FIRST_APPOINTMENT)) {
+					PatientAlert.firstAppointmentScheduledAlert(patient, app);
+				}
+				
+				if(appGroup != null){
+					if("after".equalsIgnoreCase(endsOnCheck) && occurences > 0) {
+						for(int i = 0; i < occurences-1; i++) {
+							app = new AppointmentDTO();
+							app.setAddedby(addedby);
+							app.setAddedon(new Date());
+							app.setAddressid(address);
+							app.setAppointmentcenter(center);
+							app.setAppointmentdate(appStartsOn);
+							app.setAppointmenttime(time);
+							app.setCaremember(caremember);
+							app.setCareMemberName(membername);
+							app.setPhone(phone);
+							if (Integer.valueOf(purpose) > 0) {
+								app.setPurpose(purpose);
+								app.setAppointmentid(AppointmentMasterDAO.getAppointmentByField("id", appIdInt));
+							}
+							app.setTreatementStep(treatmentProcessStep);
+							app.setPurposeText(purposeText);
+							app.setPatientid(patient);
+							app.setAppointmentgroupid(appGroup.getId());
+							BaseDAO.save(app);
+							if (treatmentProcessStep.equalsIgnoreCase(PatientAlert.APPOINTMENT_STEP_FIRST_APPOINTMENT)) {
+								PatientAlert.firstAppointmentScheduledAlert(patient, app);
+							}
+							Calendar cal  = Calendar.getInstance();
+							cal.setTime(appStartsOn);
+							cal.add(Calendar.DATE, 7);
+							appStartsOn = cal.getTime();
+						}
+					} else if("endsOn".equalsIgnoreCase(endsOnCheck) && endsOnDate != null && !endsOnDate.equals("")) {
+						appEndsOnDate = new SimpleDateFormat("MM/dd/yyyy").parse(endsOnDate);
+						while(appStartsOn.compareTo(appEndsOnDate) <= 0){
+							app = new AppointmentDTO();
+							app.setAddedby(addedby);
+							app.setAddedon(new Date());
+							app.setAddressid(address);
+							app.setAppointmentcenter(center);
+							app.setAppointmentdate(appStartsOn);
+							app.setAppointmenttime(time);
+							app.setCaremember(caremember);
+							app.setCareMemberName(membername);
+							app.setPhone(phone);
+							if (Integer.valueOf(purpose) > 0) {
+								app.setPurpose(purpose);
+								app.setAppointmentid(AppointmentMasterDAO.getAppointmentByField("id", appIdInt));
+							}
+							app.setTreatementStep(treatmentProcessStep);
+							app.setPurposeText(purposeText);
+							app.setPatientid(patient);
+							app.setAppointmentgroupid(appGroup.getId());
+							BaseDAO.save(app);
+
+							if (treatmentProcessStep.equalsIgnoreCase(PatientAlert.APPOINTMENT_STEP_FIRST_APPOINTMENT)) {
+								PatientAlert.firstAppointmentScheduledAlert(patient, app);
+							}
+							Calendar cal  = Calendar.getInstance();
+							cal.setTime(appStartsOn);
+							cal.add(Calendar.DATE, 7);
+							appStartsOn = cal.getTime();
+						}
+					} else if("never".equalsIgnoreCase(endsOnCheck)) {
+						// Calculate endDate for 1 year
+						Calendar cal  = Calendar.getInstance();
+						cal.setTime(appointmentDate);
+						cal.add(Calendar.YEAR , 1);
+						appEndsOnDate = cal.getTime();
+						while(appointmentDate.compareTo(appEndsOnDate) <= 0) {
+							app = new AppointmentDTO();
+							app.setAddedby(addedby);
+							app.setAddedon(new Date());
+							app.setAddressid(address);
+							app.setAppointmentcenter(center);
+							app.setAppointmentdate(appStartsOn);
+							app.setAppointmenttime(time);
+							app.setCaremember(caremember);
+							app.setPhone(phone);
+							app.setCareMemberName(membername);
+							if (Integer.valueOf(purpose) > 0) {
+								app.setPurpose(purpose);
+								app.setAppointmentid(AppointmentMasterDAO.getAppointmentByField("id", appIdInt));
+							}
+							app.setTreatementStep(treatmentProcessStep);
+							app.setPurposeText(purposeText);
+							app.setPatientid(patient);
+							app.setAppointmentgroupid(appGroup.getId());
+							BaseDAO.save(app);
+							cal  = Calendar.getInstance();
+							cal.setTime(appStartsOn);
+							cal.add(Calendar.DATE, 7);
+							appStartsOn = cal.getTime();
+						}
+					}
+				}
+			} else if("edit".equalsIgnoreCase(operation)) {
+				
+				if(editOccurencesAction.equalsIgnoreCase("onlyThisEvent")){
+					
+					//Need to code this.
+					Integer appId =  new Integer(id);
+					AppointmentDTO app = AppointmentDAO.getAppointmentByField("id",appId);
+					if (Integer.valueOf(purpose) > 0) {
+						app.setPurpose(purpose);
+						Integer appIdInt = new Integer(purpose);
+						app.setAppointmentid(AppointmentMasterDAO.getAppointmentByField("id", appIdInt));
+					} else {
+						app.setPurpose(null);
+						app.setAppointmentid(null);
+					}
+					app.setTreatementStep(treatmentProcessStep);
+					app.setPurposeText(purposeText);
+					app.setPhone(phone);
+					app.setAppointmenttime(time);
+					app.setAppointmentcenter(center);
+					if (memberid > 0) {
+						UserDTO caremember = UserDAO.getUserBasicByField("id", memberid);
+						app.setCaremember(caremember);
+					}
+					app.setCareMemberName(membername);
+					//08/19/2014
+					//mm/dd/yyyy
+					Date appointmentDate = new SimpleDateFormat("MM/dd/yyyy").parse(schDate);
+					app.setAppointmentdate(appointmentDate);
+					
+					AppointmentGroupDTO group = AppointmentDAO.getAppointmentGroupByField("id",app.getAppointmentgroupid());
+					if(app.getAppointmentgroupid() != null && group.getAddressid() != null && group.getAddressid().intValue() ==  app.getAddressid().getId()) {
+						AddressDTO address = new AddressDTO();
+						address.setCity(city);
+						address.setLine1(address1);
+						address.setState(state);
+						address.setZip(zip);
+						BaseDAO.save(address);
+						app.setAddressid(address);
+					} else {
+						AddressDTO address = app.getAddressid();
+						address.setCity(city);
+						address.setLine1(address1);
+						address.setState(state);
+						address.setZip(zip);
+						BaseDAO.update(address);
+					}
+					BaseDAO.update(app);
+
+				} else if(editOccurencesAction.equalsIgnoreCase("allEvents")) {
+					//Need to code this.
+					Integer appId =  new Integer(id);
+					AppointmentDTO app = AppointmentDAO.getAppointmentByField("id",appId);
+					
+					//Edit date of only current appointment.
+					Date appointmentDate = new SimpleDateFormat("MM/dd/yyyy").parse(schDate);
+					app.setAppointmentdate(appointmentDate);
+					BaseDAO.update(app);
+					
+					
+					Integer appointmentGroupId = app.getAppointmentgroupid();
+
+					EntityManager em = JPAUtil.getEntityManager();
+					String hql ="update AppointmentDTO set purpose = :fp1, appointmentid = :fp2, treatment_process_step = :fp4, purpose_text = :fp5, "
+					+"appointmenttime = :fp6, appointmentcenter = :fp8, caremember = :fp9, caremember_name = :fp10, phone = :fp11  where appointmentgroupid = :f0";
+					if(!em.getTransaction().isActive())
+						em.getTransaction().begin();	
+					
+					Query query = em.createQuery(hql);
+					
+					if (Integer.valueOf(purpose) > 0) {
+						query.setParameter("fp1", purpose);
+						Integer appIdInt = new Integer(purpose);
+						query.setParameter("fp2", AppointmentMasterDAO.getAppointmentByField("id", appIdInt));
+					} else {
+						query.setParameter("fp1", null);
+						query.setParameter("fp2", null);
+					}
+					query.setParameter("fp4", treatmentProcessStep);
+					query.setParameter("fp5", purposeText);
+					query.setParameter("fp6", time);
+					query.setParameter("fp8", center);
+					
+					if (memberid > 0) {
+						UserDTO caremember = UserDAO.getUserBasicByField("id", memberid);
+						query.setParameter("fp9", caremember);
+					} else {
+						query.setParameter("fp9", null);
+					}
+					query.setParameter("fp10", membername);
+					query.setParameter("f0", appointmentGroupId);
+					query.setParameter("fp11", phone);
+					query.executeUpdate();
+					em.getTransaction().commit();
+					
+					AddressDTO address = app.getAddressid();
+					address.setCity(city);
+					address.setLine1(address1);
+					address.setState(state);
+					address.setZip(zip);
+					BaseDAO.update(address);
+					
+					List<AppointmentDTO> lst = AppointmentDAO.getAppointmentListByField("appointmentgroupid",appointmentGroupId);
+					AppointmentGroupDTO group = AppointmentDAO.getAppointmentGroupByField("id",app.getAppointmentgroupid());
+					for (AppointmentDTO appointmentDTO : lst) {
+						if(appointmentDTO.getAppointmentgroupid() != null && group.getAddressid() != null && group.getAddressid().intValue() !=  app.getAddressid().getId()) {
+							address = appointmentDTO.getAddressid();
+							address.setCity(city);
+							address.setLine1(address1);
+							address.setState(state);
+							address.setZip(zip);
+							BaseDAO.update(address);
+						}
+					}
+				}
 			} else if("delete".equalsIgnoreCase(operation)) {
 				//Need to code this.
-				Integer appId =  new Integer(id);
-				AppointmentDTO dto = AppointmentDAO.getAppointmentByField("id",appId);
-				dto.setDeleteflag(true);
-				BaseDAO.update(dto);
+				if(editOccurencesAction.equalsIgnoreCase("onlyThisEvent")){
+					Integer appId =  new Integer(id);
+					AppointmentDTO dto = AppointmentDAO.getAppointmentByField("id",appId);
+					dto.setDeleteflag(true);
+					BaseDAO.update(dto);
+				}else if(editOccurencesAction.equalsIgnoreCase("allEvents")){
+					Integer appId =  new Integer(id);
+					AppointmentDTO dto = AppointmentDAO.getAppointmentByField("id",appId);
+					
+					int appointmentGroupId = dto.getAppointmentgroupid();
+					
+					EntityManager em = JPAUtil.getEntityManager();
+					String hql ="update AppointmentDTO set deleteflag = :fp1 where appointmentgroupid = :f0";
+					if(!em.getTransaction().isActive())
+						em.getTransaction().begin();	
+					
+					Query query = em.createQuery(hql);
+					query.setParameter("fp1", true);
+					query.setParameter("f0", appointmentGroupId);
+					
+					query.executeUpdate();
+					em.getTransaction().commit();
+					
+				}
 			}
 		} catch(Exception e) {
 			e.printStackTrace();

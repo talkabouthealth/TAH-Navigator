@@ -7,7 +7,7 @@ div.print-section {
 }
 
 div.print-section h1 {
-	margin: 20px auto;
+	margin: 15px auto;
 	padding: 0;
 }
 
@@ -33,7 +33,11 @@ div.print-section .double-line {
 }
 
 div.print-section .para {
-	margin-top: 30px;
+	margin-top: 20px;
+}
+
+div.print-section .line {
+	margin-top: 15px;
 }
 
 div.print-secton .fa {
@@ -41,17 +45,28 @@ div.print-secton .fa {
 	padding: 5px auto;
 }
 
+.print-summary {
+	display: block;	
+	background-color: #ccc;
+	border-bottom: 1px solid #ccc;
+	padding-bottom: 5px;
+	margin-bottom: 5px;
+	page-break-before:always;	
+}
+
 .print-cover-page,
 .print-diagnosis,
 .print-treatment-plan,
 .print-care-plan,
-.print-care-team {	
-	clear: both;
+.print-care-team,
+.print-appointments,
+.print-medications,
+.print-distress-data {		
 	display: block;
-	text-align: left;
-	page-break-after: always;
+	margin: 10px;
+	text-align: left;	
+	clear:both;
 }
-
 
 
 

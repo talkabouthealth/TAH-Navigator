@@ -6,8 +6,15 @@
 			<div class="medication">
 					<h3><a href="javaScript:operationMedication('edit','${seq.id}')">${seq.medicine.genericname}</a></h3>
 					<p><strong>BRAND NAME: </strong>${seq.medicine.brandname}</p>
-					<p><strong>FREQUENCY: </strong>${seq.frequency}</p>
-					<p><strong>DATES: </strong>${seq.startdate.format('MM/dd/yyyy')} - ${seq.enddate.format('MM/dd/yyyy')}</p>
+					#{if seq.frequency}
+            			<p><strong>FREQUENCY: </strong>${seq.frequency}</p>
+            		#{/if}
+					#{if seq.startdate.format('MM/dd/yyyy') != "MM/dd/yyyy"}
+						<p><strong>DATES: </strong>${seq.startdate.format('MM/dd/yyyy')} - ${seq.enddate.format('MM/dd/yyyy')}</p>
+					#{/if}
+					#{else}
+						<p><strong>DATES: </strong>${seq.startdate} - ${seq.enddate}</p>
+					#{/else}
 					<p><strong>SPECIAL INSTRUCTIONS: </strong>${seq.specialinstruction}</p>
 					 #{if seq.caremembername}
 					<p><strong>PRESCRIBING PYSICIAN: </strong>${seq.caremembername}</p>

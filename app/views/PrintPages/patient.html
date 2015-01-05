@@ -15,6 +15,7 @@
 #{if follow_up_care_plan || all}
 #{printSummary user: user, userDetails: userDetails, patientDetails: patientDetails, cancerInfo: cancerInfo /}
 #{printCarePlan concerns: concerns, goals: goals, careItems: careItems /}
+
 #{/if}
 
 #{if care_team || all}
@@ -23,13 +24,17 @@
 #{/if}
 
 #{if appointments || all}
-<div>Appointments</div>
+#{printSummary user: user, userDetails: userDetails, patientDetails: patientDetails, cancerInfo: cancerInfo /}
+#{printAppointments futureAppointments: futureAppointments, pastAppointments: pastAppointments /}
 #{/if}
 
 #{if medications || all}
-<div>Medications</div>
+#{printSummary user: user, userDetails: userDetails, patientDetails: patientDetails, cancerInfo: cancerInfo /}
+#{printMedications currentMedications: currentMedications, pastMedications: pastMedications /}
 #{/if}
 
 #{if distress_data || all}
-<div>Distress Data</div>
+#{printSummary user: user, userDetails: userDetails, patientDetails: patientDetails, cancerInfo: cancerInfo /}
+#{printDistress lastDistress: lastDistress, lastWeekProblems: lastWeekProblems,  lastMonthProblems: lastMonthProblems, lastThreeMonthProblems: lastThreeMonthProblems, lastSixMonthProblems: lastSixMonthProblems, lastYearProblems: lastYearProblems, allProblems: allProblems /}
+
 #{/if}

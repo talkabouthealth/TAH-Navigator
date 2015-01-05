@@ -1,17 +1,26 @@
 package controllers;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
+import org.apache.commons.codec.binary.Base64;
+
+import models.AddressDTO;
 import models.ApplicationSettingsDTO;
 import models.AppointmentMasterDTO;
 import models.CareTeamMasterDTO;
 import models.CareTeamMemberDTO;
 import models.InvitedDTO;
+import models.PatienCareTeamDTO;
+//import models.PatientCareTeamMemberDTO;
 import models.UserDTO;
 import models.UserDetailsDTO;
 import models.UserTypeDTO;
@@ -24,6 +33,9 @@ import nav.dao.UserTypeDAO;
 import nav.dto.CareMember;
 import nav.dto.UserBean;
 import play.Play;
+import play.data.FileUpload;
+import play.data.Upload;
+import play.exceptions.UnexpectedException;
 import play.mvc.Controller;
 import play.mvc.With;
 import util.CommonUtil;
@@ -54,31 +66,30 @@ public class Admin extends Controller {
 		UserBean user = CommonUtil.loadCachedUser(session);
 		render(user);
 	}
-	
-	public static void createCareMember(String email,String name,String password, boolean isActive) {
-		UserDTO account = new UserDTO();
-		account.setName(name);
-		account.setPassword(CommonUtil.hashPassword(password));
-		account.setActive(isActive);
-		account.setUserType('c');
 
-		InvitedDTO invitedDTO = new  InvitedDTO();
+	public static void createCareMember(String email,String name,String password, boolean isActive) {
+//		UserDTO account = new UserDTO();
+//		account.setName(name);
+//		account.setPassword(CommonUtil.hashPassword(password));
+//		account.setActive(isActive);
+//		account.setUserType('c');
+//		InvitedDTO invitedDTO = new  InvitedDTO();
 //		invitedDTO.setName(name);
 //		invitedDTO.setPassword(password);
-		invitedDTO.setActivateOnSignup(isActive);
+//		invitedDTO.setActivateOnSignup(isActive);
 //		invitedDTO.setUserType('c');
 //		invitedDTO.setIsInvitationSent(false);
 //		invitedDTO.setTimestamp(new Date());
-
-		EntityManager em = JPAUtil.getEntityManager();
-		em.getTransaction().begin();
-		em.persist(account);
-		em.persist(invitedDTO);
-		em.getTransaction().commit();
-		em.close();
+//		EntityManager em = JPAUtil.getEntityManager();
+//		em.getTransaction().begin();
+//		em.persist(account);
+//		em.persist(invitedDTO);
+//		em.getTransaction().commit();
+//		em.close();
 		renderJSON("{\"ret\": \"true\"}");
 	}
 	
+
 	public static void allMemberList() {
 		List<UserTypeDTO> userTypelist = UserTypeDAO.getUserTypeList();
 		UserBean user = CommonUtil.loadCachedUser(session);
@@ -156,11 +167,8 @@ public class Admin extends Controller {
 		} else {
 			BaseDAO.update(settingDto);
 		}
-
 		renderJSON("{\"status\":\"Done\",\"messages\": \"Updated setting.\"}");
-		
 	}
-	
 	
 	public static void editUser(int userId) {
 		UserBean user = CommonUtil.loadCachedUser(session);
@@ -169,14 +177,74 @@ public class Admin extends Controller {
 	
 	public static void careTeam() {
 		UserBean user = CommonUtil.loadCachedUser(session);
-		List<CareTeamMasterDTO> list = CareTeamDAO.getAllCareTeam();
+		List<CareTeamMasterDTO> list = CareTeamDAO.getAllActiveCareTeam();
 		render(user,list);
+	}
+	
+	public static void createCareTeam(String operation,int id,String teamtype,String center,String address1,String city,String state,String zip,String phone,Upload logo) {
+		if(logo != null)
+			System.out.println(logo.getFileName());
+		
+		
+		CareTeamMasterDTO teamMasterDTO = null;
+		if("create".equalsIgnoreCase(operation)) {
+			AddressDTO address = new AddressDTO();
+			address.setCity(city);
+			address.setLine1(center);
+			address.setLine2(address1); //+ " " + address2
+			address.setState(state);
+			address.setZip(zip);
+			address.setPhone(phone);
+			BaseDAO.save(address);
+
+			teamMasterDTO = new CareTeamMasterDTO();
+			teamMasterDTO.setAddress(address);
+			teamMasterDTO.setName(teamtype);
+			teamMasterDTO.setActive(true);
+			if(logo != null)
+				teamMasterDTO.setLogo(logo.asBytes());
+			BaseDAO.save(teamMasterDTO);
+//			renderText("<tr><td><a href='/admin/editcareteam?careTeamId="+teamMasterDTO.getId()+"'>"+teamtype+"</a></td></tr>");	
+		} else if("edit".equalsIgnoreCase(operation)) {
+			teamMasterDTO = CareTeamDAO.getCareTeamByField("id", id);
+			teamMasterDTO.setName(teamtype);
+			if(logo != null)
+				teamMasterDTO.setLogo(logo.asBytes());
+			BaseDAO.update(teamMasterDTO);
+
+			AddressDTO address = teamMasterDTO.getAddress();
+			address.setCity(city);
+			address.setLine1(center);
+			address.setLine2(address1);
+			address.setState(state);
+			address.setZip(zip);
+			address.setPhone(phone);
+			BaseDAO.update(address);
+
+		} else if("delete".equalsIgnoreCase(operation)) {
+			teamMasterDTO = CareTeamDAO.getCareTeamByField("id", id);
+			teamMasterDTO.setActive(false);
+			BaseDAO.update(teamMasterDTO);
+		}
+		/*
+		JsonObject object = new JsonObject();
+		object.add("id", new JsonPrimitive(teamMasterDTO.getId()));
+		object.add("name", new JsonPrimitive(teamMasterDTO.getName()));
+		renderText(object.toString());
+		*/
+		careTeam();
+	}
+	
+	public static void getCareTeam(Integer careTeamId) {
+		CareTeamMasterDTO careTeam = CareTeamDAO.getCareTeamByField("id", careTeamId);
+		careTeam.setLogoString("/image/showClinic?careTeamId="+careTeam.getId());
+		renderJSON(careTeam);
 	}
 	
 	public static void editCareTeam(int careTeamId) {
 		UserBean user = CommonUtil.loadCachedUser(session);
 		CareTeamMasterDTO careTeam = CareTeamDAO.getCareTeamByField("id", careTeamId);
-		List<CareTeamMemberDTO>  memberList = CareTeamDAO.getCareTeamMembersByField("careteamid", careTeamId);
+		List<CareTeamMemberDTO>  memberList = CareTeamDAO.getMasterCareTeamMembersByField("careteamid", careTeamId);
 		render(user,careTeam,memberList);
 	}
 	
@@ -195,7 +263,10 @@ public class Admin extends Controller {
 		}
 		editCareTeam(careTeamId);
 	}
+
 	
+	
+
 	public static void getExpertList() {
 //		List<UserTypeDTO> userTypelist = UserTypeDAO.getUserTypeList();
 //		UserBean user = CommonUtil.loadCachedUser(session);

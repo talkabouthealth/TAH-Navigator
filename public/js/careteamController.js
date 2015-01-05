@@ -837,12 +837,7 @@ var careTeamController = (function() {
         }
     };
     
-    var diagnosis = function(domElement) {
-		var createSearchChoice = function(term, data) {
-			if ($(data).filter(function() { return this.text.localeCompare(term)===0; }).length === 0) {	
-				return {id:term, text:term};
-			}
-		};
+    var diagnosis = function(domElement) {				
         var patientId = $(domElement).attr("patient_id");
         $.post(actions['ctp_diagnosis_json'], {
                patientId: patientId
@@ -850,8 +845,8 @@ var careTeamController = (function() {
         	curStageId = data.stageId;
         	var initFlag = $('#diagnosis-edit-form').attr('init-flag');
         	if (initFlag == '0') {
-        		
-        		$("#psascore").autocomplete({source: psaScoreArray,minLenght:1 });
+        		$('#diagnosis-edit-form').attr('init-flag', 1);
+        		$("#psascore").autocomplete({source: psaScoreArray,minLength:1 });
         		
         		$('#diagnosis-edit-form').attr('init-flag', '1');
         		var diseases = data.diseases;
@@ -867,57 +862,54 @@ var careTeamController = (function() {
         			var disease_id = $(this).val();
         			var bcStages = data.bcStages;
         			length = 0;
-
-            		//$('#stage').html('<option></option>');
-					var stageData = [{id: '', text: ''}];
+					var stageData = [];
+					var selectedStageData;
             		for (var i = 0; i < bcStages.length; i++) {
             			if(disease_id == bcStages[i].diseaseid) {
-            				length = length + 1;
-							stageData.push({id: bcStages[i].id, text: bcStages[i].name});
+            				length = length + 1;	
+							if (!bcStages[i].userDefined) {
+								stageData.push(bcStages[i].name);
+							}
             				if(bcStages[i].id == curStageId) {
-            					//$('#stage').append('<option value="' + bcStages[i].id + '" selected="">' + bcStages[i].name + '</option>');
-								stageData.push({id: bcStages[i].id, text: bcStages[i].name});
-            				} else {
-            					//$('#stage').append('<option value="' + bcStages[i].id + '">' + bcStages[i].name + '</option>');
+								selectedStageData = bcStages[i].name;            					
             				}
             			}
             		}
-            		if(length>0){
-            			$('#stage_div').show();
-						$('#stage').select2({
-							'data': stageData,
-							'createSearchChoice': createSearchChoice
+            		if(length>0){    
+						$('#stage').autocomplete({
+							source: stageData, minLength: 0
+						}).bind("focus", function(e) {
+							$(this).autocomplete("search");
 						});
-						$('#stage').val(curStageId);						
+						$('#stage').val(selectedStageData);						
+						$('#stage_div').show();
             		} else {
             			$('#stage_div').hide();	
             		}
-					/*
-            		try {
-            			$('#mutations').multiselect('destroy');
-            		} catch(e){}
-					*/
-            		var mutations = data.mutations;
-            		//$('#mutations').html('<option></option>');
-					var mutationsData = [{id:'', text:''}];
+					
+					
+            		var mutations = data.mutations;            							
             		var mutationLength = 0;
+					$('#mutations').empty();
             		for (var i = 0; i < mutations.length; i++) {
             			if(disease_id == mutations[i].diseaseid) {
-            				mutationLength = mutationLength + 1;
-           					//$('#mutations').append('<option value="' + mutations[i].id + '">' + mutations[i].mutation + '</option>');
-							mutationsData.push({id: mutations[i].id, text: mutations[i].mutation});
+            				mutationLength = mutationLength + 1;							
+							$('#mutations').append('<option value="' + mutations[i].id + '">' + mutations[i].mutation + '</option>');
+							
             			}
             		}
-					$('#mutations').select2({
-						'data': mutationsData,
-						'createSearchChoice': createSearchChoice,
-						'multiple': true
-					});
-        	        if (mutationLength>0) {
+					if (mutationLength>0) {
+						if (initFlag == '0') {
+							$('#mutations').multiselect({
+								maxHeight: 120,
+								buttonClass: 'inputdropdown',
+								buttonWidth: '310px'
+							});
+						}
+        	        	$("#mutation_div").show();						
+						$('#mutations').val(genetics);
+						$('#mutations').multiselect('refresh');
 						
-        	        	$('#mutations').val(genetics);
-        	        	$("#mutation_div").show();
-        	        	//$('#mutations').multiselect({enableFiltering: false, buttonWidth: '310px',buttonClass: 'inputdropdown'});
         	        } else {
         	        	$("#mutation_div").hide();
         	        }
@@ -942,187 +934,231 @@ var careTeamController = (function() {
 	       	        	 $('#psascore_div').hide();
 	       	        	 $('#gleasonscore_div').hide();
 	       	        } else {
+						var riskData = ["Low", "Moderate", "High"];
+						$('#risklevel').autocomplete({
+							source: riskData, minLength: 0
+						}).bind("focus", function(e) {
+							$(this).autocomplete("search");
+						});
+						 var gleasonData = ["X", "6", "7", "8", "9", "10"];
+						 $('#gleasonscore').autocomplete({
+							source: gleasonData, minLength: 0
+						 }).bind("focus", function(e) {
+							$(this).autocomplete("search");
+						});	
+						 
 	       	        	 $('#risklevel_div').show();
 	       	        	 $('#psascore_div').show();
 	       	        	 $('#gleasonscore_div').show();
 	       	        }
 
     	        	var subTypeLenght = 0;
-    	        	var roottype = data.subtype;
-            		//$('#cancersubtype').html('<option></option>');
-					var cancersubtypeData = [{id: '', text: ''}];
+    	        	var roottype = data.subtype;            		
+					var cancersubtypeData = [];
+					var selectedCancersubtypeData;
             		for (var i = 0; i < roottype.length; i++) {
             			if(disease_id == roottype[i].diseaseid) {
-            				subTypeLenght = subTypeLenght +1;
-           					//$('#cancersubtype').append('<option value="' + roottype[i].id + '">' + roottype[i].name + '</option>');
-							cancersubtypeData.push({id: roottype[i].id, text: roottype[i].name});
+            				subTypeLenght = subTypeLenght +1;    
+							if (!roottype[i].userDefined) {
+								cancersubtypeData.push(roottype[i].name);
+							}
+							if (csrsubtype == roottype[i].id) {
+								selectedCancersubtypeData = roottype[i].name;
+							}
             			}
             		}
             		if(subTypeLenght>0) {
-						$('#cancersubtype').select2({
-							'data': cancersubtypeData,
-							'createSearchChoice': createSearchChoice
-						});						
-            			$('#cancersubtype').val(csrsubtype);
+						$('#cancersubtype').autocomplete({
+							source: cancersubtypeData, minLength: 0
+						}).bind("focus", function(e) {
+							$(this).autocomplete("search");
+						});	
+						$('#cancersubtype').val(selectedCancersubtypeData);
+						
             			$('#cancersubtype_div').show();
             		} else {
             			$('#cancersubtype_div').hide();
             		}
             		
-    	        	var roottype = data.roottype;
-            		//$('#cancertype').html('<option value=""></option>');					
-					var cancerTypeData = [{id: '', text: ''}];
-            		var rootTypeLenght = 0;
+    	        	var roottype = data.roottype;            		
+					var cancerTypeData = [];
+					var selectedCancerTypeData;
+            		var rootTypeLength = 0;
             		for (var i = 0; i < roottype.length; i++) {
             			if(disease_id == roottype[i].diseaseid) {
-            				rootTypeLenght = rootTypeLenght +1 ;
-           					//$('#cancertype').append('<option value="' + roottype[i].id + '">' + roottype[i].name + '</option>');
-							cancerTypeData.push({id: roottype[i].id, text: roottype[i].name});
+            				rootTypeLength = rootTypeLength +1 ;  
+							if (!roottype[i].userDefined) {
+								cancerTypeData.push(roottype[i].name);
+							}
+							if (roottype[i].id ==  csrtype) {
+								selectedCancerTypeData = roottype[i].name;
+							}
             			}
             		}
-            		if(rootTypeLenght>0) {
-						$('#cancertype').select2({
-							'data': cancerTypeData,
-							'createSearchChoice': createSearchChoice
-						});
-            		    $('#cancertype').val(csrtype);
+            		if(rootTypeLength>0) {
+						$('#cancertype').autocomplete({
+							source: cancerTypeData, minLength: 0
+						}).bind("focus", function(e) {
+							$(this).autocomplete("search");
+						});						
+						$('#cancertype').val(selectedCancerTypeData);
             			$('#cancertype_div').show();
             		} else {
             			$('#cancertype_div').hide();
             		}
             		
             		
-            		var invasion = data.invasion;
-            		//$('#invasiveness').html('<option></option>');
-					var invasionData = [{id: '', text: ''}];
-            		rootTypeLenght = 0;
+            		var invasion = data.invasion;            		
+					var invasionData = [];
+					var selectedInvasionData;
+            		rootTypeLength = 0;
             		for (var i = 0; i < invasion.length; i++) {
             			if(disease_id == invasion[i].diseaseid) {
-            				rootTypeLenght = rootTypeLenght +1 ;
-           					//$('#invasiveness').append('<option value="' + invasion[i].id + '">' + invasion[i].invname + '</option>');
-							invasionData.push({id: invasion[i].id, text: invasion[i].invname});
+            				rootTypeLength = rootTypeLength +1 ; 
+							if (!invasion[i].userDefined) {
+								invasionData.push(invasion[i].invname);
+							}
+							if (invasionVal == invasion[i].id) {
+								selectedInvasionData = invasion[i].invname;
+							}
             			}
             		}
-            		if(rootTypeLenght>0) {
-						$('#invasiveness').select2({
-							'data': invasionData,
-							'createSearchChoice': createSearchChoice
-						});
-            		    $('#invasiveness').val(invasionVal);
+            		if(rootTypeLength>0) {
+						$('#invasiveness').autocomplete({
+							source: invasionData, minLength: 0
+						}).bind("focus", function(e) {
+							$(this).autocomplete("search");
+						});	
+						$('#invasiveness').val(selectedInvasionData);						
             			$("#invasiveness_div").show();
             		} else {
             			$("#invasiveness_div").hide();
             		}
 
-            		var grade = data.grade;
-            		//$('#grade').html('<option></option>');
-					var gradeData = [{id: '', text: ''}];
-            		rootTypeLenght = 0;
+            		var grade = data.grade;            	
+					var gradeData = [];
+					var selectedGradeData;
+            		rootTypeLength = 0;
             		for (var i = 0; i < grade.length; i++) {
             			if(disease_id == grade[i].diseaseid) {
-            				rootTypeLenght = rootTypeLenght +1 ;
-           					//$('#grade').append('<option value="' + grade[i].id + '">' + grade[i].gradename + '</option>');
-							gradeData.push({id: grade[i].id, text: grade[i].gradename});
+            				rootTypeLength = rootTypeLength +1;
+							if (!grade[i].userDefined) {
+								gradeData.push(grade[i].gradename);
+							}
+							if (gradeVal == grade[i].id) {
+								selectedGradeData = grade[i].gradename;
+							}
             			}
             		}
-            		if(rootTypeLenght>0) {
-						$('#grade').select2({
-							'data': gradeData,
-							'createSearchChoice': createSearchChoice
-						});
-            		    $('#grade').val(gradeVal);
+            		if(rootTypeLength>0) {
+						$('#grade').autocomplete({
+							source: gradeData, minLength: 0
+						}).bind("focus", function(e) {
+							$(this).autocomplete("search");
+						});	
+						$('#grade').val(selectedGradeData);						
             			$("#grade_div").show();
             		} else {
             			$("#grade_div").hide();
             		}
-            		var phase = data.phase;
-            		//$('#phase').html('<option></option>');
-					var phaseData = [{id: '', text: ''}];
-            		rootTypeLenght = 0;
+            		var phase = data.phase;            		
+					var phaseData = [];
+					var selectedPhaseData;
+            		rootTypeLength = 0;
             		for (var i = 0; i < phase.length; i++) {
             			if(disease_id == phase[i].diseaseid) {
-            				rootTypeLenght = rootTypeLenght +1 ;
-           					//$('#phase').append('<option value="' + phase[i].id + '">' + phase[i].name + '</option>');
-							phaseData.push({id: phase[i].id, text: phase[i].name});
+            				rootTypeLength = rootTypeLength +1;           					
+							if (!phase[i].userDefined) {
+								phaseData.push(phase[i].name);
+							}
+							if (csrphase == phase[i].id) {
+								selectedPhaseData = phase[i].name;
+							}
             			}
             		}
-            		if(rootTypeLenght>0) {
-						$('#phase').select2({
-							'data': phaseData,
-							'createSearchChoice': createSearchChoice
-						});
-            		    $('#phase').val(csrphase);
+            		if(rootTypeLength>0) {
+						$('#phase').autocomplete({
+							source: phaseData, minLength: 0
+						}).bind("focus", function(e) {
+							$(this).autocomplete("search");
+						});	
+						$('#phase').val(selectedPhaseData);						
             			$("#phase_div").show();
             		} else {
             			$("#phase_div").hide();
             		}
-            		var chromosome = data.chromosome;
-					/*
-            		try {
-            			$('#chromosome').multiselect('destroy');
-            		} catch(e){}
-					*/
-            		//$('#chromosome').html('<option></option>');
-					var chromosomeData = [{id: '', text: ''}];
-            		rootTypeLenght = 0;
+            		var chromosome = data.chromosome;									
+            		rootTypeLength = 0;
+					$('#chromosome').empty();
             		for (var i = 0; i < chromosome.length; i++) {
             			if(disease_id == chromosome[i].diseaseid) {
-            				rootTypeLenght = rootTypeLenght +1 ;
-           					//$('#chromosome').append('<option value="' + chromosome[i].id + '">' + chromosome[i].chromosomename + '</option>');
-							chromosomeData.push({id: chromosome[i].id, text: chromosome[i].chromosomename});
+            				rootTypeLength = rootTypeLength +1;           												
+							$('#chromosome').append('<option value="' + chromosome[i].id + '">' + chromosome[i].chromosomename + '</option>');							
             			}
-            		}
-					$('#chromosome').select2({
-						'data': chromosomeData,
-						'createSearchChoice': createSearchChoice,
-						'multiple': true
-					});
-            		if(rootTypeLenght>0) {						
-            		    $('#chromosome').val(chromosomesIds);
-            			$("#chromosome_div").show();
-            			//$('#chromosome').multiselect({enableFiltering: false, buttonWidth: '310px',buttonClass: 'inputdropdown'});
+            		}									
+            		if(rootTypeLength>0) {	
+						if (initFlag == '0') {
+							$('#chromosome').multiselect({
+								maxHeight: 120,
+								buttonClass: 'inputdropdown',
+								buttonWidth: '310px'
+							});	   					
+						}						
+            			$("#chromosome_div").show();  						
+						$('#chromosome').val(chromosomesIds);
+						$('#chromosome').multiselect('refresh');						
             		} else {
             			$("#chromosome_div").hide();
             		}
-    	        	roottype = data.fab;
-            		//$('#fab').html('');
-					var fabData = [{id:'', text:''}];
-            		rootTypeLenght = 0;
+    	        	roottype = data.fab;            		
+					var fabData = [];
+					var selectedFabData;
+            		rootTypeLength = 0;
             		for (var i = 0; i < roottype.length; i++) {
             			if(disease_id == roottype[i].diseaseid) {
-            				rootTypeLenght = rootTypeLenght +1 ;
-           					//$('#fab').append('<option value="' + roottype[i].id + '">' + roottype[i].fabname + '</option>');
-							fabData.push({id: roottype[i].id, text: roottype[i].fabname});
+            				rootTypeLength = rootTypeLength +1;           					
+							if (!roottype[i].userDefined) {
+								fabData.push(roottype[i].fabname);
+							}
+							if (fabId == roottype[i].id) {
+								selectedFabData = roottype[i].fabname;
+							}
             			}
             		}
-            		if(rootTypeLenght>0) {
-						$('#fab').select2({
-							'data': fabData,
-							'createSearchChoice': createSearchChoice
-						});
-            		    $('#fab').val(fabId);
+            		if(rootTypeLength>0) {
+						$('#fab').autocomplete({
+							source: fabData, minLength: 0
+						}).bind("focus", function(e) {
+							$(this).autocomplete("search");
+						});	
+						$('#fab').val(selectedFabData);						
             			$('#fab_div').show();
             		} else {
             			$('#fab_div').hide();
             		}
             		
-            		roottype = data.who;
-            		//$('#who').html('<option></option>');
-					var whoData = [{id: '', text: ''}];
-            		rootTypeLenght = 0;
+            		roottype = data.who;            		
+					var whoData = [];
+					var selectedWhoData;
+            		rootTypeLength = 0;
             		for (var i = 0; i < roottype.length; i++) {
             			if(disease_id == roottype[i].diseaseid) {
-            				rootTypeLenght = rootTypeLenght +1 ;
-           					//$('#who').append('<option value="' + roottype[i].id + '">' + roottype[i].whoname + '</option>');
-							whoData.push({id: roottype[i].id, text: roottype[i].whoname});
+            				rootTypeLength = rootTypeLength +1;           					
+							if (!roottype[i].userDefined) {
+								whoData.push(roottype[i].whoname);
+							}
+							if (whoId == roottype[i].id) {
+								selectedWhoData = roottype[i].whoname;
+							}
             			}
             		}
-            		if(rootTypeLenght>0) {
-						$('#who').select2({
-							'data': whoData,
-							'createSearchChoice': createSearchChoice
-						});
-            		    $('#who').val(whoId);
+            		if(rootTypeLength>0) {
+						$('#who').autocomplete({
+							source: whoData, minLength: 0
+						}).bind("focus", function(e) {
+							$(this).autocomplete("search");
+						});	
+						$('#who').val(selectedWhoData);						
             			$('#who_div').show();
             		} else {
             			$('#who_div').hide();
@@ -1180,16 +1216,13 @@ var careTeamController = (function() {
            	  	$('#psascore').val(data.psascore);
            	  	$('#gleasonscore').val(data.gleasonscore);
            	  	$('#gleasonscore').val(data.gleasonscore);
-           	  	csrtype = data.csrtype;
-           	  	csrsubtype = data.csrsubtype;
-           	  	genetics = data.genetics;
-           	  	csrphase = data.phaseId;
-           	  	chromosomesIds = data.chromosomesIds;
+           	  	           	  	          	  
+           	  	csrphase = data.phaseId;           	  	
            	  	fabId = data.fabId;
            	  	whoId = data.fabId;
            	  	$('#cancertype').val(data.csrtype);
-           	  	$('#cancersubtype').val(data.csrsubtype);
-           	
+           	  	$('#cancersubtype').val(data.csrsubtype);							
+				
             } else {
             	$('#diseaseId').val('');
             }
@@ -1202,9 +1235,22 @@ var careTeamController = (function() {
                 $('#dob').val(formatDate(new Date(data.dateOfBirth), 'mm/dd/yyyy'));
             } else {
             	$('#dob').val('');
-            }            
+            }	
+		    if ('genetics' in data) {
+				genetics = data.genetics;
+			}
+			if ('chromosomesIds' in data) {
+				chromosomesIds = data.chromosomesIds;	
+			}
+			if ('csrtype' in data) {
+				csrtype = data.csrtype;
+			}
+			if ('csrsubtype' in data) {
+				csrsubtype = data.csrsubtype; 
+			}
             $('#diagnosis-edit-form').find('#family-risk').val(data['familyRisk'] || '');            
             $('#disease').change(); 
+			
         	$('#diagnosis-edit-form').modal({
         		keyboard: false,
         		backdrop: 'static'
@@ -1819,6 +1865,7 @@ var careTeamController = (function() {
         
         $('#datepickerRangeRadForm').datepicker({
               defaultDate: +1 ,minDate:"+1d",              
+              autoclose: true,
               format: "mm/dd/yyyy"
         });        
         var treatmentRegions = data.treatmentRegions;
@@ -1935,7 +1982,7 @@ var careTeamController = (function() {
         if (prtDto.endDate) {
             $('#rt_end_date').val(formatDate(new Date(prtDto.endDate), 'mm/dd/yyyy'));
         }
-        $('#datepickerRangeRadForm').datepicker({ startDate: prtDto.startDate, endDate: prtDto.endDate});
+        $('#datepickerRangeRadForm').datepicker({ autoclose: true,startDate: prtDto.startDate, endDate: prtDto.endDate});
         if ('trDto' in prtDto) {
             $('#rt_region').val(prtDto.trDto.region);
         }

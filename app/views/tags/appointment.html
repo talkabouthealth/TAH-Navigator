@@ -1,0 +1,32 @@
+#{if list != null && list.size()>0}
+	
+		<tbody>
+			#{list list, as:'seq'}
+			<tr>
+				<td>
+					<label>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}</label>
+					#{if seq.appointmenttime}
+					<p>${seq.appointmenttime} - <a href="javaScript:operationAppointment('edit','${seq.id}')">${seq.purposeText}</a></p>
+					#{/if}
+					#{else}
+					<p><a href="javaScript:operationAppointment('edit','${seq.id}')">${seq.purposeText}</a></p>
+					#{/else}
+				</td>
+				<td>
+					<p>${seq.careMemberName}</p>
+					<p>${seq.appointmentcenter}</p>
+				</td>
+			</tr>
+			#{/list}
+		</tbody>
+	
+#{/if}
+#{else}
+<tbody>
+<tr>
+				<td>
+	<div class="col-xs-12 col-sm-12 nav-tabs">No appointment added.</div>
+	</td>
+	</tr>
+	</tbody>
+#{/else}

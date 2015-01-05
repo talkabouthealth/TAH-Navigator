@@ -26,6 +26,9 @@ public class CancerTypeDTO {
 	@Column(name="diseaseid")
 	private Integer diseaseid;
 
+	@Column(name="user_defined")
+	private boolean userDefined;
+	
 	public Integer getId() {
 		return id;
 	}
@@ -56,5 +59,13 @@ public class CancerTypeDTO {
 
 	public void setDiseaseid(Integer diseaseid) {
 		this.diseaseid = diseaseid;
+	}
+
+	public boolean isUserDefined() {
+		return userDefined;
+	}
+
+	public void setUserDefined(boolean userDefined) {
+		this.userDefined = userDefined;
 	}
 }

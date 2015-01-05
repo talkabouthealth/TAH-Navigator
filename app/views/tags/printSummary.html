@@ -4,11 +4,11 @@
 #{set patientDetails: _patientDetails /}
 #{set cancerInfo: _cancerInfo /}
 
-<div>
-	<div class="col-xs-4">
-		<h2>${userDetails?.firstName + " " + userDetails?.lastName}<h2>
+<div class="clearfix print-summary">
+	<div class="col-xs-3">
+		${userDetails?.firstName + " " + userDetails?.lastName}<br>
 #{if cancerInfo}
-		<div>${cancerInfo?.diseaseName}</div>
+		${cancerInfo?.diseaseName}<br>
 #{/if}
 #{if cancerInfo.diseaseId == '1'}
 #{set info: [] /}		
@@ -17,19 +17,19 @@
 #{if cancerInfo.pr} %{ info.add("PR" + cancerInfo.pr); }% #{/if}
 #{if cancerInfo.her2} %{ info.add("HER2" + cancerInfo.her2); }% #{/if}
 #{if cancerInfo.brca} %{ info.add("BRCA" + cancerInfo.brca); }% #{/if}
-		<div>${info.join(', ')}</div>
+		${info.join(', ')}
 #{/if}
 	</div>
 	
-	<div class="col-xs-4">
-		<div><b>DOB:</b> ${userDetails?.dob?.format('MM/dd/yyyy')}</div>
-		<div><b>PHONE:</b> ${userDetails?.homePhone}</div>
+	<div class="col-xs-3">
+		DOB: ${userDetails?.dob?.format('MM/dd/yyyy')}<br>
+		PHONE: ${userDetails?.homePhone}
 	</div>
-	<div class="col-xs-4">
-		<div><b>DATE OF DIAGNOSIS:</b> ${patientDetails?.dateofdiagnosis?.format('MM/dd/yyyy')}</div>
-		<div><b>SUPPORT CONTACT:</b> ${patientDetails?.ec1name}</div>
-		<div>${patientDetails?.ec1number}</div>
-	</div>
-	
+	<div class="col-xs-6">
+		DATE OF DIAGNOSIS: ${patientDetails?.dateofdiagnosis?.format('MM/dd/yyyy')}<br>
+		SUPPORT CONTACT: ${patientDetails?.ec1name}<br>
+		${patientDetails?.ec1number}
+	</div>	
 </div>
+
 

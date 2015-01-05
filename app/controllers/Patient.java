@@ -78,10 +78,17 @@ public class Patient extends Controller {
 		if(!user.isVerifiedFlag() && accesstoallpages != null) {
 			user.setVerifiedFlag(Boolean.parseBoolean(accesstoallpages.getPropertyvalue()));
 		}
-		List<AppointmentDTO> listOther = AppointmentDAO.getAppointmentListByField("patientid.id", userDto.getId(), curreDate, "upcoming" );		
+		long listOther = AppointmentDAO.getTotalappointmentForDashboard("patientid.id", userDto.getId(), curreDate, "upcoming");
         render(user,userDto,patientOtherDetails, breastCancerId, breastCancerInfo,apt,careExpert,maxUsers,checlist,accesstoallpages, listOther);
     }
 
+	public static void appointmentNextPage(int pageId,String type) {
+		UserBean user = CommonUtil.loadCachedUser(session);
+		Date curreDate = new Date();
+		pageId = (pageId -1)*10;
+		List<AppointmentDTO> list = AppointmentDAO.getAppointmentListByField("patientid.id", user.getId(), curreDate, type,pageId );
+		render("tags/patientappointment.html",list);
+	}
 	
 	public static void distressmeter() {
 		UserBean user = CommonUtil.loadCachedUser(session);
@@ -105,11 +112,11 @@ public class Patient extends Controller {
 			PatientDetailDTO patientOtherDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
 			BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
 			int breastCancerId = Disease.BREAST_CANCER_ID;
-			
+			/*
 			List<AppointmentDTO> list = new ArrayList<AppointmentDTO>();
 			UserDetailsDTO userDetails = null;
 			Date curreDate = new Date();
-			List<AppointmentDTO> listOther = AppointmentDAO.getAppointmentListByField("patientid.id", userDto.getId(), curreDate, "upcomming" );
+			List<AppointmentDTO> listOther = AppointmentDAO.getAppointmentListByField("patientid.id", userDto.getId(), curreDate, "upcomming",0 );
 			if(listOther != null) {
 				for (AppointmentDTO appointmentDTO : listOther) {
 					if (appointmentDTO.getCaremember() != null) {
@@ -120,9 +127,8 @@ public class Patient extends Controller {
 				}
 			} else {
 				list = null;
-			}
-	
-			List<AppointmentDTO> expListOther = AppointmentDAO.getAppointmentListByField("patientid.id" , userDto.getId(), curreDate, "past" );
+			}			
+			List<AppointmentDTO> expListOther = AppointmentDAO.getAppointmentListByField("patientid.id" , userDto.getId(), curreDate, "past",0 );
 			List<AppointmentDTO> listOld = new ArrayList<AppointmentDTO>();
 			if(expListOther != null) {
 				for (AppointmentDTO appointmentDTO : expListOther) {
@@ -135,8 +141,13 @@ public class Patient extends Controller {
 			} else {
 				listOld = null;
 			}
-			
-	        render(user,userDto,patientOtherDetails,list,listOld, breastCancerId, breastCancerInfo);
+			*/
+			Date curreDate = new Date();
+			List<AppointmentDTO> list = AppointmentDAO.futureAppointments(userDto.getId());
+			List<AppointmentDTO> listOld = AppointmentDAO.pastAppointments(userDto.getId());
+			ArrayList<Integer> totalUp = AppointmentDAO.getTotalappointments("patientid.id", userDto.getId(), curreDate, "upcomming" );
+			ArrayList<Integer> totalPast = AppointmentDAO.getTotalappointments("patientid.id", userDto.getId(), curreDate, "past" );
+	        render(user,userDto,patientOtherDetails,list,listOld, breastCancerId, breastCancerInfo,totalUp,totalPast);
 		} else {
 			index();
 		}
@@ -290,15 +301,42 @@ public class Patient extends Controller {
 			List<PatientMedicationDTO> currentMedications = new ArrayList<PatientMedicationDTO>();
 			List<PatientMedicationDTO> pastMedications = new ArrayList<PatientMedicationDTO>();
 			Date today = new Date();
+			
+			DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+			DateFormat dfDisplay = new SimpleDateFormat("mm/dd/yyyy");
 			for (PatientMedicationDTO mDto : medicationList) {
+				Date startDt = null;
+				Date endDt = null;
 				if(mDto.getCaremembername() == null) {
 					mDto.setCaremembername(UserDAO.getUserName(mDto.getCaremember().getId()));
 				}
-				if ((today.compareTo(mDto.getStartdate()) >= 0) && (today.compareTo(mDto.getEnddate()) <=0)) {
-					currentMedications.add(mDto);
+				
+				try {
+					startDt = df.parse(mDto.getStartdate());
+					mDto.setStartdate(dfDisplay.format(startDt));
+				} catch(Exception e) {
+//					e.printStackTrace();
 				}
-				else {
-					pastMedications.add(mDto);
+				try {
+					endDt = df.parse(mDto.getEnddate());
+					mDto.setEnddate(dfDisplay.format(endDt));
+				} catch(Exception e) {
+//					e.printStackTrace();
+				}
+				if(startDt != null && endDt != null) {
+					System.out.println(startDt + " to " + endDt);
+					System.out.println(today.compareTo(startDt) + " to " + today.compareTo(endDt));
+					if ((today.compareTo(startDt) < 0) && (today.compareTo(endDt) < 0)) {
+						currentMedications.add(mDto);
+						System.out.println("Adding in curr:" + today);
+					} else if(today.compareTo(endDt) < 0) {
+						currentMedications.add(mDto);
+						System.out.println("Adding in past:" + today);
+					} else {
+						pastMedications.add(mDto);
+					}
+				} else {
+					currentMedications.add(mDto);
 				}
 			}
 			render(user,userDto,patientOtherDetails,medicationList, breastCancerId, breastCancerInfo, currentMedications, pastMedications);

@@ -46,6 +46,20 @@ public class CareTeamDAO {
 		return dto;
 	}
 	
+	public static List<CareTeamMasterDTO> getAllActiveCareTeam() {
+		List<CareTeamMasterDTO> dto = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			TypedQuery<CareTeamMasterDTO> query = em.createQuery("FROM CareTeamMasterDTO where active = true", CareTeamMasterDTO.class); 
+			dto = query.getResultList();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			em.close();
+		}
+		return dto;
+	}
+	
 	public static boolean addMember(CareTeamMasterDTO careTeam,UserDTO usr) {
 		
 		EntityManager em = JPAUtil.getEntityManager();
@@ -145,6 +159,21 @@ public class CareTeamDAO {
 	}
 	
 	public static List<CareTeamMemberDTO> getCareTeamMembersByField(String fieldName, Object value) {
+		List<CareTeamMemberDTO> dto = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			TypedQuery<CareTeamMemberDTO> query = em.createQuery("FROM CareTeamMemberDTO c WHERE c."+fieldName+" = :field order by primary desc", CareTeamMemberDTO.class); 
+			query.setParameter("field", value);
+			dto = query.getResultList();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			em.close();
+		}
+		return dto;
+	}
+
+	public static List<CareTeamMemberDTO> getMasterCareTeamMembersByField(String fieldName, Object value) {
 		List<CareTeamMemberDTO> dto = null;
 		EntityManager em = JPAUtil.getEntityManager();
 		try {

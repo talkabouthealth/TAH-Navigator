@@ -82,7 +82,6 @@ public class TemplateExtensions extends JavaExtensions {
 		}
 		htmlText = htmlText.replace("\n", "<br/>");
 		htmlText = htmlText.replace("&lt;br/&gt;", "<br/>");
-		System.out.println(htmlText);
 		return JavaExtensions.raw(htmlText);
 	}
 	

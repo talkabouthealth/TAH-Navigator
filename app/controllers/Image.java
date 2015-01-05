@@ -3,8 +3,10 @@ package controllers;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 
+import models.CareTeamMasterDTO;
 import models.PatientMedicationDTO;
 import models.UserImageDTO;
+import nav.dao.CareTeamDAO;
 import nav.dao.MedicationDAO;
 import nav.dao.UserDAO;
 import nav.dao.UserImageDAO;
@@ -59,6 +61,23 @@ public class Image extends Controller {
 			}
 		} else {
 			renderBinary(DEFAULT_IMAGE_FILE);
+		}
+	}
+	
+	public static void showClinic(int careTeamId) {
+		CareTeamMasterDTO imgdto = CareTeamDAO.getCareTeamByField("id", careTeamId);
+		response.setHeader("Content-Type", "image/png");
+		response.setHeader("Cache-Control", "no-cache");
+		if (imgdto != null && imgdto.getLogo()  == null) {
+			renderText("");
+		} else {
+			try{
+				if(imgdto != null && imgdto.getLogo() != null)
+					renderBinary(new ByteArrayInputStream(imgdto.getLogo()));
+			}catch ( Exception e ) {
+				e.printStackTrace();
+				renderText(imgdto.getLogo());
+			}
 		}
 	}
 	

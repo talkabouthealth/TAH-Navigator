@@ -1,13 +1,20 @@
 package nav.dao;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
+import models.AddressDTO;
 import models.InvitedDTO;
+import models.UserDTO;
+import util.EmailUtil;
 import util.JPAUtil;
+import util.TemplateExtensions;
 
 public class InvitationDAO {
 
@@ -59,5 +66,52 @@ public class InvitationDAO {
 			em.close();
 		}
 		return dto;
+	}
+	
+	public static Map<String, Object> mailVariables(String templateName, InvitedDTO dto) {
+		Map<String, Object> vars = new HashMap<String, Object>();
+		String username = dto.getFirstname() + " " + dto.getLastname();
+		String signupurl = "http://tvrhnavigator.com/invited-registration/" + dto.getId();
+		String clinicPhone = "";
+	 	AddressDTO address = dto.getAddressid();
+	 	if (address != null && address.getPhone() != null) {
+	 		clinicPhone = address.getPhone();
+	 	}	 			
+		vars.put("username", username);
+		vars.put("signupurl", signupurl);
+		vars.put("clinic_phone", clinicPhone);
+		if (templateName.compareToIgnoreCase(EmailUtil.TVRH_INVITE_APPOINTMENT_SCHEDULED) == 0 || templateName.compareToIgnoreCase(EmailUtil.TVRH_INVITE_REMINDER_APPOINTMENT_SCHEDULED) == 0) {
+			UserDTO doctor = dto.getCaremember();
+			String doctorName;			
+			if (doctor != null) {
+				doctorName = TemplateExtensions.usreNameNew(dto.getCareMemberName(), doctor.getId()).toString();
+			}
+			else {
+				doctorName = dto.getCareMemberName();
+			}			
+			String date = new SimpleDateFormat("MM/dd/yyyy").format(dto.getAppointmentdate());
+			StringBuilder clinicAddress = new StringBuilder();
+			if (address != null) {				
+				clinicAddress.append(address.getLine1());
+				if (address.getLine2() != null && !address.getLine2().isEmpty()) {
+					clinicAddress.append(", " + address.getLine2());
+				}
+				if (address.getCity() != null && !address.getCity().isEmpty()) {
+					clinicAddress.append(", " + address.getCity());
+				}
+				if (address.getState() != null && !address.getState().isEmpty()) {
+					clinicAddress.append(", " + address.getState());
+				}
+			}
+			
+			vars.put("doctor_name", doctorName);
+			vars.put("date", date);			
+			vars.put("appointment_time", dto.getAppointmenttime());			
+			vars.put("clinic_address", clinicAddress.toString());			
+		}
+		else if (templateName.compareToIgnoreCase(EmailUtil.TVRH_INVITE_NO_APPOINTMENT_SCHEDULED) == 0 || templateName.compareToIgnoreCase(EmailUtil.TVRH_INVITE_REMINDER_NO_APPOINTMENT_SCHEDULED) == 0) {
+			// empty
+		}
+		return vars;
 	}
 }

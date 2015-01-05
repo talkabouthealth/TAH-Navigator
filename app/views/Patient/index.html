@@ -69,9 +69,9 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
 					</div><!-- appointment-with -->
 				</div><!-- appointment-information -->
 			</div><!-- appointment -->
-			#{if listOther != null && listOther.size() > 1} 	   
+			#{if listOther != 0} 	   
 			<div class="text-center">
-				<a class="button rounded" href="@{Patient.appointment()}" style="font-size: 14px;">VIEW ALL APPOINTMENTS (${listOther.size()})</a>
+				<a class="button rounded" href="@{Patient.appointment()}" style="font-size: 14px;">VIEW ALL APPOINTMENTS (${listOther})</a>
 			</div>	    
 			#{/if}
 		</div><!-- preparation -->
