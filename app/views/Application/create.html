@@ -9,83 +9,89 @@
 			<input type="hidden" name="member.invitationId" value="${flash['member.invitationId']}"/>
 		#{/else}
 	<div class="create-container">
-	<ul class="list-group">
-		#{ifErrors}
-		<li class="list-group-item list-group-item-danger">Validation failed! Please correct the following errors,</li>
-		#{errors}
-		<li class="list-group-item list-group-item-danger">${error}</li>
-		#{/errors}
-		#{/ifErrors}
-		#{if flash.contains("error") }
-		<li class="list-group-item list-group-item-danger">${flash.error}</li>
-		#{/if}
-	</ul>
-					<div class="form-group email-input">
-						<label for="exampleInputEmail1">Email</label>
-						<div class="input-group">
-							#{if email}
-			    				<input id="emailField" type="email" class="form-control" name="member.email" value="${email}" placeholder="Enter email" required>
-			    			#{/if}
-			    			#{else}
-			    				<input id="emailField" type="email" class="form-control" name="member.email" value="${flash['member.email']}" placeholder="Enter email" required>
-			    			#{/else}
-							<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
-						</div>
-						<div class="help-block with-errors"></div>
-					</div>
+		<ul class="list-group">
+			#{ifErrors}
+			<li class="list-group-item list-group-item-danger">Validation failed! Please correct the following errors,</li>
+			#{errors}
+			<li class="list-group-item list-group-item-danger">${error}</li>
+			#{/errors}
+			#{/ifErrors}
+			#{if flash.contains("error") }
+			<li class="list-group-item list-group-item-danger">${flash.error}</li>
+			#{/if}
+		</ul>
+		<div class="form-group email-input">
+			<label for="exampleInputEmail1">Email</label>
+			<div class="input-group">
+				#{if email}
+    				<input id="emailField" type="email" class="form-control" name="member.email" value="${email}" placeholder="Enter email" required>
+    			#{/if}
+    			#{else}
+    				<input id="emailField" type="email" class="form-control" name="member.email" value="${flash['member.email']}" placeholder="Enter email" required>
+    			#{/else}
+				<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+			</div>
+			<div class="help-block with-errors"></div>
+		</div>
+		<div class="form-group password-input">
+			<label for="exampleInputEmail1">Password</label>
+			<div class="input-group">
+				<input id="inputPassword" type="password" class="form-control" name="member.password" placeholder="Password" data-toggle="validator" data-minlength="8" required>
+				<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+			</div>
+			<p class="help-block"></p>
+		</div>
+	<div class="form-group first-input">
+		<label class="for-patient">First Name</label>
+		<label class="for-doctor">Name</label>
+		<div class="input-group">
+			#{if fname}
+	     	 <input type="text" class="form-control" name="member.firstName" value="${fname}" placeholder="Enter first name" required>
+	     	#{/if}
+	    	#{else}
+	     	<input type="text" class="form-control" name="member.firstName" value="${flash['member.firstName']}" placeholder="Enter first name" required>
+	     	#{/else}
+			<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+		</div>
+		<div class="help-block with-errors"></div>
+		<label class="for-doctor">(As you would like it to appear for patients. For example: John Smith, MD or Nancy Smith, RN)</label>
+	</div>
 
-					<div class="form-group password-input">
-						<label for="exampleInputEmail1">Password</label>
-						<div class="input-group">
-							<input id="inputPassword" type="password" class="form-control" name="member.password" placeholder="Password" data-toggle="validator" data-minlength="8" required>
-							<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
-						</div>
-						<p class="help-block"></p>
-					</div>
+	<div class="form-group for-patient last-input">
+		<label for="exampleInputEmail1">Last Name</label>
+		#{if lname}
+	     	<input type="text" class="form-control" name="member.lastName" value="${lname}" placeholder="Enter last name">
+	     #{/if}
+	     #{else}
+	    	<input type="text" class="form-control" name="member.lastName" value="${flash['member.lastName']}" placeholder="Enter last name">
+	     #{/else}
+	</div>
 
-				<div class="form-group first-input">
-					<label class="for-patient">First Name</label>
-					<label class="for-doctor">Name</label>
-					<div class="input-group">
-						#{if fname}
-				     	 <input type="text" class="form-control" name="member.firstName" value="${fname}" placeholder="Enter first name" required>
-				     	#{/if}
-				    	#{else}
-				     	<input type="text" class="form-control" name="member.firstName" value="${flash['member.firstName']}" placeholder="Enter first name" required>
-				     	#{/else}
-						<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
-					</div>
-					<div class="help-block with-errors"></div>
-					<label class="for-doctor">(As you would like it to appear for patients. For example: John Smith, MD or Nancy Smith, RN)</label>
-				</div>
-
-				<div class="form-group for-patient last-input">
-					<label for="exampleInputEmail1">Last Name</label>
-					#{if lname}
-				     	<input type="text" class="form-control" name="member.lastName" value="${lname}" placeholder="Enter last name">
-				     #{/if}
-				     #{else}
-				    	<input type="text" class="form-control" name="member.lastName" value="${flash['member.lastName']}" placeholder="Enter last name">
-				     #{/else}
-				</div>
-
-				<div class="form-group for-patient dob-input">
-					<label for="exampleInputEmail1">Date of birth (mm/dd/yyyy)</label>
-					<div class="input-group">
-						<!--<input type="text" class="form-control datepicker" id="hasDatepicker" name="member.dob" value="${flash['member.dob']}" placeholder="Enter date of birth" data-date-format="mm/dd/yyyy" data-date-viewmode="day" data-date-minviewmode="day">-->
-						<!--<input type="text" class="form-control" id="hasDatepicker" name="member.dob" value="${flash['member.dob']}" placeholder="Enter date of birth (mm/dd/yyyy)" data-date-format="mm/dd/yyyy" data-date-viewmode="day" data-date-minviewmode="day">-->
-						<input type="text" class="form-control" name="member.dob" value="${flash['member.dob']}" placeholder="Enter date of birth (mm/dd/yyyy)" data-date-format="mm/dd/yyyy" data-date-viewmode="day" data-date-minviewmode="day">
-						<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-					</div>
-				</div>
-
-				  <div class="checkbox tos-input">
-				  	<label>
-				  		<input name="member.tosFlag" type="checkbox" required> I agree to the Moffitt Cancer Center - TVRH<i class="fa fa-square-o"></i>
-				  	</label>
-				  	<a href="javascript:window.open('@{Static.tos()}','Terms of Service','width=700,height=700')" target="_blank">Terms of Service</a> and <a href="javascript:window.open('@{Static.privacy()}','Privacy Policy','width=700,height=700')" target="_blank">Privacy Policy</a>.
-				  	<div class="help-block with-errors"></div>
-				  </div>
+	<div class="form-group for-patient dob-input">
+		<label for="exampleInputEmail1">Date of birth (mm/dd/yyyy)</label>
+		<div class="input-group">
+			<!--<input type="text" class="form-control datepicker" id="hasDatepicker" name="member.dob" value="${flash['member.dob']}" placeholder="Enter date of birth" data-date-format="mm/dd/yyyy" data-date-viewmode="day" data-date-minviewmode="day">-->
+			<!--<input type="text" class="form-control" id="hasDatepicker" name="member.dob" value="${flash['member.dob']}" placeholder="Enter date of birth (mm/dd/yyyy)" data-date-format="mm/dd/yyyy" data-date-viewmode="day" data-date-minviewmode="day">-->
+			<input type="text" class="form-control" name="member.dob" value="${flash['member.dob']}" placeholder="Enter date of birth (mm/dd/yyyy)" data-date-format="mm/dd/yyyy" data-date-viewmode="day" data-date-minviewmode="day">
+			<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+		</div>
+	</div>
+	
+	<div class="form-group for-patient dob-input">
+		<label for="exampleInputEmail1">Select Primary Cancer Doctor</label>
+		<div class="input-group">
+			<input type="text" class="form-control" id="primarydoc" name="member.primarydoc" value="${flash['member.primarydoc']}" placeholder="Dr. Jorge Freire" data-toggle="validator" required>
+			<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+		</div>
+		<div class="help-block with-errors"></div>
+	</div>
+	  <div class="checkbox tos-input">
+	  	<label>
+	  		<input name="member.tosFlag" type="checkbox" required> I agree to the Moffitt Cancer Center - TVRH<i class="fa fa-square-o"></i>
+	  	</label>
+	  	<a href="javascript:window.open('@{Static.tos()}','Terms of Service','width=700,height=700')" target="_blank">Terms of Service</a> and <a href="javascript:window.open('@{Static.privacy()}','Privacy Policy','width=700,height=700')" target="_blank">Privacy Policy</a>.
+	  	<div class="help-block with-errors"></div>
+	  </div>
 	</div>
 	<div class="container">
 	<div class="row marketing">
@@ -95,37 +101,48 @@
 		</div>
 
 	</div>
-	</div> <!-- /container -->
-	#{/form}
+</div> <!-- /container -->
+#{/form}
 <script>
-<!--
+<!-- -->
+var tmp = [];
+var drMap = {};
 $(document).ready(function() {
-	try{
-mixpanel.track("Register");
+    $.post("/application/createDrList", function(data) {   
+    	var doctors = data.doctors;
+    	$('#primarydoc').data("doctors",doctors);
+        for (var id in doctors) {
+            tmp.push(doctors[id]);
+            drMap[doctors[id]] = id;
+        }
+        $('#primarydoc').typeahead({
+            source: tmp,
+            minLength: 0
+        }).blur(function(){
+            if(drMap[$(this).val()] == null) {
+                $('#primarydoc').val('');
+            }
+		});
+    }, "json");
+
+    try{
+		mixpanel.track("Register");
 	} catch(e){}
-$('#hasDatepicker').datepicker();
-var valid = $('#signup').validator();
+	
+	$('#hasDatepicker').datepicker();
+	var valid = $('#signup').validator();
 
-$("#emailField").blur(function(e) {
-	$.post('/application/validateEmail', {email:$(this).val()}, function (data) {
-		if(data.emailused == true) {
-			$("#emailField").parent().parent().find("div.with-errors").html("<ul class='list-unstyled'><li style='color:#d15e5e !important'>This email is already registered, please choose another one.</li></ul>");
-		} else {
-			$("#emailField").parent().parent().find("div.with-errors").html("");
-		}
-	}, "json");
-});
+	$("#emailField").blur(function(e) {
+		$.post('/application/validateEmail', {email:$(this).val()}, function (data) {
+			if(data.emailused == true) {
+				$("#emailField").parent().parent().find("div.with-errors").html("<ul class='list-unstyled'><li>This email is already registered, please choose another one.</li></ul>");
+			} else {
+				$("#emailField").parent().parent().find("div.with-errors").html("");
+			}
+		}, "json");
+	});
 
-var userType = $("#userType").val();
-if(userType == '5' || userType == '4') {
-	$(".for-patient").hide();
-	$(".for-doctor").show();
-} else {
-	$(".for-patient").show();
-	$(".for-doctor").hide();
-}
-$("#userType").change(function(){
-	var userType = $(this).val();
+	var userType = $("#userType").val();
 	if(userType == '5' || userType == '4') {
 		$(".for-patient").hide();
 		$(".for-doctor").show();
@@ -133,7 +150,16 @@ $("#userType").change(function(){
 		$(".for-patient").show();
 		$(".for-doctor").hide();
 	}
-});
+	$("#userType").change(function(){
+		var userType = $(this).val();
+		if(userType == '5' || userType == '4') {
+			$(".for-patient").hide();
+			$(".for-doctor").show();
+		} else {
+			$(".for-patient").show();
+			$(".for-doctor").hide();
+		}
+	});
 
     var passwordInput = $('.password-input');
     var passwordHelpBlock = passwordInput.find('.help-block');
@@ -152,5 +178,5 @@ $("#userType").change(function(){
         }
     }, 100);
 });
--->
+
 </script>

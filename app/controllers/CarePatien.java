@@ -37,6 +37,7 @@ import models.MedicineCatlogDTO;
 import models.MedicineMasterDTO;
 import models.NoteDTO;
 import models.PatienCareTeamDTO;
+import models.PatientCareTeamMemberDTO;
 import models.PatientChemoTreatmentDTO;
 import models.PatientChromosomeDTO;
 import models.PatientConcernDTO;
@@ -135,11 +136,12 @@ public class CarePatien  extends Controller {
 		List<String> allProblems = DistressDAO.problemList(Integer.valueOf(patientId), 0);		
         render(user,expertDetail,patientId,patientDto,patientOtherDetails,distress,noteList, diseases, stages, breastCancerId, ps,appList,drList, lastWeekProblems, lastMonthProblems, lastThreeMonthProblems, lastSixMonthProblems, lastYearProblems, allProblems);
 	}
+
 	public static void distressValues(int patientId, int days) {
 		Map<Long, Integer> values = DistressDAO.distressValues(patientId, days);
 		renderJSON(values);
 	}
-	
+
 	public static void careteam(int patientId) {
 		UserDetailsDTO userDto = UserDAO.getDetailsById(patientId);
 		PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", userDto.getId());
@@ -249,7 +251,7 @@ public class CarePatien  extends Controller {
 			
 			List<CareMember> doctors = UserDAO.verifiedDoctors();
 			Map<Integer, String> doctorNames = new HashMap<Integer, String>();
-			for(CareMember doctor : doctors) {			
+			for(CareMember doctor : doctors) {
 				StringBuilder name = new StringBuilder("");
 				if (doctor.getFirstName() != null) {
 					name.append(doctor.getFirstName());
@@ -308,7 +310,7 @@ public class CarePatien  extends Controller {
 			
 			List<CareMember> doctors = UserDAO.verifiedDoctors();
 			Map<Integer, String> doctorNames = new HashMap<Integer, String>();
-			for(CareMember doctor : doctors) {			
+			for(CareMember doctor : doctors) {
 				StringBuilder name = new StringBuilder("");
 				if (doctor.getFirstName() != null) {
 					name.append(doctor.getFirstName());
@@ -826,10 +828,11 @@ public class CarePatien  extends Controller {
 		renderJSON(obj);
 	}
 	
-	public static void careteamSpecific(int careTeamId) {
-		System.out.println(careTeamId);
+	public static void careteamSpecific(int careTeamId,int patientId) {
+		System.out.println("careTeamId: " + careTeamId);
+		System.out.println("patientId: " + patientId);
 		CareTeamMasterDTO careteam = CareTeamDAO.getCareTeamByField("id", careTeamId);
-		List<CareTeamMemberDTO>  memberList = CareTeamDAO.getCareTeamMembersByField("careteamid", careTeamId);
+		List<PatientCareTeamMemberDTO>  memberList = CareTeamDAO.getCareTeamMembersByPatient(new Integer(patientId),careTeamId);
 		UserDetailsDTO userDetails = null;
 		ExpertDetailDTO expertDetail = null;
 		ExpertBean expertBean =null;
@@ -837,7 +840,7 @@ public class CarePatien  extends Controller {
 		ArrayList<ExpertBean> otherExpert = new ArrayList<ExpertBean>(); 
 		int iMemberCount = 0;
 		if(memberList != null && memberList.size()>0) {
-			for (CareTeamMemberDTO expertBean2 : memberList) {
+			for (PatientCareTeamMemberDTO expertBean2 : memberList) {
 				 expertBean = new ExpertBean();
 				System.out.println(expertBean2.getMember().getEmail() );
 				userDetails = UserDAO.getDetailsById(expertBean2.getMemberid());
@@ -849,7 +852,7 @@ public class CarePatien  extends Controller {
 					iMemberCount++;
 				} else {
 					otherExpert.add(expertBean);
-				}	
+				}
 			}
 		}
 		render("CarePatien/careteamblock.html",careteam,otherExpert,expertBeanHead);

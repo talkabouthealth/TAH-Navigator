@@ -12,5 +12,16 @@
 <!-- 	</div> -->
 	<div class="col-xs-12 col-sm-12">
 			Welcome on Admin dashboard
+			<a href="javaScript:migrate();">Migrate patient care team</a>
 	</div>
 </div>
+<script>
+migrate = function() {
+	$.ajax({ type: 'POST', url: '/admin/correctCareTeamData',
+		data  : {},
+		success:function(data){
+			alert(data);
+		}
+	});
+}
+</script>

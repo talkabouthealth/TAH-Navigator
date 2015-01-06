@@ -7,8 +7,7 @@
 			<div class="user_name">
 				<p>
 					<a href="#"> #{userName userName: expertBeanHead.userDetails.user.name, userId:expertBeanHead.userDetails.user.id /} </a>
-					<a href="javaScript:void('edit')" class="btn btn-danger-small">Edit</a>
-					<a href="javaScript:void('delete')" class="btn btn-danger-small">Delete</a>
+					<button class="btn btn-danger-small careTeamMemberBtn">Remove</button>
 				</p>
 			</div>
 			<div class="user_bottm">
@@ -38,7 +37,8 @@
 			</div>
 		</div>
 		<p>&nbsp;</p>
-		<p class="text-center"><a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${careteam.address.line1}+${careteam.address.line2},${careteam.address.city},${careteam.address.state},${careteam.address.country} - ${careteam.address.zip}" class="btn btn-default-small">GET DIRECTIONS</a></p>
+		<p class="text-center">
+		<a href="javaScript:void('delete')" class="btn btn-default">Edit location</a>
 	</div>
 	#{/if}
 	#{else}
@@ -68,8 +68,8 @@
 						</span></b></p>
        				
        				#{/if}
-						<a href="javaScript:void('edit')" class="btn btn-danger-small">Edit</a>
-						<a href="javaScript:void('delete')" class="btn btn-danger-small">Delete</a>
+						<a href="javaScript:void('delete')" class="btn btn-danger-small">Remove</a>
+						<a href="javaScript:void('edit')" class="btn btn-default-small">Make Primary</a>
 					</div>
 				</div>
 				
@@ -79,4 +79,4 @@
 	</div>
 </div>
 #{/if}
-<div class="common_03"></div>
+<!-- <div class="common_03"></div> -->

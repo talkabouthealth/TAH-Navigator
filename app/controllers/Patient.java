@@ -59,9 +59,10 @@ public class Patient extends Controller {
 		ArrayList<ExpertBean> careExpert = new ArrayList<ExpertBean>(); 
 		int maxUsers = 0;
 		for (PatienCareTeamDTO patienCareTeamDTO : careTeams) {
-			List<CareTeamMemberDTO>  memberList = CareTeamDAO.getCareTeamMembersByField("careteamid", patienCareTeamDTO.getCareteamid());
+			List<PatientCareTeamMemberDTO>  memberList = CareTeamDAO.getCareTeamMembersByPatient(user.getId(), patienCareTeamDTO.getCareteamid());
+//			List<PatientCareTeamMemberDTO>  memberList = CareTeamDAO.getCareTeamMembersByField("careteamid", patienCareTeamDTO.getCareteamid());
 			if(memberList != null && memberList.size()>0) {
-				for (CareTeamMemberDTO expertBean2 : memberList) {
+				for (PatientCareTeamMemberDTO expertBean2 : memberList) {
 					maxUsers++;
 					if(maxUsers<5) {
 						expertBean = new ExpertBean();
@@ -112,7 +113,7 @@ public class Patient extends Controller {
 			PatientDetailDTO patientOtherDetails = (PatientDetailDTO) patientInfo.get("patientDetails");
 			BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
 			int breastCancerId = Disease.BREAST_CANCER_ID;
-			/*
+			
 			List<AppointmentDTO> list = new ArrayList<AppointmentDTO>();
 			UserDetailsDTO userDetails = null;
 			Date curreDate = new Date();
@@ -127,7 +128,8 @@ public class Patient extends Controller {
 				}
 			} else {
 				list = null;
-			}			
+			}
+	
 			List<AppointmentDTO> expListOther = AppointmentDAO.getAppointmentListByField("patientid.id" , userDto.getId(), curreDate, "past",0 );
 			List<AppointmentDTO> listOld = new ArrayList<AppointmentDTO>();
 			if(expListOther != null) {
@@ -141,10 +143,6 @@ public class Patient extends Controller {
 			} else {
 				listOld = null;
 			}
-			*/
-			Date curreDate = new Date();
-			List<AppointmentDTO> list = AppointmentDAO.futureAppointments(userDto.getId());
-			List<AppointmentDTO> listOld = AppointmentDAO.pastAppointments(userDto.getId());
 			ArrayList<Integer> totalUp = AppointmentDAO.getTotalappointments("patientid.id", userDto.getId(), curreDate, "upcomming" );
 			ArrayList<Integer> totalPast = AppointmentDAO.getTotalappointments("patientid.id", userDto.getId(), curreDate, "past" );
 	        render(user,userDto,patientOtherDetails,list,listOld, breastCancerId, breastCancerInfo,totalUp,totalPast);
@@ -181,7 +179,8 @@ public class Patient extends Controller {
 	public static void careteamSpecific(int careTeamId) {
 		System.out.println(careTeamId);
 		CareTeamMasterDTO careteam = CareTeamDAO.getCareTeamByField("id", careTeamId);
-		List<CareTeamMemberDTO>  memberList = CareTeamDAO.getCareTeamMembersByField("careteamid", careTeamId);
+		UserBean user = CommonUtil.loadCachedUser(session);
+		List<PatientCareTeamMemberDTO>  memberList = CareTeamDAO.getCareTeamMembersByPatient(user.getId(), careTeamId);
 		UserDetailsDTO userDetails = null;
 		ExpertDetailDTO expertDetail = null;
 		ExpertBean expertBean =null;
@@ -189,7 +188,7 @@ public class Patient extends Controller {
 		ArrayList<ExpertBean> otherExpert = new ArrayList<ExpertBean>(); 
 		int iMemberCount = 0;
 		if(memberList != null && memberList.size()>0) {
-			for (CareTeamMemberDTO expertBean2 : memberList) {
+			for (PatientCareTeamMemberDTO expertBean2 : memberList) {
 				 expertBean = new ExpertBean();
 				System.out.println(expertBean2.getMember().getEmail() );
 				userDetails = UserDAO.getDetailsById(expertBean2.getMemberid());

@@ -26,6 +26,7 @@ import nav.dao.PatientAlert;
 import nav.dao.SecurityQuestionDAO;
 import nav.dao.UserDAO;
 import nav.dao.UserTypeDAO;
+import nav.dto.CareMember;
 import nav.dto.SignUpMemberBean;
 import nav.dto.UserBean;
 import notifiers.Mail;
@@ -137,13 +138,32 @@ public class Application extends Controller {
     	}
     	render();
     }
-    
+
     public static void create() {
+    	/*
     	List<SecurityQuestionDTO> securityQuestionList =  SecurityQuestionDAO.getSecurityQuestions();
     	List<UserTypeDTO> userTypelist = UserTypeDAO.getUserTypeList();
     	List<ContactTypeDTO> contactTypes =  ContactTypeDAO.getContactTypeList();
     	render(securityQuestionList,userTypelist,contactTypes);
+    	*/
+    	render();
     }
+
+    public static void createDrList() {
+    	Map<String, Object> jsonData = new HashMap<String, Object>();
+    	List<CareMember> doctors = UserDAO.verifiedDoctors();
+    	Map<Integer, String> doctorNames = new HashMap<Integer, String>();
+		for(CareMember doctor : doctors) {
+			StringBuilder name = new StringBuilder("");
+			if (doctor.getFirstName() != null) {
+				name.append(doctor.getFirstName());
+			}				
+			doctorNames.put(doctor.getId(), name.toString());
+		}
+		jsonData.put("doctors", doctorNames);
+		renderJSON(jsonData);
+    }
+    
     
     public static void createOther() {
     	List<SecurityQuestionDTO> securityQuestionList =  SecurityQuestionDAO.getSecurityQuestions();
@@ -377,6 +397,7 @@ public class Application extends Controller {
    	 
   	Integer intId = new Integer(member.getInvitationId());
   	InvitedDTO invitationdto = InvitationDAO.getDetailsByField("id",intId);
+  	member.setPrimarydoc(UserDAO.getUserName(invitationdto.getAddedby().getId()));
   	if(invitationdto!=null && member.getEmail().trim().equalsIgnoreCase(invitationdto.getEmail().trim())) {
   		UserDTO userDto = Security.authenticate(member.getEmail(), member.getPassword());
   	   	 if(userDto != null) {

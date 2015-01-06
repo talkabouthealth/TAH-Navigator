@@ -63,6 +63,7 @@ public class SignUpMemberBean {
 	
 	private String invitationId = "0";
 	
+	private String primarydoc;
 
 	public SignUpMemberBean() {
 	}
@@ -281,5 +282,13 @@ public class SignUpMemberBean {
 
 	public void setInvitationId(String invitationId) {
 		this.invitationId = invitationId;
+	}
+
+	public String getPrimarydoc() {
+		return primarydoc;
+	}
+
+	public void setPrimarydoc(String primarydoc) {
+		this.primarydoc = primarydoc;
 	}
 }

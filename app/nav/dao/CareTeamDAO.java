@@ -1,6 +1,7 @@
 package nav.dao;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -23,6 +24,7 @@ import models.CareTeamMemberDTO;
 import models.ExpertDetailDTO;
 import models.NoteDTO;
 import models.PatienCareTeamDTO;
+import models.PatientCareTeamMemberDTO;
 import models.PatientDetailDTO;
 import models.UserCertificateDTO;
 import models.UserDTO;
@@ -116,6 +118,28 @@ public class CareTeamDAO {
 		return true;
 	}
 
+	public static boolean createPatienCareTeamAllNew(UserDTO patien,Integer teamId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		String hql ="INSERT INTO PatienCareTeamDTO(careteamid, patienid) SELECT id, "+patien.getId()+" FROM CareTeamMasterDTO where id= :teamId";
+		em.getTransaction().begin();	
+		Query query = em.createQuery(hql);
+		query.setParameter("teamId", teamId);
+		int result = query.executeUpdate();
+		em.getTransaction().commit();
+
+		hql ="INSERT INTO PatientCareTeamMemberDTO(careteamid, memberid, patientid, primary) SELECT careteamid,memberid,"
+		+patien.getId()+", primary FROM CareTeamMemberDTO where careteamid= :teamId";
+		em.getTransaction().begin();	
+		Query query1 = em.createQuery(hql);
+		query1.setParameter("teamId", teamId);
+		result = query1.executeUpdate();
+		em.getTransaction().commit();
+
+		System.out.println("result : " + result);
+		return true;
+	}
+	
+	/*
 	public static boolean createPatienCareTeamAll(UserDTO patien) {
 		EntityManager em = JPAUtil.getEntityManager();
 		String hql ="INSERT INTO PatienCareTeamDTO(careteamid, patienid) SELECT id, "+patien.getId()+" FROM CareTeamMasterDTO where id=2 or id=3";
@@ -123,7 +147,32 @@ public class CareTeamDAO {
 		Query query = em.createQuery(hql);
 		int result = query.executeUpdate();
 		em.getTransaction().commit();
+
+		hql ="INSERT INTO PatientCareTeamMemberDTO(careteamid, memberid, patientid, primary) SELECT careteamid,memberid,"
+		+patien.getId()+", primary FROM CareTeamMemberDTO where careteamid=2 or careteamid=3";
+		em.getTransaction().begin();	
+		Query query1 = em.createQuery(hql);
+		result = query1.executeUpdate();
+		em.getTransaction().commit();
+
 		System.out.println("result : " + result);
+		return true;
+	}
+*/
+	public static boolean migrateCareTeam(int patientId, int careteamId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			String hql ="INSERT INTO PatientCareTeamMemberDTO(careteamid, memberid, patientid, primary) SELECT careteamid,memberid,"+patientId+
+					", primary FROM CareTeamMemberDTO where careteamid="+careteamId;
+			em.getTransaction().begin();	
+			Query query1 = em.createQuery(hql);
+			query1.executeUpdate();
+			em.getTransaction().commit();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			em.close();
+		}
 		return true;
 	}
 
@@ -132,7 +181,6 @@ public class CareTeamDAO {
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
 			TypedQuery<PatienCareTeamDTO> query = em.createQuery("SELECT c FROM PatienCareTeamDTO c WHERE c."+fieldName+" = :field and c.patien.isActive = true order by id", PatienCareTeamDTO.class);
-			// and c.patien.isverified = true
 			query.setParameter("field", value);
 			dto = query.getResultList();
 		} catch(Exception e) {
@@ -157,13 +205,29 @@ public class CareTeamDAO {
 		}
 		return dto;
 	}
-	
-	public static List<CareTeamMemberDTO> getCareTeamMembersByField(String fieldName, Object value) {
-		List<CareTeamMemberDTO> dto = null;
+
+	public static List<PatientCareTeamMemberDTO> getCareTeamMembersByField(String fieldName, Object value) {
+		List<PatientCareTeamMemberDTO> dto = null;
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
-			TypedQuery<CareTeamMemberDTO> query = em.createQuery("FROM CareTeamMemberDTO c WHERE c."+fieldName+" = :field order by primary desc", CareTeamMemberDTO.class); 
+			TypedQuery<PatientCareTeamMemberDTO> query = em.createQuery("FROM PatientCareTeamMemberDTO c WHERE c."+fieldName+" = :field order by primary desc", PatientCareTeamMemberDTO.class); 
 			query.setParameter("field", value);
+			dto = query.getResultList();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			em.close();
+		}
+		return dto;
+	}
+	
+	public static List<PatientCareTeamMemberDTO> getCareTeamMembersByPatient(Integer patientid, Integer careTeamId) {
+		List<PatientCareTeamMemberDTO> dto = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			TypedQuery<PatientCareTeamMemberDTO> query = em.createQuery("FROM PatientCareTeamMemberDTO c WHERE c.careteamid = :field and c.patientid = :field1 order by primary desc", PatientCareTeamMemberDTO.class); 
+			query.setParameter("field", careTeamId);
+			query.setParameter("field1", patientid);
 			dto = query.getResultList();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -210,10 +274,25 @@ public class CareTeamDAO {
 		return experts;
 	}
 	
+	public static List<Integer> getCareTeamOfExpert(Integer expertId) {
+		List<Integer> dto = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			TypedQuery<Integer> query = em.createQuery("select id from CareTeamMasterDTO where active = true and id in (select careteamid from CareTeamMemberDTO where memberid = :field)", Integer.class);
+			query.setParameter("field", expertId);
+			dto = query.getResultList();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			em.close();
+		}
+		return dto;
+	}
+	
 	public static List<CareTeam> patientTeams(Integer patientId) {
 		List<PatienCareTeamDTO> careTeamDtos = getPatienCareTeamByField("patienid", patientId);
 		List<CareTeam> careTeams = new ArrayList<CareTeam>();		
-		for (PatienCareTeamDTO teamDto: careTeamDtos) {			
+		for (PatienCareTeamDTO teamDto: careTeamDtos) {
 			List<ExpertBean> experts = teamExperts(teamDto.getCareteamid());
 			CareTeam team = new CareTeam();
 			team.setCareTeamDto(teamDto);			
@@ -227,93 +306,98 @@ public class CareTeamDAO {
 		return careTeams;
 	}
 	
-	public static CareTeamMemberDTO getCareTeamMembersByMemberId(Object value) {
-		List<CareTeamMemberDTO> list = getCareTeamMembersByField("memberid",value);
-		if(list!=null && list.size()>0)
-			return list.get(0);
-		else
-			return null;
+	public static List<Integer> getCareTeamMembersByMemberId(Object value) {
+		List<Integer> dto = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			TypedQuery<Integer> query = em.createQuery("select careteamid FROM PatientCareTeamMemberDTO c WHERE c.memberid = :field group by careteamid", Integer.class); 
+			query.setParameter("field", value);
+			dto = query.getResultList();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			em.close();
+		}
+		return dto;
 	}
 	
 	public static List<PatientBean> patientsOfCareTeam(int userId, Map<String, String> filterParams) {
-		CareTeamMemberDTO careTeam =  getCareTeamMembersByMemberId(userId);		
+		List<Integer> careTeam =  getCareTeamMembersByMemberId(userId);		
 		ArrayList<PatientBean> patients = new ArrayList<PatientBean>();
 		if (careTeam != null) {
-			List<PatienCareTeamDTO> patientDtos = getPatienCareTeamByField("careteamid",careTeam.getCareteamid());				
-			for (PatienCareTeamDTO patientDto : patientDtos) {				
-				UserDetailsDTO userDetails = UserDAO.getDetailsById(patientDto.getPatienid());					
-				PatientDetailDTO patientDetail  = ProfileDAO.getPatientByField("id", patientDto.getPatienid());								
-				/* need to refactor - getDiagnosis method performing unnecessary queries for this call. This method is good for the MyDiagnosis page though - Murray */
-				Map<String, Object> patientInfo = PatientDetailDAO.getDiagnosis(patientDto.getPatienid());
-				BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
-				DistressBean distress = DistressDAO.getLastDistress(patientDto.getPatien());
-				AppointmentDTO appointment = AppointmentDAO.getLastAppointment(patientDto.getPatien(), new Date());				
-				AppointmentDTO nextAppointment = AppointmentDAO.nextAppointment(patientDto.getPatienid());
-				NoteDTO noteFor = NotesDAO.getLastNoteFor(patientDto.getPatien());
-				
-				
-				if (filterParams.containsKey("disease")) {					
-					Integer diseaseId = new Integer(filterParams.get("disease"));
-					// filter based on disease only if disease id is not zero
-					if (diseaseId.intValue() != 0) {
-						if (patientDetail != null && patientDetail.getDiseaseId() != null) {
-							if (patientDetail.getDiseaseId().compareTo(diseaseId) != 0) {
-								continue;
-							}		
-						}
-						else {
-							continue;
-						}
-					}
-				}
-				if (filterParams.containsKey("md")) {					
-					Integer careMemberId = new Integer(filterParams.get("md"));
-					// filter based on disease only if disease id is not zero
-					if (careMemberId.intValue() != 0) {
-						if (appointment != null && appointment.getCaremember() != null) {
-							UserDTO user = appointment.getCaremember();
-							if (user.getId() != careMemberId.intValue()) {
+			for (Integer teamId : careTeam) {
+				List<PatienCareTeamDTO> patientDtos = getPatienCareTeamByField("careteamid",teamId);				
+				for (PatienCareTeamDTO patientDto : patientDtos) {
+					UserDetailsDTO userDetails = UserDAO.getDetailsById(patientDto.getPatienid());					
+					PatientDetailDTO patientDetail  = ProfileDAO.getPatientByField("id", patientDto.getPatienid());								
+					/* need to refactor - getDiagnosis method performing unnecessary queries for this call. This method is good for the MyDiagnosis page though - Murray */
+					Map<String, Object> patientInfo = PatientDetailDAO.getDiagnosis(patientDto.getPatienid());
+					BreastCancerInfoDTO breastCancerInfo = (BreastCancerInfoDTO) patientInfo.get("breastCancerInfo");
+					DistressBean distress = DistressDAO.getLastDistress(patientDto.getPatien());
+					AppointmentDTO appointment = AppointmentDAO.getLastAppointment(patientDto.getPatien(), new Date());				
+					AppointmentDTO nextAppointment = AppointmentDAO.nextAppointment(patientDto.getPatienid());
+					NoteDTO noteFor = NotesDAO.getLastNoteFor(patientDto.getPatien());
+
+					if (filterParams.containsKey("disease")) {
+						Integer diseaseId = new Integer(filterParams.get("disease"));
+						// filter based on disease only if disease id is not zero
+						if (diseaseId.intValue() != 0) {
+							if (patientDetail != null && patientDetail.getDiseaseId() != null) {
+								if (patientDetail.getDiseaseId().compareTo(diseaseId) != 0) {
+									continue;
+								}
+							} else {
 								continue;
 							}
 						}
-						else {
-							continue;
-						}
 					}
-				}
-				//searchPatient
-				if (filterParams.containsKey("searchPatient")) {					
-					String searchStr = filterParams.get("searchPatient");					
-					if (searchStr.length() > 0) {
-						if (userDetails != null) {
-							String patientName = String.valueOf(TemplateExtensions.usreNameNew(userDetails.getUser().getName(), userDetails.getId())).trim();
-							patientName = patientName.toLowerCase();
-							if (!patientName.contains(searchStr.toLowerCase())) {
+					if (filterParams.containsKey("md")) {
+						Integer careMemberId = new Integer(filterParams.get("md"));
+						// filter based on disease only if disease id is not zero
+						if (careMemberId.intValue() != 0) {
+							if (appointment != null && appointment.getCaremember() != null) {
+								UserDTO user = appointment.getCaremember();
+								if (user.getId() != careMemberId.intValue()) {
+									continue;
+								}
+							} else {
 								continue;
 							}
 						}
-						else {
-							continue;
-						}						
 					}
+
+					if (filterParams.containsKey("searchPatient")) {
+						String searchStr = filterParams.get("searchPatient");
+						if (searchStr.length() > 0) {
+							if (userDetails != null) {
+								String patientName = String.valueOf(TemplateExtensions.usreNameNew(userDetails.getUser().getName(), userDetails.getId())).trim();
+								patientName = patientName.toLowerCase();
+								if (!patientName.contains(searchStr.toLowerCase())) {
+									continue;
+								}
+							} else {
+								continue;
+							}
+						}
+					}
+					PatientBean patient = new PatientBean();
+					patient.setUserDetails(userDetails);
+					patient.setPatientOtherDetails(patientDetail);				
+					patient.setBreastCancerInfo(breastCancerInfo);								
+					if (distress != null) {
+						patient.setDistress(distress);
+					}				
+					if (nextAppointment != null) {
+						patient.setNextAppointment(nextAppointment);
+					}				
+					if(appointment != null) {
+						patient.setAppointmentInfo(appointment);
+					}								
+					if(noteFor!= null) {
+						patient.setNote(noteFor);
+					}
+					patients.add(patient);
 				}
-				PatientBean patient = new PatientBean();
-				patient.setUserDetails(userDetails);
-				patient.setPatientOtherDetails(patientDetail);				
-				patient.setBreastCancerInfo(breastCancerInfo);								
-				if (distress != null) {
-					patient.setDistress(distress);
-				}				
-				if (nextAppointment != null) {
-					patient.setNextAppointment(nextAppointment);
-				}				
-				if(appointment != null) {
-					patient.setAppointmentInfo(appointment);
-				}								
-				if(noteFor!= null) {
-					patient.setNote(noteFor);
-				}
-				patients.add(patient);
 			}
 		}
 		return patients;		

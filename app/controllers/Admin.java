@@ -20,7 +20,7 @@ import models.CareTeamMasterDTO;
 import models.CareTeamMemberDTO;
 import models.InvitedDTO;
 import models.PatienCareTeamDTO;
-//import models.PatientCareTeamMemberDTO;
+import models.PatientCareTeamMemberDTO;
 import models.UserDTO;
 import models.UserDetailsDTO;
 import models.UserTypeDTO;
@@ -265,7 +265,30 @@ public class Admin extends Controller {
 	}
 
 	
-	
+	public static void correctCareTeamData() {
+		List<UserDTO> list = UserDAO.getAllForAdmin("1",null);
+		int userupdated = 0;
+		for (UserDTO userDTO : list) {
+			System.out.println(userDTO.getEmail());
+			List<PatienCareTeamDTO> careTeams = CareTeamDAO.getPatienCareTeamByField("patienid", new Integer(userDTO.getId()));
+			for (PatienCareTeamDTO patienCareTeamDTO : careTeams) {
+				List<PatientCareTeamMemberDTO>  memberList = CareTeamDAO.getCareTeamMembersByPatient(new Integer(userDTO.getId()),new Integer(patienCareTeamDTO.getCareteamid()));
+				if(memberList == null ) {
+					System.out.println("YES: " +userDTO.getEmail());
+					CareTeamDAO.migrateCareTeam(userDTO.getId(),patienCareTeamDTO.getCareteamid());
+					userupdated = userupdated + 1;
+				} else if(memberList.size() == 0) {
+					
+					System.out.println("YES: " +userDTO.getEmail());
+					CareTeamDAO.migrateCareTeam(userDTO.getId(),patienCareTeamDTO.getCareteamid());
+					userupdated = userupdated + 1;
+				} else {
+					System.out.println("NO: " +userDTO.getEmail() + " : " + memberList.size() );
+				}
+			}
+		}
+		renderText(userupdated);
+	}
 
 	public static void getExpertList() {
 //		List<UserTypeDTO> userTypelist = UserTypeDAO.getUserTypeList();

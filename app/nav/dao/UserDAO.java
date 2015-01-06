@@ -517,7 +517,16 @@ public class UserDAO {
 			System.out.println(dto.getUsertypeid().getAbbravation());
 			if(dto.getUsertypeid().getAbbravation() == 'p') {
 				System.out.println("Adding care team");
-				CareTeamDAO.createPatienCareTeamAll(dto);
+				System.out.println("Expert is : " + memberBean.getPrimarydoc());
+				if(StringUtils.isNotBlank(memberBean.getPrimarydoc())) {
+					UserDetailsDTO expdto = getDetailsByField("firstName",memberBean.getPrimarydoc());
+					if(expdto != null) {
+						List<Integer> ids = CareTeamDAO.getCareTeamOfExpert(new Integer(expdto.getId()));
+						for (Integer integer : ids) {
+							CareTeamDAO.createPatienCareTeamAllNew(dto,integer);
+						}
+					}
+				}
 			} else if(dto.getUsertypeid().getAbbravation() == 'c') {
 				ExpertDetailDTO expdetails = new ExpertDetailDTO();
 				if("5".equalsIgnoreCase(memberBean.getUserType())) { //DR
