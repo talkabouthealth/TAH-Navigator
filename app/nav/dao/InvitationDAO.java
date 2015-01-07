@@ -7,11 +7,14 @@ import java.util.List;
 import java.util.Map;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
 import models.AddressDTO;
+import models.CareTeamMemberDTO;
 import models.InvitedDTO;
 import models.UserDTO;
+import models.UserDetailsDTO;
 import util.EmailUtil;
 import util.JPAUtil;
 import util.TemplateExtensions;
@@ -69,19 +72,53 @@ public class InvitationDAO {
 	}
 	
 	public static Map<String, Object> mailVariables(String templateName, InvitedDTO dto) {
+		EntityManager em = JPAUtil.getEntityManager();
 		Map<String, Object> vars = new HashMap<String, Object>();
 		String username = dto.getFirstname() + " " + dto.getLastname();
 		String signupurl = "http://tvrhnavigator.com/invited-registration/" + dto.getId();
 		String clinicPhone = "";
-	 	AddressDTO address = dto.getAddressid();
-	 	if (address != null && address.getPhone() != null) {
+		UserDTO doctor = dto.getCaremember();	 	
+		AddressDTO address = dto.getAddressid();
+		
+		if (address != null && address.getPhone() != null) {
 	 		clinicPhone = address.getPhone();
-	 	}	 			
+	 	}
+		if (clinicPhone.isEmpty() && doctor != null) {		 	
+		 	UserDetailsDTO details = null;
+	    	TypedQuery<UserDetailsDTO> userQuery = em.createQuery("SELECT c FROM UserDetailsDTO c WHERE c.id = :id", UserDetailsDTO.class); 
+	    	userQuery.setParameter("id", doctor.getId());
+			try {
+				details = userQuery.getSingleResult();
+				if (details.getMobile() != null) {
+		    		clinicPhone = details.getMobile();
+		    	}
+		    	else if (details.getHomePhone() != null){
+		    		clinicPhone = details.getHomePhone();
+		    	}
+			} catch (NoResultException e1) {
+				e1.printStackTrace();
+			}		 	
+		}
+		
+		if (clinicPhone.isEmpty() && doctor != null) {
+			CareTeamMemberDTO careTeamMember = null;
+	    	TypedQuery<CareTeamMemberDTO> query = em.createQuery("SELECT c FROM CareTeamMemberDTO c WHERE c.member.id = :id", CareTeamMemberDTO.class); 
+	    	query.setParameter("id", doctor.getId());
+	    	try {
+	    		careTeamMember = query.getSingleResult();
+	    		AddressDTO teamAddress = careTeamMember.getCareteam().getAddress();
+	    		if (teamAddress != null && teamAddress.getPhone() != null) {
+	    	 		clinicPhone = teamAddress.getPhone();
+	    	 	}
+			} catch (NoResultException e1) {
+				e1.printStackTrace();
+			}
+		}
+		
 		vars.put("username", username);
 		vars.put("signupurl", signupurl);
 		vars.put("clinic_phone", clinicPhone);
-		if (templateName.compareToIgnoreCase(EmailUtil.TVRH_INVITE_APPOINTMENT_SCHEDULED) == 0 || templateName.compareToIgnoreCase(EmailUtil.TVRH_INVITE_REMINDER_APPOINTMENT_SCHEDULED) == 0) {
-			UserDTO doctor = dto.getCaremember();
+		if (templateName.compareToIgnoreCase(EmailUtil.TVRH_INVITE_APPOINTMENT_SCHEDULED) == 0 || templateName.compareToIgnoreCase(EmailUtil.TVRH_INVITE_REMINDER_APPOINTMENT_SCHEDULED) == 0) {			
 			String doctorName;			
 			if (doctor != null) {
 				doctorName = TemplateExtensions.usreNameNew(dto.getCareMemberName(), doctor.getId()).toString();
