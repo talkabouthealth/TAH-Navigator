@@ -21,6 +21,7 @@ import models.AppointmentDTO;
 import models.AppointmentMasterDTO;
 import models.BreastCancerInfoDTO;
 import models.BreastCancerStageDTO;
+import models.CareTeamMasterDTO;
 import models.CareTeamMemberDTO;
 import models.DesignationMasterDTO;
 import models.DiseaseMasterDTO;
@@ -106,7 +107,7 @@ public class Care extends Controller {
 	}
 	
 	public static void sendInvitation(String email,String firstname,String lastname,String purposeText, String treatmentProcessStep, String time,String schDate,String center,int memberid, 
-			String address1,String city,String state,String zip,String membername,String purpose,int withapp) {
+			String telephone,String address1,String city,String state,String zip,String membername,String purpose,int withapp) {
 		 validation.clear();
 		Map<String, Object> vars;
 		System.out.println("email: "+ email);
@@ -146,7 +147,9 @@ public class Care extends Controller {
 				address.setLine1(address1);
 				address.setState(state);
 				address.setZip(zip);
+				address.setPhone(telephone);
 				BaseDAO.save(address);
+				
 				app.setAddressid(address);
 				
 				if (Integer.valueOf(purpose) > 0) {
@@ -263,12 +266,23 @@ public class Care extends Controller {
     }
 	
 	public static void appointmentForm() {
+		UserBean user = CommonUtil.loadCachedUser(session);
 		Map<String, Object> jsonData = new HashMap<String, Object>();
-		List<CareMember> members = UserDAO.verifiedCareMembers();
-		List<AppointmentMasterDTO> appList = AppointmentMasterDAO.getAllAppointments();
+//		List<CareMember> members = UserDAO.verifiedCareMembers();
+		List<CareMember> members = CareTeamDAO.getCareTeamMemberOfExpert(user.getId());
+		
+		List<Integer> ids = CareTeamDAO.getCareTeamOfExpert(user.getId());
+		CareTeamMasterDTO master = null;
+		if(ids != null && !ids.isEmpty()) {
+			master = CareTeamDAO.getCareTeamByField("id", ids.get(0));
+			jsonData.put("address", master.getAddress());
+		}
+		
+//		List<AppointmentMasterDTO> appList = AppointmentMasterDAO.getAllAppointments();
+		List<AppointmentMasterDTO> appList = AppointmentMasterDAO.getAllAppointmentsByAppointmentType(master.getName());
 		Map<Integer, String> memberNames = new HashMap<Integer, String>();
 		Map<Integer, String> phones = new HashMap<Integer, String>();
-		for(CareMember cm : members) {			
+		for(CareMember cm : members) {
 			StringBuilder name = new StringBuilder("");
 			if (cm.getFirstName() != null) {
 				name.append(cm.getFirstName());
@@ -295,6 +309,7 @@ public class Care extends Controller {
 			memberNames.put(cm.getId(), name.toString());
 			phones.put(cm.getId(), cm.getPhone());
 		}
+		
 		jsonData.put("members", memberNames);
 		jsonData.put("purposes", appList);
 		jsonData.put("phones", phones);

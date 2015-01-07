@@ -95,7 +95,13 @@
 					<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
 				</div>
 			</div>
-			
+			<div class="form-group form-group-sm">
+				<label class="col-xs-3 control-label" for="rt_schedule">Telephone</label>
+				<div class="col-xs-8 form-group input-group">
+					<input type="text" class="form-control nomargin" value="" name="telephone"><!--  required="required" -->  
+					<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+				</div>
+			</div>
 			<div class="form-group form-group-sm">
 				<label class="col-xs-3 control-label" for="rt_schedule">Address1</label>
 				<div class="col-xs-8 form-group input-group">
@@ -252,6 +258,7 @@ $(document).ready(function() {
 		$("#appointmentForm input[name='purposeText']").val("");
 		$("#appointmentForm input[name='center']").val("Moffitt Cancer Center TVRH");
 		$("#appointmentForm input[name='address1']").val("1400 U.S. Highway 441");
+		$("#appointmentForm input[name='telephone']").val("");
 		$("#appointmentForm input[name='city']").val("The Villages");
 		$("#appointmentForm input[name='state']").val("FL");
 		$("#appointmentForm input[name='zip']").val("32159");
@@ -342,6 +349,7 @@ selectExpert = function() {
             purposeList.push(purposes[i].name);
         }
         $ap.data("purposes", data.purposes);
+        $ap.val(data.purposes[0].name);
         $ap.typeahead({
             source: purposeList,
             minLength: 0,
@@ -360,13 +368,16 @@ selectExpert = function() {
                     break;
                 }
             }
-//             if (definedPurpose) {
-//                 $('#treatment_step_process').hide();
-//             }
-//             else if(purposetext.length > 0) {
-//                 $('#treatment_step_process').show();
-//             }
         });
+        
+        var addr = data.address;
+        $("#appointmentForm input[name='center']").val(addr.line1);
+		$("#appointmentForm input[name='address1']").val(addr.line2);
+		$("#appointmentForm input[name='telephone']").val(addr.phone);
+		$("#appointmentForm input[name='city']").val(addr.city);
+		$("#appointmentForm input[name='state']").val(addr.state);
+		$("#appointmentForm input[name='zip']").val(addr.zip);
+        
 	}, "json");
 	 }
 }

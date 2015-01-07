@@ -208,10 +208,11 @@ public class Application extends Controller {
     					app.setAddedby(invitationdto.getAddedby());
     					app.setAddedon(invitationdto.getAddedon());
     					app.setAddressid(invitationdto.getAddressid());
+    					app.setPhone(invitationdto.getAddressid().getPhone());
     					app.setAppointmentcenter(invitationdto.getAppointmentcenter());
     					app.setAppointmentdate(invitationdto.getAppointmentdate());
     					app.setAppointmenttime(invitationdto.getAppointmenttime());
-    					
+
    						app.setPurposeText(invitationdto.getPurposeText());
    						app.setTreatementStep(invitationdto.getTreatementStep());
     					app.setPatientid(detailDto.getUser());

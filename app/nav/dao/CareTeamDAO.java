@@ -13,6 +13,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import nav.dto.CareMember;
 import nav.dto.CareTeam;
 import nav.dto.DistressBean;
 import nav.dto.ExpertBean;
@@ -118,6 +119,34 @@ public class CareTeamDAO {
 		return true;
 	}
 
+	public static boolean makePatientPrimary(int teamid,int memberid,int patientid) {
+		EntityManager em = JPAUtil.getEntityManager();
+		String hql ="update PatientCareTeamMemberDTO set primary = :fp1 where careteamid = :f0 and patientid = :f1";
+		if(!em.getTransaction().isActive())
+			em.getTransaction().begin();	
+		Query query = em.createQuery(hql);
+		
+		query.setParameter("fp1", false);
+		query.setParameter("f0", teamid);
+		query.setParameter("f1", patientid);
+		int result = query.executeUpdate();
+		em.getTransaction().commit();
+
+		hql ="update PatientCareTeamMemberDTO set primary= :fp2 where careteamid = :f1 and memberid= :f2 and patientid = :f3";
+		if(!em.getTransaction().isActive())
+			em.getTransaction().begin();
+		query = em.createQuery(hql);
+		query.setParameter("fp2", true);
+		query.setParameter("f1", teamid);
+		query.setParameter("f2", memberid);
+		query.setParameter("f3", patientid);
+		result = query.executeUpdate();
+		em.getTransaction().commit();
+		
+		System.out.println("result Edit care team : " + result);
+		return true;
+	}
+	
 	public static boolean createPatienCareTeamAllNew(UserDTO patien,Integer teamId) {
 		EntityManager em = JPAUtil.getEntityManager();
 		String hql ="INSERT INTO PatienCareTeamDTO(careteamid, patienid) SELECT id, "+patien.getId()+" FROM CareTeamMasterDTO where id= :teamId";
@@ -288,6 +317,56 @@ public class CareTeamDAO {
 		}
 		return dto;
 	}
+	
+	public static List<CareMember> getCareTeamMemberOfExpert(Integer expertId) {
+		List<CareTeamMemberDTO> dto = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		List<CareMember> members = new ArrayList<CareMember>();
+		try {
+			TypedQuery<CareTeamMemberDTO> query = em.createQuery("from CareTeamMemberDTO where careteamid in (select careteamid from CareTeamMemberDTO where memberid = :field)", CareTeamMemberDTO.class);
+			query.setParameter("field", expertId);
+			dto = query.getResultList();
+			
+			for (CareTeamMemberDTO u : dto) {
+		    	CareMember cm = new CareMember();		    	
+		    	ExpertDetailDTO expert = null;
+		    	UserDetailsDTO details = null;
+		    	TypedQuery<UserDetailsDTO> userQuery = em.createQuery("SELECT c FROM UserDetailsDTO c WHERE c.id = :id", UserDetailsDTO.class); 
+		    	userQuery.setParameter("id", u.getMemberid());
+				try {
+					details = userQuery.getSingleResult();
+				} catch (NoResultException e1) {
+					e1.printStackTrace();
+				}		    	
+		    	TypedQuery<ExpertDetailDTO> expertQuery = em.createQuery("SELECT e FROM ExpertDetailDTO e WHERE e.id = :id", ExpertDetailDTO.class);
+		    	expertQuery.setParameter("id", u.getMemberid());
+		    	try {
+					expert = expertQuery.getSingleResult();
+				} catch (NoResultException e2) {
+					e2.printStackTrace();
+				}				
+		    	cm.setId(u.getMemberid());
+		    	cm.setFirstName(details.getFirstName());
+		    	cm.setLastName(details.getLastName());
+		    	if (details.getMobile() != null) {
+		    		cm.setPhone(details.getMobile());
+		    	}
+		    	else {
+		    		cm.setPhone(details.getHomePhone());
+		    	}
+		    	if (expert != null) {
+		    		cm.setDesignation(expert.getDesignation().getAbbr());
+		    	}		    	
+		    	members.add(cm);
+		    }					
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			em.close();
+		}
+		return members;
+	}
+
 	
 	public static List<CareTeam> patientTeams(Integer patientId) {
 		List<PatienCareTeamDTO> careTeamDtos = getPatienCareTeamByField("patienid", patientId);

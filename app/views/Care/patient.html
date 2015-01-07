@@ -187,7 +187,6 @@
 		</div>
 	</div>
 </div>
-
 <div class="modal" id="addEditCareTeam" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
@@ -789,9 +788,7 @@ $(document).ready(function() {
 		operationAppointment('add');
 	});
 
-	$('body').on('click', 'button.careTeamBtn', function() {
-		operationCareTeam('add');
-	});
+	
 
 	$('body').on('click', 'img.medicineImg', function() {
     	$("#image_file_input").trigger( "click" );
@@ -1244,13 +1241,8 @@ operationAppointment = function(operation, id) {
 		$('#addEditAppointment').appendTo("body").modal();
 	}
 }
-operationCareTeam = function(operation, id) {
-	$('#addEditCareTeam').appendTo("body").modal();
-}
 
-operationCareTeamMember = function(operation, id) {
-	$('#addEditCareMemberTeam').appendTo("body").modal();
-}
+
 operationRadiationTreatment = function(operation, id) {
 	$('#addRadiationTreatment').appendTo("body").modal();
 }

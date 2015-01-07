@@ -842,7 +842,6 @@ public class CarePatien  extends Controller {
 		if(memberList != null && memberList.size()>0) {
 			for (PatientCareTeamMemberDTO expertBean2 : memberList) {
 				 expertBean = new ExpertBean();
-				System.out.println(expertBean2.getMember().getEmail() );
 				userDetails = UserDAO.getDetailsById(expertBean2.getMemberid());
 				expertDetail = ProfileDAO.getExpertByField("id", expertBean2.getMemberid());
 				expertBean.setUserDetails(userDetails);
@@ -856,6 +855,19 @@ public class CarePatien  extends Controller {
 			}
 		}
 		render("CarePatien/careteamblock.html",careteam,otherExpert,expertBeanHead);
+	}
+	
+	public static void careteamOperation() {
+		String operation = params.get("operation");
+		int memberId = params.get("memberid",Integer.class);
+		int patientId = params.get("patientid",Integer.class);
+		int teamId  = params.get("teamid",Integer.class);
+		System.out.println(operation);
+		CareTeamDAO.makePatientPrimary(teamId,memberId,patientId);
+		careteamSpecific(teamId,patientId);
+//		JsonObject obj = new JsonObject();
+//		obj.add("status", new JsonPrimitive("200"));
+//		renderJSON(obj);
 	}
 	
 	public static void appointmentOperation() {		

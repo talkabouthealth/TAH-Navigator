@@ -1,4 +1,4 @@
-<div class="col-sm-12" style="padding-top:15px;">
+<div class="col-sm-12" style="padding-top:15px;" data-team="${careteam.id}">
 #{if expertBeanHead.userDetails != null}
 	<div class="col-lg-8">
 		<div class="user-panel_02">
@@ -7,7 +7,7 @@
 			<div class="user_name">
 				<p>
 					<a href="#"> #{userName userName: expertBeanHead.userDetails.user.name, userId:expertBeanHead.userDetails.user.id /} </a>
-					<button class="btn btn-danger-small careTeamMemberBtn">Remove</button>
+					<button class="btn btn-danger-small careTeamBtn" data-btn-type="removeTeamMember" data-member-id="${expertBeanHead.userDetails.user.id}">Remove</button>
 				</p>
 			</div>
 			<div class="user_bottm">
@@ -38,17 +38,17 @@
 		</div>
 		<p>&nbsp;</p>
 		<p class="text-center">
-		<a href="javaScript:void('delete')" class="btn btn-default">Edit location</a>
+		<button class="btn btn-default careTeamBtn" data-btn-type="editTeamLocation">Edit location</button>
 	</div>
 	#{/if}
 	#{else}
 		Not found
 	#{/else}
-</div>
+
 #{if otherExpert.size() > 0}
 <div class="common_04"></div>
 <div class="col-lg-12">
-	<div class="row">
+<!-- 	<div class="row"> -->
 	#{list otherExpert, as:'expertBean'}
     	<div class="col-lg-4">
 			<div class="row">
@@ -60,7 +60,7 @@
 							<b>${expertBean.expertDetail.designation.designation}</b>
 						#{/if}
 						<p>
-							<a href="#">
+							<a href="javaScript:void(0);">
 							 #{userName userName: expertBean.userDetails.user.name, userId: expertBean.userDetails.user.id /} 
 							</a>
 						<br/><b><span class="large-f">${expertBean.userDetails.mobile}
@@ -68,15 +68,15 @@
 						</span></b></p>
        				
        				#{/if}
-						<a href="javaScript:void('delete')" class="btn btn-danger-small">Remove</a>
-						<a href="javaScript:void('edit')" class="btn btn-default-small">Make Primary</a>
+						<button class="btn btn-danger-small careTeamBtn" data-btn-type="removeTeamMember" data-member-id="${expertBean.userDetails.user.id}">Remove</button>
+						<button class="btn btn-default-small careTeamBtn" data-btn-type="makeMemberPrimary" data-team-id="${careteam.id}" data-member-id="${expertBean.userDetails.user.id}">Make Primary</button>
 					</div>
 				</div>
-				
 			</div>
 		</div>
      #{/list}
-	</div>
+<!-- 	</div> -->
 </div>
 #{/if}
+</div>
 <!-- <div class="common_03"></div> -->
