@@ -862,14 +862,58 @@ public class CarePatien  extends Controller {
 		int memberId = params.get("memberid",Integer.class);
 		int patientId = params.get("patientid",Integer.class);
 		int teamId  = params.get("teamid",Integer.class);
-		System.out.println(operation);
-		CareTeamDAO.makePatientPrimary(teamId,memberId,patientId);
-		careteamSpecific(teamId,patientId);
-//		JsonObject obj = new JsonObject();
-//		obj.add("status", new JsonPrimitive("200"));
-//		renderJSON(obj);
+		
+		if("makeprimary".equalsIgnoreCase(operation)) {
+			CareTeamDAO.makePatientPrimary(teamId,memberId,patientId);
+			careteamSpecific(teamId,patientId);	
+		} else if("deletemember".equalsIgnoreCase(operation)) {
+			CareTeamDAO.deleteCareMember(teamId,memberId,patientId);
+			careteamSpecific(teamId,patientId);	
+		} else if("addCareMember".equalsIgnoreCase(operation)) {
+			boolean primary =  params.get("primary",Boolean.class);
+			CareTeamDAO.addCareMember(teamId,memberId,patientId,primary);
+			System.out.println("Adding care member");
+			careteamSpecific(teamId,patientId);	
+		} else if("addCareTeam".equalsIgnoreCase(operation)) {
+			String type = params.get("type",String.class);
+			String center = params.get("center",String.class);
+			System.out.println(patientId);
+			System.out.println(type);
+			System.out.println(center);
+			CareTeamMasterDTO careTeam = null;
+			careTeam = CareTeamDAO.getCareTeamByTypeAndCenter(type, center);
+			if(careTeam == null) {
+				String address = params.get("address",String.class);
+				String city = params.get("city",String.class);
+				String state = params.get("state",String.class);
+				String zip = params.get("zip",String.class);
+				//Create care team code
+				System.out.println("There is no care team");
+				careTeam  = CareTeamDAO.createMasterCareTeam(type,center,address,city,state,zip);
+			}
+			UserDTO patient = UserDAO.getUserBasicByField("id",patientId);
+			CareTeamDAO.addCareTeam(patient,careTeam.getId());
+			/*
+			address:1400 U.S. Highway 441, Suite 540
+			city:The Villages
+			state:FL
+			zip:32159
+			*/			
+		} else if ("removeTeam".equalsIgnoreCase(operation)) {
+			PatienCareTeamDTO careTeam = null;
+			careTeam = CareTeamDAO.getCareTeamByPatientAndTeamid(patientId, teamId);
+			if(careTeam != null) {
+				careTeam.setDeleted(true);
+				BaseDAO.update(careTeam);
+			}
+		}
+		/*
+		JsonObject obj = new JsonObject();
+		obj.add("status", new JsonPrimitive("200"));
+		renderJSON(obj);
+		*/
 	}
-	
+
 	public static void appointmentOperation() {		
 		String operation = params.get("operation");
 		int patientId = 0;

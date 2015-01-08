@@ -316,6 +316,34 @@ public class Care extends Controller {
 		renderJSON(jsonData);
 	}
 	
+	public static void careTeamMemberForm() {
+		String data = params.get("data", String.class);
+		Map<String, Object> jsonData = new HashMap<String, Object>();
+		if("member".equalsIgnoreCase(data)) {
+			List<CareMember> members = UserDAO.verifiedCareMembers();
+			Map<Integer, String> memberNames = new HashMap<Integer, String>();
+			Map<Integer, String> phones = new HashMap<Integer, String>();
+			Map<Integer, String> designation = new HashMap<Integer, String>();
+			for(CareMember cm : members) {
+				StringBuilder name = new StringBuilder("");
+				if (cm.getFirstName() != null) {
+					name.append(cm.getFirstName());
+				}
+				memberNames.put(cm.getId(), name.toString());
+				phones.put(cm.getId(), cm.getPhone());
+				designation.put(cm.getId(), cm.getDesignation());
+			}
+			jsonData.put("members", memberNames);
+			jsonData.put("phones", phones);
+			jsonData.put("designations", designation);
+			renderJSON(jsonData);
+		} else {
+			List<CareTeamMasterDTO> teams = CareTeamDAO.getAllActiveCareTeam();
+			jsonData.put("teams", teams);
+			renderJSON(jsonData);
+		}
+	}
+	
 	public static void setting() {
 		UserBean user = CommonUtil.loadCachedUser(session);
 		UserDetailsDTO userDto = UserDAO.getDetailsById(user.getId());

@@ -236,7 +236,7 @@ public class UserDAO {
 		    		cm.setPhone(details.getHomePhone());
 		    	}
 		    	if (expert != null) {
-		    		cm.setDesignation(expert.getDesignation().getAbbr());
+		    		cm.setDesignation(expert.getDesignation().getDesignation());
 		    	}		    	
 		    	members.add(cm);
 		    }						

@@ -15,6 +15,7 @@
 					<thead>
 		  			<tr>
 		  				<th>Center/Clinic Name</th>
+		  				<th>Team Type</th>
 		  				<th>Edit</th>
 		  			</tr>
 		  			</thead>
@@ -24,7 +25,8 @@
 						#{list list, as:'seq'}
 							#{set cssClass = '' /}
 							<tr ${cssClass} >
-					  			<td  ><a href="@{Admin.editCareTeam(seq.id)}" id="c_${seq.id}">${seq.address.line1}</a></td>
+					  			<td><a href="@{Admin.editCareTeam(seq.id)}" id="c_${seq.id}">${seq.address.line1}</a></td>
+					  			<td><a href="@{Admin.editCareTeam(seq.id)}" id="c_${seq.id}">${seq.name}</a></td>
 					  			<td><a href="javaScript:edit(${seq.id})" >Edit</a></td>
 					  		</tr>
 						#{/list}

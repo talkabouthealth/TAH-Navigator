@@ -187,105 +187,112 @@
 		</div>
 	</div>
 </div>
-<div class="modal" id="addEditCareTeam" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal" id="addEditCareTeam" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" init_flag="0">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			<div class="modal-header">
 <!-- 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> -->
 				<h4 class="modal-title" id="myModalLabel">ADD NEW CARE TEAM</h4>
 			</div>
+			#{form @CarePatien.careteamOperation() , id:'addCareTeamForm', class: 'form-horizontal'}
 			<div class="modal-body">
-			 <form class="form-horizontal form-condensed" role="form">
+			 	<input type="hidden" name="patientid" value="${patientId}"/>
 				<div class="form-group form-group-sm">
                     <label for="disease" class="col-xs-3 control-label">Center/Clinic Name</label>
                     <div class="col-xs-9">
-                        <input type="text" class="form-control"/>
+                        <input type="text" class="form-control" name="center" autocomplete="off"/>
                     </div>
                 </div>
 				<div class="form-group form-group-sm">
                     <label for="disease" class="col-xs-3 control-label">Type of Care Team</label>
                     <div class="col-xs-9">
-                        <select class="form-control">
-								<option>Oncology</option>
-							</select>
+                        <input type="text" class="form-control" name="type"/>
                     </div>
                 </div>
                 <div class="form-group form-group-sm">
                     <label for="disease" class="col-xs-3 control-label">Address</label>
                     <div class="col-xs-9">
-                        <input type="text" class="form-control"/>
+                        <input type="text" class="form-control" name="address"/>
                     </div>
                 </div>
                 <div class="form-group form-group-sm">
                     <label for="disease" class="col-xs-3 control-label">City</label>
                     <div class="col-xs-9">
-                        <input type="text" class="form-control"/>
+                        <input type="text" class="form-control" name="city"/>
                     </div>
                 </div>
                 <div class="form-group form-group-sm">
                     <label for="disease" class="col-xs-3 control-label">State</label>
                     <div class="col-xs-9">
-                        <input type="text" class="form-control"/>
+                        <input type="text" class="form-control" name="state"/>
                     </div>
                 </div>
                 <div class="form-group form-group-sm">
                     <label for="disease" class="col-xs-3 control-label">Zip</label>
                     <div class="col-xs-9">
-                        <input type="text" class="form-control"/>
+                        <input type="text" class="form-control" name="zip"/>
                     </div>
                 </div>
-                </form>
       		</div>
       		<div class="modal-footer">
       			<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        		<button type="button" class="btn btn-default" data-dismiss="modal">SAVE</button>
+        		<button type="submit" class="btn btn-default">SAVE</button>
       		</div>
+      		 #{/form}
 		</div>
 	</div>
 </div>
-<div class="modal" id="addEditCareMemberTeam" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal" id="addEditCareMemberTeam" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" init_flag="0">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title" id="myModalLabel">ADD NEW CARE TEAM MEMBER</h4>
 			</div>
+			#{form @CarePatien.careteamOperation() , id:'addCareTeamMemberForm', class: 'form-horizontal'}
 			<div class="modal-body">
-				<form class="form-horizontal form-condensed" role="form">
+<!-- 				<form action="carepatien/careteamOperation" class="form-horizontal form-condensed" role="form" id="addCareTeamMemberForm"> -->
+				
+					<input type="hidden" name="teamid" />
+					<input type="hidden" name="patientid" value="${patientId}"/>
 					<div class="form-group form-group-sm">
 	                    <label for="disease" class="col-xs-3 control-label">&nbsp;</label>
 	                    <div class="col-xs-9">
-	                        <input type="checkbox"/> Primary team member
+	                        <input type="checkbox" name="primary"/> Primary team member
 	                    </div>
 	                </div>
 					<div class="form-group form-group-sm">
 	                    <label for="disease" class="col-xs-3 control-label">Name</label>
-	                    <div class="col-xs-9">
-	                        <input type="text" class="form-control"/>
+	                    <div class="col-xs-9 input-group">
+	                        <input type="text" class="form-control" name="name" required autocomplete="off">
+                           	<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
 	                    </div>
 	                </div>
 					<div class="form-group form-group-sm">
 	                    <label for="disease" class="col-xs-3 control-label">Title</label>
-	                    <div class="col-xs-9">
-	                        <input type="text" class="form-control"/>
+	                    <div class="col-xs-9 input-group">
+	                        <input type="text" class="form-control" name="title"/>
 	                    </div>
 	                </div>
 					<div class="form-group form-group-sm">
 	                    <label for="disease" class="col-xs-3 control-label">Telephone</label>
-	                    <div class="col-xs-9">
-	                        <input type="text" class="form-control"/>
+	                    <div class="col-xs-9 input-group">
+	                        <input type="text" class="form-control" name="telephone"/>
 	                    </div>
 	                </div>
+	                <!-- 
 	                <div class="form-group form-group-sm">
 	                    <div class="col-xs-12" style="text-align:center;">
 	                        <img src="/public/images/top-p.png"/> + Click to add photo
 	                    </div>
 	                </div>
-                </form>
+	                -->
+              
       		</div>
       		<div class="modal-footer">
       			<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-        		<button type="button" class="btn btn-default" data-dismiss="modal">SAVE</button>
+        		<button type="submit" class="btn btn-default">SAVE</button>
       		</div>
+      		 #{/form}
 		</div>
 	</div>
 </div>

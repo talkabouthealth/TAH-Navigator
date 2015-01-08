@@ -30,6 +30,9 @@ public class PatienCareTeamDTO implements Serializable {
 	@OneToOne
 	@JoinColumn(name = "careteamid")
 	private CareTeamMasterDTO careteam;
+	
+	@Column(name = "isdeleted")
+	private boolean deleted;
 
 	public int getCareteamid() {
 		return careteamid;
@@ -61,5 +64,13 @@ public class PatienCareTeamDTO implements Serializable {
 
 	public void setCareteam(CareTeamMasterDTO careteam) {
 		this.careteam = careteam;
+	}
+
+	public boolean isDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(boolean deleted) {
+		this.deleted = deleted;
 	}
 }

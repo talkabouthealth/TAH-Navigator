@@ -6,8 +6,8 @@
 			<div><img src="@{Image.show(expertBeanHead.userDetails.user.id)}" class="user_img img-responsive"></div>
 			<div class="user_name">
 				<p>
-					<a href="#"> #{userName userName: expertBeanHead.userDetails.user.name, userId:expertBeanHead.userDetails.user.id /} </a>
-					<button class="btn btn-danger-small careTeamBtn" data-btn-type="removeTeamMember" data-member-id="${expertBeanHead.userDetails.user.id}">Remove</button>
+					<a href="javaScript:void(0)"> #{userName userName: expertBeanHead.userDetails.user.name, userId:expertBeanHead.userDetails.user.id /} </a>
+					<button class="btn btn-danger-small careTeamBtn" data-btn-type="removeTeamMember" data-team-id="${careteam.id}" data-member-id="${expertBeanHead.userDetails.user.id}">Remove</button>
 				</p>
 			</div>
 			<div class="user_bottm">
@@ -36,15 +36,14 @@
 				<p>${careteam.address.country} - ${careteam.address.zip}</p>
 			</div>
 		</div>
-		<p>&nbsp;</p>
-		<p class="text-center">
-		<button class="btn btn-default careTeamBtn" data-btn-type="editTeamLocation">Edit location</button>
+<!-- 		<p>&nbsp;</p> -->
+<!-- 		<p class="text-center"> -->
+<!-- 		<button class="btn btn-default careTeamBtn" data-btn-type="editTeamLocation">Edit location</button> -->
 	</div>
 	#{/if}
 	#{else}
 		Not found
 	#{/else}
-
 #{if otherExpert.size() > 0}
 <div class="common_04"></div>
 <div class="col-lg-12">
@@ -66,9 +65,8 @@
 						<br/><b><span class="large-f">${expertBean.userDetails.mobile}
 						*{ &nbsp;|&nbsp;${expertBean.userDetails.email} }*
 						</span></b></p>
-       				
        				#{/if}
-						<button class="btn btn-danger-small careTeamBtn" data-btn-type="removeTeamMember" data-member-id="${expertBean.userDetails.user.id}">Remove</button>
+						<button class="btn btn-danger-small careTeamBtn" data-btn-type="removeTeamMember" data-team-id="${careteam.id}" data-member-id="${expertBean.userDetails.user.id}">Remove</button>
 						<button class="btn btn-default-small careTeamBtn" data-btn-type="makeMemberPrimary" data-team-id="${careteam.id}" data-member-id="${expertBean.userDetails.user.id}">Make Primary</button>
 					</div>
 				</div>
