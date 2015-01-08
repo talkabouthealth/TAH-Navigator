@@ -2134,3 +2134,7 @@ div.print-section {
   text-align: right !important;
   margin-right: 30px;  
 }
+
+.new_log_heading {
+	font-size: 40px;
+}

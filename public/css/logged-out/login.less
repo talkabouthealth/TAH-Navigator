@@ -11,10 +11,10 @@
     float: right;
 }
 
-@register-top-padding: 158px;
+@register-top-padding: 154px;
 @register-h3-space: 74px;
 @font-size: @gargantuan-font;
-.register-container {
+.register-container {	
 	padding-left: @space/2;
 	text-align: center;
 	padding-top: @register-top-padding - @font-size - @register-h3-space;
@@ -29,15 +29,15 @@
 .log_p{
 	color:#caf4f4;
 	font-size: 15px;
-  font-weight: bold;
+	font-weight: bold;
 
-  text-align:center;
-  margin: 40px auto;
-  max-width: 740px;
+	text-align:center;
+	margin: 40px auto;
+	max-width: 740px;
 
-  .contact-us {
-  	margin-top: 20px;
-  }
+	.contact-us {
+		margin-top: 20px;
+	}
 }
 
 .alert-danger {
@@ -51,6 +51,10 @@
 .log_header{ background:#006ea1; width:100%; padding:15px 0px; float:left; width:100%; border-bottom:2px solid #002739; box-shadow:0 0 10px rgba(0,0,0,.5)}
 .logo_span{ color:#FFF; font-size:13px; margin-left:10px;}
 .log_heading{ color:@light-gray; text-align:center; font-size:40px; padding:15px 0}
+.new_log_heading {
+	color: @light-gray;
+	padding: 15px 30px 30px 0px;
+}
 .log_bg{ background:url('../../images/login_bg.png') no-repeat center #004261; width:100%; float:left;}
 .log_bg_01{ background:#006ea1 no-repeat center; width:100%; float:left; padding:20px 0px 20px 0px;}
 .log_padding{ margin:20px 300px;}
@@ -62,6 +66,7 @@
 /* .form-control{font-size:40px; height:65px;} */
 
 
+/*
 @media (max-width: @tablet-max) {
     body { 
     .row {
@@ -84,4 +89,23 @@
         display: none;
     }
 }
+}
+*/
+
+@media (max-width: 992px) {
+	.new_log_heading {
+		padding-right: 30px;
+	}
+	.login-container {
+        border-left: 0;        
+		border-bottom: 1px solid #8baab8;		
+        margin-bottom: @padding;
+        padding-bottom: @padding;
+    }	
+	.register-container {
+		float: right;
+		padding-left: 20px;
+		padding-right: @space/2;
+	}
+	
 }
