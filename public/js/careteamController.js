@@ -121,8 +121,9 @@ var careTeamController = (function() {
                 var str = $(self.diseaseId).val();
                 if (str) {
                 	$.post(actions['fup_save_careitem_template'], params, function(htmlText) {
-                        $(self.followUpDiv).html(htmlText);
-                        addTooltip();
+//                		$(self.followUpDiv).html(htmlText);
+//                		addTooltip();
+                		$('#tabs li.active a').click();
                     }, "html");
                     return true; 
                 } else {
@@ -138,11 +139,8 @@ var careTeamController = (function() {
                 $(self.formId).attr("patient_id", patientId);
                 var formLoad = function() {
                     if (initFlag == '0') {
-                        
                         self.init(patientId);
-                        
-                    }
-                    else {
+                    } else {
                         $(self.formId).modal('show');
                     }
                 };
@@ -282,8 +280,9 @@ var careTeamController = (function() {
                 params['concernId'] = concernId;
             }
             $.post(actions['fup_save_concern'], params, function(htmlText) {
-                $(self.followUpDiv).html(htmlText);
-                addTooltip();
+//                $(self.followUpDiv).html(htmlText);
+//                addTooltip();
+                $('#tabs li.active a').click();
             }, "html");
             return true; 
         },
@@ -297,7 +296,8 @@ var careTeamController = (function() {
             };
 
             $.post(actions['fup_remove_concern'], params, function(htmlText) {
-                $(self.followUpDiv).html(htmlText);
+//                $(self.followUpDiv).html(htmlText);
+                $('#tabs li.active a').click();
             }, "html");
         },
         open: function(elm) {
@@ -540,8 +540,9 @@ var careTeamController = (function() {
                 params['goalId'] = goalId;
             }
             $.post(actions['fup_save_goal'], params, function(htmlText) {
-                $(self.followUpDiv).html(htmlText);
-                addTooltip();
+//                $(self.followUpDiv).html(htmlText);
+//                addTooltip();
+                $('#tabs li.active a').click();
             }, "html");
             return true; 
         },
@@ -555,7 +556,8 @@ var careTeamController = (function() {
             };
             
             $.post(actions['fup_remove_goal'], params, function(htmlText) {
-                $(self.followUpDiv).html(htmlText);
+//                $(self.followUpDiv).html(htmlText);
+                $('#tabs li.active a').click();
             }, "html");
         },
         open: function(elm) {
@@ -781,8 +783,9 @@ var careTeamController = (function() {
                 params['careItemId'] = careItemId;
             }
             $.post(actions['fup_save_care_item'], params, function(htmlText) {
-                $(self.followUpDiv).html(htmlText);
-                addTooltip();
+            	$('#tabs li.active a').click();
+//                $(self.followUpDiv).html(htmlText);
+//                addTooltip();
             }, "html");
             return true; 
         },
@@ -796,7 +799,8 @@ var careTeamController = (function() {
             };
             
             $.post(actions['fup_remove_care_item'], params, function(htmlText) {
-                $(self.followUpDiv).html(htmlText);
+//                $(self.followUpDiv).html(htmlText);
+                $('#tabs li.active a').click();
             }, "html");
         },
         open: function(elm) {
@@ -1350,7 +1354,10 @@ var careTeamController = (function() {
         };
 
         $.post(actions['ctpt_remove_radiation_data'], params, function(htmlText) {
-            $('#treatmentplan').html(htmlText);
+//            $('#treatmentplan').html(htmlText);
+        	$('#radiation-treatment-form').modal('hide');
+			$('#tabs li.active a').click();
+            addTooltip();
         }, "html");
     };
     var removeChemotherapyData = function() {
@@ -1362,7 +1369,9 @@ var careTeamController = (function() {
         };
         
         $.post(actions['ctpt_remove_chemotherapy_data'], params, function(htmlText) {
-            $('#treatmentplan').html(htmlText);
+//            $('#treatmentplan').html(htmlText);
+        	$('#chemotherapy-treatment-form').modal("hide");
+			$('#tabs li.active a').click();
         }, "html");
     };
     var removeSurgeryTreatmentData = function() {
@@ -1374,7 +1383,8 @@ var careTeamController = (function() {
         };
         
         $.post(actions['ctpt_remove_surgery_data'], params, function(htmlText) {
-            $('#treatmentplan').html(htmlText);
+//            $('#treatmentplan').html(htmlText);
+        	$('#tabs li.active a').click();
         }, "html");
     };
     var saveRadiationTreatmentData = function() {
@@ -1464,8 +1474,8 @@ var careTeamController = (function() {
         $.post(actions['ctpt_save_chemotherapy_data'], params, function(htmlText) {
         	$('#chemotherapy-treatment-form').modal("hide");
 			$('#tabs li.active a').click();
+			addTooltip();
 //			$('#treatmentplan').html(htmlText);
-//			addTooltip();
         }, "html");
         return true;
     }
@@ -1501,8 +1511,9 @@ var careTeamController = (function() {
         }
         
         $.post(actions['ctpt_save_surgery_data'], params, function(htmlText) {
-            $('#treatmentplan').html(htmlText);
-            addTooltip();
+//            $('#treatmentplan').html(htmlText);
+//            addTooltip();
+            $('#tabs li.active a').click();
         }, "html");
         return true;
     }

@@ -292,7 +292,7 @@ public class CarePatien  extends Controller {
 	}
 	public static void removeChemotherapyData(Integer patientId, Integer treatmentId) {
 		Treatment.removeChemotherapyData(treatmentId);
-		treatmentPlan(patientId);
+		renderText("OK");
 	}
 	public static void surgeryForm(Integer patientId, Integer treatmentId, Integer initFlag, String formType) {
 		Map<String, Object> jsonData = new HashMap<String, Object>();
@@ -426,7 +426,7 @@ public class CarePatien  extends Controller {
 		System.out.println("\n-------------------------------------");
 		*/
 		Treatment.saveSurgeryInfo(patientId, treatmentId, siInfo, sideEffects);
-		treatmentPlan(patientId);
+		renderText("OK");
 	}
 	
 	public static void saveConcern(Integer patientId, Integer concernId, Map<String, String> fupConcern) {
@@ -441,7 +441,8 @@ public class CarePatien  extends Controller {
 		System.out.println("\n-------------------------------------");
 		
 		FollowUp.saveConcern(patientId, concernId, fupConcern);
-		followupPlan(patientId.intValue());
+//		followupPlan(patientId.intValue());
+		renderText("OK");
 	}
 	
 	public static void saveGoal(Integer patientId, Integer goalId, Map<String, String> fupGoal) {
@@ -456,7 +457,8 @@ public class CarePatien  extends Controller {
 		System.out.println("\n-------------------------------------");
 		
 		FollowUp.saveGoal(patientId, goalId, fupGoal);
-		followupPlan(patientId.intValue());
+//		followupPlan(patientId.intValue());
+		renderText("OK");
 	}
 	
 	public static void saveCareItem(Integer patientId, Integer careItemId, Map<String, String> fupCareItem) {
@@ -471,27 +473,32 @@ public class CarePatien  extends Controller {
 		System.out.println("\n-------------------------------------");
 		
 		FollowUp.saveCareItem(patientId, careItemId, fupCareItem);
-		followupPlan(patientId.intValue());
+//		followupPlan(patientId.intValue());
+		renderText("OK");
 	}
 	
 	public static void removeSurgeryData(Integer patientId, Integer treatmentId) {
 		Treatment.removeSurgeryData(treatmentId);
-		treatmentPlan(patientId);
+//		treatmentPlan(patientId);
+		renderText("OK");
 	}
 	
 	public static void removeConcern(Integer patientId, Integer concernId) {
 		FollowUp.removeConcern(concernId);
-		followupPlan(patientId.intValue());
+//		followupPlan(patientId.intValue());
+		renderText("OK");
 	}
 	
 	public static void removeGoal(Integer patientId, Integer goalId) {
 		FollowUp.removeGoal(goalId);
-		followupPlan(patientId.intValue());
+//		followupPlan(patientId.intValue());
+		renderText("OK");
 	}
 	
 	public static void removeCareItem(Integer patientId, Integer careItemId) {
 		FollowUp.removeCareItem(careItemId);
-		followupPlan(patientId.intValue());
+//		followupPlan(patientId.intValue());
+		renderText("OK");
 	}
 	
 	public static void radiationForm(Integer patientId, Integer treatmentId, Integer initFlag, String formType) {
@@ -534,7 +541,8 @@ public class CarePatien  extends Controller {
 	}
 	public static void removeRadiationData(Integer patientId, Integer treatmentId) {
 		Treatment.removeRadiationData(treatmentId);
-		treatmentPlan(patientId);
+//		treatmentPlan(patientId);
+		renderText("OK");
 	}
 	public static void diagnosis(int patientId) {
 		Map<String, Object> patientInfo = PatientDetailDAO.getDiagnosis(patientId);
@@ -1285,6 +1293,7 @@ public class CarePatien  extends Controller {
 				FollowUp.saveCareItem(patientId, careItemId, fupCareItem);		
 			}
 		}
-		followupPlan(patientId.intValue());
+//		followupPlan(patientId.intValue());
+		renderText("OK");
 	}
 }
