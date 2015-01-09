@@ -17,7 +17,6 @@
       #{else}
 	      ${error}
       #{/else}
-      
       </p>
       #{/errors}
       #{/ifErrors}
@@ -44,7 +43,7 @@
 		#{/else}
         <div class="input-group input-group-lg"> <span class="input-group-addon"><img alt="" src="/public/images/em-img.png" style="height: 14px;opacity:0.6;"></span>
           	#{if email}
-				<input id="emailField" type="email" class="form-control" name="member.email" value="${email}" placeholder="Enter email" required>
+				<input id="emailField" type="email" class="form-control" name="member.email" value="${email.trim()}" placeholder="Enter email" required>
 			#{/if}
 			#{else}
 				<input id="emailField" type="email" class="form-control" name="member.email" value="${flash['member.email']}" placeholder="Enter email" required>
@@ -58,12 +57,14 @@
           </div>
           <br/>
           <div class="checkbox tos-input">
-				  		<input name="member.tosFlag" type="checkbox" required> I agree to the Moffitt Cancer Center - TVRH<i class="fa fa-square-o"></i>
-				  	<a href="javascript:window.open('@{Static.tos()}','Terms of Service','width=700,height=700')" target="_blank">Terms of Service</a> and <a href="javascript:window.open('@{Static.privacy()}','Privacy Policy','width=700,height=700')" target="_blank">Privacy Policy</a>.
+	          <label>
+		  		<input name="member.tosFlag" type="checkbox" required>I agree to the Moffitt Cancer Center - TVRH<i class="fa fa-square-o"></i>
+		  		</label>
+		  		&nbsp;
+		  		<a href="javascript:window.open('@{Static.tos()}','Terms of Service','width=700,height=700')" target="_blank">Terms of Service</a> and <a href="javascript:window.open('@{Static.privacy()}','Privacy Policy','width=700,height=700')" target="_blank">Privacy Policy</a>.
 				  	<div class="help-block with-errors"></div>
 				  </div>
           <p class="text-center"> 
-<!--           	<a href="@{Application.create()}" class="btn btn-primary btn-lg btn-block my-btn-register">register now</a> -->
           	<button type="submit" class="btn btn-primary btn-lg btn-block my-btn-register" >register now</button>
           </p>
          #{/form}
