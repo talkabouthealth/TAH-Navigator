@@ -287,7 +287,8 @@ public class CarePatien  extends Controller {
 		System.out.println("\n-------------------------------------");
 		
 		Treatment.saveChemoTreatment(patientId, treatmentId, ctInfo, sideEffects);
-		treatmentPlan(patientId);
+		renderText("OK");
+//		treatmentPlan(patientId);
 	}
 	public static void removeChemotherapyData(Integer patientId, Integer treatmentId) {
 		Treatment.removeChemotherapyData(treatmentId);
@@ -528,7 +529,8 @@ public class CarePatien  extends Controller {
 	
 	public static void saveRadiationData(Integer patientId, Integer treatmentId, Map<String, String> rtInfo, Map<Integer, String> sideEffects) {
 		Treatment.saveRadiationTreatment(patientId, treatmentId, rtInfo, sideEffects);
-		treatmentPlan(patientId);
+//		treatmentPlan(patientId);
+		renderText("OK");
 	}
 	public static void removeRadiationData(Integer patientId, Integer treatmentId) {
 		Treatment.removeRadiationData(treatmentId);

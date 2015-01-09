@@ -1414,7 +1414,9 @@ var careTeamController = (function() {
             params['treatmentId'] = treatmentId;
         }
         $.post(actions['ctpt_save_radiation_data'], params, function(htmlText) {
-            $('#treatmentplan').html(htmlText);
+//            $('#treatmentplan').html(htmlText);
+        	$('#radiation-treatment-form').modal('hide');
+			$('#tabs li.active a').click();
             addTooltip();
         }, "html");
         return true;
@@ -1460,8 +1462,10 @@ var careTeamController = (function() {
         }
         
         $.post(actions['ctpt_save_chemotherapy_data'], params, function(htmlText) {
-            $('#treatmentplan').html(htmlText);
-            addTooltip();
+        	$('#chemotherapy-treatment-form').modal("hide");
+			$('#tabs li.active a').click();
+//			$('#treatmentplan').html(htmlText);
+//			addTooltip();
         }, "html");
         return true;
     }
