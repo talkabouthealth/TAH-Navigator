@@ -107,7 +107,7 @@ public class Care extends Controller {
 	}
 	
 	public static void sendInvitation(String email,String firstname,String lastname,String purposeText, String treatmentProcessStep, String time,String schDate,String center,int memberid, 
-			String telephone,String address1,String city,String state,String zip,String membername,String purpose,int withapp) {
+			String telephone, String mobilePhone, String homePhone, String communicationType, String address1,String city,String state,String zip,String membername,String purpose,int withapp) {
 		 validation.clear();
 		Map<String, Object> vars;
 		System.out.println("email: "+ email);
@@ -151,13 +151,14 @@ public class Care extends Controller {
 				BaseDAO.save(address);
 				
 				app.setAddressid(address);
-				
+				/*
 				if (Integer.valueOf(purpose) > 0) {
 					app.setPurpose(purpose);
 					Integer appIdInt = new Integer(purpose);
 					app.setAppointmentid(AppointmentMasterDAO.getAppointmentByField("id", appIdInt));
-//				} else {
+				} else {
 				}
+				*/
 				app.setTreatementStep(treatmentProcessStep);
 				app.setPurposeText(purposeText);
 				app.setAppointmenttime(time);
@@ -182,6 +183,9 @@ public class Care extends Controller {
 			app.setEmail(email);
 			app.setFirstname(firstname);
 			app.setLastname(lastname);
+			app.setMobile(mobilePhone);
+			app.setPhone(homePhone);
+			app.setCommunicationType(communicationType);
 			BaseDAO.save(app);
 			
 			
@@ -193,6 +197,7 @@ public class Care extends Controller {
    		 		vars = InvitationDAO.mailVariables(EmailUtil.TVRH_INVITE_NO_APPOINTMENT_SCHEDULED, app);
    		 		EmailUtil.sendEmail(EmailUtil.TVRH_INVITE_NO_APPOINTMENT_SCHEDULED, vars, email);
    		 	}
+   		 	
 		} catch(Exception e) {
 			e.printStackTrace();
 			JsonObject obj = new JsonObject();
@@ -276,6 +281,7 @@ public class Care extends Controller {
 		if(ids != null && !ids.isEmpty()) {
 			master = CareTeamDAO.getCareTeamByField("id", ids.get(0));
 			jsonData.put("address", master.getAddress());
+			jsonData.put("teamName", master.getName());
 		}
 		
 //		List<AppointmentMasterDTO> appList = AppointmentMasterDAO.getAllAppointments();

@@ -74,6 +74,15 @@ public class InvitedDTO implements Serializable {
 	@OneToOne(fetch=FetchType.EAGER)
 	@JoinColumn(name="appointmentid", insertable=true, updatable=true)
 	private AppointmentMasterDTO appointmentid;
+	
+	@Column(name = "mobile")
+	private String mobile;
+	
+	@Column(name = "phone")
+	private String phone;
+	
+	@Column(name = "communication_method")
+	private String communicationType;
 
 	public InvitedDTO() {
 	}
@@ -220,6 +229,30 @@ public class InvitedDTO implements Serializable {
 
 	public void setAppointmentid(AppointmentMasterDTO appointmentid) {
 		this.appointmentid = appointmentid;
+	}
+
+	public String getMobile() {
+		return mobile;
+	}
+
+	public void setMobile(String mobile) {
+		this.mobile = mobile;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	public String getCommunicationType() {
+		return communicationType;
+	}
+
+	public void setCommunicationType(String communicationType) {
+		this.communicationType = communicationType;
 	}
 	
 }

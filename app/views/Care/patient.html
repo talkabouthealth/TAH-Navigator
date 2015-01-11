@@ -48,14 +48,36 @@
 				</span>
 				</p>
     
+				<!--<div class="form-group form-group-sm">
+                    <label class="col-xs-3 control-label" for="rt_schedule">Purpose of Appointment</label>
+                    <div class="col-xs-8 form-group input-group">                           
+						<input type="text" id="appointment_purpose" name="purposeText" class="form-control nomargin" placeholder="i.e. 1st Appointment With Radiation Oncologist" required="required">
+						<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+					</div>
+				</div>-->
 				<div class="form-group form-group-sm">
-                        <label class="col-xs-3 control-label" for="rt_schedule">Purpose of Appointment</label>
-                        <div class="col-xs-8 form-group input-group">                           
-                            <input type="text" id="appointment_purpose" name="purposeText" class="form-control nomargin" placeholder="i.e. 1st Appointment With Radiation Oncologist" required="required">
-                                <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
-                        </div>
-                </div>
-                <div class="form-group form-group-sm" id="treatment_step_process">
+                    <label class="col-xs-3 control-label" for="rt_schedule">Purpose of Appointment</label>
+                    <div class="col-xs-8 form-group input-group">                           
+						<select id="appointment_purpose" name="purposeText" class="form-control nomargin" required="required">
+							<optgroup label="Radiation Oncology">
+								<option>First Appointment With Radiation Oncologist</option>
+								<option>Make Treatment Decision (Radiation Oncology)</option>
+								<option>End of Treatment Visit (Radiation Oncology)</option>
+								<option>Follow-up Appointment (Radiation Oncology)</option>
+								<option>On Treatment Visit (Radiation Oncology)</option>
+								<option>Simulation (Radiation Oncology)</option>
+							</optgroup>
+							<optgroup label="Surgery">
+								<option>1st Appointment With Surgeon</option>
+								<option>Make Treatment Decision (Surgery)</option>
+								<option>Surgery</option>
+								<option>Follow-up Appointment After Surgery</option>
+								<option>Ongoing Follow-up Appointment (Surgery)</option>								
+							</optgroup>
+						</select>						
+					</div>
+				</div>
+                <!--<div class="form-group form-group-sm" id="treatment_step_process">
                         <label class="col-xs-3 control-label" for="rt_schedule">Step in the Treatment Process</label>
                         <div class="col-xs-8 form-group input-group">                           
                             <select class="form-control nomargin" id="ts_process">
@@ -67,8 +89,30 @@
                                 <option>Post Treatment Appointment</option>                                
                             </select>
                         </div>
+                </div>-->
+				<div class="form-group form-group-sm" id="treatment_step_process">
+                        <label class="col-xs-3 control-label" for="rt_schedule">Step in the Treatment Process</label>
+                        <div class="col-xs-8 form-group input-group">                           
+                            <select class="form-control nomargin" id="ts_process">
+								<option></option>
+                                <optgroup label="Radiation Oncology">
+									<option>First Appointment With Radiation Oncologist</option>
+									<option>Make Treatment Decision (Radiation Oncology)</option>
+									<option>Simulation (Radiation Oncology)</option>
+									<option>On Treatment Visit (Radiation Oncology)</option>
+									<option>Follow-up Appointment (Radiation Oncology)</option>
+								</optgroup>
+								<optgroup label="Surgery">
+									<option>1st Appointment With Surgeon</option>								
+									<option>Make Treatment Decision (Surgery)</option>
+									<option>Surgery</option>
+									<option>Follow-up Appointment (Surgery)</option>
+								</optgroup>                                
+                            </select>
+                        </div>
                 </div>
-                 <div class="form-group form-group-sm">
+				
+                <div class="form-group form-group-sm">
                         <label class="col-xs-3 control-label" for="rt_schedule">Time</label>
                         <div class="col-xs-8 form-group input-group">
                            <input type="text" class="form-control timeField nomargin" name="time"> <!-- required="required" -->
@@ -141,7 +185,7 @@
 								No expert assigned
 							#{/else}
                         </div>
-                </div>
+                </div> 
                 <div class="form-group form-group-sm">
                         <label class="col-xs-3 control-label" for="rt_schedule">Address1</label>
                         <div class="col-xs-8 form-group input-group">
@@ -707,8 +751,7 @@
 </div><!-- /.modal -->
 <script>
 var docs = [];
-var timeArray = ["8 AM","8.15 AM","8.30 AM","8.45 AM","9 AM","9.15 AM","9.30 AM","9.45 AM","10 AM","10.15 AM","10.30 AM","10.45 AM","11 AM","11.15 AM","11.30 AM","11.45 AM","12 noon","12.15 PM","12.30 PM",
-				"12.45 PM","1 PM","1.15 PM","1.30 PM","1.45 PM","2 PM","2.15 PM","2.30 PM","2.45 PM","3 PM","3.15 PM","3.30 PM","3.45 PM","4 PM","5.15 PM","5.30 PM","5.45 PM","6 PM"];
+var timeArray = ["8 AM", "8:15 AM", "8:30 AM", "8:45 AM", "9 AM", "9:15 AM", "9:30 AM", "9:45 AM", "10 AM", "10:15 AM", "10:30 AM", "10:45 AM", "11 AM", "11:15 AM", "11:30 AM", "11:45 AM", "12 noon", "12:15 PM", "12:30 PM", "12:45 PM", "1 PM", "1:15 PM", "1:30 PM", "1:45 PM", "2 PM", "2:15 PM", "2:30 PM", "2:45 PM", "3 PM", "3:15 PM", "3:30 PM", "3:45 PM", "4 PM", "5:15 PM", "5:30 PM", "5:45 PM", "6 PM"];
 $(document).ready(function() {
     $('#tabs').on('shown.bs.tab', function(e) {
         $('body').scrollTop(0);        
@@ -884,10 +927,11 @@ $(document).ready(function() {
             }        
             postData.push({name: "memberid", value: $avm.attr("careMemberId") || 0});
             
-            var purposes = $ap.data("purposes");
+            //var purposes = $ap.data("purposes");
             var purpose_text = $.trim($ap.val());
-            var definedPurpose = false;
-            var purpose = 0;
+            //var definedPurpose = false;
+            //var purpose = 0;
+			/*
             for (var i = 0; i < purposes.length; i++) {
                 if (purposes[i].name == purpose_text) {
                     definedPurpose = true;
@@ -895,8 +939,9 @@ $(document).ready(function() {
                     break;
                 }
             }
+			*/
             postData.push({name: "treatmentProcessStep", value: $("#ts_process option:selected").text()});    
-            postData.push({name: "purpose", value: purpose});
+            //postData.push({name: "purpose", value: purpose});
             
 			if($("#repeatWeeklyBtn").prop('checked')==true) {
             	var schDate = $("#appointmentForm input[name='schDate']").val();
@@ -1097,14 +1142,29 @@ operationAppointment = function(operation, id) {
 	
     var $avm = $('#appointment_verified_members');
     var $ap = $('#appointment_purpose');
-    var initFlag = $avm.attr("init_flag");    
-    if (!initFlag) {
-        $avm.attr('init_flag', 1);
+    	
+    if (operation == 'add') {        
         $.post('/care/appointmentForm', {}, function (data) {
+			if ('teamName' in data) {
+				if (data.teamName.match(/surgery/i) != null) {
+					$ap.val('1st Appointment With Surgeon');
+					$('#ts_process').val('1st Appointment With Surgeon');
+				}
+			}			
+			if ('address' in data) {
+				var address = data.address;				
+				$("#appointmentForm input[name='center']").val(address.line1);
+				$("#appointmentForm input[name='address1']").val(address.line2);
+				$("#appointmentForm input[name='phone']").val(address.phone);
+				$("#appointmentForm input[name='city']").val(address.city);
+				$("#appointmentForm input[name='state']").val(address.state);
+				$("#appointmentForm input[name='zip']").val(address.zip);
+			}
+			
             var members = data.members; 
-            var purposes = data.purposes;
+            //var purposes = data.purposes;
             $avm.data("careMembers", members);
-            $ap.data("purposes", purposes);
+            //$ap.data("purposes", purposes);
 			$avm.data("phones", data.phones);
             var arr = [];                        
             for (var id in members) {
@@ -1125,6 +1185,7 @@ operationAppointment = function(operation, id) {
 					return item;
 				}
 	        });    
+			/*
             var purposeList = [];
             var length = purposes.length;
             for (var i = 0; i < length; i++) {
@@ -1137,16 +1198,19 @@ operationAppointment = function(operation, id) {
                     return item;
                 }
             });
+			*/
             $ap.blur(function(e) {
-                var purposes = $ap.data("purposes");
+                //var purposes = $ap.data("purposes");
                 var purposetext = $.trim($ap.val());
                 var definedPurpose = false;
+				/*
                 for (var i = 0; i < purposes.length; i++) {
                     if (purposes[i].name == purposetext) {
                         definedPurpose = true;
                         break;
                     }
                 }
+				*/
 //                 if (definedPurpose) {
                     //$('#treatment_step_process').hide();
 //                 }else 
@@ -1154,6 +1218,7 @@ operationAppointment = function(operation, id) {
                     $('#treatment_step_process').show();
                 }
             });
+			
 	    }, "json");
     }
 
@@ -1370,10 +1435,11 @@ $(document).ready(function(){
         }        
         postData.push({name: "memberid", value: $avm.attr("careMemberId") || 0});
         
-        var purposes = $ap.data("purposes");
+        //var purposes = $ap.data("purposes");
         var purpose_text = $.trim($ap.val());
-        var definedPurpose = false;
-        var purpose = 0;
+        //var definedPurpose = false;
+        //var purpose = 0;
+		/*
         for (var i = 0; i < purposes.length; i++) {
             if (purposes[i].name == purpose_text) {
                 definedPurpose = true;
@@ -1381,8 +1447,9 @@ $(document).ready(function(){
                 break;
             }
         }
+		*/
         postData.push({name: "treatmentProcessStep", value: $("#ts_process option:selected").text()});    
-        postData.push({name: "purpose", value: purpose});
+        //postData.push({name: "purpose", value: purpose});
 		postData.push({name: "editOccurencesAction", value:"onlyThisEvent"});
     	
 		var formURL = $("#appointmentForm").attr("action");
@@ -1412,10 +1479,11 @@ $(document).ready(function(){
         }        
         postData.push({name: "memberid", value: $avm.attr("careMemberId") || 0});
         
-        var purposes = $ap.data("purposes");
+        //var purposes = $ap.data("purposes");
         var purpose_text = $.trim($ap.val());
-        var definedPurpose = false;
-        var purpose = 0;
+        //var definedPurpose = false;
+        //var purpose = 0;
+		/*
         for (var i = 0; i < purposes.length; i++) {
             if (purposes[i].name == purpose_text) {
                 definedPurpose = true;
@@ -1423,8 +1491,9 @@ $(document).ready(function(){
                 break;
             }
         }
+		*/
         postData.push({name: "treatmentProcessStep", value: $("#ts_process option:selected").text()});    
-        postData.push({name: "purpose", value: purpose});
+        //postData.push({name: "purpose", value: purpose});
 		postData.push({name: "editOccurencesAction", value:"allEvents"});
 		var formURL = $("#appointmentForm").attr("action");
 		$.post(formURL, postData, function( data ) {
@@ -1455,10 +1524,11 @@ submitAppointmentForm = function() {
     }        
     postData.push({name: "memberid", value: $avm.attr("careMemberId") || 0});
 
-    var purposes = $ap.data("purposes");
+    //var purposes = $ap.data("purposes");
     var purpose_text = $.trim($ap.val());
-    var definedPurpose = false;
-    var purpose = 0;
+    //var definedPurpose = false;
+    //var purpose = 0;
+	/*
     for (var i = 0; i < purposes.length; i++) {
         if (purposes[i].name == purpose_text) {
             definedPurpose = true;
@@ -1466,8 +1536,9 @@ submitAppointmentForm = function() {
             break;
         }
     }
+	*/
     postData.push({name: "treatmentProcessStep", value: $("#ts_process option:selected").text()});    
-    postData.push({name: "purpose", value: purpose});
+    //postData.push({name: "purpose", value: purpose});
     postData.push({name: "editOccurencesAction", value:"onlyThisEvent"});
 	var formURL = $("#appointmentForm").attr("action");
 	$.post(formURL, postData, function( data ) {

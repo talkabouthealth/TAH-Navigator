@@ -940,7 +940,7 @@ public class CarePatien  extends Controller {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		String purpose = params.get("purpose");
+		//String purpose = params.get("purpose");
 		String purposeText = params.get("purposeText"); 
 		String treatmentProcessStep = params.get("treatmentProcessStep");
 	    String time = params.get("time");
@@ -1048,12 +1048,14 @@ public class CarePatien  extends Controller {
 					app.setCaremember(caremember);
 				}
 				app.setCareMemberName(membername);
-				Integer appIdInt = null;
+				//Integer appIdInt = null;
+				/*
 				if (Integer.valueOf(purpose) > 0) {
 					app.setPurpose(purpose);
 					appIdInt = new Integer(purpose);
 					app.setAppointmentid(AppointmentMasterDAO.getAppointmentByField("id", appIdInt));
 				}
+				*/
 				app.setTreatementStep(treatmentProcessStep);
 				app.setPurposeText(purposeText);
 				
@@ -1081,10 +1083,12 @@ public class CarePatien  extends Controller {
 							app.setCaremember(caremember);
 							app.setCareMemberName(membername);
 							app.setPhone(phone);
+							/*
 							if (Integer.valueOf(purpose) > 0) {
 								app.setPurpose(purpose);
 								app.setAppointmentid(AppointmentMasterDAO.getAppointmentByField("id", appIdInt));
 							}
+							*/
 							app.setTreatementStep(treatmentProcessStep);
 							app.setPurposeText(purposeText);
 							app.setPatientid(patient);
@@ -1111,10 +1115,12 @@ public class CarePatien  extends Controller {
 							app.setCaremember(caremember);
 							app.setCareMemberName(membername);
 							app.setPhone(phone);
+							/*
 							if (Integer.valueOf(purpose) > 0) {
 								app.setPurpose(purpose);
 								app.setAppointmentid(AppointmentMasterDAO.getAppointmentByField("id", appIdInt));
 							}
+							*/
 							app.setTreatementStep(treatmentProcessStep);
 							app.setPurposeText(purposeText);
 							app.setPatientid(patient);
@@ -1146,10 +1152,12 @@ public class CarePatien  extends Controller {
 							app.setCaremember(caremember);
 							app.setPhone(phone);
 							app.setCareMemberName(membername);
+							/*
 							if (Integer.valueOf(purpose) > 0) {
 								app.setPurpose(purpose);
 								app.setAppointmentid(AppointmentMasterDAO.getAppointmentByField("id", appIdInt));
 							}
+							*/
 							app.setTreatementStep(treatmentProcessStep);
 							app.setPurposeText(purposeText);
 							app.setPatientid(patient);
@@ -1169,6 +1177,7 @@ public class CarePatien  extends Controller {
 					//Need to code this.
 					Integer appId =  new Integer(id);
 					AppointmentDTO app = AppointmentDAO.getAppointmentByField("id",appId);
+					/*
 					if (Integer.valueOf(purpose) > 0) {
 						app.setPurpose(purpose);
 						Integer appIdInt = new Integer(purpose);
@@ -1177,6 +1186,10 @@ public class CarePatien  extends Controller {
 						app.setPurpose(null);
 						app.setAppointmentid(null);
 					}
+					*/
+					app.setPurpose(null);
+					app.setAppointmentid(null);
+					
 					app.setTreatementStep(treatmentProcessStep);
 					app.setPurposeText(purposeText);
 					app.setPhone(phone);
@@ -1231,7 +1244,7 @@ public class CarePatien  extends Controller {
 						em.getTransaction().begin();	
 					
 					Query query = em.createQuery(hql);
-					
+					/*
 					if (Integer.valueOf(purpose) > 0) {
 						query.setParameter("fp1", purpose);
 						Integer appIdInt = new Integer(purpose);
@@ -1240,6 +1253,10 @@ public class CarePatien  extends Controller {
 						query.setParameter("fp1", null);
 						query.setParameter("fp2", null);
 					}
+					*/
+					query.setParameter("fp1", null);
+					query.setParameter("fp2", null);
+					
 					query.setParameter("fp4", treatmentProcessStep);
 					query.setParameter("fp5", purposeText);
 					query.setParameter("fp6", time);

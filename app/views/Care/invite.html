@@ -5,17 +5,8 @@
 .bootstrap-validator-form .help-block {
   margin-bottom: 0; }
 </style>
-<div class="col-xs-12 col-sm-12">
+<div class="col-xs-12 col-md-12">
 	<div class="modal-body" style="overflow: hidden;">
-		<div class="form-group form-group-sm">
-			<label class="col-xs-3 control-label" for="rt_schedule">Email</label>
-			<div class="col-xs-8 form-group input-group">
-				<input type="text" name="email" class="form-control nomargin" placeholder="i.e. example@example.com" required="required" data-error="Bruh, that email address is invalid"> 
-				<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
-			</div>
-			<div class="help-block with-errors"></div>
-		</div>
-
 		<div class="form-group form-group-sm">
 			<label class="col-xs-3 control-label" for="rt_schedule">First name</label>
 			<div class="col-xs-8 form-group input-group">
@@ -30,6 +21,45 @@
 				<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
 			</div>
 		</div>
+		<div class="form-group form-group-sm">
+			<label class="col-xs-3 control-label" for="rt_schedule">Email</label>
+			<div class="col-xs-8 form-group input-group">
+				<input type="text" name="email" class="form-control nomargin" placeholder="i.e. example@example.com" data-error="Bruh, that email address is invalid"> 				
+			</div>
+			<div class="help-block with-errors"></div>
+		</div>
+		<div class="form-group form-group-sm">
+			<label class="col-xs-3 control-label" for="rt_schedule">Mobile Phone</label>
+			<div class="col-xs-8 form-group input-group">
+				<input type="text" class="form-control nomargin" value="" name="mobilePhone">
+			</div>
+		</div>
+		<div class="form-group form-group-sm">
+			<label class="col-xs-3 control-label" for="rt_schedule">Phone</label>
+			<div class="col-xs-8 form-group input-group">
+				<input type="text" class="form-control nomargin" value="" name="homePhone">
+			</div>
+		</div>
+		<div class="form-group form-group-sm">
+			<label class="col-xs-offset-3 control-label">Preferred Method of Receiving Notifications</label>			
+		</div>
+		<div class="form-group form-group-sm">			
+			<div class="col-xs-offset-3 col-xs-8 form-group input-group">
+				<input type="radio" value="Email" checked="checked" name="communicationType" /> email
+			</div>
+		</div>
+		<div class="form-group form-group-sm">			
+			<div class="col-xs-offset-3 col-xs-8 form-group input-group">
+				<input type="radio" value="Call" name="communicationType" /> phone
+			</div>
+		</div>
+		<div class="form-group form-group-sm">			
+			<div class="col-xs-offset-3 col-xs-8 form-group input-group">
+				<input type="radio" value="SMS" name="communicationType" /> text message
+			</div>
+		</div>
+		<br>
+		<br>
 		
 		<div class="form-group form-group-sm">
 			<label class="col-xs-3 control-label" for="rt_schedule">&nbsp;</label>
@@ -42,92 +72,102 @@
 			<div class="form-group form-group-sm">
 				<label class="col-xs-3 control-label" for="rt_schedule">Time</label>
 				<div class="col-xs-8 form-group input-group">
-					<input type="text" class="form-control timeField nomargin" name="time"><!--  required="required" --> 
-					<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+					<input type="text" class="form-control timeField nomargin" name="time">
 				</div>
 			</div>
 			<div class="form-group form-group-sm">
 				<label class="col-xs-3 control-label" for="rt_schedule">Date</label>
 				<div class="col-xs-8 form-group input-group">
-					<input type="text" class="form-control nomargin" id="hasDatepicker" name="schDate"><!--  required="required" --> 
-					<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+					<input type="text" class="form-control nomargin" id="hasDatepicker" name="schDate">
 				</div>
 			</div>
 			<div class="form-group form-group-sm">
 				<label class="col-xs-3 control-label" for="rt_schedule">Physician/Nurse</label>
 				<div class="col-xs-8 form-group input-group">
-				<input type="text" id="appointment_verified_members" name="membername" class="form-control nomargin" placeholder="i.e. Ryan Belen"><!--  required="required" --> 
+				<input type="text" id="appointment_verified_members" name="membername" class="form-control nomargin" placeholder="i.e. Ryan Belen">
 				</div>
 			</div>
 			
 			<div class="form-group form-group-sm">
 				<label class="col-xs-3 control-label" for="rt_schedule">Purpose of Appointment</label>
 				<div class="col-xs-8 form-group input-group">
-					<input type="text" id="appointment_purpose"  name="purposeText" class="form-control nomargin appointment_purpose"  value="1st Appointment With Radiation Oncologist" ><!--  required="required" -->  
-					<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+					<!--<input type="text" id="appointment_purpose"  name="purposeText" class="form-control nomargin appointment_purpose"  value="1st Appointment With Radiation Oncologist">-->
+					<select id="appointment_purpose" name="purposeText" class="form-control nomargin" required="required">
+						<optgroup label="Radiation Oncology">
+							<option>First Appointment With Radiation Oncologist</option>
+							<option>Make Treatment Decision (Radiation Oncology)</option>
+							<option>End of Treatment Visit (Radiation Oncology)</option>
+							<option>Follow-up Appointment (Radiation Oncology)</option>
+							<option>On Treatment Visit (Radiation Oncology)</option>
+							<option>Simulation (Radiation Oncology)</option>
+						</optgroup>
+						<optgroup label="Surgery">
+							<option>1st Appointment With Surgeon</option>
+							<option>Make Treatment Decision (Surgery)</option>
+							<option>Surgery</option>
+							<option>Follow-up Appointment After Surgery</option>
+							<option>Ongoing Follow-up Appointment (Surgery)</option>								
+						</optgroup>
+					</select>
 				</div>
 			</div>
 			<div class="form-group form-group-sm" id="treatment_step_process">
-				<label class="col-xs-3 control-label" for="rt_schedule">Step in the Treatment Process</label>
+				<label class="col-xs-3 control-label" for="ts_process">Step in the Treatment Process</label>
 				<div class="col-xs-8 form-group input-group">
-					<select class="form-control nomargin" id="ts_process">
-					<!-- 
-						<option></option>
-						<option>Prepare for First Appointment</option>
-						<option>Make Treatment Decision</option>
-						<option>Prepare for First Treatment</option>
-						<option>Ongoing Treatments</option>
-						<option>Continue Follow-Ups</option>    
-					-->
+					<!--<select class="form-control nomargin" id="ts_process">					
 						<option></option>
                         <option selected="selected">First Appointment</option>
                         <option>Make Treatment Decision</option>
                         <option>Simulation</option>
                         <option>Appointment During Treatments</option>
                         <option>Post Treatment Appointment</option>     
+					</select>-->
+					<select class="form-control nomargin" id="ts_process">
+						<option></option>
+						<optgroup label="Radiation Oncology">
+							<option>First Appointment With Radiation Oncologist</option>
+							<option>Make Treatment Decision (Radiation Oncology)</option>
+							<option>Simulation (Radiation Oncology)</option>
+							<option>On Treatment Visit (Radiation Oncology)</option>
+							<option>Follow-up Appointment (Radiation Oncology)</option>
+						</optgroup>
+						<optgroup label="Surgery">
+							<option>1st Appointment With Surgeon</option>								
+							<option>Make Treatment Decision (Surgery)</option>
+							<option>Surgery</option>
+							<option>Follow-up Appointment (Surgery)</option>
+						</optgroup>                                
 					</select>
 				</div>
 			</div>
 			<div class="form-group form-group-sm">
 				<label class="col-xs-3 control-label" for="rt_schedule">Center</label>
 				<div class="col-xs-8 form-group input-group">
-					<input type="text" class="form-control nomargin" value="Moffitt Cancer Center TVRH" name="center"><!--  required="required" -->  
-					<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+					<input type="text" class="form-control nomargin" value="Moffitt Cancer Center TVRH" name="center">
 				</div>
-			</div>
-			<div class="form-group form-group-sm">
-				<label class="col-xs-3 control-label" for="rt_schedule">Telephone</label>
-				<div class="col-xs-8 form-group input-group">
-					<input type="text" class="form-control nomargin" value="" name="telephone"><!--  required="required" -->  
-					<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
-				</div>
-			</div>
+			</div>			
 			<div class="form-group form-group-sm">
 				<label class="col-xs-3 control-label" for="rt_schedule">Address1</label>
 				<div class="col-xs-8 form-group input-group">
-					<input type="text" class="form-control nomargin" value="1400 US Highway 441, Suite 540" name="address1"><!--  required="required" -->  
-					<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+					<input type="text" class="form-control nomargin" value="1400 US Highway 441, Suite 540" name="address1">
 				</div>
 			</div>
 			<div class="form-group form-group-sm">
 				<label class="col-xs-3 control-label" for="rt_schedule">City</label>
 				<div class="col-xs-8 form-group input-group">
-					<input type="text" class="form-control nomargin" value="The Villages" name="city"><!--  required="required" --> 
-					<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+					<input type="text" class="form-control nomargin" value="The Villages" name="city">
 				</div>
 			</div>
 			<div class="form-group form-group-sm">
 				<label class="col-xs-3 control-label" for="rt_schedule">State</label>
 				<div class="col-xs-8 form-group input-group">
-					<input type="text" class="form-control nomargin" value="FL" name="state"><!--  required="required" -->  
-					<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+					<input type="text" class="form-control nomargin" value="FL" name="state">
 				</div>
 			</div>
 			<div class="form-group form-group-sm">
 				<label class="col-xs-3 control-label" for="rt_schedule">Zip Code</label>
 				<div class="col-xs-8 form-group input-group">
-					<input type="text" class="form-control nomargin" value="32159" name="zip"><!--  required="required" -->  
-					<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+					<input type="text" class="form-control nomargin" value="32159" name="zip">
 				</div>
 			</div>
 		</div>
@@ -161,8 +201,8 @@
 #{/form}
 <script>
 
-var timeArray = ["8 AM","8.15 AM","8.30 AM","8.45 AM","9 AM","9.15 AM","9.30 AM","9.45 AM","10 AM","10.15 AM","10.30 AM","10.45 AM","11 AM","11.15 AM","11.30 AM","11.45 AM","12 noon","12.15 PM","12.30 PM",
- 				"12.45 PM","1 PM","1.15 PM","1.30 PM","1.45 PM","2 PM","2.15 PM","2.30 PM","2.45 PM","3 PM","3.15 PM","3.30 PM","3.45 PM","4 PM","5.15 PM","5.30 PM","5.45 PM","6 PM"];
+var timeArray = ["8 AM","8:15 AM","8:30 AM","8:45 AM","9 AM","9:15 AM","9:30 AM","9:45 AM","10 AM","10:15 AM","10:30 AM","10:45 AM","11 AM","11:15 AM","11:30 AM","11:45 AM","12 noon","12:15 PM","12:30 PM",
+ 				"12:45 PM","1 PM","1:15 PM","1:30 PM","1:45 PM","2 PM","2:15 PM","2:30 PM","2:45 PM","3 PM","3:15 PM","3:30 PM","3:45 PM","4 PM","5:15 PM","5:30 PM","5:45 PM","6 PM"];
 $(document).ready(function() {
 	if($("#appointmentBtn").prop('checked')==true) {
 		$("#appointmentBlock").show();	
@@ -207,10 +247,11 @@ $(document).ready(function() {
 		        }        
 		        postData.push({name: "memberid", value: $avm.attr("careMemberId") || 0});
 		        
-		        var purposes = $ap.data("purposes");
+		        //var purposes = $ap.data("purposes");
 		        var purpose_text = $.trim($ap.val());
-		        var definedPurpose = false;
-		        var purpose = 0;
+		        //var definedPurpose = false;
+		        //var purpose = 0;
+				/*
 			     for (var i = 0; i < purposes.length; i++) {
 			            if (purposes[i].name == purpose_text) {
 			                definedPurpose = true;
@@ -218,10 +259,11 @@ $(document).ready(function() {
 			                break;
 			            }
 			     }
-// 		        if (!definedPurpose) {
-		            postData.push({name: "treatmentProcessStep", value: $("#ts_process option:selected").text()});    
-// 		        }
-				postData.push({name: "purpose", value: purpose});
+				 */
+// 		        //if (!definedPurpose) {
+					postData.push({name: "treatmentProcessStep", value: $("#ts_process option:selected").text()});    
+// 		        //}
+				//postData.push({name: "purpose", value: purpose});
 				postData.push({name: "withapp", value: 1});
 			} else {
 				postData.push({name: "withapp", value: 0});
@@ -255,7 +297,7 @@ $(document).ready(function() {
 		$("#appointmentForm input[name='time']").val("");
 		$("#appointmentForm input[name='schDate']").val("");
 		$("#appointmentForm input[name='membername']").val("");
-		$("#appointmentForm input[name='purposeText']").val("");
+		$("#appointmentForm select[name='purposeText']").val("");
 		$("#appointmentForm input[name='center']").val("Moffitt Cancer Center TVRH");
 		$("#appointmentForm input[name='address1']").val("1400 U.S. Highway 441");
 		$("#appointmentForm input[name='telephone']").val("");
@@ -272,7 +314,7 @@ validateOtherData = function() {
 	$("#appointmentForm input[name='time']").parent().removeClass("has-error");
 	$("#appointmentForm input[name='schDate']").parent().removeClass("has-error");
 	$("#appointmentForm input[name='membername']").parent().removeClass("has-error");
-	$("#appointmentForm input[name='purposeText']").parent().removeClass("has-error");
+	$("#appointmentForm select[name='purposeText']").parent().removeClass("has-error");
 	$("#appointmentForm input[name='center']").parent().removeClass("has-error");
 	$("#appointmentForm input[name='address1']").parent().removeClass("has-error");
 	$("#appointmentForm input[name='city']").parent().removeClass("has-error");
@@ -291,9 +333,9 @@ validateOtherData = function() {
 		valid = false;
 		$("#appointmentForm input[name='membername']").parent().addClass("has-error");
 	}
-	if($("#appointmentForm input[name='purposeText']").val().trim() == '') {
+	if($("#appointmentForm select[name='purposeText']").val().trim() == '') {
 		valid = false;
-		$("#appointmentForm input[name='purposeText']").parent().addClass("has-error");		
+		$("#appointmentForm select[name='purposeText']").parent().addClass("has-error");		
 	}
 	if($("#appointmentForm input[name='center']").val().trim() == '') {
 		valid = false;
@@ -319,12 +361,12 @@ validateOtherData = function() {
 }
 selectExpert = function() {
  	var $avm = $('#appointment_verified_members');
- 	 var $ap = $('#appointment_purpose');
+ 	var $ap = $('#appointment_purpose');
 	$("input.timeField").autocomplete({source: timeArray,minLenght:0 });
 	$('#hasDatepicker').datepicker({defaultDate: +1 ,minDate:"+1d"});
-	var initFlag = $avm.attr("init_flag");
-	 if (!initFlag) {
-		 $avm.attr('init_flag', 1);
+	//var initFlag = $avm.attr("init_flag");
+	// if (!initFlag) {
+	//	 $avm.attr('init_flag', 1);
 	$.post('/care/appointmentForm', {}, function (data) {
 		var members = data.members; 
 		$avm.data("careMembers", members);
@@ -336,10 +378,17 @@ selectExpert = function() {
              source: arr,
              minLength: 0                
 	     }); 
+		 if ('teamName' in data) {
+			if (data.teamName.match(/surgery/i) != null) {
+				$ap.val('1st Appointment With Surgeon');
+				$('#ts_process').val('1st Appointment With Surgeon');
+			}
+		}
          
-		var purposes = data.purposes;
-		var purposeList = [];
-		var length = purposes.length;
+		//var purposes = data.purposes;
+		//var purposeList = [];
+		//var length = purposes.length;
+		/*
 		for (var i = 0; i < length; i++) {
 			purposeList.push(purposes[i].name);
 		}
@@ -348,8 +397,11 @@ selectExpert = function() {
         for (var i = 0; i < length; i++) {
             purposeList.push(purposes[i].name);
         }
+		*/
+		/*
         $ap.data("purposes", data.purposes);
         $ap.val(data.purposes[0].name);
+		
         $ap.typeahead({
             source: purposeList,
             minLength: 0,
@@ -357,7 +409,7 @@ selectExpert = function() {
 //                 $('#treatment_step_process').hide();
                 return item;
             }
-        });
+        });		
         $ap.blur(function(e) {
             var purposes = $ap.data("purposes");
             var purposetext = $.trim($ap.val());
@@ -369,17 +421,17 @@ selectExpert = function() {
                 }
             }
         });
-        
+        */
         var addr = data.address;
         $("#appointmentForm input[name='center']").val(addr.line1);
 		$("#appointmentForm input[name='address1']").val(addr.line2);
-		$("#appointmentForm input[name='telephone']").val(addr.phone);
+		//$("#appointmentForm input[name='telephone']").val(addr.phone);
 		$("#appointmentForm input[name='city']").val(addr.city);
 		$("#appointmentForm input[name='state']").val(addr.state);
 		$("#appointmentForm input[name='zip']").val(addr.zip);
         
 	}, "json");
-	 }
+	//}
 }
 <!-- -->
 </script>
