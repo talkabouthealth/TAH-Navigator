@@ -695,9 +695,8 @@ var careTeamController = (function() {
                      source: doctors
                  });
                  $(self.saveBtnId).click(function() {
-                     if (self.save()) {
-                         $(self.formId).modal('hide');
-                     }
+                     self.save();
+                     $(self.formId).modal('hide');
                  });
                  $(self.deleteBtnId).click(function() {
                      self.remove();
@@ -787,7 +786,7 @@ var careTeamController = (function() {
 //                $(self.followUpDiv).html(htmlText);
 //                addTooltip();
             }, "html");
-            return true; 
+            return true;
         },
         remove: function() {
             var self = careItemForm;
