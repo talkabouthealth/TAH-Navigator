@@ -59,6 +59,7 @@
                     <label class="col-xs-3 control-label" for="rt_schedule">Purpose of Appointment</label>
                     <div class="col-xs-8 form-group input-group">                           
 						<select id="appointment_purpose" name="purposeText" class="form-control nomargin" required="required">
+							<option></option>
 							<optgroup label="Radiation Oncology">
 								<option>First Appointment With Radiation Oncologist</option>
 								<option>Make Treatment Decision (Radiation Oncology)</option>
@@ -1146,7 +1147,8 @@ emptyAppointmentForm = function() {
 	$("#appointmentForm input[name='time']").val('');
 	$("#appointmentForm input[name='phone']").val('');
 	$("#appointmentForm input[name='schDate']").val('');
-	
+	$('#appointment_purpose').val('');
+	$('#ts_process').val('');
 	$("#appointmentForm input[name='center']").val('');
 	$('#appointment_verified_members').val('');
 	$("#appointmentForm input[name='address1']").val('');
@@ -1159,9 +1161,8 @@ operationAppointment = function(operation, id) {
 	
     var $avm = $('#appointment_verified_members');
     var $ap = $('#appointment_purpose');
-    	
-    if (operation == 'add') {
-		emptyAppointmentForm();
+    emptyAppointmentForm();	
+    if (operation == 'add') {		
         $.post('/care/appointmentForm', {}, function (data) {
 			if ('teamName' in data) {
 				if (data.teamName.match(/surgery/i) != null) {
