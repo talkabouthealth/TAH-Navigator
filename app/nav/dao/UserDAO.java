@@ -32,6 +32,7 @@ import org.hibernate.criterion.Restrictions;
 import com.google.gson.Gson;
 
 import models.ExpertDetailDTO;
+import models.InvitedDTO;
 import models.PatienCareTeamDTO;
 import models.PatientConcernDTO;
 import models.PatientDetailDTO;
@@ -549,6 +550,93 @@ public class UserDAO {
 		}
 		System.out.println("New ID id " + dto.getId());
 		return true;
+	}
+	
+	public static boolean createPatientAccount(InvitedDTO memberBean) {
+
+		Calendar cl = Calendar.getInstance();
+
+		UserDTO dto = new UserDTO();
+		dto.setEmail(memberBean.getEmail());
+		dto.setName("");
+		dto.setPassword(null);
+		UserTypeDTO userTypedto = UserTypeDAO.getEntityById("1");
+		dto.setIsverified(true);
+		dto.setActive(true);
+		dto.setUserType(userTypedto.getAbbravation());
+		dto.setUsertypeid(userTypedto);
+		
+		EntityManager em = JPAUtil.getEntityManager();
+		em.getTransaction().begin();
+		em.persist(dto);
+		em.getTransaction().commit();
+		
+		try {
+			UserDetailsDTO detailsDTO = new UserDetailsDTO();
+			detailsDTO.setId(dto.getId());
+			detailsDTO.setUser(dto);
+			if(StringUtils.isNotBlank(memberBean.getCommunicationType() )) {
+				detailsDTO.setContactMethod(ContactTypeDAO.getEntityById(memberBean.getCommunicationType()));
+			} else {
+				detailsDTO.setContactMethod(ContactTypeDAO.getEntityById("1"));
+			}
+
+			detailsDTO.setCreatedate(cl.getTime());
+			detailsDTO.setEditdate(cl.getTime());
+			detailsDTO.setEditedBy(dto);
+			detailsDTO.setEmail(memberBean.getEmail());
+
+			if(StringUtils.isNotBlank(memberBean.getFirstname())) {
+				detailsDTO.setFirstName(memberBean.getFirstname());
+			}
+			if(StringUtils.isNotBlank(memberBean.getLastname())) {
+				detailsDTO.setLastName(memberBean.getLastname());
+			}
+			if(StringUtils.isNotBlank(memberBean.getPhone())) {
+				detailsDTO.setHomePhone(memberBean.getPhone());
+			}
+			if(StringUtils.isNotBlank(memberBean.getMobile())) {
+				detailsDTO.setMobile(memberBean.getMobile());
+			}
+			detailsDTO.setTocflag(false);
+			detailsDTO.setTosflag(false);
+			detailsDTO.setVerificationcode(UUID.randomUUID());
+
+			em.getTransaction().begin();
+			em.persist(detailsDTO);
+			em.getTransaction().commit();
+
+			PatientDetailDTO patientDetailDTO = new PatientDetailDTO();
+			patientDetailDTO.setId(dto.getId());
+			em.getTransaction().begin();
+			em.persist(patientDetailDTO);
+			em.getTransaction().commit();
+
+			if(StringUtils.isNotBlank(memberBean.getCareMemberName())) {
+				UserDetailsDTO expdto = getDetailsByField("firstName",memberBean.getCareMemberName());
+				if(expdto != null) {
+					List<Integer> ids = CareTeamDAO.getCareTeamOfExpert(new Integer(expdto.getId()));
+					for (Integer integer : ids) {
+						CareTeamDAO.createPatienCareTeamAllNew(dto,integer);
+					}
+				}
+			}
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+		System.out.println("New ID id " + dto.getId());
+		return true;
+	}
+	
+	public static boolean updateMember(UserDTO userDto, SignUpMemberBean member) {
+		 userDto.setPassword(CommonUtil.hashPassword(member.getPassword()));
+    	 BaseDAO.update(userDto);
+    	 UserDetailsDTO detailsDTO = UserDAO.getDetailsByField("id",userDto.getId());
+    	 detailsDTO.setTocflag(true);
+    	 detailsDTO.setTosflag(true);
+    	 BaseDAO.update(detailsDTO);
+		return true;
+		
 	}
 	
 	public static String getUserName(Integer id) {

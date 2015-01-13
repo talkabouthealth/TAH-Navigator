@@ -172,7 +172,6 @@ public class Care extends Controller {
 					
 				}
 				app.setCareMemberName(membername);
-				
 			}
 			UserBean user = CommonUtil.loadCachedUser(session);
 			UserDTO addedby = UserDAO.getUserBasicByField("id",user.getId());
@@ -188,16 +187,16 @@ public class Care extends Controller {
 			app.setCommunicationType(communicationType);
 			BaseDAO.save(app);
 			
-			
+			UserDAO.createPatientAccount(app);
+
    		 	if (withapp == 1) {
    		 		vars = InvitationDAO.mailVariables(EmailUtil.TVRH_INVITE_APPOINTMENT_SCHEDULED, app);
    		 		EmailUtil.sendEmail(EmailUtil.TVRH_INVITE_APPOINTMENT_SCHEDULED, vars, email);
-   		 	}
-   		 	else {   		 		
+   		 	} else {
    		 		vars = InvitationDAO.mailVariables(EmailUtil.TVRH_INVITE_NO_APPOINTMENT_SCHEDULED, app);
    		 		EmailUtil.sendEmail(EmailUtil.TVRH_INVITE_NO_APPOINTMENT_SCHEDULED, vars, email);
    		 	}
-   		 	
+
 		} catch(Exception e) {
 			e.printStackTrace();
 			JsonObject obj = new JsonObject();
