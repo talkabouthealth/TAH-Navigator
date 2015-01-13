@@ -635,12 +635,10 @@ var careTeamController = (function() {
                 	 activities[i] = data.inputlist[i].fieldtext;
                 	 purposeMap[data.inputlist[i].fieldtext] = data.inputlist[i].otherfield;
                  }
-
                  var self = careItemForm;
                  var frequencies = data.frequencies;
                  var doctors = data.doctors;
 
-            
                  $(self.activityId).keyup(function() {
                      var str = $(this).val();
                      if (str) {
@@ -681,18 +679,19 @@ var careTeamController = (function() {
                  $(self.ongoingId).click(function() {
                      if ($(this).prop("checked")) {
                          $(self.endDateId).prop("disabled", true);
-                     }
-                     else {
+                     } else {
                          $(self.endDateId).prop("disabled", false);
                      }
                  });
 
                  $(self.frequencyId).typeahead({
                      source: frequencies
+                     , minLength: 0 
                  });
-                 
+
                  $(self.doctorId).typeahead({
                      source: doctors
+                     , minLength: 0
                  });
                  $(self.saveBtnId).click(function() {
                      self.save();
@@ -703,12 +702,12 @@ var careTeamController = (function() {
                      $(self.formId).modal('hide');
                  });
                  $(self.formId).attr('init_flag', '1');
-                 
+
                  $(self.formId).modal({
                      keyboard: false,
                      backdrop: 'static'
                  });
-                 
+
              }, "json");
         },
         empty: function() {
@@ -809,7 +808,7 @@ var careTeamController = (function() {
             var formType = $(elm).attr("form_type");
             var params = {};
             $(self.formId).attr("patient_id", patientId);
-            
+
             var formLoad = function() {
                 if (initFlag == '0') {
                     self.init(patientId);
@@ -819,12 +818,10 @@ var careTeamController = (function() {
                 self.empty();
             };
             if (formType == 'new') {
-            	
                 $(self.deleteBtnId).hide();
                 formLoad();
                 self.validate();
-            }
-            else {
+            } else {
                 $(self.deleteBtnId).show();
                 var careItemId = $(elm).attr('care_item_id');
                 $(self.deleteBtnId).attr("care_item_id", careItemId);
