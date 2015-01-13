@@ -611,14 +611,18 @@ public class UserDAO {
 			em.getTransaction().begin();
 			em.persist(patientDetailDTO);
 			em.getTransaction().commit();
-
+			UserDetailsDTO expdto = null;
 			if(StringUtils.isNotBlank(memberBean.getCareMemberName())) {
-				UserDetailsDTO expdto = getDetailsByField("firstName",memberBean.getCareMemberName());
-				if(expdto != null) {
-					List<Integer> ids = CareTeamDAO.getCareTeamOfExpert(new Integer(expdto.getId()));
-					for (Integer integer : ids) {
-						CareTeamDAO.createPatienCareTeamAllNew(dto,integer);
-					}
+				expdto = getDetailsByField("firstName",memberBean.getCareMemberName());
+				
+			} else {
+				expdto = getDetailsByField("id",memberBean.getAddedby().getId());
+				
+			}
+			if(expdto != null) {
+				List<Integer> ids = CareTeamDAO.getCareTeamOfExpert(new Integer(expdto.getId()));
+				for (Integer integer : ids) {
+					CareTeamDAO.createPatienCareTeamAllNew(dto,integer);
 				}
 			}
 		} catch(Exception e){
