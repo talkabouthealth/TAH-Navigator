@@ -62,13 +62,13 @@
 							<optgroup label="Radiation Oncology">
 								<option>First Appointment With Radiation Oncologist</option>
 								<option>Make Treatment Decision (Radiation Oncology)</option>
-								<option>End of Treatment Visit (Radiation Oncology)</option>
-								<option>Follow-up Appointment (Radiation Oncology)</option>
-								<option>On Treatment Visit (Radiation Oncology)</option>
 								<option>Simulation (Radiation Oncology)</option>
+								<option>On Treatment Visit (Radiation Oncology)</option>
+								<option>End of Treatment Visit (Radiation Oncology)</option>
+								<option>Ongoing Follow-up Appointment (Radiation Oncology)</option>
 							</optgroup>
 							<optgroup label="Surgery">
-								<option>1st Appointment With Surgeon</option>
+								<option>First Appointment With Surgeon</option>
 								<option>Make Treatment Decision (Surgery)</option>
 								<option>Surgery</option>
 								<option>Follow-up Appointment After Surgery</option>
@@ -95,18 +95,20 @@
                         <div class="col-xs-8 form-group input-group">                           
                             <select class="form-control nomargin" id="ts_process">
 								<option></option>
-                                <optgroup label="Radiation Oncology">
+								<optgroup label="Radiation Oncology">
 									<option>First Appointment With Radiation Oncologist</option>
 									<option>Make Treatment Decision (Radiation Oncology)</option>
 									<option>Simulation (Radiation Oncology)</option>
 									<option>On Treatment Visit (Radiation Oncology)</option>
-									<option>Follow-up Appointment (Radiation Oncology)</option>
+									<option>End of Treatment Visit (Radiation Oncology)</option>
+									<option>Ongoing Follow-up Appointment (Radiation Oncology)</option>
 								</optgroup>
 								<optgroup label="Surgery">
-									<option>1st Appointment With Surgeon</option>								
+									<option>First Appointment With Surgeon</option>								
 									<option>Make Treatment Decision (Surgery)</option>
 									<option>Surgery</option>
 									<option>Follow-up Appointment (Surgery)</option>
+									<option>Ongoing Follow-up Appointment (Surgery)</option>
 								</optgroup>                                
                             </select>
                         </div>
@@ -1104,6 +1106,7 @@ operationMedication = function(operation,id) {
 		$('#addEditmedication').appendTo("body").modal();
 	}
 }
+
 operationNote = function(operation,id,title,desc, noteBy) {
     var userId = '${user.id}';
     $('#addEditNote').find('input[type="button"][name="deleteNote"]').hide();
@@ -1138,18 +1141,38 @@ operationNote = function(operation,id,title,desc, noteBy) {
 		$('#addEditNote').appendTo("body").modal();
 	}
 }
+
+emptyAppointmentForm = function() {
+	$("#appointmentForm input[name='time']").val('');
+	$("#appointmentForm input[name='phone']").val('');
+	$("#appointmentForm input[name='schDate']").val('');
+	
+	$("#appointmentForm input[name='center']").val('');
+	$('#appointment_verified_members').val('');
+	$("#appointmentForm input[name='address1']").val('');
+	$("#appointmentForm input[name='city']").val('');
+	$("#appointmentForm input[name='state']").val('');
+	$("#appointmentForm input[name='zip']").val('');	
+};
+
 operationAppointment = function(operation, id) {
 	
     var $avm = $('#appointment_verified_members');
     var $ap = $('#appointment_purpose');
     	
-    if (operation == 'add') {        
+    if (operation == 'add') {
+		emptyAppointmentForm();
         $.post('/care/appointmentForm', {}, function (data) {
 			if ('teamName' in data) {
 				if (data.teamName.match(/surgery/i) != null) {
-					$ap.val('1st Appointment With Surgeon');
-					$('#ts_process').val('1st Appointment With Surgeon');
+					$ap.val('First Appointment With Surgeon');
+					$('#ts_process').val('First Appointment With Surgeon');
 				}
+				else if (data.teamName.match(/radiation oncology/i) != null) {
+					$ap.val('First Appointment With Radiation Oncologist');
+					$('#ts_process').val('First Appointment With Radiation Oncologist');
+				}
+				
 			}			
 			if ('address' in data) {
 				var address = data.address;				
