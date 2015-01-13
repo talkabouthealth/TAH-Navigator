@@ -1,0 +1,17 @@
+#{selenium 'Login'}
+ 
+    // Try to log in the administration area
+    clearSession()
+    open(${baseUrl})
+    waitForPageToLoad(30000)
+    assertTextPresent('Welcome To Moffitt Cancer Center TVRH.')
+    type('email', 'exampleuser@example.com	')
+    assertElementPresent('email')
+    type('password', 'test1234')
+    assertElementPresent('password')
+    clickAndWait('signin')
+ 
+    // Verify that the user in correctly logged in
+    
+ 
+#{/selenium}

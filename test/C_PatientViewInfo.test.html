@@ -1,0 +1,25 @@
+#{selenium 'Patient Views Information'}
+ 
+    // Try to log in the administration area
+    clearSession()
+    open('/secure/login')
+    assertTextPresent('Welcome')
+    type('email', 'exampleuser@example.com')
+    type('password', 'test1234')
+    clickAndWait('signin')
+    clickAndWait('xpath=//html/body/div[1]/div[2]/div[1]/ul/li[4]/a/span')
+    assertTextPresent('Upcoming Appointments')
+	clickAndWait('xpath=//html/body/div[1]/div[2]/div[1]/ul/li[5]/a/span')
+	assertTextPresent('RADIATION CARE TEAM')
+	clickAndWait('xpath=//html/body/div[1]/div[2]/div[1]/ul/li[6]/a/span')
+	assertTextPresent('Current Medications')
+	clickAndWait('xpath=//html/body/div[1]/div[2]/div[1]/ul/li[7]/a/span')
+	assertTextPresent('Radiation Treatment')
+	clickAndWait('xpath=//html/body/div[1]/div[2]/div[1]/ul/li[8]/a/span')
+	assertTextPresent('Follow-Up Care')
+	clickAndWait('xpath=//html/body/div[1]/div[2]/div[1]/ul/li[9]/a/span')
+	assertTextPresent('Diagnosis')
+	clickAt('xpath=//html/body/div[1]/div[1]/div[4]/div/div[3]/div/a[1]')
+	clickAndWait('xpath=//html/body/div[1]/div[1]/div[4]/div/div[3]/div/a[3]')
+	
+#{/selenium}

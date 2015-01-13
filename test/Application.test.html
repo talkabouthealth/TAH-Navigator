@@ -1,0 +1,9 @@
+*{ You can use plain Selenium commands using the selenium tag }*
+#{selenium}
+	clearSession()
+	
+    // Open the home page, and check that no error occurred
+    open('/')
+    waitForPageToLoad(1000)
+    assertNotTitle('Application error')
+#{/selenium}

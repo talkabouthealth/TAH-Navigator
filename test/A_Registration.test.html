@@ -1,0 +1,27 @@
+#{selenium 'Registration'}
+ 
+    // Try to log in the administration area
+    clearSession()
+    open('/secure/login')
+    assertTextPresent('New User?')
+    clickAndWait('css=html body div.log_bg div.col-xs-12.col-sm-12 div#log_contaner.myform.dec-20 div.log_center div.row div.col-xs-12.col-sm-6.register-container p.text-center a.btn.btn-primary.btn-lg.btn-block.my-btn-register')
+    // Verify that the user in correctly logged in
+    assertTextPresent('Email')
+    type('member.email','exampleuser${(int)(Math.random()*1000)}@example.com')
+  	assertTextPresent('Password')
+  	type('member.password','test1234')
+  	assertTextPresent('First Name')
+    type('member.firstName','Test')
+    assertTextPresent('Last Name')
+    type('member.lastName','User')
+    assertTextPresent('Date of birth')
+    type('member.dob','12/02/1990')
+    assertTextPresent('I agree to the Moffitt Cancer Center - TVRH Terms of Service and Privacy Policy')
+    click('member.tosFlag')
+    assertElementPresent('xpath=//html/body/div[3]/div/form/div[2]/div/div/button')
+    clickAndWait('xpath=//html/body/div[3]/div/form/div[2]/div/div/button')
+    
+    open('/patient/index')
+    waitForPageToLoad(10000)
+    clickAndWait('xpath=//html/body/div[1]/div[1]/div[4]/div/div[3]/div/a[3]')
+#{/selenium}
