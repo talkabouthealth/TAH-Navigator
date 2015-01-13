@@ -92,17 +92,17 @@
 				<label class="col-xs-3 control-label" for="rt_schedule">Purpose of Appointment</label>
 				<div class="col-xs-8 form-group input-group">
 					<!--<input type="text" id="appointment_purpose"  name="purposeText" class="form-control nomargin appointment_purpose"  value="1st Appointment With Radiation Oncologist">-->
-					<select id="appointment_purpose" name="purposeText" class="form-control nomargin">
+					<select id="appointment_purpose" name="purposeText" class="form-control nomargin" team-name="${careTeam?.name}">
 						<optgroup label="Radiation Oncology">
 							<option>First Appointment With Radiation Oncologist</option>
 							<option>Make Treatment Decision (Radiation Oncology)</option>
-							<option>End of Treatment Visit (Radiation Oncology)</option>
-							<option>Follow-up Appointment (Radiation Oncology)</option>
-							<option>On Treatment Visit (Radiation Oncology)</option>
 							<option>Simulation (Radiation Oncology)</option>
+							<option>On Treatment Visit (Radiation Oncology)</option>
+							<option>End of Treatment Visit (Radiation Oncology)</option>
+							<option>Ongoing Follow-up Appointment (Radiation Oncology)</option>
 						</optgroup>
 						<optgroup label="Surgery">
-							<option>1st Appointment With Surgeon</option>
+							<option>First Appointment With Surgeon</option>
 							<option>Make Treatment Decision (Surgery)</option>
 							<option>Surgery</option>
 							<option>Follow-up Appointment After Surgery</option>
@@ -129,13 +129,15 @@
 							<option>Make Treatment Decision (Radiation Oncology)</option>
 							<option>Simulation (Radiation Oncology)</option>
 							<option>On Treatment Visit (Radiation Oncology)</option>
-							<option>Follow-up Appointment (Radiation Oncology)</option>
+							<option>End of Treatment Visit (Radiation Oncology)</option>
+							<option>Ongoing Follow-up Appointment (Radiation Oncology)</option>
 						</optgroup>
 						<optgroup label="Surgery">
-							<option>1st Appointment With Surgeon</option>								
+							<option>First Appointment With Surgeon</option>								
 							<option>Make Treatment Decision (Surgery)</option>
 							<option>Surgery</option>
 							<option>Follow-up Appointment (Surgery)</option>
+							<option>Ongoing Follow-up Appointment (Surgery)</option>
 						</optgroup>                                
 					</select>
 				</div>
@@ -143,38 +145,38 @@
 			<div class="form-group form-group-sm">
 				<label class="col-xs-3 control-label" for="rt_schedule">Center</label>
 				<div class="col-xs-8 form-group input-group">
-					<input type="text" class="form-control nomargin" value="Moffitt Cancer Center TVRH" name="center">
+					<input type="text" class="form-control nomargin" value="Moffitt Cancer Center TVRH" name="center" center="${careTeam?.address?.line1}">
 				</div>
 			</div>			
 			<div class="form-group form-group-sm">
 				<label class="col-xs-3 control-label" for="rt_schedule">Address1</label>
 				<div class="col-xs-8 form-group input-group">
-					<input type="text" class="form-control nomargin" value="1400 US Highway 441, Suite 540" name="address1">
+					<input type="text" class="form-control nomargin" value="1400 US Highway 441, Suite 540" name="address1" address1="${careTeam?.address?.line2}"">
 				</div>
 			</div>
 			<div class="form-group form-group-sm">
 				<label class="col-xs-3 control-label" for="rt_schedule">City</label>
 				<div class="col-xs-8 form-group input-group">
-					<input type="text" class="form-control nomargin" value="The Villages" name="city">
+					<input type="text" class="form-control nomargin" value="The Villages" name="city" city="${careTeam?.address?.city}">
 				</div>
 			</div>
 			<div class="form-group form-group-sm">
 				<label class="col-xs-3 control-label" for="rt_schedule">State</label>
 				<div class="col-xs-8 form-group input-group">
-					<input type="text" class="form-control nomargin" value="FL" name="state">
+					<input type="text" class="form-control nomargin" value="FL" name="state" state="${careTeam?.address?.state}">
 				</div>
 			</div>
 			<div class="form-group form-group-sm">
 				<label class="col-xs-3 control-label" for="rt_schedule">Zip Code</label>
 				<div class="col-xs-8 form-group input-group">
-					<input type="text" class="form-control nomargin" value="32159" name="zip">
+					<input type="text" class="form-control nomargin" value="32159" name="zip" zip="${careTeam?.address?.zip}">
 				</div>
 			</div>
 		</div>
 	</div>
 	<div class="modal-footer" style="text-align: center;">
 		<ul class="list-group" id="errorUL"></ul>
-		<button type="submit" class="btn btn-default">Send Invite Email</button>
+		<button type="submit" class="btn btn-default">Invite New Patient</button>
 	</div>
 </div>
 <div class="distress modal fade" id="welcome" role="dialog" aria-labelledby="welcomeLable" aria-hidden="true">
@@ -203,6 +205,54 @@
 
 var timeArray = ["8 AM","8:15 AM","8:30 AM","8:45 AM","9 AM","9:15 AM","9:30 AM","9:45 AM","10 AM","10:15 AM","10:30 AM","10:45 AM","11 AM","11:15 AM","11:30 AM","11:45 AM","12 noon","12:15 PM","12:30 PM",
  				"12:45 PM","1 PM","1:15 PM","1:30 PM","1:45 PM","2 PM","2:15 PM","2:30 PM","2:45 PM","3 PM","3:15 PM","3:30 PM","3:45 PM","4 PM","5:15 PM","5:30 PM","5:45 PM","6 PM"];
+				
+var defaultValues = function() {
+	$("#appointmentForm input[name='email']").val("");
+	$("#appointmentForm input[name='firstname']").val("");
+	$("#appointmentForm input[name='lastname']").val("");		
+	$("#appointmentForm input[name='mobilePhone']").val("");
+	$("#appointmentForm input[name='homePhone']").val("");		
+	$("#appointmentForm input[name='time']").val("");
+	$("#appointmentForm input[name='schDate']").val("");
+	$("#appointmentForm input[name='membername']").val("");
+	
+	//$("#appointmentForm select[name='purposeText']").val("");
+	
+	var teamName = $('#appointment_purpose').attr('team-name');
+	if (teamName.match(/surgery/i) != null) {
+		$('#appointment_purpose').val('First Appointment With Surgeon');
+		$('#ts_process').val('First Appointment With Surgeon');
+	}
+	else if (teamName.match(/radiation oncology/i) != null) {
+		$('#appointment_purpose').val('First Appointment With Radiation Oncologist');
+		$('#ts_process').val('First Appointment With Radiation Oncologist');
+	}
+	else {
+		$('#appointment_purpose').val('');
+		$('#ts_process').val('');
+	}
+	
+	/*		
+	$("#appointmentForm input[name='center']").val("Moffitt Cancer Center TVRH");
+	$("#appointmentForm input[name='address1']").val("1400 U.S. Highway 441");
+	$("#appointmentForm input[name='telephone']").val("");
+	$("#appointmentForm input[name='city']").val("The Villages");
+	$("#appointmentForm input[name='state']").val("FL");
+	$("#appointmentForm input[name='zip']").val("32159");
+	*/
+	
+	var center = $("#appointmentForm input[name='center']").attr('center');
+	var address1 = $("#appointmentForm input[name='address1']").attr('address1');
+	var city = $("#appointmentForm input[name='city']").attr('city');
+	var state = $("#appointmentForm input[name='state']").attr('state');
+	var zip = $("#appointmentForm input[name='zip']").attr('zip');
+	
+	$("#appointmentForm input[name='center']").val(center);
+	$("#appointmentForm input[name='address1']").val(address1);		
+	$("#appointmentForm input[name='city']").val(city);
+	$("#appointmentForm input[name='state']").val(state);
+	$("#appointmentForm input[name='zip']").val(zip);
+};
 $(document).ready(function() {
 	if($("#appointmentBtn").prop('checked')==true) {
 		$("#appointmentBlock").show();	
@@ -272,15 +322,21 @@ $(document).ready(function() {
 			var formURL = $("#appointmentForm").attr("action");
 			$.post(formURL, postData, function( data ) {
 				var errorText = '';
-				if(data.status == '200') {
+				if (data.status == '200') {
 					$("#alertEmail").html($("#appointmentForm input[name='email']").val());
 					$('#welcome').appendTo("body").modal();
 					$('#errorUL').empty();
-				} else if(data.status == '100') {
+				} 
+				else if(data.status == '100') {
 					errorText = '<li class="list-group-item list-group-item-danger">Internal server error. Please try again.</li>';
-				} else if(data.status == '300') {
+				} 
+				else if(data.status == '300') {
 					errorText = '<li class="list-group-item list-group-item-danger">Email already registred, Please try again.</li>';
-				} else {
+				} 
+				else if (data.status == '301') {
+					errorText = '<li class="list-group-item list-group-item-danger">Invalid Email Address, Please try again.</li>';
+				}
+				else {
 					errorText = '<li class="list-group-item list-group-item-danger">This account has been disabled. Please contact admin for further information or reactivate this account.</li>';
 				}
 				$("#errorUL").empty();
@@ -288,22 +344,10 @@ $(document).ready(function() {
 			}, "json");
 		}
 	});
-
+	
 	$('#welcome button.cont').click(function(e){
 		$('#welcome').modal('hide');
-		$("#appointmentForm input[name='email']").val("");
-		$("#appointmentForm input[name='firstname']").val("");
-		$("#appointmentForm input[name='lastname']").val("");
-		$("#appointmentForm input[name='time']").val("");
-		$("#appointmentForm input[name='schDate']").val("");
-		$("#appointmentForm input[name='membername']").val("");
-		$("#appointmentForm select[name='purposeText']").val("");
-		$("#appointmentForm input[name='center']").val("Moffitt Cancer Center TVRH");
-		$("#appointmentForm input[name='address1']").val("1400 U.S. Highway 441");
-		$("#appointmentForm input[name='telephone']").val("");
-		$("#appointmentForm input[name='city']").val("The Villages");
-		$("#appointmentForm input[name='state']").val("FL");
-		$("#appointmentForm input[name='zip']").val("32159");
+		defaultValues();
 	});
 	
 	$('#appointmentForm').validator();
@@ -363,10 +407,7 @@ selectExpert = function() {
  	var $avm = $('#appointment_verified_members');
  	var $ap = $('#appointment_purpose');
 	$("input.timeField").autocomplete({source: timeArray,minLenght:0 });
-	$('#hasDatepicker').datepicker({defaultDate: +1 ,minDate:"+1d"});
-	//var initFlag = $avm.attr("init_flag");
-	// if (!initFlag) {
-	//	 $avm.attr('init_flag', 1);
+	$('#hasDatepicker').datepicker({defaultDate: +1 ,minDate:"+1d"});	
 	$.post('/care/appointmentForm', {}, function (data) {
 		var members = data.members; 
 		$avm.data("careMembers", members);
@@ -378,60 +419,9 @@ selectExpert = function() {
              source: arr,
              minLength: 0                
 	     }); 
-		 if ('teamName' in data) {
-			if (data.teamName.match(/surgery/i) != null) {
-				$ap.val('1st Appointment With Surgeon');
-				$('#ts_process').val('1st Appointment With Surgeon');
-			}
-		}
-         
-		//var purposes = data.purposes;
-		//var purposeList = [];
-		//var length = purposes.length;
-		/*
-		for (var i = 0; i < length; i++) {
-			purposeList.push(purposes[i].name);
-		}
-        var purposeList = [];
-        var length = purposes.length;
-        for (var i = 0; i < length; i++) {
-            purposeList.push(purposes[i].name);
-        }
-		*/
-		/*
-        $ap.data("purposes", data.purposes);
-        $ap.val(data.purposes[0].name);
-		
-        $ap.typeahead({
-            source: purposeList,
-            minLength: 0,
-            updater: function(item) {
-//                 $('#treatment_step_process').hide();
-                return item;
-            }
-        });		
-        $ap.blur(function(e) {
-            var purposes = $ap.data("purposes");
-            var purposetext = $.trim($ap.val());
-            var definedPurpose = false;
-            for (var i = 0; i < purposes.length; i++) {
-                if (purposes[i].name == purposetext) {
-                    definedPurpose = true;
-                    break;
-                }
-            }
-        });
-        */
-        var addr = data.address;
-        $("#appointmentForm input[name='center']").val(addr.line1);
-		$("#appointmentForm input[name='address1']").val(addr.line2);
-		//$("#appointmentForm input[name='telephone']").val(addr.phone);
-		$("#appointmentForm input[name='city']").val(addr.city);
-		$("#appointmentForm input[name='state']").val(addr.state);
-		$("#appointmentForm input[name='zip']").val(addr.zip);
+		 defaultValues();
         
 	}, "json");
-	//}
 }
 <!-- -->
 </script>

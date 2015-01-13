@@ -100,9 +100,13 @@ public class Care extends Controller {
 	
 	
 	public static void invite() {
-		UserBean user = CommonUtil.loadCachedUser(session);
-		System.out.println(session.getId());
+		UserBean user = CommonUtil.loadCachedUser(session);		
 		ExpertDetailDTO expertDetail = ProfileDAO.getExpertByField("id", user.getId());
+		List<Integer> ids = CareTeamDAO.getCareTeamOfExpert(user.getId());
+		if (ids != null && ids.size() > 0) {
+			CareTeamMasterDTO careTeam = CareTeamDAO.getCareTeamByField("id", ids.get(0));			
+			renderArgs.put("careTeam", careTeam);
+		}
         render(user,expertDetail);
 	}
 	
@@ -124,12 +128,22 @@ public class Care extends Controller {
 		System.out.println("city: "+ city);
 		System.out.println("state: "+ state);
 		System.out.println("zip: "+ zip);
-		validateMember(email);
+		if (email != null) {
+			validation.email("invalidEmail", email);
+		}
+		if (! validation.hasError("invalidEmail")) {
+			validateMember(email);
+		}
 		System.out.println(validation.hasErrors());
-	   	if (validation.hasErrors()) {
+	   	if (validation.hasErrors()) {	   			
 	            params.flash();
 	            validation.keep();
-	            if(validation.errorsMap().get("member.email.inactive") != null) {
+	            if (validation.hasError("invalidEmail")) {
+	            	JsonObject obj = new JsonObject();
+					obj.add("status", new JsonPrimitive("301"));
+					renderJSON(obj);
+	            }
+	            else if(validation.errorsMap().get("member.email.inactive") != null) {
 	            	JsonObject obj = new JsonObject();
 					obj.add("status", new JsonPrimitive("400"));
 					renderJSON(obj);	
@@ -209,7 +223,7 @@ public class Care extends Controller {
 		renderJSON(obj);
 	}
     private static void validateMember(String member) {
-    	if(member != null) {
+    	if(member != null) {    		
     		System.out.println("Not null");
     		if (!validation.hasError("member.email")) {
     			System.out.println("Not null email");
