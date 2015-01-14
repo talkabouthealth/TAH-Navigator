@@ -133,6 +133,15 @@ a.date-range.active {
     font-weight: bold;
     color: #000;
 }
+
+.ui-autocomplete-category {
+    font-weight: bold;
+    padding: .2em .4em;
+    margin: .8em 0 .2em;
+    line-height: 1.5;
+}
+
+
   </style>
 
 </head>
@@ -1034,6 +1043,27 @@ a.date-range.active {
   var lastLogin;
   LoadSelect2Script();
   $(document).ready(function(){
+	$.widget( "custom.catcomplete", $.ui.autocomplete, {
+		_create: function() {
+			this._super();
+			this.widget().menu( "option", "items", "> :not(.ui-autocomplete-category)" );
+		},
+		_renderMenu: function( ul, items ) {
+			var that = this,
+			currentCategory = "";
+			$.each( items, function( index, item ) {
+				var li;
+				if ( item.category != currentCategory ) {
+					ul.append( "<li class='ui-autocomplete-category'>" + item.category + "</li>" );
+					currentCategory = item.category;
+				}
+				li = that._renderItemData( ul, item );
+				if ( item.category ) {
+					li.attr( "aria-label", item.category + " : " + item.label );
+				}
+			});
+		}
+	});
 	  //  distress modal [start]
 	$(document).on('click', 'a.distress-meter', function(e) {
 		var patientId = $(this).attr('patientId');	

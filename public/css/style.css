@@ -2087,10 +2087,21 @@ td.beauty-hover {
 }
 
 .ui-autocomplete {
-    max-height: 100px;
+    height: 120px;
     overflow-y: auto;    
     overflow-x: hidden;
 }
+
+.ui-autocomplete li a{
+	color: black;
+}
+
+.ui-autocomplete li a.ui-state-focus
+{	
+	background-color: gray;
+}
+
+
 
 .multiselect-container.dropdown-menu li {
 	background: white !important;	
