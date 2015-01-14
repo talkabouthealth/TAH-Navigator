@@ -26,8 +26,14 @@ public class InputDefaultDAO {
 		List<InputDefaultDTO> types = null;
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
-			TypedQuery<InputDefaultDTO> query = em.createQuery("SELECT c FROM InputDefaultDTO c where c.diseaseid = :f1 and c.page = :f2 and c.field = :f3 order by c.fieldtext", InputDefaultDTO.class);
-			query.setParameter("f1", diseaseId);
+			String hql = "SELECT c FROM InputDefaultDTO c where c.diseaseid = :f1 and c.page = :f2 and c.field = :f3 order by c.fieldtext";
+			if(diseaseId == null) {
+				hql = "SELECT c FROM InputDefaultDTO c where c.diseaseid is null and c.page = :f2 and c.field = :f3 order by c.fieldtext";
+			}
+			TypedQuery<InputDefaultDTO> query = em.createQuery(hql, InputDefaultDTO.class);
+			if(diseaseId != null) {
+				query.setParameter("f1", diseaseId);
+			}
 			query.setParameter("f2", page);
 			query.setParameter("f3", field);
 			types = query.getResultList();
