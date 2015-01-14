@@ -238,6 +238,52 @@ public class CareTeamDAO {
 		return true;
 	}
 	
+	public static boolean createPatienCareTeamAllWithPrimary(UserDTO patien,Integer teamId,Integer expertId) {
+		EntityManager em = JPAUtil.getEntityManager();
+		String hql ="INSERT INTO PatienCareTeamDTO(careteamid, patienid) SELECT id, "+patien.getId()+" FROM CareTeamMasterDTO where id= :teamId";
+		em.getTransaction().begin();	
+		Query query = em.createQuery(hql);
+		query.setParameter("teamId", teamId);
+		int result = query.executeUpdate();
+		em.getTransaction().commit();
+
+		List<CareTeamMemberDTO> list = getMasterCareTeamMembersByField("careteamid",teamId);
+		boolean isExpertinList = false;
+		if(list != null && list.size()>0) {
+			for (CareTeamMemberDTO careTeamMemberDTO : list) {
+				if(careTeamMemberDTO.getMemberid() == expertId.intValue()) {
+					isExpertinList = true;
+				}
+			}
+			if(isExpertinList) {
+				for (CareTeamMemberDTO careTeamMemberDTO : list) {
+					PatientCareTeamMemberDTO dto = new PatientCareTeamMemberDTO();
+					dto.setCareteamid(teamId);
+					dto.setDeleted(false);
+					dto.setMemberid(careTeamMemberDTO.getMemberid());
+					dto.setPatientid(patien.getId());
+					if(careTeamMemberDTO.getMemberid() == expertId.intValue()) {
+						dto.setPrimary(true);
+					} else {
+						dto.setPrimary(false);
+					}
+					BaseDAO.save(dto); 
+				}
+			} else {
+				for (CareTeamMemberDTO careTeamMemberDTO : list) {
+					PatientCareTeamMemberDTO dto = new PatientCareTeamMemberDTO();
+					dto.setCareteamid(teamId);
+					dto.setDeleted(false);
+					dto.setMemberid(careTeamMemberDTO.getMemberid());
+					dto.setPatientid(patien.getId());
+					dto.setPrimary(careTeamMemberDTO.isPrimary());
+					BaseDAO.save(dto); 
+				}	
+			}
+		}
+		System.out.println("result : " + result);
+		return true;
+	}
 	public static CareTeamMasterDTO createMasterCareTeam (String teamtype,String center,String address1,String city,String state,String zip ) {
 		AddressDTO address = new AddressDTO();
 		address.setLine1(center);

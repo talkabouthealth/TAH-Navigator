@@ -48,6 +48,9 @@
          #{if ps.dob}
          <p><span>DOB:</span> ${ps.dob.format('M/dd/yyyy')}</p>
          #{/if}
+         #{if ps.mobilePhone}
+         <p><span>Mobile Phone:</span> ${ps.mobilePhone}</p>
+         #{/if}
          #{if ps.phone}
          <p><span>Phone:</span> ${ps.phone}</p>
          #{/if}

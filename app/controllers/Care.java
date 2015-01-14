@@ -154,9 +154,16 @@ public class Care extends Controller {
 	            }
 	   	} 
 		try {
+			UserBean user = CommonUtil.loadCachedUser(session);
+			UserDTO addedby = UserDAO.getUserBasicByField("id",user.getId());
 			InvitedDTO app = new InvitedDTO();
+			AddressDTO address = new AddressDTO();
+			UserDTO caremember = null;
+			if (memberid > 0) {
+				caremember = UserDAO.getUserBasicByField("id", memberid);
+			}
 			if(withapp == 1) {
-				AddressDTO address = new AddressDTO();
+				
 				address.setCity(city);
 				address.setLine1(address1);
 				address.setState(state);
@@ -181,14 +188,11 @@ public class Care extends Controller {
 				app.setAppointmentdate(appointmentDate);
 				app.setAppointmentcenter(center);				
 				if (memberid > 0) {
-					UserDTO caremember = UserDAO.getUserBasicByField("id", memberid);
 					app.setCaremember(caremember);
-					
 				}
 				app.setCareMemberName(membername);
 			}
-			UserBean user = CommonUtil.loadCachedUser(session);
-			UserDTO addedby = UserDAO.getUserBasicByField("id",user.getId());
+			
 			app.setAddedby(addedby);
 			app.setActivateOnSignup(false);
 			app.setInvitationSent(false);
@@ -200,10 +204,30 @@ public class Care extends Controller {
 			app.setPhone(homePhone);
 			app.setCommunicationType(communicationType);
 			BaseDAO.save(app);
-			
-			UserDAO.createPatientAccount(app);
 
-   		 	if (withapp == 1) {
+			UserDTO newUser =  UserDAO.createPatientAccount(app);
+			if(newUser!=null && withapp == 1) {
+				AppointmentDTO appointment = new AppointmentDTO();
+				appointment.setAddedby(addedby);
+				appointment.setAddedon(new Date());
+				appointment.setAddressid(address);
+				appointment.setAppointmentcenter(center);
+				
+				Date appointmentDate = new SimpleDateFormat("MM/dd/yyyy").parse(schDate);
+				appointment.setAppointmentdate(appointmentDate);
+				appointment.setAppointmenttime(time);
+				
+				appointment.setPurposeText(purposeText);
+				appointment.setTreatementStep(treatmentProcessStep);
+				appointment.setPatientid(newUser);
+				if (memberid > 0) {
+					appointment.setCaremember(caremember);
+				}
+				appointment.setCareMemberName(membername);
+				BaseDAO.save(appointment);
+			}
+
+			if (withapp == 1) {
    		 		vars = InvitationDAO.mailVariables(EmailUtil.TVRH_INVITE_APPOINTMENT_SCHEDULED, app);
    		 		EmailUtil.sendEmail(EmailUtil.TVRH_INVITE_APPOINTMENT_SCHEDULED, vars, email);
    		 	} else {

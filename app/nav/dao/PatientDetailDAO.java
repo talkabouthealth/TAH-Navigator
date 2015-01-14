@@ -89,6 +89,7 @@ public class PatientDetailDAO {
 		String brca = null;
 		Date dob = null;
 		String phone = null;
+		String mobilePhone = null;
 		Date dateOfDiagnosis = null;
 		String ec1Name = null;
 		String ec1Number = null;
@@ -182,7 +183,7 @@ public class PatientDetailDAO {
 		dob = userDetailsDto.getDob();
 		isVerified = userDto.isIsverified();
 		phone = userDetailsDto.getHomePhone();
-		
+		mobilePhone = userDetailsDto.getMobile();
 		
 		
 		ps.put("userId", userId);
@@ -197,6 +198,7 @@ public class PatientDetailDAO {
 		ps.put("brca", brca);
 		ps.put("dob", dob);
 		ps.put("phone", phone);
+		ps.put("mobilePhone", mobilePhone);
 		ps.put("dateOfDiagnosis", dateOfDiagnosis);
 		ps.put("ec1Name", ec1Name);
 		ps.put("ec1Number", ec1Number);
@@ -331,6 +333,7 @@ public class PatientDetailDAO {
 		String firstName = userDetails.getFirstName() != null ? userDetails.getFirstName() : "";
 		String lastName = userDetails.getLastName() != null ? userDetails.getLastName() : "";
 		String homePhone = userDetails.getHomePhone() != null ? userDetails.getHomePhone() : "";
+		String mobilePhone = userDetails.getMobile() != null ? userDetails.getMobile() : "";
 		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 		Date dob = userDetails.getDob();
 		String date = "";
@@ -352,6 +355,7 @@ public class PatientDetailDAO {
 		json.put("email", email);
 		json.put("dob", date);		
 		json.put("homephone", homePhone);
+		json.put("mobilephone", mobilePhone);
 		json.put("ec1name", ec1name);
 		json.put("ec1number", ec1number);
 		return json;
@@ -368,6 +372,7 @@ public class PatientDetailDAO {
 		String lastName = info.get("lastName");
 		String email = info.get("email");
 		String homephone = info.get("homephone");
+		String mobilephone = info.get("mobilephone");
 		String ec1name = info.get("ec1name");
 		String ec1number = info.get("ec1number");		
 		try {
@@ -398,6 +403,7 @@ public class PatientDetailDAO {
 			userDetails.setLastName(lastName);
 			userDetails.setDob(dob);
 			userDetails.setHomePhone(homephone);
+			userDetails.setMobile(mobilephone);
 			em.getTransaction().begin();
 			em.persist(userDetails);
 			em.getTransaction().commit();

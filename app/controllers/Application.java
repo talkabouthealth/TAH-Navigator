@@ -438,6 +438,7 @@ public class Application extends Controller {
 				CommonUtil.refreshCachedUser(session);
 				session.put("usertype", "user");
 				session.put("showdistress", "true");
+				/*
 				if(StringUtils.isNotBlank(invitationdto.getAppointmenttime())) {
 					AppointmentDTO app = new AppointmentDTO();
 					app.setAddedby(invitationdto.getAddedby());
@@ -466,16 +467,16 @@ public class Application extends Controller {
 		
 					BaseDAO.save(app);
 				}
-				
-		
-//				UserDTO usr = detailDto.getUser();
-//				usr.setIsverified(true);
-//				usr.setActive(true);
-//				BaseDAO.update(usr);
-		
+
+				UserDTO usr = detailDto.getUser();
+				usr.setIsverified(true);
+				usr.setActive(true);
+				BaseDAO.update(usr);
+				 */
+
 				invitationdto.setActivateOnSignup(true);
 				BaseDAO.update(invitationdto);
-						
+
 		   		Map<String, Object> vars = new HashMap<String, Object>();
 		   		vars.put("username", UserDAO.getUserName(new Integer(user.getId())));
 		   		EmailUtil.sendEmail(EmailUtil.MOFFITT_THANKYOU_FOR_SIGNUP,vars,user.getEmail());

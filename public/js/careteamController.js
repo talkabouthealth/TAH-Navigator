@@ -376,6 +376,7 @@ var careTeamController = (function() {
                     $(self.formId).find('#dob').datepicker('update', data.dob);
                 }
                 $(self.formId).find('#phone').val(data.homephone || '');
+                $(self.formId).find('#mobile').val(data.mobilephone || '');
                 $(self.formId).find('#ec1name').val(data.ec1name || '');
                 $(self.formId).find('#ec1number').val(data.ec1number || '');
             }, "json");
@@ -389,6 +390,7 @@ var careTeamController = (function() {
                 'info.email': $(self.formId).find('#email').val(),
                 'info.dob': $(self.formId).find('#dob').val(),
                 'info.homephone': $(self.formId).find('#phone').val(),
+                'info.mobilephone': $(self.formId).find('#mobile').val(),
                 'info.ec1name': $(self.formId).find('#ec1name').val(),
                 'info.ec1number': $(self.formId).find('#ec1number').val()
             };

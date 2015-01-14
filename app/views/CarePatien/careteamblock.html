@@ -18,15 +18,14 @@
 				*{ &nbsp;|&nbsp;${expertBeanHead.userDetails.email} }*
 				</p>
 			</div>
-			
 		</div>
 	</div>
 	<div class="col-lg-4 common_05 ">
 		<div class="user_first"><i class="fa fa-map-marker"></i> ${careteam.name} CARE TEAM / OFFICE LOCATION </div>
 		<div class="row margin_top">
 			<div class="col-sm-6">
-			<a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${careteam.address.line1}+${careteam.address.line2},${careteam.address.city},${careteam.address.state},${careteam.address.country} - ${careteam.address.zip}">
-				<img width="100%" src="http://maps.googleapis.com/maps/api/staticmap?center=${careteam.address.lat},${careteam.address.lang}&maptype=roadmap&zoom=12&size=200x100&scale=false&&markers=color:red%7Csize:small%7C${careteam.address.lat},${careteam.address.lang}">
+				<a target="_new" href="http://maps.google.com/maps/search/${careteam.address.line2},${careteam.address.city}, ${careteam.address.state} ${careteam.address.zip}">
+					<img width="100%" src="http://maps.googleapis.com/maps/api/staticmap?center=${careteam.address.lat},${careteam.address.lang}&maptype=roadmap&zoom=12&size=200x100&scale=false&&markers=color:red%7Csize:small%7C${careteam.address.lat},${careteam.address.lang}">
 				</a>
 			</div>
 			<div class="col-sm-6 map-div">
@@ -36,9 +35,6 @@
 				<p>${careteam.address.country} - ${careteam.address.zip}</p>
 			</div>
 		</div>
-<!-- 		<p>&nbsp;</p> -->
-<!-- 		<p class="text-center"> -->
-<!-- 		<button class="btn btn-default careTeamBtn" data-btn-type="editTeamLocation">Edit location</button> -->
 	</div>
 	#{/if}
 	#{else}

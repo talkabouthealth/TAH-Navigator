@@ -924,7 +924,7 @@ public class CarePatien  extends Controller {
 		*/
 	}
 
-	public static void appointmentOperation() {		
+	public static void appointmentOperation() {
 		String operation = params.get("operation");
 		int patientId = 0;
 		try {

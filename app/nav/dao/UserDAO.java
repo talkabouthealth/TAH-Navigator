@@ -31,6 +31,7 @@ import org.hibernate.criterion.Restrictions;
 
 import com.google.gson.Gson;
 
+import models.CareTeamMemberDTO;
 import models.ExpertDetailDTO;
 import models.InvitedDTO;
 import models.PatienCareTeamDTO;
@@ -292,6 +293,45 @@ public class UserDAO {
 		return members;
 	}
 	
+	public static List<CareMember> getCareTeamMembers(int teamid) {
+		EntityManager em = JPAUtil.getEntityManager();		
+		List<CareTeamMemberDTO> users =  CareTeamDAO.getMasterCareTeamMembersByField("careteamid", teamid); 
+		List<CareMember> members = new ArrayList<CareMember>();
+		try {						
+		    for (CareTeamMemberDTO u : users) {
+		    	System.out.println(u.getMember().getEmail());
+		    	CareMember cm = new CareMember();		    	
+		    	ExpertDetailDTO expert = null;
+		    	UserDetailsDTO details = null;
+		    	TypedQuery<UserDetailsDTO> userQuery = em.createQuery("SELECT c FROM UserDetailsDTO c WHERE c.id = :id", UserDetailsDTO.class); 
+		    	userQuery.setParameter("id", u.getMemberid());
+				try {
+					details = userQuery.getSingleResult();
+				} catch (NoResultException e1) {
+					e1.printStackTrace();
+				}		    	
+		    	TypedQuery<ExpertDetailDTO> expertQuery = em.createQuery("SELECT e FROM ExpertDetailDTO e WHERE e.id = :id", ExpertDetailDTO.class);
+		    	expertQuery.setParameter("id", u.getMemberid());
+		    	try {
+					expert = expertQuery.getSingleResult();
+				} catch (NoResultException e2) {
+					e2.printStackTrace();
+				}				
+		    	cm.setId(u.getCareteamid());
+		    	cm.setFirstName(details.getFirstName());
+		    	cm.setLastName(details.getLastName());		    	
+		    	if (expert != null) {
+		    		cm.setDesignation(expert.getDesignation().getAbbr());
+		    	}		    	
+		    	members.add(cm);
+		    }						
+		} 
+		catch(Exception e) {
+			e.printStackTrace();
+		}
+		return members;
+	}
+	
 	public static <Y> List<UserDTO> getAllForAdmin(String userType,String uname) {
 		
 		EntityManager em = JPAUtil.getEntityManager();
@@ -325,7 +365,6 @@ public class UserDAO {
 	    return query.getResultList();
 	}catch(Exception e) {
 		e.printStackTrace();
-		
 	}
 	    return null;
 	}
@@ -524,7 +563,7 @@ public class UserDAO {
 					if(expdto != null) {
 						List<Integer> ids = CareTeamDAO.getCareTeamOfExpert(new Integer(expdto.getId()));
 						for (Integer integer : ids) {
-							CareTeamDAO.createPatienCareTeamAllNew(dto,integer);
+							CareTeamDAO.createPatienCareTeamAllWithPrimary(dto,integer,expdto.getId());
 						}
 					}
 				}
@@ -552,7 +591,7 @@ public class UserDAO {
 		return true;
 	}
 	
-	public static boolean createPatientAccount(InvitedDTO memberBean) {
+	public static UserDTO createPatientAccount(InvitedDTO memberBean) {
 
 		Calendar cl = Calendar.getInstance();
 
@@ -622,14 +661,15 @@ public class UserDAO {
 			if(expdto != null) {
 				List<Integer> ids = CareTeamDAO.getCareTeamOfExpert(new Integer(expdto.getId()));
 				for (Integer integer : ids) {
-					CareTeamDAO.createPatienCareTeamAllNew(dto,integer);
+					CareTeamDAO.createPatienCareTeamAllWithPrimary(dto,integer,expdto.getId());
+//					CareTeamDAO.makePatientPrimary(integer,expdto.getId(),dto.getId());
 				}
 			}
 		} catch(Exception e){
 			e.printStackTrace();
 		}
 		System.out.println("New ID id " + dto.getId());
-		return true;
+		return dto;
 	}
 	
 	public static boolean updateMember(UserDTO userDto, SignUpMemberBean member) {
