@@ -48,14 +48,14 @@
 				</span>
 				</p>
     
-				<!--<div class="form-group form-group-sm">
+				<div class="form-group form-group-sm">
                     <label class="col-xs-3 control-label" for="rt_schedule">Purpose of Appointment</label>
                     <div class="col-xs-8 form-group input-group">                           
-						<input type="text" id="appointment_purpose" name="purposeText" class="form-control nomargin" placeholder="i.e. 1st Appointment With Radiation Oncologist" required="required">
+						<input type="text" id="appointment_purpose" name="purposeText" class="form-control nomargin" placeholder="i.e. First Appointment With Radiation Oncologist" required="required">
 						<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
 					</div>
-				</div>-->
-				<div class="form-group form-group-sm">
+				</div>
+				<!--<div class="form-group form-group-sm">
                     <label class="col-xs-3 control-label" for="rt_schedule">Purpose of Appointment</label>
                     <div class="col-xs-8 form-group input-group">                           
 						<select id="appointment_purpose" name="purposeText" class="form-control nomargin" required="required">
@@ -77,7 +77,7 @@
 							</optgroup>
 						</select>						
 					</div>
-				</div>
+				</div>-->
                 <!--<div class="form-group form-group-sm" id="treatment_step_process">
                         <label class="col-xs-3 control-label" for="rt_schedule">Step in the Treatment Process</label>
                         <div class="col-xs-8 form-group input-group">                           
@@ -756,6 +756,7 @@
 var docs = [];
 var timeArray = ["8 AM", "8:15 AM", "8:30 AM", "8:45 AM", "9 AM", "9:15 AM", "9:30 AM", "9:45 AM", "10 AM", "10:15 AM", "10:30 AM", "10:45 AM", "11 AM", "11:15 AM", "11:30 AM", "11:45 AM", "12 noon", "12:15 PM", "12:30 PM", "12:45 PM", "1 PM", "1:15 PM", "1:30 PM", "1:45 PM", "2 PM", "2:15 PM", "2:30 PM", "2:45 PM", "3 PM", "3:15 PM", "3:30 PM", "3:45 PM", "4 PM", "5:15 PM", "5:30 PM", "5:45 PM", "6 PM"];
 $(document).ready(function() {
+	
     $('#tabs').on('shown.bs.tab', function(e) {
         $('body').scrollTop(0);        
     });
@@ -1013,8 +1014,31 @@ $(document).ready(function() {
 	LoadSelect2Script(selectExpert);
 });
 selectExpert = function() {
-	$('.memberselect').select2();
-	$("#appointmentFormPurpose").select2();
+	//$('.memberselect').select2();
+	//$("#appointmentFormPurpose").select2();
+	
+	
+	var data = [
+		{label: "First Appointment With Radiation Oncologist", category: "Radiation Oncology"},
+		{label: "Make Treatment Decision (Radiation Oncology)", category: "Radiation Oncology"},
+		{label: "Simulation (Radiation Oncology)", category: "Radiation Oncology"},
+		{label: "On Treatment Visit (Radiation Oncology)", category: "Radiation Oncology"},
+		{label: "End of Treatment Visit (Radiation Oncology)", category: "Radiation Oncology"},
+		{label: "Ongoing Follow-up Appointment (Radiation Oncology)", category: "Radiation Oncology"},
+		
+		{label: "First Appointment With Surgeon", category: "Surgery"},
+		{label: "Make Treatment Decision (Surgery)", category: "Surgery"},
+		{label: "Surgery", category: "Surgery"},
+		{label: "Follow-up Appointment After Surgery", category: "Surgery"},
+		{label: "Ongoing Follow-up Appointment (Surgery)", category: "Surgery"}
+	];
+	
+	$('#appointment_purpose').catcomplete({		
+		source: data,
+		minLength: 0		
+	}).focus(function() {
+		$(this).catcomplete('search', $(this).val());
+	});
 }
 var formatDate = function(date, format) {
         var day = date.getDate();
@@ -1163,6 +1187,7 @@ operationAppointment = function(operation, id) {
     emptyAppointmentForm();	
     if (operation == 'add') {		
         $.post('/care/appointmentForm', {}, function (data) {
+			/*
 			if ('teamName' in data) {
 				if (data.teamName.match(/surgery/i) != null) {
 					$ap.val('First Appointment With Surgeon');
@@ -1173,7 +1198,8 @@ operationAppointment = function(operation, id) {
 					$('#ts_process').val('First Appointment With Radiation Oncologist');
 				}
 				
-			}			
+			}
+			*/			
 			if ('address' in data) {
 				var address = data.address;				
 				$("#appointmentForm input[name='center']").val(address.line1);
