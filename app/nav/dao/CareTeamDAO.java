@@ -63,6 +63,21 @@ public class CareTeamDAO {
 		}
 		return dto;
 	}
+
+	public static List<CareTeamMasterDTO> getPatientCareTeamNotAdded(int patientId) {
+		List<CareTeamMasterDTO> dto = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			TypedQuery<CareTeamMasterDTO> query = em.createQuery("FROM CareTeamMasterDTO where active = true and adminteam = true and id not in (select careteamid from PatienCareTeamDTO where deleted = false and patienid = :field)", CareTeamMasterDTO.class);
+			query.setParameter("field", patientId);
+			dto = query.getResultList();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			em.close();
+		}
+		return dto;
+	}
 	
 	public static boolean addMember(CareTeamMasterDTO careTeam,UserDTO usr) {
 		

@@ -387,7 +387,8 @@ public class Care extends Controller {
 			jsonData.put("designations", designation);
 			renderJSON(jsonData);
 		} else {
-			List<CareTeamMasterDTO> teams = CareTeamDAO.getAllActiveCareTeam();
+			int patientid = params.get("patientid", Integer.class);
+			List<CareTeamMasterDTO> teams = CareTeamDAO.getPatientCareTeamNotAdded(patientid);
 			jsonData.put("teams", teams);
 			renderJSON(jsonData);
 		}

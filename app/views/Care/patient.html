@@ -1783,7 +1783,7 @@ operationCareTeamMember = function(id) {
 operationCareTeam = function(operation, id) {
 	var initFlag = $('#addEditCareTeam').attr('init_flag');
 	if(initFlag == '0') {
-		var params = {"data":"teams"};
+		
 		
 		$("#addEditCareTeam input[name='type']").typeahead({ source: typeArray,minLength: 0,
 		}).on('blur', function(e){
@@ -1810,7 +1810,7 @@ operationCareTeam = function(operation, id) {
         	}
         });
 		
-		
+		var params = {"data":"teams",'patientid':'${patientId}'};
         $.post("/care/careTeamMemberForm", params, function(data) {
         	var teams = data.teams;
 			var $avm = $("#addEditCareTeam  input[name='center']");
@@ -1832,8 +1832,6 @@ operationCareTeam = function(operation, id) {
 							$("#addEditCareTeam  input[name='city']").val(teams[id].address.city);
 							$("#addEditCareTeam  input[name='state']").val(teams[id].address.state);
 							$("#addEditCareTeam  input[name='zip']").val(teams[id].address.zip);
-							
-							
 						}
 					}
 					return item;
