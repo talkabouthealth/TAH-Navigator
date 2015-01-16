@@ -361,12 +361,13 @@ public class Care extends Controller {
 	
 	public static void careTeamMemberForm() {
 		String data = params.get("data", String.class);
+		int patientid = params.get("patientid", Integer.class);
 		Map<String, Object> jsonData = new HashMap<String, Object>();
 		if("member".equalsIgnoreCase(data)) {
 			int teamid = params.get("teamid", Integer.class);
 			List<CareMember> members = UserDAO.verifiedCareMembers();
 //			List<CareTeamMemberDTO> currMember =  CareTeamDAO.getMasterCareTeamMembersByField("careteamid", teamid);
-			ArrayList<CareMember> currMember = (ArrayList<CareMember>) UserDAO.getCareTeamMembers(teamid);
+			ArrayList<CareMember> currMember = (ArrayList<CareMember>) UserDAO.getCareTeamMembers(patientid,teamid);
 			Map<Integer, String> memberNames = new HashMap<Integer, String>();
 			Map<Integer, String> phones = new HashMap<Integer, String>();
 			Map<Integer, String> designation = new HashMap<Integer, String>();
@@ -387,7 +388,6 @@ public class Care extends Controller {
 			jsonData.put("designations", designation);
 			renderJSON(jsonData);
 		} else {
-			int patientid = params.get("patientid", Integer.class);
 			List<CareTeamMasterDTO> teams = CareTeamDAO.getPatientCareTeamNotAdded(patientid);
 			jsonData.put("teams", teams);
 			renderJSON(jsonData);

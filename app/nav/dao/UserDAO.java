@@ -35,6 +35,7 @@ import models.CareTeamMemberDTO;
 import models.ExpertDetailDTO;
 import models.InvitedDTO;
 import models.PatienCareTeamDTO;
+import models.PatientCareTeamMemberDTO;
 import models.PatientConcernDTO;
 import models.PatientDetailDTO;
 import models.SecurityQuestionDTO;
@@ -293,12 +294,13 @@ public class UserDAO {
 		return members;
 	}
 	
-	public static List<CareMember> getCareTeamMembers(int teamid) {
+	public static List<CareMember> getCareTeamMembers(int patientId,int teamid) {
 		EntityManager em = JPAUtil.getEntityManager();		
-		List<CareTeamMemberDTO> users =  CareTeamDAO.getMasterCareTeamMembersByField("careteamid", teamid); 
+//		List<CareTeamMemberDTO> users =  CareTeamDAO.getMasterCareTeamMembersByField("careteamid", teamid); 
+		List<PatientCareTeamMemberDTO>  users = CareTeamDAO.getCareTeamMembersByPatient(patientId,teamid);
 		List<CareMember> members = new ArrayList<CareMember>();
 		try {						
-		    for (CareTeamMemberDTO u : users) {
+		    for (PatientCareTeamMemberDTO u : users) {
 		    	System.out.println(u.getMember().getEmail());
 		    	CareMember cm = new CareMember();		    	
 		    	ExpertDetailDTO expert = null;

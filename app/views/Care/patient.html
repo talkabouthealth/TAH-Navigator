@@ -1735,10 +1735,12 @@ $(document).ready(function() {
 operationCareTeamMember = function(id) {
 	var initFlag = $('#addEditCareMemberTeam').attr('init_flag');
 	$("#addEditCareMemberTeam input[name='teamid']").val(id);
+	$("#addEditCareMemberTeam input[name='title']").val('');
+	$("#addEditCareMemberTeam input[name='telephone']").val('');
+	$("#addEditCareMemberTeam input[name='name']").val('');
 // 	if(initFlag == '0') {
 		//Code to populate form
-		var params = {"data":"member","teamid":id};
-		
+		var params = {"data":"member","teamid":id,'patientid':'${patientId}'};
         $.post("/care/careTeamMemberForm", params, function(data) {
 			var $avm = $("#addEditCareMemberTeam  input[name='name']");
 			var members = data.members; 
@@ -1787,27 +1789,15 @@ operationCareTeam = function(operation, id) {
 		
 		$("#addEditCareTeam input[name='type']").typeahead({ source: typeArray,minLength: 0,
 		}).on('blur', function(e){
-        	var isThere = true;
+        	var isThere = false;
         	var teams = $("#addEditCareTeam  input[name='center']").data('teams');
         	var teamValue = $("#addEditCareTeam  input[name='center']").val();
         	for (var id in teams) {
         		if (teams[id].name == $(this).val() && teamValue == teams[id].address.line1) {
-        			isThere = false;
+        			isThere = true;
         		}
         	}
-        	if(isThere) {
-        		$("#addEditCareTeam  input[name='phone']").prop('disabled',false);
-        		$("#addEditCareTeam  input[name='address']").prop('disabled',false);
-        		$("#addEditCareTeam  input[name='city']").prop('disabled',false);
-        		$("#addEditCareTeam  input[name='state']").prop('disabled',false);
-        		$("#addEditCareTeam  input[name='zip']").prop('disabled',false);
-        	} else {
-        		$("#addEditCareTeam  input[name='phone']").prop('disabled',true);
-				$("#addEditCareTeam  input[name='address']").prop('disabled',true);
-				$("#addEditCareTeam  input[name='city']").prop('disabled',true);
-				$("#addEditCareTeam  input[name='state']").prop('disabled',true);
-				$("#addEditCareTeam  input[name='zip']").prop('disabled',true);
-        	}
+        	toggleCareTeamForm(isThere);
         });
 		
 		var params = {"data":"teams",'patientid':'${patientId}'};
@@ -1837,26 +1827,14 @@ operationCareTeam = function(operation, id) {
 					return item;
 				}
 	        }).on('blur', function(e){
-	        	var isThere = true;
+	        	var isThere = false;
 	        	var teams = $avm.data('teams');
 	        	for (var id in teams) {
 	        		if (teams[id].address.line1 == $avm.val()) {
-	        			isThere = false;
+	        			isThere = true;
 	        		}
 	        	}
-	        	if(isThere) {
-	        		$("#addEditCareTeam  input[name='phone']").prop('disabled',false);
-	        		$("#addEditCareTeam  input[name='address']").prop('disabled',false);
-	        		$("#addEditCareTeam  input[name='city']").prop('disabled',false);
-	        		$("#addEditCareTeam  input[name='state']").prop('disabled',false);
-	        		$("#addEditCareTeam  input[name='zip']").prop('disabled',false);
-	        	} else {
-	        		$("#addEditCareTeam  input[name='phone']").prop('disabled',true);
-					$("#addEditCareTeam  input[name='address']").prop('disabled',true);
-					$("#addEditCareTeam  input[name='city']").prop('disabled',true);
-					$("#addEditCareTeam  input[name='state']").prop('disabled',true);
-					$("#addEditCareTeam  input[name='zip']").prop('disabled',true);
-	        	}
+        		toggleCareTeamForm(isThere);
 	        });
 			$('#addEditCareTeam').attr('init_flag', '1');
 			$('#addEditCareTeam').appendTo("body").modal();
@@ -1870,7 +1848,16 @@ operationCareTeam = function(operation, id) {
 		$("#addEditCareTeam  input[name='state']").val('');
 		$("#addEditCareTeam  input[name='zip']").val('');
 		$('#addEditCareTeam').appendTo("body").modal();
+		toggleCareTeamForm(false);
 	}
+}
+
+function toggleCareTeamForm(toggleValue) {
+	$("#addEditCareTeam  input[name='phone']").prop('disabled',toggleValue);
+	$("#addEditCareTeam  input[name='address']").prop('disabled',toggleValue);
+	$("#addEditCareTeam  input[name='city']").prop('disabled',toggleValue);
+	$("#addEditCareTeam  input[name='state']").prop('disabled',toggleValue);
+	$("#addEditCareTeam  input[name='zip']").prop('disabled',toggleValue);
 }
 
 function expandAll() {
