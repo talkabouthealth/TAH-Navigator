@@ -1753,13 +1753,13 @@ operationCareTeamMember = function(id) {
             $avm.typeahead({
                 source: arr,
                 minLength: 0,
+                autoselect: true,
 				updater: function(item) {
 					var members = $avm.data('careMembers');
 					var phones = $avm.data('phones');		
 					var designations =  $avm.data('designations');
 					for (var id in members) {
 						if (members[id] == item) {
-							console.log(members[id]);
 							$("#addEditCareMemberTeam input[name='title']").val(designations[id]);
 							$("#addEditCareMemberTeam input[name='telephone']").val(phones[id]);
 							break;
@@ -1767,6 +1767,13 @@ operationCareTeamMember = function(id) {
 					}
 					return item;
 				}
+	        }) .blur(function(){
+	            if(arr.indexOf($(this).val()) === -1) {
+	            	$(this).parent().addClass("has-error");
+	            	$("#addEditCareMemberTeam input[name='title']").val('');
+					$("#addEditCareMemberTeam input[name='telephone']").val('');
+	            } else
+	            	$(this).parent().removeClass("has-error");
 	        });
 			$('#addEditCareMemberTeam').attr('init_flag', '1');
 			$('#addEditCareMemberTeam').appendTo("body").modal();
