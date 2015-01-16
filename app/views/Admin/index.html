@@ -12,8 +12,16 @@
 <!-- 	</div> -->
 	<div class="col-xs-12 col-sm-12">
 			Welcome on Admin dashboard
-			<a href="javaScript:migrate();">Migrate patient care team</a>
 	</div>
+	<div class="col-xs-12 col-sm-12">
+		<br/><br/>
+		<a href="javaScript:migrate();">Migrate patient care team</a>
+	</div>
+	<div class="col-xs-12 col-sm-12">
+		<br/><br/>	
+			<a href="javaScript:createInvitedAccounts();">Create Invited account</a>
+	</div>
+	
 </div>
 <script>
 migrate = function() {
@@ -23,5 +31,13 @@ migrate = function() {
 			alert(data);
 		}
 	});
+}
+createInvitedAccounts = function() {
+	$.ajax({ type: 'POST', url: '/admin/createInvitedAccounts',
+		data  : {},
+		success:function(data){
+			alert("[" + data.code + "] " + data.message);
+		}
+	},"json");
 }
 </script>

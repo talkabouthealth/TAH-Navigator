@@ -24,6 +24,7 @@ import models.PatientCareTeamMemberDTO;
 import models.UserDTO;
 import models.UserDetailsDTO;
 import models.UserTypeDTO;
+import nav.dao.AdminDAO;
 import nav.dao.ApplicationSettingDAO;
 import nav.dao.AppointmentMasterDAO;
 import nav.dao.BaseDAO;
@@ -201,6 +202,7 @@ public class Admin extends Controller {
 			teamMasterDTO.setAddress(address);
 			teamMasterDTO.setName(teamtype);
 			teamMasterDTO.setActive(true);
+			teamMasterDTO.setAdminteam(true);
 			if(logo != null)
 				teamMasterDTO.setLogo(logo.asBytes());
 			BaseDAO.save(teamMasterDTO);
@@ -233,6 +235,16 @@ public class Admin extends Controller {
 		renderText(object.toString());
 		*/
 		careTeam();
+	}
+	
+	public static void createInvitedAccounts() {
+		
+		int accounts  = AdminDAO.createInvitedAccounts();
+		
+		JsonObject object = new JsonObject();
+		object.add("code", new JsonPrimitive(200));
+		object.add("message", new JsonPrimitive("Done with "+accounts+" records"));
+		renderJSON(object.toString());
 	}
 	
 	public static void getCareTeam(Integer careTeamId) {

@@ -317,7 +317,7 @@ public class UserDAO {
 				} catch (NoResultException e2) {
 					e2.printStackTrace();
 				}				
-		    	cm.setId(u.getCareteamid());
+		    	cm.setId(details.getId());
 		    	cm.setFirstName(details.getFirstName());
 		    	cm.setLastName(details.getLastName());		    	
 		    	if (expert != null) {

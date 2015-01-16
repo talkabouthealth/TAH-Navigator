@@ -54,7 +54,7 @@ public class CareTeamDAO {
 		List<CareTeamMasterDTO> dto = null;
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
-			TypedQuery<CareTeamMasterDTO> query = em.createQuery("FROM CareTeamMasterDTO where active = true", CareTeamMasterDTO.class); 
+			TypedQuery<CareTeamMasterDTO> query = em.createQuery("FROM CareTeamMasterDTO where active = true and adminteam = true", CareTeamMasterDTO.class); 
 			dto = query.getResultList();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -284,8 +284,10 @@ public class CareTeamDAO {
 		System.out.println("result : " + result);
 		return true;
 	}
-	public static CareTeamMasterDTO createMasterCareTeam (String teamtype,String center,String address1,String city,String state,String zip ) {
+	
+	public static CareTeamMasterDTO createMasterCareTeam (String teamtype,String center,String address1,String city,String state,String zip,String phone) {
 		AddressDTO address = new AddressDTO();
+		address.setPhone(phone);
 		address.setLine1(center);
 		address.setCity(city);
 		address.setLine2(address1);
@@ -297,6 +299,7 @@ public class CareTeamDAO {
 		teamMasterDTO.setAddress(address);
 		teamMasterDTO.setName(teamtype);
 		teamMasterDTO.setActive(true);
+		teamMasterDTO.setAdminteam(false);
 		BaseDAO.save(teamMasterDTO);
 		return teamMasterDTO;
 	}
@@ -386,7 +389,7 @@ public class CareTeamDAO {
 		CareTeamMasterDTO dto = null;
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
-			TypedQuery<CareTeamMasterDTO> query = em.createQuery("SELECT c FROM CareTeamMasterDTO c WHERE c.name = :field1 and c.address.line1 = :field2", CareTeamMasterDTO.class); 
+			TypedQuery<CareTeamMasterDTO> query = em.createQuery("SELECT c FROM CareTeamMasterDTO c WHERE c.name = :field1 and c.address.line1 = :field2 and c.adminteam = true", CareTeamMasterDTO.class); 
 			query.setParameter("field1", type);
 			query.setParameter("field2", center);
 			dto = query.getResultList().get(0);

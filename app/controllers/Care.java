@@ -363,19 +363,25 @@ public class Care extends Controller {
 		String data = params.get("data", String.class);
 		Map<String, Object> jsonData = new HashMap<String, Object>();
 		if("member".equalsIgnoreCase(data)) {
+			int teamid = params.get("teamid", Integer.class);
 			List<CareMember> members = UserDAO.verifiedCareMembers();
+//			List<CareTeamMemberDTO> currMember =  CareTeamDAO.getMasterCareTeamMembersByField("careteamid", teamid);
+			ArrayList<CareMember> currMember = (ArrayList<CareMember>) UserDAO.getCareTeamMembers(teamid);
 			Map<Integer, String> memberNames = new HashMap<Integer, String>();
 			Map<Integer, String> phones = new HashMap<Integer, String>();
 			Map<Integer, String> designation = new HashMap<Integer, String>();
 			for(CareMember cm : members) {
-				StringBuilder name = new StringBuilder("");
-				if (cm.getFirstName() != null) {
-					name.append(cm.getFirstName());
+				if(currMember.contains(cm) == false) {
+					StringBuilder name = new StringBuilder("");
+					if (cm.getFirstName() != null) {
+						name.append(cm.getFirstName());
+					}
+					memberNames.put(cm.getId(), name.toString());
+					phones.put(cm.getId(), cm.getPhone());
+					designation.put(cm.getId(), cm.getDesignation());
 				}
-				memberNames.put(cm.getId(), name.toString());
-				phones.put(cm.getId(), cm.getPhone());
-				designation.put(cm.getId(), cm.getDesignation());
 			}
+
 			jsonData.put("members", memberNames);
 			jsonData.put("phones", phones);
 			jsonData.put("designations", designation);

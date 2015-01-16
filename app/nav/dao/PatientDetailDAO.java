@@ -13,6 +13,8 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.sound.midi.MidiDevice.Info;
 
+import nav.dto.UserBean;
+
 import org.apache.commons.lang.StringUtils;
 import org.eclipse.jdt.internal.core.search.SubTypeSearchJob;
 
@@ -360,70 +362,79 @@ public class PatientDetailDAO {
 		json.put("ec1number", ec1number);
 		return json;
 	}
-	public static void saveInfo(int patientId, Map<String, String> info) {
-		UserDTO user = null;
-		UserDetailsDTO userDetails = null;
-		PatientDetailDTO patientDetails = null;		
-		
-		// validation and conversion
-		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
-		Date dob = null;
-		String firstName = info.get("firstName");
-		String lastName = info.get("lastName");
+	public static boolean saveInfo(int patientId, Map<String, String> info) {
 		String email = info.get("email");
-		String homephone = info.get("homephone");
-		String mobilephone = info.get("mobilephone");
-		String ec1name = info.get("ec1name");
-		String ec1number = info.get("ec1number");		
-		try {
-			dob = dateFormat.parse(info.get("dob"));
-		} catch (ParseException e1) {			
+		UserBean userBean = UserDAO.getByUserEmail(email);
+		boolean isSameUser = true;
+		if(userBean != null && userBean.getId() != patientId) {
+			isSameUser = false;
 		}
-		
-		// save
-		EntityManager em = JPAUtil.getEntityManager();	
-		
-		TypedQuery<UserDTO> userQuery = em.createQuery("SELECT u FROM UserDTO u WHERE u.id = :id", UserDTO.class); 
-		userQuery.setParameter("id", patientId);		
-		try {
-			user = userQuery.getSingleResult();
-			user.setEmail(email);
-			em.getTransaction().begin();
-			em.persist(user);
-			em.getTransaction().commit();
-		} catch (NoResultException e) {
+		if(isSameUser) {
+			UserDTO user = null;
+			UserDetailsDTO userDetails = null;
+			PatientDetailDTO patientDetails = null;		
 			
-		}
-		
-		TypedQuery<UserDetailsDTO> userDetailsQuery = em.createQuery("SELECT u FROM UserDetailsDTO u WHERE u.id = :id", UserDetailsDTO.class); 
-		userDetailsQuery.setParameter("id", patientId);		
-		try {
-			userDetails = userDetailsQuery.getSingleResult();
-			userDetails.setFirstName(firstName);
-			userDetails.setLastName(lastName);
-			userDetails.setDob(dob);
-			userDetails.setHomePhone(homephone);
-			userDetails.setMobile(mobilephone);
-			em.getTransaction().begin();
-			em.persist(userDetails);
-			em.getTransaction().commit();
-		} catch (NoResultException e) {
+			// validation and conversion
+			SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+			Date dob = null;
+			String firstName = info.get("firstName");
+			String lastName = info.get("lastName");
 			
+			String homephone = info.get("homephone");
+			String mobilephone = info.get("mobilephone");
+			String ec1name = info.get("ec1name");
+			String ec1number = info.get("ec1number");		
+			try {
+				dob = dateFormat.parse(info.get("dob"));
+			} catch (ParseException e1) {			
+			}
+			
+			// save
+			EntityManager em = JPAUtil.getEntityManager();	
+			
+			TypedQuery<UserDTO> userQuery = em.createQuery("SELECT u FROM UserDTO u WHERE u.id = :id", UserDTO.class); 
+			userQuery.setParameter("id", patientId);		
+			try {
+				user = userQuery.getSingleResult();
+				user.setEmail(email);
+				em.getTransaction().begin();
+				em.persist(user);
+				em.getTransaction().commit();
+			} catch (NoResultException e) {
+				
+			}
+			
+			TypedQuery<UserDetailsDTO> userDetailsQuery = em.createQuery("SELECT u FROM UserDetailsDTO u WHERE u.id = :id", UserDetailsDTO.class); 
+			userDetailsQuery.setParameter("id", patientId);		
+			try {
+				userDetails = userDetailsQuery.getSingleResult();
+				userDetails.setFirstName(firstName);
+				userDetails.setLastName(lastName);
+				userDetails.setDob(dob);
+				userDetails.setHomePhone(homephone);
+				userDetails.setMobile(mobilephone);
+				em.getTransaction().begin();
+				em.persist(userDetails);
+				em.getTransaction().commit();
+			} catch (NoResultException e) {
+				
+			}
+			
+			TypedQuery<PatientDetailDTO> patientDetailsQuery = em.createQuery("SELECT p FROM PatientDetailDTO p WHERE p.id = :id", PatientDetailDTO.class); 
+			patientDetailsQuery.setParameter("id", patientId);		
+			try {
+				patientDetails = patientDetailsQuery.getSingleResult();			
+			} catch (NoResultException e) {
+				patientDetails = new PatientDetailDTO();
+				patientDetails.setId(patientId);
+			}
+			patientDetails.setEc1name(ec1name);
+			patientDetails.setEc1number(ec1number);
+			em.getTransaction().begin();
+			em.persist(patientDetails);
+			em.getTransaction().commit();		
 		}
-		
-		TypedQuery<PatientDetailDTO> patientDetailsQuery = em.createQuery("SELECT p FROM PatientDetailDTO p WHERE p.id = :id", PatientDetailDTO.class); 
-		patientDetailsQuery.setParameter("id", patientId);		
-		try {
-			patientDetails = patientDetailsQuery.getSingleResult();			
-		} catch (NoResultException e) {
-			patientDetails = new PatientDetailDTO();
-			patientDetails.setId(patientId);
-		}
-		patientDetails.setEc1name(ec1name);
-		patientDetails.setEc1number(ec1number);
-		em.getTransaction().begin();
-		em.persist(patientDetails);
-		em.getTransaction().commit();						
+		return isSameUser;
 	}
 	
 	public static Map<String, Object> getDiagnosisJSON(int patientId) {

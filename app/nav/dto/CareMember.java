@@ -36,4 +36,23 @@ public class CareMember {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+
+	@Override
+	public boolean equals(Object obj) {
+		boolean returnValue = false;
+		if (obj instanceof CareMember){
+			CareMember cm =  (CareMember) obj;
+			if(this.id.equals(cm.getId())) {
+				returnValue = true;
+			}
+		}
+		return returnValue;
+	}
+	
+	@Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 17 * hash + (this.id != null ? this.id.hashCode() : 0);
+        return hash;
+    }
 }

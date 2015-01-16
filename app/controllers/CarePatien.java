@@ -567,7 +567,8 @@ public class CarePatien  extends Controller {
 		renderJSON(json);
 	}
 	public static void savePatientInfo(Integer patientId,  Map<String, String> info) {
-		PatientDetailDAO.saveInfo(patientId.intValue(), info);
+		boolean isSaved = PatientDetailDAO.saveInfo(patientId.intValue(), info);
+//		if(isSaved) { }
 		Map <String, Object> patientSummary = PatientDetailDAO.patientSummary(patientId);		
 		renderArgs.put("ps", patientSummary);
 		renderTemplate("CarePatien/patientInfo.html");
@@ -894,12 +895,13 @@ public class CarePatien  extends Controller {
 			careTeam = CareTeamDAO.getCareTeamByTypeAndCenter(type, center);
 			if(careTeam == null) {
 				String address = params.get("address",String.class);
+				String phone = params.get("phone",String.class);
 				String city = params.get("city",String.class);
 				String state = params.get("state",String.class);
 				String zip = params.get("zip",String.class);
 				//Create care team code
 				System.out.println("There is no care team");
-				careTeam  = CareTeamDAO.createMasterCareTeam(type,center,address,city,state,zip);
+				careTeam  = CareTeamDAO.createMasterCareTeam(type,center,address,city,state,zip,phone);
 			}
 			UserDTO patient = UserDAO.getUserBasicByField("id",patientId);
 			CareTeamDAO.addCareTeam(patient,careTeam.getId());

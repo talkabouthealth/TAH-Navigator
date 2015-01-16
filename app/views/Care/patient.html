@@ -257,6 +257,12 @@
                     </div>
                 </div>
                 <div class="form-group form-group-sm">
+                    <label for="disease" class="col-xs-3 control-label">Phone</label>
+                    <div class="col-xs-9">
+                        <input type="text" class="form-control" name="phone"/>
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
                     <label for="disease" class="col-xs-3 control-label">Address</label>
                     <div class="col-xs-9">
                         <input type="text" class="form-control" name="address"/>
@@ -317,13 +323,13 @@
 					<div class="form-group form-group-sm">
 	                    <label for="disease" class="col-xs-3 control-label">Title</label>
 	                    <div class="col-xs-9 input-group">
-	                        <input type="text" class="form-control" name="title"/>
+	                        <input type="text" class="form-control" name="title" disabled="disabled"/>
 	                    </div>
 	                </div>
 					<div class="form-group form-group-sm">
 	                    <label for="disease" class="col-xs-3 control-label">Telephone</label>
 	                    <div class="col-xs-9 input-group">
-	                        <input type="text" class="form-control" name="telephone"/>
+	                        <input type="text" class="form-control" name="telephone" disabled="disabled"/>
 	                    </div>
 	                </div>
 	                <!-- 
@@ -780,6 +786,9 @@ $(document).ready(function() {
             if (href == '#summary') {
                 $('a.date-range[days="30"]').click();
             }
+            if (href == '#careteam') {
+            	addAccredition();
+            }
         });
         
         var params = {};
@@ -1032,13 +1041,14 @@ selectExpert = function() {
 		{label: "Follow-up Appointment After Surgery", category: "Surgery"},
 		{label: "Ongoing Follow-up Appointment (Surgery)", category: "Surgery"}
 	];
-	
+	try {
 	$('#appointment_purpose').catcomplete({		
 		source: data,
 		minLength: 0		
 	}).focus(function() {
 		$(this).catcomplete('search', $(this).val());
 	});
+	} catch(e){}
 }
 var formatDate = function(date, format) {
         var day = date.getDate();
@@ -1597,4 +1607,327 @@ submitAppointmentForm = function() {
 	});
 }
 
+</script>
+<script>
+var typeArray = ["Radiation Oncology","Oncology","Surgery","Radiology","Urology","Gastroenterology","OBGYN","Primary Care","Cardiology","Hematology"];
+var icons = {header: "ui-accordion-header-icon1 ui-icon-triangle-1-e",activeHeader: "ui-accordion-header-icon1 ui-icon-triangle-1-s"};
+$(document).ready(function() {
+	$('body').on('click', 'button.careTeamBtn', function(e) {
+	// 1. addTeam
+	// 2. addTeamMember
+	// 3. removeTeam
+	// 4. removeTeamMember
+	// 5. makeMemberPrimary
+	// 6. editTeamLocation
+		var operation = $(this).data("btn-type");
+		if(operation == 'addTeam') {
+			operationCareTeam('add');	
+		} else if(operation == 'addTeamMember') {
+			var teamid =  $(this).data("team-id");
+			operationCareTeamMember(teamid);
+		} else if(operation == 'removeTeam') {
+			var teamid =  $(this).data("team-id");
+			var memberId = 0;
+			$.ajax({
+				  type: 'POST',
+				  url: '/carePatien/careteamOperation',
+				  data: { 'operation':'removeTeam','memberid':memberId,'patientid':'${patientId}','teamid':teamid}
+				  ,success:function(data) {
+					  location.reload();
+				  },
+				  error:function() {
+				    alert('Some error');
+				  }
+			});
+		} else if(operation == 'editTeamLocation') {
+			alert('Edit team location');
+		} else if(operation == 'removeTeamMember') {
+			var memberId = $(this).data("member-id");
+			var memberId = $(this).data("member-id");
+			var teamid =  $(this).data("team-id");
+			$.ajax({
+				  type: 'POST',
+				  url: '/carePatien/careteamOperation',
+				  data: { 'operation':'deletemember','memberid':memberId,'patientid':'${patientId}','teamid':teamid}
+				  ,success:function(data) {
+// 					  location.reload();
+					  $('[data-team~="'+teamid+'"]').html(data);
+				  },
+				  error:function() {
+				    alert('Some error');
+				  }
+			});
+		} else if(operation == 'makeMemberPrimary') {
+			var memberId = $(this).data("member-id");
+			var teamid =  $(this).data("team-id");
+			$.ajax({
+				  type: 'POST',
+				  url: '/carePatien/careteamOperation',
+				  data: { 'operation':'makeprimary','memberid':memberId,'patientid':'${patientId}','teamid':teamid}
+				  ,success:function(data) {
+					  $('[data-team~="'+teamid+'"]').html(data);
+				  },
+				  error:function() {
+				    alert('Some error');
+				  }
+			});
+		}
+ 	});
+
+	$('body').on('click', 'span.careTeamBtn', function(event) {
+		var operation = $(this).data("btn-type");
+		 if(operation == 'addTeamMember') {
+				var teamid =  $(this).data("team-id");
+				operationCareTeamMember(teamid);
+			}
+	 	});
+
+	
+	$('#addCareTeamMemberForm').validator();
+	$('#addCareTeamForm').validator();
+	
+	$('#addCareTeamForm').submit(function(event) {
+		var postData = $("#addCareTeamForm").serializeArray();
+		var formURL = $("#addCareTeamForm").attr("action");
+		postData.push({name:'operation',value:"addCareTeam"});
+		postData.push({name:'memberid',value:0});
+		postData.push({name:'teamid',value:0});
+
+		$.post(formURL, postData, function( data ) {
+			var teamid = $("#addEditCareMemberTeam input[name='teamid']").val();
+			location.reload();
+		});
+		event.preventDefault();
+	});
+
+	$('#addCareTeamMemberForm').submit(function(event) {
+		var postData = $("#addCareTeamMemberForm").serializeArray();
+		var formURL = $("#addCareTeamMemberForm").attr("action");
+		postData.push({name:'operation',value:"addCareMember"});
+		
+		var members = $("#addEditCareMemberTeam  input[name='name']").data('careMembers');
+		var memNameTmp  =  $("#addEditCareMemberTeam  input[name='name']").val();
+		
+		var isPrimary  =  $("#addEditCareMemberTeam  input[name='primary']").is(":checked");
+		if(!isPrimary) {
+			postData.push({name:'primary',value:false});
+		}
+		var verified = false;
+		for (var id in members) {
+			if(members[id] == memNameTmp) {
+				postData.push({name:'memberid',value:id});
+				verified = true;
+				break;
+			}
+		}
+		if (!verified) {
+			postData.push({name:'memberid',value:0});
+		}
+		$.post(formURL, postData, function( data ) {
+			var teamid = $("#addEditCareMemberTeam input[name='teamid']").val();
+			$('[data-team~="'+teamid+'"]').html(data);
+			$('#addEditCareMemberTeam').modal('hide');
+		});
+ 		event.preventDefault();
+	});
+});
+
+operationCareTeamMember = function(id) {
+	var initFlag = $('#addEditCareMemberTeam').attr('init_flag');
+	$("#addEditCareMemberTeam input[name='teamid']").val(id);
+// 	if(initFlag == '0') {
+		//Code to populate form
+		var params = {"data":"member","teamid":id};
+		
+        $.post("/care/careTeamMemberForm", params, function(data) {
+			var $avm = $("#addEditCareMemberTeam  input[name='name']");
+			var members = data.members; 
+			$avm.data("careMembers", members);
+			$avm.data("phones", data.phones);
+			$avm.data("designations", data.designations);
+			var arr = [];                        
+			for (var id in members) {
+                 arr.push(members[id]);
+			}
+			$avm.typeahead('destroy');
+            $avm.typeahead({
+                source: arr,
+                minLength: 0,
+				updater: function(item) {
+					var members = $avm.data('careMembers');
+					var phones = $avm.data('phones');		
+					var designations =  $avm.data('designations');
+					for (var id in members) {
+						if (members[id] == item) {
+							console.log(members[id]);
+							$("#addEditCareMemberTeam input[name='title']").val(designations[id]);
+							$("#addEditCareMemberTeam input[name='telephone']").val(phones[id]);
+							break;
+						}
+					}
+					return item;
+				}
+	        });
+			$('#addEditCareMemberTeam').attr('init_flag', '1');
+			$('#addEditCareMemberTeam').appendTo("body").modal();
+        }, "json");
+}
+
+operationCareTeam = function(operation, id) {
+	var initFlag = $('#addEditCareTeam').attr('init_flag');
+	if(initFlag == '0') {
+		var params = {"data":"teams"};
+		
+		$("#addEditCareTeam input[name='type']").typeahead({ source: typeArray,minLength: 0,
+		}).on('blur', function(e){
+        	var isThere = true;
+        	var teams = $("#addEditCareTeam  input[name='center']").data('teams');
+        	var teamValue = $("#addEditCareTeam  input[name='center']").val();
+        	for (var id in teams) {
+        		if (teams[id].name == $(this).val() && teamValue == teams[id].address.line1) {
+        			isThere = false;
+        		}
+        	}
+        	if(isThere) {
+        		$("#addEditCareTeam  input[name='phone']").prop('disabled',false);
+        		$("#addEditCareTeam  input[name='address']").prop('disabled',false);
+        		$("#addEditCareTeam  input[name='city']").prop('disabled',false);
+        		$("#addEditCareTeam  input[name='state']").prop('disabled',false);
+        		$("#addEditCareTeam  input[name='zip']").prop('disabled',false);
+        	} else {
+        		$("#addEditCareTeam  input[name='phone']").prop('disabled',true);
+				$("#addEditCareTeam  input[name='address']").prop('disabled',true);
+				$("#addEditCareTeam  input[name='city']").prop('disabled',true);
+				$("#addEditCareTeam  input[name='state']").prop('disabled',true);
+				$("#addEditCareTeam  input[name='zip']").prop('disabled',true);
+        	}
+        });
+		
+		
+        $.post("/care/careTeamMemberForm", params, function(data) {
+        	var teams = data.teams;
+			var $avm = $("#addEditCareTeam  input[name='center']");
+			$avm.data("teams", teams);
+			var arr = [];                        
+			for (var id in teams) {
+                 arr.push(teams[id].address.line1);
+			}                              
+            $avm.typeahead({
+                source: arr,
+                minLength: 0,
+				updater: function(item) {
+					var teams = $avm.data('teams');
+					for (var id in teams) {
+						if (teams[id].address.line1 == item) {
+							$("#addEditCareTeam  input[name='type']").val(teams[id].name);
+							$("#addEditCareTeam  input[name='phone']").val(teams[id].address.phone);
+							$("#addEditCareTeam  input[name='address']").val(teams[id].address.line2);
+							$("#addEditCareTeam  input[name='city']").val(teams[id].address.city);
+							$("#addEditCareTeam  input[name='state']").val(teams[id].address.state);
+							$("#addEditCareTeam  input[name='zip']").val(teams[id].address.zip);
+							
+							
+						}
+					}
+					return item;
+				}
+	        }).on('blur', function(e){
+	        	var isThere = true;
+	        	var teams = $avm.data('teams');
+	        	for (var id in teams) {
+	        		if (teams[id].address.line1 == $avm.val()) {
+	        			isThere = false;
+	        		}
+	        	}
+	        	if(isThere) {
+	        		$("#addEditCareTeam  input[name='phone']").prop('disabled',false);
+	        		$("#addEditCareTeam  input[name='address']").prop('disabled',false);
+	        		$("#addEditCareTeam  input[name='city']").prop('disabled',false);
+	        		$("#addEditCareTeam  input[name='state']").prop('disabled',false);
+	        		$("#addEditCareTeam  input[name='zip']").prop('disabled',false);
+	        	} else {
+	        		$("#addEditCareTeam  input[name='phone']").prop('disabled',true);
+					$("#addEditCareTeam  input[name='address']").prop('disabled',true);
+					$("#addEditCareTeam  input[name='city']").prop('disabled',true);
+					$("#addEditCareTeam  input[name='state']").prop('disabled',true);
+					$("#addEditCareTeam  input[name='zip']").prop('disabled',true);
+	        	}
+	        });
+			$('#addEditCareTeam').attr('init_flag', '1');
+			$('#addEditCareTeam').appendTo("body").modal();
+        }, "json");
+	} else {
+		$("#addEditCareTeam  input[name='center']").val('');
+		$("#addEditCareTeam  input[name='type']").val('');
+		$("#addEditCareTeam  input[name='phone']").val('');
+		$("#addEditCareTeam  input[name='address']").val('');
+		$("#addEditCareTeam  input[name='city']").val('');
+		$("#addEditCareTeam  input[name='state']").val('');
+		$("#addEditCareTeam  input[name='zip']").val('');
+		$('#addEditCareTeam').appendTo("body").modal();
+	}
+}
+
+function expandAll() {
+	h3List = $('#careTeamList h3');
+	for(j = 0;j<h3List.length;j++) {
+		getTeamDetails( $(h3List[j]));
+	}
+    $('#careTeamList h3').removeClass('ui-state-default').removeClass('ui-state-active').removeClass('ui-corner-all').attr('aria-expanded', 'true').attr('aria-selected', 'true').attr('tabIndex', 0)
+	.find('span.ui-icon').removeClass('ui-icon-triangle-1-e').addClass('ui-icon-triangle-1-s').closest('h3').next('div').show();
+}
+getTeamDetails = function(elm) {
+	var teamId = $(elm).data('teamid');
+	$.post( "/CarePatien/careteamSpecific", {d:new Date(),careTeamId:teamId,patientId:'${patientId}'}, function( data ) {
+	 	$(elm).next('div').html( data );
+	});
+}
+addAccredition = function() {
+	$("#careTeamList").accordion({collapsible:true,heightStyle: "content" ,icons: icons,
+		beforeActivate: function(event, ui) {
+			var isButton = false;
+			if($(event.originalEvent.target).hasClass('careTeamBtn')) {
+				isButton = true;
+			}
+			if(isButton) {
+				return false; // Cancels the default action
+			} else {
+				if (ui.newHeader[0]) {
+		               var currHeader  = ui.newHeader;
+		               var currContent = currHeader.next('.ui-accordion-content');
+		        } else {
+		               var currHeader  = ui.oldHeader;
+		               var currContent = currHeader.next('.ui-accordion-content');
+		        }
+		           var isPanelSelected = currHeader.attr('aria-selected') == 'true';
+		           currHeader.toggleClass('accordion-header-active ui-corner-top',!isPanelSelected).attr('aria-selected',((!isPanelSelected).toString()));
+		           currHeader.children('.ui-icon').toggleClass('ui-icon-triangle-1-e',isPanelSelected).toggleClass('ui-icon-triangle-1-s',!isPanelSelected);
+		           currContent.toggleClass('accordion-content-active',!isPanelSelected)
+					if (isPanelSelected) {
+		        	   	currContent.slideUp(); 
+					} else {
+		               var teamId = $(currHeader).data('teamid');
+		        	   currContent.slideDown();
+		        	   $(currContent ).html('loading');
+		        	   $.post( "/CarePatien/careteamSpecific", {d:new Date(),careTeamId:teamId,patientId:'${patientId}'}, function( data ) {
+		            	   $(currContent ).html( data );
+		            	 });
+					}
+					return false; // Cancels the default action
+			}
+	       
+	   },
+	   create: function( event, ui ) {
+		if (ui.header[0]) {
+			var currHeader  = ui.header[0];
+			var currContent = ui.content[0];
+			var teamId = $(currHeader).data('teamid');
+			$(currContent ).html('loading');
+			$.post( "/CarePatien/careteamSpecific", {d:new Date(),careTeamId:teamId,patientId:'${patientId}'}, function( data ) {
+	       	   $(currContent ).html( data );
+			});
+		}
+	   }
+	});
+}
 </script>

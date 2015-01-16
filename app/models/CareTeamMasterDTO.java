@@ -27,13 +27,16 @@ public class CareTeamMasterDTO {
 	@OneToOne
 	@JoinColumn(name = "address")
 	private AddressDTO address;
-	
+
 	@Column(name = "logo")
 	private byte [] logo;
 
 	@Column(name = "active")
 	private boolean active;
 	
+	@Column(name = "adminteam")
+	private boolean adminteam;
+
 	@Transient
 	private String logoString;
 
@@ -84,5 +87,12 @@ public class CareTeamMasterDTO {
 	public void setLogoString(String logoString) {
 		this.logoString = logoString;
 	}
-	
+
+	public boolean isAdminteam() {
+		return adminteam;
+	}
+
+	public void setAdminteam(boolean adminteam) {
+		this.adminteam = adminteam;
+	}
 }
