@@ -441,7 +441,17 @@ selectExpert = function() {
 	
 	$('#appointment_purpose').catcomplete({		
 		source: data,
-		minLength: 0		
+		minLength: 0,
+		response: function(event, ui) {
+			var arr = ui.content;
+			if (arr.length > 0) {
+				var height = arr.length * 30 + 80;
+				$('.ui-autocomplete').css({'height': height + 'px'});
+			}
+		},
+		close: function(event, ui) {
+			$('.ui-autocomplete').css({'height': '120px'});
+		}		
 	}).focus(function() {
 		$(this).catcomplete('search', $(this).val());
 	});
