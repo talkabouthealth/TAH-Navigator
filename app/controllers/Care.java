@@ -365,14 +365,14 @@ public class Care extends Controller {
 		Map<String, Object> jsonData = new HashMap<String, Object>();
 		if("member".equalsIgnoreCase(data)) {
 			int teamid = params.get("teamid", Integer.class);
-			List<CareMember> members = UserDAO.verifiedCareMembers();
+//			List<CareMember> members = UserDAO.verifiedCareMembers();
 //			List<CareTeamMemberDTO> currMember =  CareTeamDAO.getMasterCareTeamMembersByField("careteamid", teamid);
 			ArrayList<CareMember> currMember = (ArrayList<CareMember>) UserDAO.getCareTeamMembers(patientid,teamid);
 			Map<Integer, String> memberNames = new HashMap<Integer, String>();
 			Map<Integer, String> phones = new HashMap<Integer, String>();
 			Map<Integer, String> designation = new HashMap<Integer, String>();
-			for(CareMember cm : members) {
-				if(currMember.contains(cm) == false) {
+			for(CareMember cm : currMember) {
+//				if(currMember.contains(cm) == false) {
 					StringBuilder name = new StringBuilder("");
 					if (cm.getFirstName() != null) {
 						name.append(cm.getFirstName());
@@ -380,7 +380,7 @@ public class Care extends Controller {
 					memberNames.put(cm.getId(), name.toString());
 					phones.put(cm.getId(), cm.getPhone());
 					designation.put(cm.getId(), cm.getDesignation());
-				}
+//				}
 			}
 
 			jsonData.put("members", memberNames);

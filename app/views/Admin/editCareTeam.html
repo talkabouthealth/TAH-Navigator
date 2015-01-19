@@ -34,7 +34,7 @@
 						#{list memberList, as:'seq'}
 							#{set cssClass = '' /}
 							<tr ${cssClass}>
-					  			<td><a href="#" >${seq.member.name}</a></td>
+					  			<td><a href="#" >#{userName userName: seq.member.name, userId:seq.member.id /}</a></td>
 					  			<td>#{if seq.primary}
 					  			Primary
 					  			#{/if}

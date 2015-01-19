@@ -296,11 +296,11 @@ public class UserDAO {
 	
 	public static List<CareMember> getCareTeamMembers(int patientId,int teamid) {
 		EntityManager em = JPAUtil.getEntityManager();		
-//		List<CareTeamMemberDTO> users =  CareTeamDAO.getMasterCareTeamMembersByField("careteamid", teamid); 
-		List<PatientCareTeamMemberDTO>  users = CareTeamDAO.getCareTeamMembersByPatient(patientId,teamid);
+		List<CareTeamMemberDTO> users =  CareTeamDAO.getMasterCareTeamMembersByField("careteamid", teamid); 
+//		List<PatientCareTeamMemberDTO>  users = CareTeamDAO.getCareTeamMembersByPatient(patientId,teamid);
 		List<CareMember> members = new ArrayList<CareMember>();
 		try {						
-		    for (PatientCareTeamMemberDTO u : users) {
+		    for (CareTeamMemberDTO u : users) {
 		    	System.out.println(u.getMember().getEmail());
 		    	CareMember cm = new CareMember();		    	
 		    	ExpertDetailDTO expert = null;

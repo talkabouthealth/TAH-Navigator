@@ -1765,6 +1765,7 @@ operationCareTeamMember = function(id) {
             $avm.typeahead({
                 source: arr,
                 minLength: 0,
+                items:10,
                 autoselect: true,
 				updater: function(item) {
 					var members = $avm.data('careMembers');
