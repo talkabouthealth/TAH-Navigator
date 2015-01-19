@@ -238,9 +238,7 @@ public class Admin extends Controller {
 	}
 	
 	public static void createInvitedAccounts() {
-		
 		int accounts  = AdminDAO.createInvitedAccounts();
-		
 		JsonObject object = new JsonObject();
 		object.add("code", new JsonPrimitive(200));
 		object.add("message", new JsonPrimitive("Done with "+accounts+" records"));
@@ -265,10 +263,12 @@ public class Admin extends Controller {
 		if("makeprimary".equals(operation)) {
 			CareTeamDAO.makePrimary(careTeamId,memberid);
 		} else if("addMember".equals(operation)) {
-			UserDTO usr = UserDAO.getUserBasicByField("name", memberName);
+			UserDetailsDTO usr = UserDAO.getDetailsByField("firstName", memberName);
 			if(usr != null) {
 				CareTeamMasterDTO careTeam = CareTeamDAO.getCareTeamByField("id", careTeamId);
-				CareTeamDAO.addMember(careTeam,usr);
+				CareTeamDAO.addMember(careTeam,usr.getUser());
+			} else {
+				System.out.println("No member found: " + memberName);
 			}
 		} else if ("removeMember".equals(operation)) {
 			CareTeamDAO.removeMember(careTeamId,memberid);
@@ -276,7 +276,6 @@ public class Admin extends Controller {
 		editCareTeam(careTeamId);
 	}
 
-	
 	public static void correctCareTeamData() {
 		List<UserDTO> list = UserDAO.getAllForAdmin("1",null);
 		int userupdated = 0;
@@ -290,7 +289,6 @@ public class Admin extends Controller {
 					CareTeamDAO.migrateCareTeam(userDTO.getId(),patienCareTeamDTO.getCareteamid());
 					userupdated = userupdated + 1;
 				} else if(memberList.size() == 0) {
-					
 					System.out.println("YES: " +userDTO.getEmail());
 					CareTeamDAO.migrateCareTeam(userDTO.getId(),patienCareTeamDTO.getCareteamid());
 					userupdated = userupdated + 1;
@@ -305,17 +303,18 @@ public class Admin extends Controller {
 	public static void getExpertList() {
 //		List<UserTypeDTO> userTypelist = UserTypeDAO.getUserTypeList();
 //		UserBean user = CommonUtil.loadCachedUser(session);
-		List<UserDTO> list = UserDAO.getAll("5","");
-		list.addAll(UserDAO.getAll("4",""));
+//		List<UserDTO> list = UserDAO.getAll("5","");
+//		list.addAll(UserDAO.getAll("4",""));
+		List<CareMember> list = UserDAO.verifiedCareMembers();
 		JsonArray data = new JsonArray();
 		JsonObject object;
-		for (UserDTO userDTO : list) {
+		for (CareMember userDTO : list) {
 			object = new JsonObject();
 			object.add("id", new JsonPrimitive(userDTO.getId()));
-			object.add("name", new JsonPrimitive(userDTO.getName()));
+			object.add("name", new JsonPrimitive(userDTO.getFirstName()));
 			data.add(object);
 		}		
-		renderText(data.toString());
+		renderJSON(data);
 	}
 	
 	/**
@@ -324,8 +323,7 @@ public class Admin extends Controller {
 	 * @throws Throwable
 	 */
 	public static void loginAsAnotherUser(String userId) throws Throwable{
-		
-		if(userId != null && !userId.equals("")){
+		if(userId != null && !userId.equals("")) {
 			Integer intId = new Integer(userId);
 			UserDTO bean = UserDAO.getUserBasicByField("id", intId);
 			if(bean != null){
@@ -355,6 +353,5 @@ public class Admin extends Controller {
 				redirect(url);
 			}
 		}
-		
 	}
 }

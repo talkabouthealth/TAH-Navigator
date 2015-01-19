@@ -840,8 +840,6 @@ public class CarePatien  extends Controller {
 	}
 	
 	public static void careteamSpecific(int careTeamId,int patientId) {
-		System.out.println("careTeamId: " + careTeamId);
-		System.out.println("patientId: " + patientId);
 		CareTeamMasterDTO careteam = CareTeamDAO.getCareTeamByField("id", careTeamId);
 		List<PatientCareTeamMemberDTO>  memberList = CareTeamDAO.getCareTeamMembersByPatient(new Integer(patientId),careTeamId);
 		UserDetailsDTO userDetails = null;
@@ -873,18 +871,21 @@ public class CarePatien  extends Controller {
 		int memberId = params.get("memberid",Integer.class);
 		int patientId = params.get("patientid",Integer.class);
 		int teamId  = params.get("teamid",Integer.class);
-		
+		boolean isTemplateRender = false;
 		if("makeprimary".equalsIgnoreCase(operation)) {
 			CareTeamDAO.makePatientPrimary(teamId,memberId,patientId);
-			careteamSpecific(teamId,patientId);	
+//			careteamSpecific(teamId,patientId);	
+			isTemplateRender = true;
 		} else if("deletemember".equalsIgnoreCase(operation)) {
 			CareTeamDAO.deleteCareMember(teamId,memberId,patientId);
-			careteamSpecific(teamId,patientId);	
+//			careteamSpecific(teamId,patientId);
+			isTemplateRender = true;
 		} else if("addCareMember".equalsIgnoreCase(operation)) {
 			boolean primary =  params.get("primary",Boolean.class);
 			CareTeamDAO.addCareMember(teamId,memberId,patientId,primary);
 			System.out.println("Adding care member");
-			careteamSpecific(teamId,patientId);	
+//			careteamSpecific(teamId,patientId);	
+			isTemplateRender = true;
 		} else if("addCareTeam".equalsIgnoreCase(operation)) {
 			String type = params.get("type",String.class);
 			String center = params.get("center",String.class);
@@ -904,13 +905,8 @@ public class CarePatien  extends Controller {
 				careTeam  = CareTeamDAO.createMasterCareTeam(type,center,address,city,state,zip,phone);
 			}
 			UserDTO patient = UserDAO.getUserBasicByField("id",patientId);
-			CareTeamDAO.addCareTeam(patient,careTeam.getId());
-			/*
-			address:1400 U.S. Highway 441, Suite 540
-			city:The Villages
-			state:FL
-			zip:32159
-			*/			
+			PatienCareTeamDTO pCareTeam = CareTeamDAO.addCareTeam(patient,careTeam.getId());
+			renderJSON(pCareTeam);
 		} else if ("removeTeam".equalsIgnoreCase(operation)) {
 			PatienCareTeamDTO careTeam = null;
 			careTeam = CareTeamDAO.getCareTeamByPatientAndTeamid(patientId, teamId);
@@ -919,11 +915,33 @@ public class CarePatien  extends Controller {
 				BaseDAO.update(careTeam);
 			}
 		}
-		/*
-		JsonObject obj = new JsonObject();
-		obj.add("status", new JsonPrimitive("200"));
-		renderJSON(obj);
-		*/
+
+		if(isTemplateRender) {
+			CareTeamMasterDTO careteam = CareTeamDAO.getCareTeamByField("id", teamId);
+			List<PatientCareTeamMemberDTO>  memberList = CareTeamDAO.getCareTeamMembersByPatient(new Integer(patientId),teamId);
+			UserDetailsDTO userDetails = null;
+			ExpertDetailDTO expertDetail = null;
+			ExpertBean expertBean =null;
+			ExpertBean expertBeanHead = new ExpertBean();
+			ArrayList<ExpertBean> otherExpert = new ArrayList<ExpertBean>(); 
+			int iMemberCount = 0;
+			if(memberList != null && memberList.size()>0) {
+				for (PatientCareTeamMemberDTO expertBean2 : memberList) {
+					 expertBean = new ExpertBean();
+					userDetails = UserDAO.getDetailsById(expertBean2.getMemberid());
+					expertDetail = ProfileDAO.getExpertByField("id", expertBean2.getMemberid());
+					expertBean.setUserDetails(userDetails);
+					expertBean.setExpertDetail(expertDetail);
+					if(iMemberCount==0) {
+						expertBeanHead = expertBean;
+						iMemberCount++;
+					} else {
+						otherExpert.add(expertBean);
+					}
+				}
+			}
+			renderTemplate("CarePatien/careteamblock.html",careteam,otherExpert,expertBeanHead);
+		}
 	}
 
 	public static void appointmentOperation() {

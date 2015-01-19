@@ -187,6 +187,11 @@ public class PatientDetailDAO {
 		phone = userDetailsDto.getHomePhone();
 		mobilePhone = userDetailsDto.getMobile();
 		
+		if(StringUtils.isBlank(userDto.getPassword())) {
+			ps.put("invited", true);
+		} else {
+			ps.put("invited", false);
+		}
 		
 		ps.put("userId", userId);
 		ps.put("firstName", firstName);

@@ -93,6 +93,11 @@ public class CareTeamDAO {
 		dto.setPrimary(false);
 		em.persist(dto);
 		em.getTransaction().commit();
+		
+		List<PatienCareTeamDTO> patients = getPatienCareTeamByField("careteamid",careTeam.getId());
+		for (PatienCareTeamDTO patienCareTeamDTO : patients) {
+			addCareMember(patienCareTeamDTO.getCareteamid(),usr.getId(),patienCareTeamDTO.getPatienid(),false);
+		}
 		return true;
 	}
 	public static boolean removeMember(int teamid,int memberid) {
@@ -106,6 +111,19 @@ public class CareTeamDAO {
 		query.setParameter("f1", memberid);
 		query.executeUpdate();
 		em.getTransaction().commit();
+
+		hql ="update PatientCareTeamMemberDTO set deleted= :fp2 where careteamid = :f1 and memberid= :f2";
+		query = em.createQuery(hql);
+		if(!em.getTransaction().isActive())
+			em.getTransaction().begin();
+		query = em.createQuery(hql);
+		query.setParameter("fp2", true);
+		query.setParameter("f1", teamid);
+		query.setParameter("f2", memberid);
+		int result = query.executeUpdate();
+		em.getTransaction().commit();
+		System.out.println("result Edit care team : " + result);
+
 		return true;
 	}
 	
@@ -216,41 +234,49 @@ public class CareTeamDAO {
 		return true;
 	}
 
-	public static boolean addCareTeam(UserDTO patien,Integer teamId) {
+	public static PatienCareTeamDTO addCareTeam(UserDTO patien,Integer teamId) {
 //		EntityManager em = JPAUtil.getEntityManager();
 		List<PatienCareTeamDTO> team = getPatienCareTeamByPatientANDteam(patien.getId(),teamId);
+		PatienCareTeamDTO patienCareTeam = null;
 		if(team != null && team.size()>0) {
 			System.out.println("There is team");
 			for (PatienCareTeamDTO patienCareTeamDTO : team) {
 				patienCareTeamDTO.setDeleted(false);
 				BaseDAO.update(patienCareTeamDTO);
+				patienCareTeam = patienCareTeamDTO;
 			}
 		} else {
 			System.out.println("There is no team");
-			createPatienCareTeamAllNew(patien,teamId);
+			patienCareTeam = createPatienCareTeamAllNew(patien,teamId);
 		}
-		return true;
+		return patienCareTeam;
 	}
 
-	public static boolean createPatienCareTeamAllNew(UserDTO patien,Integer teamId) {
+	public static PatienCareTeamDTO createPatienCareTeamAllNew(UserDTO patien,Integer teamId) {
 		EntityManager em = JPAUtil.getEntityManager();
-		String hql ="INSERT INTO PatienCareTeamDTO(careteamid, patienid) SELECT id, "+patien.getId()+" FROM CareTeamMasterDTO where id= :teamId";
-		em.getTransaction().begin();	
-		Query query = em.createQuery(hql);
-		query.setParameter("teamId", teamId);
-		int result = query.executeUpdate();
-		em.getTransaction().commit();
+//		String hql ="INSERT INTO PatienCareTeamDTO(careteamid, patienid) SELECT id, "+patien.getId()+" FROM CareTeamMasterDTO where id= :teamId";
+//		em.getTransaction().begin();	
+//		Query query = em.createQuery(hql);
+//		query.setParameter("teamId", teamId);
+//		int result = query.executeUpdate();
+//		em.getTransaction().commit();
+//		
+		PatienCareTeamDTO careTeamDTO = new PatienCareTeamDTO();
+		careTeamDTO.setCareteamid(teamId);
+		careTeamDTO.setPatienid(patien.getId());
+		careTeamDTO.setDeleted(false);
+		BaseDAO.save(careTeamDTO);
 
-		hql ="INSERT INTO PatientCareTeamMemberDTO(careteamid, memberid, patientid, primary) SELECT careteamid,memberid,"
+		String hql ="INSERT INTO PatientCareTeamMemberDTO(careteamid, memberid, patientid, primary) SELECT careteamid,memberid,"
 		+patien.getId()+", primary FROM CareTeamMemberDTO where careteamid= :teamId";
 		em.getTransaction().begin();	
 		Query query1 = em.createQuery(hql);
 		query1.setParameter("teamId", teamId);
-		result = query1.executeUpdate();
+		int result = query1.executeUpdate();
 		em.getTransaction().commit();
 
 		System.out.println("result : " + result);
-		return true;
+		return careTeamDTO;
 	}
 	
 	public static boolean createPatienCareTeamAllWithPrimary(UserDTO patien,Integer teamId,Integer expertId) {
@@ -582,7 +608,7 @@ public class CareTeamDAO {
 		List<Integer> dto = null;
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
-			TypedQuery<Integer> query = em.createQuery("select careteamid FROM PatientCareTeamMemberDTO c WHERE c.memberid = :field group by careteamid", Integer.class); 
+			TypedQuery<Integer> query = em.createQuery("select careteamid FROM PatientCareTeamMemberDTO c WHERE c.memberid = :field and deleted = false group by careteamid", Integer.class); 
 			query.setParameter("field", value);
 			dto = query.getResultList();
 		} catch(Exception e) {

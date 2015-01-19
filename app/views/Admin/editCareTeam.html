@@ -18,7 +18,6 @@
 <!-- 		</div> -->
 	</div>
         <div class="col-xs-12 col-sm-12">
-   
 				<div class="table-responsive">
 				<table class="table table-striped table-bordered table-hover table-heading no-border-bottom">
 					<thead>
@@ -74,14 +73,14 @@
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title" id="myModalLabel">Add Care Member</h4>
       </div>
-        <div class="modal-body" style="float:left;display:block;  padding-top: 50px;">
-        	<table>
-        		<tr>
-        			<td>User Name: </td>
-        			<td><input type="text" id="nameid" name="memberName" autocomplete="off" required/></td>
-        		</tr>
-        	</table>
-    </div>
+        <div class="modal-body col-sm-12" style="float:left;display:block;  padding-top: 50px;">
+        	<div class="form-group form-group-sm">
+                <label class="col-xs-3 control-label" for="nameid" style="padding-top:7px; text-align: right;">User Name</label>
+                <div class="col-xs-9">
+                    <input class="form-control" type="text" id="nameid" name="memberName" autocomplete="off" required data-provide="typeahead"/>
+               </div>
+			</div>
+		</div>
      <div class="modal-footer col-xs-12 col-sm-12" >
        <button type="submit" class="btn btn-default" data-next="3">&nbsp;&nbsp;&nbsp;&nbsp; SUBMIT &nbsp;&nbsp;&nbsp;&nbsp;</button>
       </div>
@@ -90,17 +89,22 @@
 </div></div>
 <script src="/public/js/typeahead.bundle.min.js"></script>
 <script type="text/javascript">
-<!--
+<!---->
 var countries  = null;
 var typ = null;
 $(document).ready(function() {
 	$('#distressForm').validator();
 	$.ajax({ type: 'POST', url: '/admin/getExpertList',
 		success:function(data){
-			var dataJson = $.parseJSON(data); 
-			typ = $('#nameid').typeahead({ source: dataJson });
+			$('#nameid').typeahead({
+				source: data,
+				minLength: 0,
+				updater: function(item) {
+                	return item;
+            	}
+			});
 		}
-	}).always(function() {
+	},'json').always(function() {
 		setTimeout(function(){removeAjaxPanel();}, 2000);
 	});
 });
@@ -154,5 +158,5 @@ removeAjaxPanel = function() {
 addNew = function() {
 	$("#dialog").modal({ keyboard: false });
 }
--->
+
 </script>

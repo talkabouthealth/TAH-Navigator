@@ -1706,7 +1706,7 @@ $(document).ready(function() {
 		$.post(formURL, postData, function( data ) {
 			var teamid = $("#addEditCareMemberTeam input[name='teamid']").val();
 			location.reload();
-		});
+		},'json');
 		event.preventDefault();
 	});
 
