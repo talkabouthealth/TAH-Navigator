@@ -18,21 +18,21 @@ public class PatienCareTeamDTO implements Serializable {
 	@Id
 	@Column(name = "careteamid")
 	private int careteamid;
-	
+
 	@Id
 	@Column(name = "patienid")
 	private int patienid;
-	
+
+	@Column(name = "isdeleted")
+	private boolean deleted;
+
 	@OneToOne
 	@JoinColumn(name = "patienid")
 	private UserDTO patien;
-	
+
 	@OneToOne
 	@JoinColumn(name = "careteamid")
 	private CareTeamMasterDTO careteam;
-	
-	@Column(name = "isdeleted")
-	private boolean deleted;
 
 	public int getCareteamid() {
 		return careteamid;

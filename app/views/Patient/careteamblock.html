@@ -1,28 +1,38 @@
 <div class="careteam">
-     #{if expertBeanHead.expertDetail != null}
+    
 <div class="col-sm-12 primary-caretaker" style="padding-top:15px;">
   <div class="col-lg-8">
+  #{if otherPrimary != null}
+      <div class="caretaker">
+      <div class="image">
+        <a href="javaScript:void(0)"><img src="@{Image.show(0)}" class=""></a>
+      </div>
+      <h2><a href="javaScript:void(0)}">
+      	 ${otherPrimary.name}
+      </a></h2>
+        <p class="contact">
+          <span class="phone">
+            ${otherPrimary.telephone}
+          </span>
+        </p>
+      </div>
+  #{/if}
+   #{if expertBeanHead != null && expertBeanHead.expertDetail != null}
     <div class="caretaker">
       <div class="image">
- 
         <a href="@{Patient.careMember(expertBeanHead.expertDetail.id,careteam.id)}"><img src="@{Image.show(expertBeanHead.expertDetail.id)}" class=""></a>
-       
       </div>
       <h2><a href="@{Patient.careMember(expertBeanHead.expertDetail.id,careteam.id)}">
       	 #{userName userName: expertBeanHead.userDetails.user.name, userId:expertBeanHead.userDetails.user.id /} 
       </a></h2>
-      
         <p class="contact">
           <span class="phone">
             ${expertBeanHead.userDetails.mobile}
           </span>
-          <span class="email">
-            *{ &nbsp;|&nbsp;${expertBeanHead.userDetails.email} }*
-          </span>
         </p>
-        
-<!--         <p class="hours"><label>Office Hours:</label> Mon-Thurs 8am-5pm, Sunday 8am-1pm</p> -->
       </div>
+       #{/if}
+       
   </div>
   <div class="col-lg-4 location">
     <div class="user_first"><i class="fa fa-map-marker"></i> ${careteam.name} CARE TEAM / OFFICE LOCATION </div>
@@ -33,16 +43,6 @@
         </a>
       </div>
       <div class="col-sm-6 map-div">
-		*{
-        <!-- 
-      <h2><a href="@{Patient.careMember(expertBeanHead.expertDetail.id,careteam.id)}">
-          ${expertBeanHead.expertDetail.designation.abbr}.  ${expertBeanHead.userDetails.firstName} ${expertBeanHead.userDetails.lastName}
-      </a></h2>
-      -->
-      <!-- 
-        <h3>Careview Center</h3>
-        -->
-        }*
         <p>${careteam.address.line1} ${careteam.address.line2}</p>
         <p>${careteam.address.city}, ${careteam.address.state}, ${careteam.address.zip}</p>
       </div>
@@ -51,14 +51,9 @@
     <p class="text-center"><a target="_new" href="http://maps.google.com/maps?saddr=&daddr=${careteam.address.line1}+${careteam.address.line2},${careteam.address.city},${careteam.address.state},${careteam.address.country} - ${careteam.address.zip}" class="btn btn-default-small">GET DIRECTIONS</a></p>
   </div>
 </div>
- #{/if}
- #{else}
- No caremember assigned.
- #{/else}
- 
-#{if otherExpert.size() > 0}
+
 <div class="col-lg-12 support">
-<!--   <div class="row"> -->
+#{if otherExpert.size() > 0}
     #{list otherExpert, as:'expertBean'}
     <div class="col-lg-4">
         <div class="common_02">
@@ -86,7 +81,28 @@
         </div>
     </div>
     #{/list}
-<!--   </div> -->
-</div>
 #{/if}
+#{if others != null && others.size() > 0}
+#{list others, as:'expertBean'}
+<div class="col-lg-4">
+			 <div class="common_02">
+			<div class="supporter">
+					
+					<div class="image"><img src="@{Image.show(0)}"></div>
+					  <div class="title col-lg-9">
+						  <h3> ${expertBean.title}</h3>
+						 <h2>
+							<a href="javaScript:void(0);">
+							 ${expertBean.name}</a> 
+						</h2>
+						<p class="contact"><span class="phone">${expertBean.telephone}</span>
+						</p>
+				
+					</div>
+				</div>
+			</div>
+		</div>
+     #{/list}
+#{/if}
+</div>
 </div>

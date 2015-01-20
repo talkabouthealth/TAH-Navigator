@@ -25,6 +25,7 @@ import models.CareTeamMasterDTO;
 import models.CareTeamMemberDTO;
 import models.ExpertDetailDTO;
 import models.NoteDTO;
+import models.OtherCareMemberDTO;
 import models.PatienCareTeamDTO;
 import models.PatientCareTeamMemberDTO;
 import models.PatientDetailDTO;
@@ -153,7 +154,7 @@ public class CareTeamDAO {
 		return true;
 	}
 
-	public static boolean makePatientPrimary(int teamid,int memberid,int patientid) {
+	public static boolean makePatientPrimary(int teamid,int memberid,int patientid,boolean other) {
 		EntityManager em = JPAUtil.getEntityManager();
 		String hql ="update PatientCareTeamMemberDTO set primary = :fp1 where careteamid = :f0 and patientid = :f1";
 		if(!em.getTransaction().isActive())
@@ -165,36 +166,68 @@ public class CareTeamDAO {
 		query.setParameter("f1", patientid);
 		int result = query.executeUpdate();
 		em.getTransaction().commit();
-
-		hql ="update PatientCareTeamMemberDTO set primary= :fp2 where careteamid = :f1 and memberid= :f2 and patientid = :f3";
+		
+		hql ="update OtherCareMemberDTO set primary = false where careteamid = :f0 and patientid = :f1 and primary = true";
 		if(!em.getTransaction().isActive())
-			em.getTransaction().begin();
+			em.getTransaction().begin();	
 		query = em.createQuery(hql);
-		query.setParameter("fp2", true);
-		query.setParameter("f1", teamid);
-		query.setParameter("f2", memberid);
-		query.setParameter("f3", patientid);
-		result = query.executeUpdate();
+		query.setParameter("f0", teamid);
+		query.setParameter("f1", patientid);
+		query.executeUpdate();
 		em.getTransaction().commit();
 		
+		if(other) {
+			hql ="update OtherCareMemberDTO set primary= true where id= :f2";
+			if(!em.getTransaction().isActive())
+				em.getTransaction().begin();
+			query = em.createQuery(hql);
+			query.setParameter("f2", memberid);
+			result = query.executeUpdate();
+			em.getTransaction().commit();
+		} else {
+			hql ="update PatientCareTeamMemberDTO set primary= :fp2 where careteamid = :f1 and memberid= :f2 and patientid = :f3";
+			if(!em.getTransaction().isActive())
+				em.getTransaction().begin();
+			query = em.createQuery(hql);
+			query.setParameter("fp2", true);
+			query.setParameter("f1", teamid);
+			query.setParameter("f2", memberid);
+			query.setParameter("f3", patientid);
+			result = query.executeUpdate();
+			em.getTransaction().commit();
+		}
 		System.out.println("result Edit care team : " + result);
 		return true;
 	}
 	
-	public static boolean deleteCareMember(int teamid,int memberid,int patientid) {
+	
+	
+	public static boolean deleteCareMember(int teamid,int memberid,int patientid,boolean isOther) {
 		EntityManager em = JPAUtil.getEntityManager();
-		String hql ="update PatientCareTeamMemberDTO set deleted= :fp2 where careteamid = :f1 and memberid= :f2 and patientid = :f3";
-		Query query = em.createQuery(hql);
-		if(!em.getTransaction().isActive())
-			em.getTransaction().begin();
-		query = em.createQuery(hql);
-		query.setParameter("fp2", true);
-		query.setParameter("f1", teamid);
-		query.setParameter("f2", memberid);
-		query.setParameter("f3", patientid);
-		int result = query.executeUpdate();
-		em.getTransaction().commit();
-		System.out.println("result Edit care team : " + result);
+		if(isOther) {
+			String hql ="delete from OtherCareMemberDTO p where p.id= :f2 ";
+			Query query = em.createQuery(hql);
+			if(!em.getTransaction().isActive())
+				em.getTransaction().begin();
+			query.setParameter("f2", memberid);
+			int result = query.executeUpdate();
+			em.getTransaction().commit();
+			System.out.println("result Edit care team : " + result);
+		} else {
+			String hql ="update PatientCareTeamMemberDTO set deleted= :fp2 where careteamid = :f1 and memberid= :f2 and patientid = :f3";
+			Query query = em.createQuery(hql);
+			if(!em.getTransaction().isActive())
+				em.getTransaction().begin();
+			query = em.createQuery(hql);
+			query.setParameter("fp2", true);
+			query.setParameter("f1", teamid);
+			query.setParameter("f2", memberid);
+			query.setParameter("f3", patientid);
+			int result = query.executeUpdate();
+			em.getTransaction().commit();
+			System.out.println("result Edit care team : " + result);
+		}
+		
 		return true;
 	}
 	
@@ -205,6 +238,12 @@ public class CareTeamDAO {
 			if(!em.getTransaction().isActive())
 				em.getTransaction().begin();	
 			Query query = em.createQuery(hql);
+			query.setParameter("f0", teamid);
+			query.setParameter("f1", patientid);
+			query.executeUpdate();
+
+			hql ="update OtherCareMemberDTO set primary = false where careteamid = :f0 and patientid = :f1 and primary = true";
+			query = em.createQuery(hql);
 			query.setParameter("f0", teamid);
 			query.setParameter("f1", patientid);
 			query.executeUpdate();
@@ -233,8 +272,40 @@ public class CareTeamDAO {
 		}
 		return true;
 	}
+	
+	public static boolean addOtherCareMember(int teamid,int patientid, String memberName, String memberTitle, String memberTelephone, boolean primary) {
 
-	public static PatienCareTeamDTO addCareTeam(UserDTO patien,Integer teamId) {
+		if(primary) {
+			EntityManager em = JPAUtil.getEntityManager();
+			String hql ="update PatientCareTeamMemberDTO set primary = false where careteamid = :f0 and patientid = :f1 and primary = true";
+			if(!em.getTransaction().isActive())
+				em.getTransaction().begin();	
+			Query query = em.createQuery(hql);
+			query.setParameter("f0", teamid);
+			query.setParameter("f1", patientid);
+			query.executeUpdate();
+			
+			hql ="update OtherCareMemberDTO set primary = false where careteamid = :f0 and patientid = :f1 and primary = true";
+			query = em.createQuery(hql);
+			query.setParameter("f0", teamid);
+			query.setParameter("f1", patientid);
+			query.executeUpdate();
+			em.getTransaction().commit();
+		}
+
+		OtherCareMemberDTO otherMember = new OtherCareMemberDTO();
+		otherMember.setCareteamid(teamid);
+		otherMember.setName(memberName);
+		otherMember.setPatientid(patientid);
+		otherMember.setPrimary(primary);
+		otherMember.setTelephone(memberTelephone);
+		otherMember.setTitle(memberTitle);
+		BaseDAO.save(otherMember);
+
+		return true;
+	}
+
+	public static PatienCareTeamDTO addCareTeam(UserDTO patien,CareTeamMasterDTO teamId) {
 //		EntityManager em = JPAUtil.getEntityManager();
 		List<PatienCareTeamDTO> team = getPatienCareTeamByPatientANDteam(patien.getId(),teamId);
 		PatienCareTeamDTO patienCareTeam = null;
@@ -252,27 +323,33 @@ public class CareTeamDAO {
 		return patienCareTeam;
 	}
 
-	public static PatienCareTeamDTO createPatienCareTeamAllNew(UserDTO patien,Integer teamId) {
+	public static PatienCareTeamDTO createPatienCareTeamAllNew(UserDTO patien,CareTeamMasterDTO teamId) {
 		EntityManager em = JPAUtil.getEntityManager();
-//		String hql ="INSERT INTO PatienCareTeamDTO(careteamid, patienid) SELECT id, "+patien.getId()+" FROM CareTeamMasterDTO where id= :teamId";
-//		em.getTransaction().begin();	
-//		Query query = em.createQuery(hql);
-//		query.setParameter("teamId", teamId);
-//		int result = query.executeUpdate();
-//		em.getTransaction().commit();
-//		
-		PatienCareTeamDTO careTeamDTO = new PatienCareTeamDTO();
-		careTeamDTO.setCareteamid(teamId);
-		careTeamDTO.setPatienid(patien.getId());
-		careTeamDTO.setDeleted(false);
-		BaseDAO.save(careTeamDTO);
+		String hql ="INSERT INTO PatienCareTeamDTO(careteamid, patienid) SELECT id, "+patien.getId()+" FROM CareTeamMasterDTO where id= :teamId";
+		em.getTransaction().begin();	
+		Query query = em.createQuery(hql);
+		query.setParameter("teamId", teamId.getId());
+		int result = query.executeUpdate();
+		em.getTransaction().commit();
 
-		String hql ="INSERT INTO PatientCareTeamMemberDTO(careteamid, memberid, patientid, primary) SELECT careteamid,memberid,"
+		
+		PatienCareTeamDTO careTeamDTO = getCareTeamByPatientAndTeamid(patien.getId(), teamId.getId()); 
+//		PatienCareTeamDTO careTeamDTO = new PatienCareTeamDTO();
+//		careTeamDTO.setCareteamid(teamId.getId());
+//		careTeamDTO.setPatienid(patien.getId());
+//		careTeamDTO.setDeleted(false);
+//		careTeamDTO.setPatien(patien);
+//		careTeamDTO.setCareteam(teamId);
+//		em.getTransaction().begin();
+//		em.persist(careTeamDTO);
+//		em.getTransaction().commit();
+
+		hql ="INSERT INTO PatientCareTeamMemberDTO(careteamid, memberid, patientid, primary) SELECT careteamid,memberid,"
 		+patien.getId()+", primary FROM CareTeamMemberDTO where careteamid= :teamId";
 		em.getTransaction().begin();	
 		Query query1 = em.createQuery(hql);
-		query1.setParameter("teamId", teamId);
-		int result = query1.executeUpdate();
+		query1.setParameter("teamId", teamId.getId());
+		result = query1.executeUpdate();
 		em.getTransaction().commit();
 
 		System.out.println("result : " + result);
@@ -382,13 +459,13 @@ public class CareTeamDAO {
 		return true;
 	}
 	
-	public static List<PatienCareTeamDTO> getPatienCareTeamByPatientANDteam(Integer patientid, Integer teamid) {
+	public static List<PatienCareTeamDTO> getPatienCareTeamByPatientANDteam(Integer patientid, CareTeamMasterDTO teamid) {
 		List<PatienCareTeamDTO> dto = null;
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
 			TypedQuery<PatienCareTeamDTO> query = em.createQuery("SELECT c FROM PatienCareTeamDTO c WHERE c.patienid = :field1 and c.careteamid = :field2 and c.patien.isActive = true order by id", PatienCareTeamDTO.class);
 			query.setParameter("field1", patientid);
-			query.setParameter("field2", teamid);
+			query.setParameter("field2", teamid.getId());
 			dto = query.getResultList();
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -473,10 +550,29 @@ public class CareTeamDAO {
 		List<PatientCareTeamMemberDTO> dto = null;
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
-			TypedQuery<PatientCareTeamMemberDTO> query = em.createQuery("FROM PatientCareTeamMemberDTO c WHERE c.deleted = false and c.careteamid = :field and c.patientid = :field1 order by primary desc", PatientCareTeamMemberDTO.class); 
+			TypedQuery<PatientCareTeamMemberDTO> query = em.createQuery("FROM PatientCareTeamMemberDTO c WHERE c.deleted = false and c.careteamid = :field and c.patientid = :field1 "
+					+" order by primary desc, memberid", PatientCareTeamMemberDTO.class); 
 			query.setParameter("field", careTeamId);
 			query.setParameter("field1", patientid);
 			dto = query.getResultList();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+//			em.close();
+		}
+		return dto;
+	}
+	
+	public static List<OtherCareMemberDTO> getOtherCareTeamMembersByPatient(Integer patientid, Integer careTeamId) {
+		List<OtherCareMemberDTO> dto = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		
+		try {
+			TypedQuery<OtherCareMemberDTO> query = em.createQuery("FROM OtherCareMemberDTO c WHERE c.careteamid = :field and c.patientid = :field1 order by primary desc", OtherCareMemberDTO.class); 
+			query.setParameter("field", careTeamId);
+			query.setParameter("field1", patientid);
+			dto = query.getResultList();
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		} finally {

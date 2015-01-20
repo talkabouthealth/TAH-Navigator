@@ -29,6 +29,12 @@ public class PatientCareTeamMemberDTO implements Serializable{
 	@Column(name = "patientid")
 	private int patientid;
 
+	@Column(name = "isprimary")
+	private boolean primary;
+
+	@Column(name = "isdeleted")
+	private boolean deleted;
+	
 	public int getPatientid() {
 		return patientid;
 	}
@@ -37,13 +43,6 @@ public class PatientCareTeamMemberDTO implements Serializable{
 		this.patientid = patientid;
 	}
 
-	@Column(name = "isprimary")
-	private boolean primary;
-
-	
-	@Column(name = "isdeleted")
-	private boolean deleted;
-	
 	@OneToOne
 	@JoinColumn(name = "memberid", insertable=false, updatable=false)
 	private UserDTO member;

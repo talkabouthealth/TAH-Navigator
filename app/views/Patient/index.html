@@ -52,17 +52,17 @@ span.arrow{margin-left: 5px;float: left;font-weight: bold;font-size: 25px}/*marg
 						<label>My appointment is with</label>
 						<h3> 
 							#{if user.verifiedFlag}
-							#{if apt.caremember}
-							<a href="@{Patient.careMemberNew(apt.caremember.id)}">                
-								#{userName userName: apt.caremember.name, userId: apt.caremember.id /}
-							</a>
+								#{if apt.caremember}
+									<a href="@{Patient.careMemberNew(apt.caremember.id)}">                
+										#{userName userName: apt.caremember.name, userId: apt.caremember.id /}
+									</a>
+								#{/if}
+								#{else}
+									<a href="javaScript:void(0);">${apt.careMemberName}</a>
+								#{/else}
 							#{/if}
 							#{else}
-							<a class="disabled" href="#">${apt.careMemberName}</a>
-							#{/else}
-							#{/if}
-							#{else}
-							<a class="disabled" href="#">${apt.careMemberName}</a>
+								<a href="javaScript:void(0);">${apt.careMemberName}</a>
 							#{/else}
 						</h3>
 						<p> ${apt.expertMobile} <!--| email@email.com--></p>

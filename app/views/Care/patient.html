@@ -323,13 +323,13 @@
 					<div class="form-group form-group-sm">
 	                    <label for="disease" class="col-xs-3 control-label">Title</label>
 	                    <div class="col-xs-9 input-group">
-	                        <input type="text" class="form-control" name="title" disabled="disabled"/>
+	                        <input type="text" class="form-control" name="title"/>
 	                    </div>
 	                </div>
 					<div class="form-group form-group-sm">
 	                    <label for="disease" class="col-xs-3 control-label">Telephone</label>
 	                    <div class="col-xs-9 input-group">
-	                        <input type="text" class="form-control" name="telephone" disabled="disabled"/>
+	                        <input type="text" class="form-control" name="telephone"/>
 	                    </div>
 	                </div>
 	                <!-- 
@@ -1652,13 +1652,14 @@ $(document).ready(function() {
 		} else if(operation == 'editTeamLocation') {
 			alert('Edit team location');
 		} else if(operation == 'removeTeamMember') {
+			var other = $(this).data("from-other");
 			var memberId = $(this).data("member-id");
 			var memberId = $(this).data("member-id");
 			var teamid =  $(this).data("team-id");
 			$.ajax({
 				  type: 'POST',
 				  url: '/carePatien/careteamOperation',
-				  data: { 'operation':'deletemember','memberid':memberId,'patientid':'${patientId}','teamid':teamid}
+				  data: { 'operation':'deletemember','memberid':memberId,'patientid':'${patientId}','teamid':teamid,'other':other}
 				  ,success:function(data) {
 // 					  location.reload();
 					  $('[data-team~="'+teamid+'"]').html(data);
@@ -1668,12 +1669,13 @@ $(document).ready(function() {
 				  }
 			});
 		} else if(operation == 'makeMemberPrimary') {
+			var other = $(this).data("from-other");
 			var memberId = $(this).data("member-id");
 			var teamid =  $(this).data("team-id");
 			$.ajax({
 				  type: 'POST',
 				  url: '/carePatien/careteamOperation',
-				  data: { 'operation':'makeprimary','memberid':memberId,'patientid':'${patientId}','teamid':teamid}
+				  data: { 'operation':'makeprimary','memberid':memberId,'patientid':'${patientId}','teamid':teamid,'other':other}
 				  ,success:function(data) {
 					  $('[data-team~="'+teamid+'"]').html(data);
 				  },
@@ -1782,11 +1784,24 @@ operationCareTeamMember = function(id) {
 				}
 	        }) .blur(function(){
 	            if(arr.indexOf($(this).val()) === -1) {
-	            	$(this).parent().addClass("has-error");
+	            	$("#addEditCareMemberTeam input[name='title']").prop('disabled',false);
+	            	$("#addEditCareMemberTeam input[name='telephone']").prop('disabled',false);
 	            	$("#addEditCareMemberTeam input[name='title']").val('');
 					$("#addEditCareMemberTeam input[name='telephone']").val('');
-	            } else
-	            	$(this).parent().removeClass("has-error");
+	            } else {
+	            	$("#addEditCareMemberTeam input[name='title']").prop('disabled',true);
+	            	$("#addEditCareMemberTeam input[name='telephone']").prop('disabled',true);
+	            	var phones = $(this).data('phones');		
+					var designations =  $(this).data('designations');
+					var members = $(this).data('careMembers');
+					for (var id in members) {
+						if (members[id] == $(this).val()) {
+							$("#addEditCareMemberTeam input[name='title']").val(designations[id]);
+							$("#addEditCareMemberTeam input[name='telephone']").val(phones[id]);
+							break;
+						}
+					}
+	            }
 	        });
 			$('#addEditCareMemberTeam').attr('init_flag', '1');
 			$('#addEditCareMemberTeam').appendTo("body").modal();

@@ -1,24 +1,41 @@
 <div class="col-sm-12" style="padding-top:15px;" data-team="${careteam.id}">
-#{if expertBeanHead.userDetails != null}
 	<div class="col-lg-8">
+		
+		#{if otherPrimary != null}
+				<div class="user-panel_02">
+				<div><img src="@{Image.show(0)}" class="user_img img-responsive"></div>
+				<div class="user_name">
+					<p>
+						<a href="javaScript:void(0)"> ${otherPrimary.name}</a>
+						<button class="btn btn-danger-small careTeamBtn" data-btn-type="removeTeamMember" data-team-id="${careteam.id}" 
+						data-member-id="${otherPrimary.id}" data-from-other="1">Remove</button>
+					</p>
+				</div>
+				<div class="user_bottm">
+					<p class="large-f">${otherPrimary.telephone}
+					</p>
+				</div>
+			</div>
+		#{/if}
+		#{if expertBeanHead != null &&  expertBeanHead.userDetails != null}
 		<div class="user-panel_02">
-			
 			<div><img src="@{Image.show(expertBeanHead.userDetails.user.id)}" class="user_img img-responsive"></div>
 			<div class="user_name">
 				<p>
 					<a href="javaScript:void(0)"> #{userName userName: expertBeanHead.userDetails.user.name, userId:expertBeanHead.userDetails.user.id /} </a>
-					<button class="btn btn-danger-small careTeamBtn" data-btn-type="removeTeamMember" data-team-id="${careteam.id}" data-member-id="${expertBeanHead.userDetails.user.id}">Remove</button>
+					<button class="btn btn-danger-small careTeamBtn" data-btn-type="removeTeamMember" data-team-id="${careteam.id}" 
+					data-member-id="${expertBeanHead.userDetails.user.id}" data-from-other="0">Remove</button>
 				</p>
 			</div>
 			<div class="user_bottm">
-				<p class="large-f"><span>${expertBeanHead.expertDetail.practiceAddr.line1} </span>, ${expertBeanHead.expertDetail.practiceAddr.line2}, ${expertBeanHead.expertDetail.practiceAddr.city}, 
-				${expertBeanHead.expertDetail.practiceAddr.state}
-                		${expertBeanHead.expertDetail.practiceAddr.country} ${expertBeanHead.expertDetail.practiceAddr.zip}</p>
+				<p class="large-f"><span>
+					${expertBeanHead.expertDetail.practiceAddr.line1} </span>, ${expertBeanHead.expertDetail.practiceAddr.line2}, ${expertBeanHead.expertDetail.practiceAddr.city}, 
+					${expertBeanHead.expertDetail.practiceAddr.state} ${expertBeanHead.expertDetail.practiceAddr.country} ${expertBeanHead.expertDetail.practiceAddr.zip}</p>
 				<p class="large-f">${expertBeanHead.userDetails.mobile}
-				*{ &nbsp;|&nbsp;${expertBeanHead.userDetails.email} }*
 				</p>
 			</div>
 		</div>
+		#{/if}
 	</div>
 	<div class="col-lg-4 common_05 ">
 		<div class="user_first"><i class="fa fa-map-marker"></i> ${careteam.name} CARE TEAM / OFFICE LOCATION </div>
@@ -36,20 +53,15 @@
 			</div>
 		</div>
 	</div>
-	#{/if}
-	#{else}
-		Not found
-	#{/else}
-#{if otherExpert.size() > 0}
-<div class="common_04"></div>
+	<div class="common_04"></div>
 <div class="col-lg-12">
-<!-- 	<div class="row"> -->
+#{if otherExpert.size() > 0}
 	#{list otherExpert, as:'expertBean'}
     	<div class="col-lg-4">
 			<div class="row">
 				<div class="common_02">
 					#{if expertBean.expertDetail != null}
-					<div class="common_02_img"><img height="70" src="@{Image.show(expertBean.expertDetail.id)}"></div><!--  class="img-responsive" -->
+					<div class="common_02_img"><img height="70" src="@{Image.show(expertBean.expertDetail.id)}"></div>
 					<div class="common_02-name">
 						#{if expertBean.expertDetail.designation != null}
 							<b>${expertBean.expertDetail.designation.designation}</b>
@@ -59,18 +71,45 @@
 							 #{userName userName: expertBean.userDetails.user.name, userId: expertBean.userDetails.user.id /} 
 							</a>
 						<br/><b><span class="large-f">${expertBean.userDetails.mobile}
-						*{ &nbsp;|&nbsp;${expertBean.userDetails.email} }*
 						</span></b></p>
        				#{/if}
-						<button class="btn btn-danger-small careTeamBtn" data-btn-type="removeTeamMember" data-team-id="${careteam.id}" data-member-id="${expertBean.userDetails.user.id}">Remove</button>
-						<button class="btn btn-default-small careTeamBtn" data-btn-type="makeMemberPrimary" data-team-id="${careteam.id}" data-member-id="${expertBean.userDetails.user.id}">Make Primary</button>
+       				#{if expertBean.userDetails != null}
+						<button class="btn btn-danger-small careTeamBtn" data-btn-type="removeTeamMember" data-team-id="${careteam.id}" 
+						data-member-id="${expertBean.userDetails.user.id}" data-from-other="0">Remove</button>
+						<button class="btn btn-default-small careTeamBtn" data-btn-type="makeMemberPrimary" data-team-id="${careteam.id}" 
+						data-member-id="${expertBean.userDetails.user.id}" data-from-other="0">Make Primary</button>
+					#{/if}
 					</div>
 				</div>
 			</div>
 		</div>
      #{/list}
-<!-- 	</div> -->
-</div>
+#{/if}
+#{if others != null && others.size() > 0}
+
+#{list others, as:'expertBean'}
+<div class="col-lg-4">
+			<div class="row">
+				<div class="common_02">
+					
+					<div class="common_02_img"><img height="70" src="@{Image.show(0)}"></div>
+					<div class="common_02-name">
+						<b>${expertBean.title}</b>
+						<p>
+							<a href="javaScript:void(0);">
+							 ${expertBean.name} 
+						</a>
+						<br/><b><span class="large-f">${expertBean.telephone}
+						</span></b></p>
+						<button class="btn btn-danger-small careTeamBtn" data-btn-type="removeTeamMember" data-team-id="${careteam.id}" 
+						data-member-id="${expertBean.id}" data-from-other="1">Remove</button>
+						<button class="btn btn-default-small careTeamBtn" data-btn-type="makeMemberPrimary" data-team-id="${careteam.id}" 
+						data-member-id="${expertBean.id}" data-from-other="1">Make Primary</button>
+					</div>
+				</div>
+			</div>
+		</div>
+     #{/list}
 #{/if}
 </div>
-<!-- <div class="common_03"></div> -->
+</div>

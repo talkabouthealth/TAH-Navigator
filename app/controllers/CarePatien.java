@@ -36,6 +36,7 @@ import models.InputDefaultDTO;
 import models.MedicineCatlogDTO;
 import models.MedicineMasterDTO;
 import models.NoteDTO;
+import models.OtherCareMemberDTO;
 import models.PatienCareTeamDTO;
 import models.PatientCareTeamMemberDTO;
 import models.PatientChemoTreatmentDTO;
@@ -839,22 +840,28 @@ public class CarePatien  extends Controller {
 		renderJSON(obj);
 	}
 	
-	public static void careteamSpecific(int careTeamId,int patientId) {
+	public static void careteamSpecific(Integer careTeamId,Integer patientId) {
 		CareTeamMasterDTO careteam = CareTeamDAO.getCareTeamByField("id", careTeamId);
-		List<PatientCareTeamMemberDTO>  memberList = CareTeamDAO.getCareTeamMembersByPatient(new Integer(patientId),careTeamId);
+		List<PatientCareTeamMemberDTO>  memberList = CareTeamDAO.getCareTeamMembersByPatient(patientId,careTeamId);
 		UserDetailsDTO userDetails = null;
 		ExpertDetailDTO expertDetail = null;
 		ExpertBean expertBean =null;
 		ExpertBean expertBeanHead = new ExpertBean();
 		ArrayList<ExpertBean> otherExpert = new ArrayList<ExpertBean>(); 
 		int iMemberCount = 0;
+		boolean ismasterPrimary = false;
+		EntityManager em = JPAUtil.getEntityManager();
 		if(memberList != null && memberList.size()>0) {
 			for (PatientCareTeamMemberDTO expertBean2 : memberList) {
-				 expertBean = new ExpertBean();
+				em.refresh(expertBean2);
+				expertBean = new ExpertBean();
 				userDetails = UserDAO.getDetailsById(expertBean2.getMemberid());
 				expertDetail = ProfileDAO.getExpertByField("id", expertBean2.getMemberid());
 				expertBean.setUserDetails(userDetails);
 				expertBean.setExpertDetail(expertDetail);
+				if(expertBean2.isPrimary()) {
+					ismasterPrimary = true;
+				}
 				if(iMemberCount==0) {
 					expertBeanHead = expertBean;
 					iMemberCount++;
@@ -863,7 +870,24 @@ public class CarePatien  extends Controller {
 				}
 			}
 		}
-		render("CarePatien/careteamblock.html",careteam,otherExpert,expertBeanHead);
+		OtherCareMemberDTO otherPrimary = null;
+		List<OtherCareMemberDTO> othersOld = CareTeamDAO.getOtherCareTeamMembersByPatient(patientId,careTeamId);
+		List<OtherCareMemberDTO> others = null; 
+		if(othersOld != null) {
+			
+			others = new ArrayList<OtherCareMemberDTO>();
+			for (OtherCareMemberDTO otherCareMemberDTO : othersOld) {
+				em.refresh(otherCareMemberDTO);
+				if(!ismasterPrimary && otherCareMemberDTO.isPrimary()) {
+					otherPrimary = 	otherCareMemberDTO;
+					otherExpert.add(expertBeanHead);
+					expertBeanHead = null;
+				} else {
+					others.add(otherCareMemberDTO);
+				}
+			}
+		}
+		render("CarePatien/careteamblock.html",careteam,otherExpert,expertBeanHead,otherPrimary,others);
 	}
 	
 	public static void careteamOperation() {
@@ -873,16 +897,31 @@ public class CarePatien  extends Controller {
 		int teamId  = params.get("teamid",Integer.class);
 		boolean isTemplateRender = false;
 		if("makeprimary".equalsIgnoreCase(operation)) {
-			CareTeamDAO.makePatientPrimary(teamId,memberId,patientId);
+			boolean other =  params.get("other",Boolean.class);
+			 
+			CareTeamDAO.makePatientPrimary(teamId,memberId,patientId,other);
 //			careteamSpecific(teamId,patientId);	
 			isTemplateRender = true;
 		} else if("deletemember".equalsIgnoreCase(operation)) {
-			CareTeamDAO.deleteCareMember(teamId,memberId,patientId);
-//			careteamSpecific(teamId,patientId);
+			boolean other =  params.get("other",Boolean.class);
+			System.out.println("Other Flag: " + other);
+			System.out.println("Other memberId: " + memberId);
+			CareTeamDAO.deleteCareMember(teamId,memberId,patientId,other);
 			isTemplateRender = true;
 		} else if("addCareMember".equalsIgnoreCase(operation)) {
 			boolean primary =  params.get("primary",Boolean.class);
-			CareTeamDAO.addCareMember(teamId,memberId,patientId,primary);
+			String memberName = params.get("name",String.class);
+			String memberTitle = params.get("title",String.class);
+			String memberTelephone = params.get("telephone",String.class);
+			
+			System.out.println(memberName);
+			System.out.println(memberTitle);
+			System.out.println(memberTelephone);
+			if(memberId != 0) {
+				CareTeamDAO.addCareMember(teamId,memberId,patientId,primary);
+			} else {
+				CareTeamDAO.addOtherCareMember(teamId,patientId,memberName,memberTitle,memberTelephone,primary);
+			}
 			System.out.println("Adding care member");
 //			careteamSpecific(teamId,patientId);	
 			isTemplateRender = true;
@@ -905,7 +944,7 @@ public class CarePatien  extends Controller {
 				careTeam  = CareTeamDAO.createMasterCareTeam(type,center,address,city,state,zip,phone);
 			}
 			UserDTO patient = UserDAO.getUserBasicByField("id",patientId);
-			PatienCareTeamDTO pCareTeam = CareTeamDAO.addCareTeam(patient,careTeam.getId());
+			PatienCareTeamDTO pCareTeam = CareTeamDAO.addCareTeam(patient,careTeam);
 			renderJSON(pCareTeam);
 		} else if ("removeTeam".equalsIgnoreCase(operation)) {
 			PatienCareTeamDTO careTeam = null;
@@ -925,13 +964,19 @@ public class CarePatien  extends Controller {
 			ExpertBean expertBeanHead = new ExpertBean();
 			ArrayList<ExpertBean> otherExpert = new ArrayList<ExpertBean>(); 
 			int iMemberCount = 0;
+			boolean ismasterPrimary = false;
+			EntityManager em = JPAUtil.getEntityManager();
 			if(memberList != null && memberList.size()>0) {
 				for (PatientCareTeamMemberDTO expertBean2 : memberList) {
-					 expertBean = new ExpertBean();
+					em.refresh(expertBean2);
+					expertBean = new ExpertBean();
 					userDetails = UserDAO.getDetailsById(expertBean2.getMemberid());
 					expertDetail = ProfileDAO.getExpertByField("id", expertBean2.getMemberid());
 					expertBean.setUserDetails(userDetails);
 					expertBean.setExpertDetail(expertDetail);
+					if(expertBean2.isPrimary()) {
+						ismasterPrimary = true;
+					}
 					if(iMemberCount==0) {
 						expertBeanHead = expertBean;
 						iMemberCount++;
@@ -940,7 +985,24 @@ public class CarePatien  extends Controller {
 					}
 				}
 			}
-			renderTemplate("CarePatien/careteamblock.html",careteam,otherExpert,expertBeanHead);
+			OtherCareMemberDTO otherPrimary = null;
+			List<OtherCareMemberDTO> othersOld = CareTeamDAO.getOtherCareTeamMembersByPatient(patientId,teamId);
+			List<OtherCareMemberDTO> others = null; 
+			
+			if(othersOld != null) {
+				others = new ArrayList<OtherCareMemberDTO>();
+				for (OtherCareMemberDTO otherCareMemberDTO : othersOld) {
+					em.refresh(otherCareMemberDTO);
+					if(!ismasterPrimary && otherCareMemberDTO.isPrimary()) {
+						otherPrimary = 	otherCareMemberDTO;
+						otherExpert.add(expertBeanHead);
+						expertBeanHead = null;
+					} else {
+						others.add(otherCareMemberDTO);
+					}
+				}
+			}
+			render("CarePatien/careteamblock.html",careteam,otherExpert,expertBeanHead,otherPrimary,others);
 		}
 	}
 

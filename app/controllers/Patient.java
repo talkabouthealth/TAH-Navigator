@@ -40,13 +40,13 @@ public class Patient extends Controller {
 				UserDetailsDTO userDetails = UserDAO.getDetailsById(apt.getCaremember().getId());
 				apt.setExpertMobile(userDetails.getMobile());
 				//Load the appointment check list
-				if (apt.getAppointmentid() != null) {
-					Integer intAppId = new Integer(apt.getAppointmentid().getId());
-					checlist = AppointmentCheckListMasterDAO.getAppointmentCheckList("appointmentid.id", intAppId);
-				} else {
-					Integer intAppId = new Integer(1);
-					checlist = AppointmentCheckListMasterDAO.getAppointmentCheckList("appointmentid.id", intAppId);
-				}
+			}
+			if (apt.getAppointmentid() != null) {
+				Integer intAppId = new Integer(apt.getAppointmentid().getId());
+				checlist = AppointmentCheckListMasterDAO.getAppointmentCheckList("appointmentid.id", intAppId);
+			} else {
+				Integer intAppId = new Integer(1);
+				checlist = AppointmentCheckListMasterDAO.getAppointmentCheckList("appointmentid.id", intAppId);
 			}
 		}
 
@@ -60,7 +60,6 @@ public class Patient extends Controller {
 		int maxUsers = 0;
 		for (PatienCareTeamDTO patienCareTeamDTO : careTeams) {
 			List<PatientCareTeamMemberDTO>  memberList = CareTeamDAO.getCareTeamMembersByPatient(user.getId(), patienCareTeamDTO.getCareteamid());
-//			List<PatientCareTeamMemberDTO>  memberList = CareTeamDAO.getCareTeamMembersByField("careteamid", patienCareTeamDTO.getCareteamid());
 			if(memberList != null && memberList.size()>0) {
 				for (PatientCareTeamMemberDTO expertBean2 : memberList) {
 					maxUsers++;
@@ -75,6 +74,19 @@ public class Patient extends Controller {
 				}
 			}
 		}
+
+		List<OtherCareMemberDTO> others = null; 
+		for (PatienCareTeamDTO patienCareTeamDTO : careTeams) {
+			List<OtherCareMemberDTO> othersOld = CareTeamDAO.getOtherCareTeamMembersByPatient(user.getId(),patienCareTeamDTO.getCareteamid());
+			if(othersOld != null) {
+				others = new ArrayList<OtherCareMemberDTO>();
+				for (OtherCareMemberDTO otherCareMemberDTO : othersOld) {
+						maxUsers++;
+						others.add(otherCareMemberDTO);
+				}
+			}
+		}
+
 		ApplicationSettingsDTO accesstoallpages = ApplicationSettingDAO.getDetailsByField("propertyname", "accesstoallpages");
 		if(!user.isVerifiedFlag() && accesstoallpages != null) {
 			user.setVerifiedFlag(Boolean.parseBoolean(accesstoallpages.getPropertyvalue()));
@@ -177,7 +189,6 @@ public class Patient extends Controller {
     }
 	
 	public static void careteamSpecific(int careTeamId) {
-		System.out.println(careTeamId);
 		CareTeamMasterDTO careteam = CareTeamDAO.getCareTeamByField("id", careTeamId);
 		UserBean user = CommonUtil.loadCachedUser(session);
 		List<PatientCareTeamMemberDTO>  memberList = CareTeamDAO.getCareTeamMembersByPatient(user.getId(), careTeamId);
@@ -187,23 +198,42 @@ public class Patient extends Controller {
 		ExpertBean expertBeanHead = new ExpertBean();
 		ArrayList<ExpertBean> otherExpert = new ArrayList<ExpertBean>(); 
 		int iMemberCount = 0;
+		boolean ismasterPrimary = false;
 		if(memberList != null && memberList.size()>0) {
 			for (PatientCareTeamMemberDTO expertBean2 : memberList) {
 				 expertBean = new ExpertBean();
-				System.out.println(expertBean2.getMember().getEmail() );
 				userDetails = UserDAO.getDetailsById(expertBean2.getMemberid());
 				expertDetail = ProfileDAO.getExpertByField("id", expertBean2.getMemberid());
 				expertBean.setUserDetails(userDetails);
 				expertBean.setExpertDetail(expertDetail);
+				if(expertBean2.isPrimary()) {
+					ismasterPrimary = true;
+				}
 				if(iMemberCount==0) {
 					expertBeanHead = expertBean;
 					iMemberCount++;
 				} else {
 					otherExpert.add(expertBean);
-				}	
+				}
 			}
 		}
-		render("Patient/careteamblock.html",careteam,otherExpert,expertBeanHead);
+
+		OtherCareMemberDTO otherPrimary = null;
+		List<OtherCareMemberDTO> othersOld = CareTeamDAO.getOtherCareTeamMembersByPatient(user.getId(),careTeamId);
+		List<OtherCareMemberDTO> others = null; 
+		if(othersOld != null) {
+			others = new ArrayList<OtherCareMemberDTO>();
+			for (OtherCareMemberDTO otherCareMemberDTO : othersOld) {
+				if(!ismasterPrimary && otherCareMemberDTO.isPrimary()) {
+					otherPrimary = 	otherCareMemberDTO;
+					otherExpert.add(expertBeanHead);
+					expertBeanHead = null;
+				} else {
+					others.add(otherCareMemberDTO);
+				}
+			}
+		}
+		render("Patient/careteamblock.html",careteam,otherExpert,expertBeanHead,otherPrimary,others);
 	}
 	
 	public static void careMember(int memberId,int teamId) {
