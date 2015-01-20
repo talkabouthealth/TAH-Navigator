@@ -323,8 +323,14 @@ public class UserDAO {
 		    	cm.setFirstName(details.getFirstName());
 		    	cm.setLastName(details.getLastName());		    	
 		    	if (expert != null) {
-		    		cm.setDesignation(expert.getDesignation().getAbbr());
-		    	}		    	
+		    		cm.setDesignation(expert.getDesignation().getDesignation());
+		    	}		   
+		    	if (details.getMobile() != null) {
+		    		cm.setPhone(details.getMobile());
+		    	}
+		    	else {
+		    		cm.setPhone(details.getHomePhone());
+		    	}
 		    	members.add(cm);
 		    }						
 		} 
