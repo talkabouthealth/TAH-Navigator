@@ -22,7 +22,7 @@ import nav.dao.ContactTypeDAO;
 import nav.dao.DistressDAO;
 import nav.dao.InvitationDAO;
 import nav.dao.LoginHistoryDAO;
-import nav.dao.PatientAlert;
+import nav.dao.NotificationDAO;
 import nav.dao.SecurityQuestionDAO;
 import nav.dao.UserDAO;
 import nav.dao.UserTypeDAO;
@@ -72,15 +72,15 @@ public class Application extends Controller {
     	System.out.println("Index");
         Secure.login();
     }    
-    public static void distressCheckIn(String userId, String checkSum) {    	
+    public static void distressCheckIn(Integer userId, String checkSum) {    	
     	if (Security.isConnected()) {    		
     		Patient.distressmeter();
     	}
     	else {    		
     		if (userId != null && checkSum != null) {
-    			String generatedChecksum = PatientAlert.getChecksum(userId);
+    			String generatedChecksum = NotificationDAO.getChecksum(userId);
     			if(checkSum.equalsIgnoreCase(generatedChecksum)) {
-    				UserBean user = UserDAO.getByUserId(userId);    				
+    				UserBean user = UserDAO.getByUserId(userId.toString());    				
     				session.put("username", user.getEmail());
     				session.put("usertype", "user");
     				session.put("showdistress", false);

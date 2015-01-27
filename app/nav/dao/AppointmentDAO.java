@@ -103,6 +103,20 @@ public class AppointmentDAO {
 		return totalArr;
 	}
 	
+	public static List<AppointmentDTO> patientAllAppointments(Integer patientId) {		
+		EntityManager em = JPAUtil.getEntityManager();
+		List<AppointmentDTO> appointments = new ArrayList<AppointmentDTO>();
+		try {
+			TypedQuery<AppointmentDTO> query = em.createQuery("SELECT o FROM AppointmentDTO o WHERE o.patientid.id = :patientId AND o.deleteflag = false", AppointmentDTO.class);			
+			query.setParameter("patientId", patientId);
+			appointments = query.getResultList();			
+		} catch(Exception e) {
+			e.printStackTrace();
+		} 
+		return appointments;
+	}
+	
+	
 	public static AppointmentDTO getAppointmentByField(String fieldName, Object param) {
 		AppointmentDTO dto = null;
 		EntityManager em = JPAUtil.getEntityManager();

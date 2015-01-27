@@ -151,4 +151,6 @@ public class InvitationDAO {
 		}
 		return vars;
 	}
+	
+	
 }

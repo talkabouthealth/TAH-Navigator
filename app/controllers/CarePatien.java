@@ -67,7 +67,7 @@ import nav.dao.FollowUp;
 import nav.dao.InputDefaultDAO;
 import nav.dao.MedicationDAO;
 import nav.dao.NotesDAO;
-import nav.dao.PatientAlert;
+import nav.dao.NotificationDAO;
 import nav.dao.PatientDetailDAO;
 import nav.dao.ProfileDAO;
 import nav.dao.Treatment;
@@ -1148,9 +1148,7 @@ public class CarePatien  extends Controller {
 
 				BaseDAO.save(app);
 
-				if (treatmentProcessStep.equalsIgnoreCase(PatientAlert.APPOINTMENT_STEP_FIRST_APPOINTMENT)) {
-					PatientAlert.firstAppointmentScheduledAlert(patient, app);
-				}
+				NotificationDAO.scheduleAppointmentEmails(app, "add");
 				
 				if(appGroup != null){
 					if("after".equalsIgnoreCase(endsOnCheck) && occurences > 0) {
@@ -1176,9 +1174,7 @@ public class CarePatien  extends Controller {
 							app.setPatientid(patient);
 							app.setAppointmentgroupid(appGroup.getId());
 							BaseDAO.save(app);
-							if (treatmentProcessStep.equalsIgnoreCase(PatientAlert.APPOINTMENT_STEP_FIRST_APPOINTMENT)) {
-								PatientAlert.firstAppointmentScheduledAlert(patient, app);
-							}
+							NotificationDAO.scheduleAppointmentEmails(app, "add");
 							Calendar cal  = Calendar.getInstance();
 							cal.setTime(appStartsOn);
 							cal.add(Calendar.DATE, 7);
@@ -1208,10 +1204,8 @@ public class CarePatien  extends Controller {
 							app.setPatientid(patient);
 							app.setAppointmentgroupid(appGroup.getId());
 							BaseDAO.save(app);
-
-							if (treatmentProcessStep.equalsIgnoreCase(PatientAlert.APPOINTMENT_STEP_FIRST_APPOINTMENT)) {
-								PatientAlert.firstAppointmentScheduledAlert(patient, app);
-							}
+							NotificationDAO.scheduleAppointmentEmails(app, "add");
+							
 							Calendar cal  = Calendar.getInstance();
 							cal.setTime(appStartsOn);
 							cal.add(Calendar.DATE, 7);
@@ -1245,6 +1239,7 @@ public class CarePatien  extends Controller {
 							app.setPatientid(patient);
 							app.setAppointmentgroupid(appGroup.getId());
 							BaseDAO.save(app);
+							NotificationDAO.scheduleAppointmentEmails(app, "add");
 							cal  = Calendar.getInstance();
 							cal.setTime(appStartsOn);
 							cal.add(Calendar.DATE, 7);
@@ -1252,6 +1247,7 @@ public class CarePatien  extends Controller {
 						}
 					}
 				}
+			  
 			} else if("edit".equalsIgnoreCase(operation)) {
 				
 				if(editOccurencesAction.equalsIgnoreCase("onlyThisEvent")){
@@ -1305,7 +1301,8 @@ public class CarePatien  extends Controller {
 						BaseDAO.update(address);
 					}
 					BaseDAO.update(app);
-
+					// Notification
+					NotificationDAO.scheduleAppointmentEmails(app, "edit");
 				} else if(editOccurencesAction.equalsIgnoreCase("allEvents")) {
 					//Need to code this.
 					Integer appId =  new Integer(id);
@@ -1374,20 +1371,24 @@ public class CarePatien  extends Controller {
 							address.setZip(zip);
 							BaseDAO.update(address);
 						}
+						// Notification
+						NotificationDAO.scheduleAppointmentEmails(appointmentDTO, "edit");
 					}
 				}
 			} else if("delete".equalsIgnoreCase(operation)) {
 				//Need to code this.
 				if(editOccurencesAction.equalsIgnoreCase("onlyThisEvent")){
 					Integer appId =  new Integer(id);
-					AppointmentDTO dto = AppointmentDAO.getAppointmentByField("id",appId);
+					AppointmentDTO dto = AppointmentDAO.getAppointmentByField("id",appId);					
 					dto.setDeleteflag(true);
 					BaseDAO.update(dto);
+					// Notification
+					NotificationDAO.scheduleAppointmentEmails(dto, "remove");
 				}else if(editOccurencesAction.equalsIgnoreCase("allEvents")){
 					Integer appId =  new Integer(id);
 					AppointmentDTO dto = AppointmentDAO.getAppointmentByField("id",appId);
 					
-					int appointmentGroupId = dto.getAppointmentgroupid();
+					int appointmentGroupId = dto.getAppointmentgroupid();										
 					
 					EntityManager em = JPAUtil.getEntityManager();
 					String hql ="update AppointmentDTO set deleteflag = :fp1 where appointmentgroupid = :f0";
@@ -1401,6 +1402,14 @@ public class CarePatien  extends Controller {
 					query.executeUpdate();
 					em.getTransaction().commit();
 					
+					// Notification Start 
+					List<AppointmentDTO> groupAppointments = AppointmentDAO.getAppointmentListByField("appointmentgroupid", appointmentGroupId);
+					if (groupAppointments != null) {
+						for (AppointmentDTO appointment: groupAppointments) {
+							NotificationDAO.scheduleAppointmentEmails(appointment, "remove");
+						}
+					}
+					// Notification End
 				}
 			}
 		} catch(Exception e) {

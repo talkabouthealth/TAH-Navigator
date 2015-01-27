@@ -48,6 +48,7 @@ import nav.dao.DistressDAO;
 import nav.dao.ExpertDetailDAO;
 import nav.dao.InvitationDAO;
 import nav.dao.NotesDAO;
+import nav.dao.NotificationDAO;
 import nav.dao.PatientDetailDAO;
 import nav.dao.ProfileDAO;
 import nav.dao.UserDAO;
@@ -106,7 +107,7 @@ public class Care extends Controller {
 		if (ids != null && ids.size() > 0) {
 			CareTeamMasterDTO careTeam = CareTeamDAO.getCareTeamByField("id", ids.get(0));			
 			renderArgs.put("careTeam", careTeam);
-		}
+		}		
         render(user,expertDetail);
 	}
 	
@@ -228,11 +229,13 @@ public class Care extends Controller {
 			}
 
 			if (withapp == 1) {
-   		 		vars = InvitationDAO.mailVariables(EmailUtil.TVRH_INVITE_APPOINTMENT_SCHEDULED, app);
-   		 		EmailUtil.sendEmail(EmailUtil.TVRH_INVITE_APPOINTMENT_SCHEDULED, vars, email);
+				NotificationDAO.scheduleInviteEmails(app, newUser, true);
+   		 		//vars = InvitationDAO.mailVariables(EmailUtil.TVRH_INVITE_APPOINTMENT_SCHEDULED, app);
+   		 		//EmailUtil.sendEmail(EmailUtil.TVRH_INVITE_APPOINTMENT_SCHEDULED, vars, email);
    		 	} else {
-   		 		vars = InvitationDAO.mailVariables(EmailUtil.TVRH_INVITE_NO_APPOINTMENT_SCHEDULED, app);
-   		 		EmailUtil.sendEmail(EmailUtil.TVRH_INVITE_NO_APPOINTMENT_SCHEDULED, vars, email);
+   		 		NotificationDAO.scheduleInviteEmails(app, newUser, false);	
+   		 		//vars = InvitationDAO.mailVariables(EmailUtil.TVRH_INVITE_NO_APPOINTMENT_SCHEDULED, app);
+   		 		//EmailUtil.sendEmail(EmailUtil.TVRH_INVITE_NO_APPOINTMENT_SCHEDULED, vars, email);
    		 	}
 
 		} catch(Exception e) {

@@ -6,19 +6,21 @@ import java.util.Map;
 
 import models.InvitedDTO;
 import nav.dao.InvitationDAO;
+import nav.dao.NotificationDAO;
 import notifiers.Mail;
 import play.jobs.Every;
 import play.jobs.Job;
 import play.jobs.On;
 import util.EmailUtil;
 
-@On("0 0 7 * * ?")
-//@Every("1min")
+//@On("0 0 7 * * ?")
+@Every("10min")
 public class EmailReminderJob  extends Job {
 
 	public void doJob() {
 		System.out.println("Job : Email Reminder to invited users using sailthrou");
-		runEmailJob();
+		//runEmailJob();
+		NotificationDAO.sendEmails();
 	}
 
 	private boolean runEmailJob() {

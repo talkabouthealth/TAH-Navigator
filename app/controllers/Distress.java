@@ -9,7 +9,6 @@ import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 
 import nav.dao.DistressDAO;
-import nav.dao.PatientAlert;
 import nav.dao.UserDAO;
 import nav.dto.DistressBean;
 import nav.dto.UserBean;
