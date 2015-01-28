@@ -96,10 +96,10 @@
 					  			<td>
 					  				#{if seq.isActive}
 					  					#{if seq.password == null}
-					  						Invited
+					  						<a href="@{Admin.loginAsAnotherUser(seq.id,true)}">Login as user</a> [Invited]
 					  					#{/if}
 					  					#{else}
-					  						<a href="@{Admin.loginAsAnotherUser(seq.id)}">Login as user</a>
+					  						<a href="@{Admin.loginAsAnotherUser(seq.id,false)}">Login as user</a>
 					  					#{/else}
 					  				#{/if}
 					  			</td>

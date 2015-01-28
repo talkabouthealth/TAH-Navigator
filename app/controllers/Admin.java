@@ -322,14 +322,16 @@ public class Admin extends Controller {
 	 * @param userName
 	 * @throws Throwable
 	 */
-	public static void loginAsAnotherUser(String userId) throws Throwable{
+	public static void loginAsAnotherUser(String userId,boolean invitedFlag) throws Throwable{
 		if(userId != null && !userId.equals("")) {
 			Integer intId = new Integer(userId);
 			UserDTO bean = UserDAO.getUserBasicByField("id", intId);
 			if(bean != null){
-		        session.clear();
+				session.clear();
 		        response.removeCookie("rememberme");
-				Security.authenticate(bean.getEmail(), bean.getPassword(),true);
+		        if(!invitedFlag) {
+		        	Security.authenticate(bean.getEmail(), bean.getPassword(),true);
+		        }
 				session.put("username", bean.getEmail());
 				String url = flash.get("url");
 		        System.out.println("URL: "+ url);
@@ -337,20 +339,14 @@ public class Admin extends Controller {
 		        	String callbackURL = "";
 		            url = callbackURL+Play.ctxPath + "/";
 		        }
-				if('a' == bean.getUserType()) {
-		        	session.put("usertype", "admin");
-//		        	Admin.index();
-		        	url = url + "admin/index";
-		        } else if('c' == bean.getUserType()) {
+				if('c' == bean.getUserType()) {
 		        	 session.put("usertype", "care");
-//		        	Care.index();
 		        	url = url + "care/index";
 		        } else if('p' == bean.getUserType()) {
 		       	 	session.put("usertype", "user");
-//		       	 	Patient.index();
 		       	 url = url + "patient/index";
 		       }
-				redirect(url);
+			   redirect(url);
 			}
 		}
 	}
