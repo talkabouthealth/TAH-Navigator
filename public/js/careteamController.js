@@ -886,9 +886,9 @@ var careTeamController = (function() {
 						$('#stage').val(selectedStageData);						
 						$('#stage_div').show();
             		} else {
+            			$('#stage').val('');
             			$('#stage_div').hide();	
             		}
-					
 					
             		var mutations = data.mutations;            							
             		var mutationLength = 0;
@@ -913,6 +913,7 @@ var careTeamController = (function() {
 						$('#mutations').multiselect('refresh');
 						
         	        } else {
+        	        	$('#mutations').val('');
         	        	$("#mutation_div").hide();
         	        }
 
@@ -925,7 +926,7 @@ var careTeamController = (function() {
         	            $('#pr_div').show();
         	            $('#her2_div').show();
         	        }
-        	        
+
         	        if(disease_id != OVARIAN_CANCER_ID && disease_id != BREAST_CANCER_ID)
         	        	$('#brca_div').hide();
         	        else
@@ -979,6 +980,7 @@ var careTeamController = (function() {
 						
             			$('#cancersubtype_div').show();
             		} else {
+            			$('#cancersubtype').val('');
             			$('#cancersubtype_div').hide();
             		}
             		
@@ -1006,6 +1008,7 @@ var careTeamController = (function() {
 						$('#cancertype').val(selectedCancerTypeData);
             			$('#cancertype_div').show();
             		} else {
+            			$('#cancertype').val('');
             			$('#cancertype_div').hide();
             		}
             		
@@ -1034,6 +1037,7 @@ var careTeamController = (function() {
 						$('#invasiveness').val(selectedInvasionData);						
             			$("#invasiveness_div").show();
             		} else {
+            			$('#invasiveness').val('');
             			$("#invasiveness_div").hide();
             		}
 
@@ -1061,6 +1065,7 @@ var careTeamController = (function() {
 						$('#grade').val(selectedGradeData);						
             			$("#grade_div").show();
             		} else {
+            			$('#grade').val('');
             			$("#grade_div").hide();
             		}
             		var phase = data.phase;            		
@@ -1087,6 +1092,7 @@ var careTeamController = (function() {
 						$('#phase').val(selectedPhaseData);						
             			$("#phase_div").show();
             		} else {
+            			$('#phase').val('');
             			$("#phase_div").hide();
             		}
             		var chromosome = data.chromosome;									
@@ -1110,6 +1116,7 @@ var careTeamController = (function() {
 						$('#chromosome').val(chromosomesIds);
 						$('#chromosome').multiselect('refresh');						
             		} else {
+            			$('#chromosome').val('');
             			$("#chromosome_div").hide();
             		}
     	        	roottype = data.fab;            		
@@ -1133,9 +1140,10 @@ var careTeamController = (function() {
 						}).bind("focus", function(e) {
 							$(this).autocomplete("search");
 						});	
-						$('#fab').val(selectedFabData);						
+						$('#fab').val(selectedFabData);
             			$('#fab_div').show();
             		} else {
+            			$('#fab').val('');
             			$('#fab_div').hide();
             		}
             		
@@ -1160,9 +1168,10 @@ var careTeamController = (function() {
 						}).bind("focus", function(e) {
 							$(this).autocomplete("search");
 						});	
-						$('#who').val(selectedWhoData);						
+						$('#who').val(selectedWhoData);
             			$('#who_div').show();
             		} else {
+            			$('#who').val('');
             			$('#who_div').hide();
             		}
         	    });
@@ -1209,7 +1218,7 @@ var careTeamController = (function() {
            	  	} else {
                	  $('#stage').val('');
            	  	}
-				
+
 				if ('chromosomesIds' in data) {
 					$('#chromosome').val(data.chromosomesIds);
 				}
@@ -1242,7 +1251,7 @@ var careTeamController = (function() {
 				genetics = data.genetics;
 			}
 			if ('chromosomesIds' in data) {
-				chromosomesIds = data.chromosomesIds;	
+				chromosomesIds = data.chromosomesIds;
 			}
 			if ('csrtype' in data) {
 				csrtype = data.csrtype;
@@ -1251,13 +1260,12 @@ var careTeamController = (function() {
 				csrsubtype = data.csrsubtype; 
 			}
             $('#diagnosis-edit-form').find('#family-risk').val(data['familyRisk'] || '');            
-            $('#disease').change(); 
-			
+            $('#disease').change();
+
         	$('#diagnosis-edit-form').modal({
         		keyboard: false,
         		backdrop: 'static'
         	});
-			
         }, "json");
     };
     
