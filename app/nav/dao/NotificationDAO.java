@@ -62,7 +62,7 @@ public class NotificationDAO {
 	public static String APPOINTMENT_ONGOING_FOLLOW_UP_RADIATION_ONCOLOGY_ONE_DAY_BEFORE_MAIL = "ONGOING_FOLLOW_UP_RADIATION_ONCOLOGY_ONE_DAY_BEFORE_MAIL";
 	
 	// Sugery Appointment
-	public static String APPOINTMENT_FIRST_WITH_SURGEON_THREE_DAYS_BEFORE_MAIL = "FIRST_APPOINTMENT_WITH_SURGEON_THREE_DAYS_BEFORE_MAIL";
+	public static String APPOINTMENT_FIRST_WITH_SURGEON_ONE_HOUR_AFTER_SCHUDULED = "FIRST_APPOINTMENT_WITH_SURGEON_ONE_HOUR_AFTER_SCHUDULED";
 	public static String APPOINTMENT_FIRST_WITH_SURGEON_ONE_DAY_BEFORE_MAIL = "FIRST_APPOINTMENT_WITH_SURGEON_ONE_DAY_BEFORE_MAIL";	
 	public static String APPOINTMENT_TREATMENT_DECISION_SURGERY_THREE_DAYS_BEFORE_MAIL = "MAKE_TREATMENT_DECISION_SURGERY_THREE_DAYS_BEFORE_MAIL";
 	public static String APPOINTMENT_TREATMENT_DECISION_SURGERY_ONE_DAY_BEFORE_MAIL = "MAKE_TREATMENT_DECISION_SURGERY_ONE_DAY_BEFORE_MAIL";	
@@ -72,7 +72,8 @@ public class NotificationDAO {
 	public static String APPOINTMENT_SURGERY_THREE_DAYS_AFTER_MAIL = "SURGERY_THREE_DAYS_AFTER_MAIL";
 	public static String APPOINTMENT_SURGERY_SEVEN_DAYS_AFTER_MAIL = "SURGERY_SEVEN_DAYS_AFTER_MAIL";	
 	public static String APPOINTMENT_FOLLOW_UP_SURGERY_THREE_DAYS_BEFORE_MAIL = "FOLLOW_UP_APPOINTMENT_SURGERY_THREE_DAYS_BEFORE_MAIL";
-	public static String APPOINTMENT_FOLLOW_UP_SURGERY_ONE_DAY_BEFORE_MAIL = "FOLLOW_UP_APPOINTMENT_SURGERY_ONE_DAY_BEFORE_MAIL";	
+	public static String APPOINTMENT_FOLLOW_UP_SURGERY_ONE_DAY_BEFORE_MAIL = "FOLLOW_UP_APPOINTMENT_SURGERY_ONE_DAY_BEFORE_MAIL";
+	public static String APPOINTMENT_ONGOING_SURGERY_SEVEN_DAYS_BEFORE_MAIL = "ONGOING_APPOINTMENT_SURGERY_SEVEN_DAYS_BEFORE_MAIL";
 	public static String APPOINTMENT_ONGOING_SURGERY_THREE_DAYS_BEFORE_MAIL = "ONGOING_APPOINTMENT_SURGERY_THREE_DAYS_BEFORE_MAIL";
 	public static String APPOINTMENT_ONGOING_SURGERY_ONE_DAY_BEFORE_MAIL = "ONGOING_APPOINTMENT_SURGERY_ONE_DAY_BEFORE_MAIL";
 		
@@ -686,10 +687,10 @@ public class NotificationDAO {
 		Calendar cal = Calendar.getInstance();
 		Date now = cal.getTime();
 		if (op.equalsIgnoreCase("add")) {			
-			cal.setTime(appointmentDate);
-			cal.add(Calendar.DAY_OF_MONTH, -3);			
+			cal.setTime(now);
+			cal.add(Calendar.HOUR_OF_DAY, 1);			
 			if (now.before(cal.getTime())) {				
-				addEmailNotification(APPOINTMENT, appointmentId, APPOINTMENT_FIRST_WITH_SURGEON_THREE_DAYS_BEFORE_MAIL, cal.getTime(), 10, patientId);
+				addEmailNotification(APPOINTMENT, appointmentId, APPOINTMENT_FIRST_WITH_SURGEON_ONE_HOUR_AFTER_SCHUDULED, cal.getTime(), 10, patientId);
 			}
 			cal.setTime(appointmentDate);
 			cal.add(Calendar.DAY_OF_MONTH, -1);
@@ -710,16 +711,16 @@ public class NotificationDAO {
 				boolean scheduledFirstMail = false, scheduledSecondMail = false; 
 				for (NotificationDTO notification : notifications) {
 					String description = notification.getDescription().trim();
-					if (description.equalsIgnoreCase(APPOINTMENT_FIRST_WITH_SURGEON_THREE_DAYS_BEFORE_MAIL)) {
+					if (description.equalsIgnoreCase(APPOINTMENT_FIRST_WITH_SURGEON_ONE_HOUR_AFTER_SCHUDULED)) {
 						scheduledFirstMail = true;
 					}
 					if (description.equalsIgnoreCase(APPOINTMENT_FIRST_WITH_SURGEON_ONE_DAY_BEFORE_MAIL)) {
 						scheduledSecondMail = true;
 					}					
 					if (!notification.getNotified() && !notification.getDiscard()) {
-						if (description.equalsIgnoreCase(APPOINTMENT_FIRST_WITH_SURGEON_THREE_DAYS_BEFORE_MAIL)) {
-							cal.setTime(appointmentDate);
-							cal.add(Calendar.DAY_OF_MONTH, -3);
+						if (description.equalsIgnoreCase(APPOINTMENT_FIRST_WITH_SURGEON_ONE_HOUR_AFTER_SCHUDULED)) {
+							cal.setTime(now);
+							cal.add(Calendar.HOUR_OF_DAY, 1);
 							if (now.before(cal.getTime())) {
 								notification.setScheduledTime(cal.getTime());
 								BaseDAO.save(notification);
@@ -746,10 +747,10 @@ public class NotificationDAO {
 				}
 				
 				if (!scheduledFirstMail) {					
-					cal.setTime(appointmentDate);
-					cal.add(Calendar.DAY_OF_MONTH, -3);
+					cal.setTime(now);
+					cal.add(Calendar.HOUR_OF_DAY, 1);
 					if (now.before(cal.getTime())) {
-						addEmailNotification(APPOINTMENT, appointmentId, APPOINTMENT_FIRST_WITH_SURGEON_THREE_DAYS_BEFORE_MAIL, cal.getTime(), 10, patientId);
+						addEmailNotification(APPOINTMENT, appointmentId, APPOINTMENT_FIRST_WITH_SURGEON_ONE_HOUR_AFTER_SCHUDULED, cal.getTime(), 10, patientId);
 					}
 				}
 				if (!scheduledSecondMail) {
@@ -1104,7 +1105,12 @@ public class NotificationDAO {
 		Date appointmentDate = appointment.getAppointmentdate();
 		Calendar cal = Calendar.getInstance();
 		Date now = cal.getTime();
-		if (op.equalsIgnoreCase("add")) {			
+		if (op.equalsIgnoreCase("add")) {
+			cal.setTime(appointmentDate);
+			cal.add(Calendar.DAY_OF_MONTH, -7);			
+			if (now.before(cal.getTime())) {				
+				addEmailNotification(APPOINTMENT, appointmentId, APPOINTMENT_ONGOING_SURGERY_SEVEN_DAYS_BEFORE_MAIL, cal.getTime(), 10, patientId);
+			}
 			cal.setTime(appointmentDate);
 			cal.add(Calendar.DAY_OF_MONTH, -3);			
 			if (now.before(cal.getTime())) {				
@@ -1126,17 +1132,31 @@ public class NotificationDAO {
 				}
 			}
 			else if (op.equalsIgnoreCase("edit")) {
-				boolean scheduledFirstMail = false, scheduledSecondMail = false; 
+				boolean scheduledFirstMail = false, scheduledSecondMail = false, scheduledThirdMail = false;
 				for (NotificationDTO notification : notifications) {
 					String description = notification.getDescription().trim();
-					if (description.equalsIgnoreCase(APPOINTMENT_ONGOING_SURGERY_THREE_DAYS_BEFORE_MAIL)) {
+					if (description.equalsIgnoreCase(APPOINTMENT_ONGOING_SURGERY_SEVEN_DAYS_BEFORE_MAIL)) {
 						scheduledFirstMail = true;
 					}
-					if (description.equalsIgnoreCase(APPOINTMENT_ONGOING_SURGERY_ONE_DAY_BEFORE_MAIL)) {
+					if (description.equalsIgnoreCase(APPOINTMENT_ONGOING_SURGERY_THREE_DAYS_BEFORE_MAIL)) {
 						scheduledSecondMail = true;
+					}
+					if (description.equalsIgnoreCase(APPOINTMENT_ONGOING_SURGERY_ONE_DAY_BEFORE_MAIL)) {
+						scheduledThirdMail = true;
 					}					
 					if (!notification.getNotified() && !notification.getDiscard()) {
-						if (description.equalsIgnoreCase(APPOINTMENT_ONGOING_SURGERY_THREE_DAYS_BEFORE_MAIL)) {
+						if (description.equalsIgnoreCase(APPOINTMENT_ONGOING_SURGERY_SEVEN_DAYS_BEFORE_MAIL)) {
+							cal.setTime(appointmentDate);
+							cal.add(Calendar.DAY_OF_MONTH, -7);
+							if (now.before(cal.getTime())) {
+								notification.setScheduledTime(cal.getTime());
+								BaseDAO.save(notification);
+							}
+							else {
+								discardNotification(notification);
+							}
+						}
+						else if (description.equalsIgnoreCase(APPOINTMENT_ONGOING_SURGERY_THREE_DAYS_BEFORE_MAIL)) {
 							cal.setTime(appointmentDate);
 							cal.add(Calendar.DAY_OF_MONTH, -3);
 							if (now.before(cal.getTime())) {
@@ -1163,15 +1183,21 @@ public class NotificationDAO {
 						}
 					}
 				}
-				
 				if (!scheduledFirstMail) {					
+					cal.setTime(appointmentDate);
+					cal.add(Calendar.DAY_OF_MONTH, -7);
+					if (now.before(cal.getTime())) {
+						addEmailNotification(APPOINTMENT, appointmentId, APPOINTMENT_ONGOING_SURGERY_SEVEN_DAYS_BEFORE_MAIL, cal.getTime(), 10, patientId);
+					}
+				}
+				if (!scheduledSecondMail) {					
 					cal.setTime(appointmentDate);
 					cal.add(Calendar.DAY_OF_MONTH, -3);
 					if (now.before(cal.getTime())) {
 						addEmailNotification(APPOINTMENT, appointmentId, APPOINTMENT_ONGOING_SURGERY_THREE_DAYS_BEFORE_MAIL, cal.getTime(), 10, patientId);
 					}
 				}
-				if (!scheduledSecondMail) {
+				if (!scheduledThirdMail) {
 					cal.setTime(appointmentDate);
 					cal.add(Calendar.DAY_OF_MONTH, -1);
 					if (now.before(cal.getTime())) {
@@ -1749,7 +1775,7 @@ public class NotificationDAO {
 		List<NotificationDTO> notifications = new ArrayList<NotificationDTO>();
 		List<NotificationDTO> recentNotifications = new ArrayList<NotificationDTO>();
 		
-		TypedQuery<NotificationDTO> query1 = em.createQuery("SELECT n FROM NotificationDTO n WHERE n.notified = :notified AND n.discard = :discard AND age(LOCALTIMESTAMP, n.scheduledTime) > '30 second' AND age(LOCALTIMESTAMP, n.scheduledTime) <= '30 minute' ORDER BY n.priority ASC, n.scheduledTime ASC", NotificationDTO.class);
+		TypedQuery<NotificationDTO> query1 = em.createQuery("SELECT n FROM NotificationDTO n WHERE n.notified = :notified AND n.discard = :discard AND age(LOCALTIMESTAMP, n.scheduledTime) > '30 second' AND age(LOCALTIMESTAMP, n.scheduledTime) <= '12 hour' ORDER BY n.priority ASC, n.scheduledTime ASC", NotificationDTO.class);
 		query1.setParameter("notified", false);
 		query1.setParameter("discard", false);
 		try {			
@@ -1772,6 +1798,7 @@ public class NotificationDAO {
 			System.out.println("----------------------");
 		}
 		for (NotificationDTO notification : notifications) {
+			em.refresh(notification);
 			if (DEBUG) {
 				System.out.println(notification.getScheduledTime());
 			}			
@@ -1834,8 +1861,8 @@ public class NotificationDAO {
 			else if (description.equalsIgnoreCase(APPOINTMENT_ONGOING_FOLLOW_UP_RADIATION_ONCOLOGY_ONE_DAY_BEFORE_MAIL)) {
 				sendEmailOneDayBeforeDistressCheck(notification, recentNotifications);
 			}
-			else if (description.equalsIgnoreCase(APPOINTMENT_FIRST_WITH_SURGEON_THREE_DAYS_BEFORE_MAIL)) {
-				sendEmailThreeDayBefore(notification, recentNotifications);
+			else if (description.equalsIgnoreCase(APPOINTMENT_FIRST_WITH_SURGEON_ONE_HOUR_AFTER_SCHUDULED)) {				
+				sendEmailAsSoonAs(notification, recentNotifications);
 			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_FIRST_WITH_SURGEON_ONE_DAY_BEFORE_MAIL)) {
 				sendEmailOneDayBeforeDistressCheck(notification, recentNotifications);
@@ -1867,8 +1894,11 @@ public class NotificationDAO {
 			else if (description.equalsIgnoreCase(APPOINTMENT_FOLLOW_UP_SURGERY_ONE_DAY_BEFORE_MAIL)) {
 				sendEmailOneDayBeforeDistressCheck(notification, recentNotifications);
 			}
+			else if (description.equalsIgnoreCase(APPOINTMENT_ONGOING_SURGERY_SEVEN_DAYS_BEFORE_MAIL)) {
+				sendEmailOneWeekBefore(notification, recentNotifications);
+			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_ONGOING_SURGERY_THREE_DAYS_BEFORE_MAIL)) {
-				sendEmailThreeDayBefore(notification, recentNotifications);
+				sendEmailThreeDayBeforeDistressCheck(notification, recentNotifications);
 			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_ONGOING_SURGERY_ONE_DAY_BEFORE_MAIL)) {
 				sendEmailOneDayBeforeDistressCheck(notification, recentNotifications);
