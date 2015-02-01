@@ -79,7 +79,7 @@ public class NotificationDAO {
 		
 	public static void setNotified(NotificationDTO notification) {	
 		notification.setNotified(true);
-		BaseDAO.save(notification);
+		BaseDAO.update(notification);
 		if (DEBUG) {
 			System.out.println("Notified");
 		}
@@ -87,9 +87,10 @@ public class NotificationDAO {
 	
 	public static void discardNotification(NotificationDTO notification) {		
 		notification.setDiscard(true);
-		BaseDAO.save(notification);
+		BaseDAO.update(notification);
 	}
 	
+	/*
 	public static boolean isMailSentRecently(List<NotificationDTO> recentNotifications, Integer patientId) {
 		boolean flag = false;
 		for (NotificationDTO notification : recentNotifications) {
@@ -97,6 +98,27 @@ public class NotificationDAO {
 				flag = true;
 				break;
 			}
+		}
+		return flag;
+	}
+	*/
+	
+	public static boolean isMailSentRecently(String category, Integer notifiedTo, Date compareWith) {
+		EntityManager em = JPAUtil.getEntityManager();
+		boolean flag = false;
+		TypedQuery<NotificationDTO> query = em.createQuery("SELECT n FROM NotificationDTO n WHERE n.notified = :notified AND n.category = :category AND n.notifiedTo = :notifiedTo AND age(:compareWith, n.scheduledTime) < '2 day'", NotificationDTO.class);
+		query.setParameter("notified", true);
+		query.setParameter("category", category);
+		query.setParameter("notifiedTo", notifiedTo);
+		query.setParameter("compareWith", compareWith);
+		try {			
+			List<NotificationDTO> recentNotifications = query.getResultList();
+			if (recentNotifications.size() > 0) {
+				flag = true;
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return flag;
 	}
@@ -187,7 +209,7 @@ public class NotificationDAO {
 							cal.add(Calendar.HOUR_OF_DAY, 1);
 							if (now.before(cal.getTime())) {
 								notification.setScheduledTime(cal.getTime());
-								BaseDAO.save(notification);
+								BaseDAO.update(notification);
 							}
 							else {
 								discardNotification(notification);
@@ -198,7 +220,7 @@ public class NotificationDAO {
 							cal.add(Calendar.DAY_OF_MONTH, -1);
 							if (now.before(cal.getTime())) {
 								notification.setScheduledTime(cal.getTime());
-								BaseDAO.save(notification);
+								BaseDAO.update(notification);
 							}
 							else {
 								discardNotification(notification);
@@ -272,7 +294,7 @@ public class NotificationDAO {
 							cal.add(Calendar.DAY_OF_MONTH, -3);
 							if (now.before(cal.getTime())) {
 								notification.setScheduledTime(cal.getTime());
-								BaseDAO.save(notification);
+								BaseDAO.update(notification);
 							}
 							else {
 								discardNotification(notification);
@@ -283,7 +305,7 @@ public class NotificationDAO {
 							cal.add(Calendar.DAY_OF_MONTH, -1);
 							if (now.before(cal.getTime())) {
 								notification.setScheduledTime(cal.getTime());
-								BaseDAO.save(notification);
+								BaseDAO.update(notification);
 							}
 							else {
 								discardNotification(notification);
@@ -357,7 +379,7 @@ public class NotificationDAO {
 							cal.add(Calendar.DAY_OF_MONTH, -3);
 							if (now.before(cal.getTime())) {
 								notification.setScheduledTime(cal.getTime());
-								BaseDAO.save(notification);
+								BaseDAO.update(notification);
 							}
 							else {
 								discardNotification(notification);
@@ -368,7 +390,7 @@ public class NotificationDAO {
 							cal.add(Calendar.DAY_OF_MONTH, -1);
 							if (now.before(cal.getTime())) {
 								notification.setScheduledTime(cal.getTime());
-								BaseDAO.save(notification);
+								BaseDAO.update(notification);
 							}
 							else {
 								discardNotification(notification);
@@ -443,7 +465,7 @@ public class NotificationDAO {
 							cal.add(Calendar.DAY_OF_MONTH, -3);
 							if (now.before(cal.getTime())) {
 								notification.setScheduledTime(cal.getTime());
-								BaseDAO.save(notification);
+								BaseDAO.update(notification);
 							}
 							else {
 								discardNotification(notification);
@@ -454,7 +476,7 @@ public class NotificationDAO {
 							cal.add(Calendar.DAY_OF_MONTH, -1);
 							if (now.before(cal.getTime())) {
 								notification.setScheduledTime(cal.getTime());
-								BaseDAO.save(notification);
+								BaseDAO.update(notification);
 							}
 							else {
 								discardNotification(notification);
@@ -528,7 +550,7 @@ public class NotificationDAO {
 							cal.add(Calendar.DAY_OF_MONTH, -3);
 							if (now.before(cal.getTime())) {
 								notification.setScheduledTime(cal.getTime());
-								BaseDAO.save(notification);
+								BaseDAO.update(notification);
 							}
 							else {
 								discardNotification(notification);
@@ -539,7 +561,7 @@ public class NotificationDAO {
 							cal.add(Calendar.DAY_OF_MONTH, -1);
 							if (now.before(cal.getTime())) {
 								notification.setScheduledTime(cal.getTime());
-								BaseDAO.save(notification);
+								BaseDAO.update(notification);
 							}
 							else {
 								discardNotification(notification);
@@ -620,7 +642,7 @@ public class NotificationDAO {
 							cal.add(Calendar.DAY_OF_MONTH, -7);
 							if (now.before(cal.getTime())) {
 								notification.setScheduledTime(cal.getTime());
-								BaseDAO.save(notification);
+								BaseDAO.update(notification);
 							}
 							else {
 								discardNotification(notification);
@@ -631,7 +653,7 @@ public class NotificationDAO {
 							cal.add(Calendar.DAY_OF_MONTH, -3);
 							if (now.before(cal.getTime())) {
 								notification.setScheduledTime(cal.getTime());
-								BaseDAO.save(notification);
+								BaseDAO.update(notification);
 							}
 							else {
 								discardNotification(notification);
@@ -642,7 +664,7 @@ public class NotificationDAO {
 							cal.add(Calendar.DAY_OF_MONTH, -1);
 							if (now.before(cal.getTime())) {
 								notification.setScheduledTime(cal.getTime());
-								BaseDAO.save(notification);
+								BaseDAO.update(notification);
 							}
 							else {
 								discardNotification(notification);
@@ -723,7 +745,7 @@ public class NotificationDAO {
 							cal.add(Calendar.HOUR_OF_DAY, 1);
 							if (now.before(cal.getTime())) {
 								notification.setScheduledTime(cal.getTime());
-								BaseDAO.save(notification);
+								BaseDAO.update(notification);
 							}
 							else {
 								discardNotification(notification);
@@ -734,7 +756,7 @@ public class NotificationDAO {
 							cal.add(Calendar.DAY_OF_MONTH, -1);
 							if (now.before(cal.getTime())) {
 								notification.setScheduledTime(cal.getTime());
-								BaseDAO.save(notification);
+								BaseDAO.update(notification);
 							}
 							else {
 								discardNotification(notification);
@@ -808,7 +830,7 @@ public class NotificationDAO {
 							cal.add(Calendar.DAY_OF_MONTH, -3);
 							if (now.before(cal.getTime())) {
 								notification.setScheduledTime(cal.getTime());
-								BaseDAO.save(notification);
+								BaseDAO.update(notification);
 							}
 							else {
 								discardNotification(notification);
@@ -819,7 +841,7 @@ public class NotificationDAO {
 							cal.add(Calendar.DAY_OF_MONTH, -1);
 							if (now.before(cal.getTime())) {
 								notification.setScheduledTime(cal.getTime());
-								BaseDAO.save(notification);
+								BaseDAO.update(notification);
 							}
 							else {
 								discardNotification(notification);
@@ -918,7 +940,7 @@ public class NotificationDAO {
 							cal.add(Calendar.DAY_OF_MONTH, -3);
 							if (now.before(cal.getTime())) {
 								notification.setScheduledTime(cal.getTime());
-								BaseDAO.save(notification);
+								BaseDAO.update(notification);
 							}
 							else {
 								discardNotification(notification);
@@ -929,7 +951,7 @@ public class NotificationDAO {
 							cal.add(Calendar.DAY_OF_MONTH, -1);
 							if (now.before(cal.getTime())) {
 								notification.setScheduledTime(cal.getTime());
-								BaseDAO.save(notification);
+								BaseDAO.update(notification);
 							}
 							else {
 								discardNotification(notification);
@@ -940,7 +962,7 @@ public class NotificationDAO {
 							cal.add(Calendar.DAY_OF_MONTH, 1);
 							if (now.before(cal.getTime())) {
 								notification.setScheduledTime(cal.getTime());
-								BaseDAO.save(notification);
+								BaseDAO.update(notification);
 							}
 							else {
 								discardNotification(notification);
@@ -951,7 +973,7 @@ public class NotificationDAO {
 							cal.add(Calendar.DAY_OF_MONTH, 3);
 							if (now.before(cal.getTime())) {
 								notification.setScheduledTime(cal.getTime());
-								BaseDAO.save(notification);
+								BaseDAO.update(notification);
 							}
 							else {
 								discardNotification(notification);
@@ -962,7 +984,7 @@ public class NotificationDAO {
 							cal.add(Calendar.DAY_OF_MONTH, 7);
 							if (now.before(cal.getTime())) {
 								notification.setScheduledTime(cal.getTime());
-								BaseDAO.save(notification);
+								BaseDAO.update(notification);
 							}
 							else {
 								discardNotification(notification);
@@ -1057,7 +1079,7 @@ public class NotificationDAO {
 							cal.add(Calendar.DAY_OF_MONTH, -3);
 							if (now.before(cal.getTime())) {
 								notification.setScheduledTime(cal.getTime());
-								BaseDAO.save(notification);
+								BaseDAO.update(notification);
 							}
 							else {
 								discardNotification(notification);
@@ -1068,7 +1090,7 @@ public class NotificationDAO {
 							cal.add(Calendar.DAY_OF_MONTH, -1);
 							if (now.before(cal.getTime())) {
 								notification.setScheduledTime(cal.getTime());
-								BaseDAO.save(notification);
+								BaseDAO.update(notification);
 							}
 							else {
 								discardNotification(notification);
@@ -1150,7 +1172,7 @@ public class NotificationDAO {
 							cal.add(Calendar.DAY_OF_MONTH, -7);
 							if (now.before(cal.getTime())) {
 								notification.setScheduledTime(cal.getTime());
-								BaseDAO.save(notification);
+								BaseDAO.update(notification);
 							}
 							else {
 								discardNotification(notification);
@@ -1161,7 +1183,7 @@ public class NotificationDAO {
 							cal.add(Calendar.DAY_OF_MONTH, -3);
 							if (now.before(cal.getTime())) {
 								notification.setScheduledTime(cal.getTime());
-								BaseDAO.save(notification);
+								BaseDAO.update(notification);
 							}
 							else {
 								discardNotification(notification);
@@ -1172,7 +1194,7 @@ public class NotificationDAO {
 							cal.add(Calendar.DAY_OF_MONTH, -1);
 							if (now.before(cal.getTime())) {
 								notification.setScheduledTime(cal.getTime());
-								BaseDAO.save(notification);
+								BaseDAO.update(notification);
 							}
 							else {
 								discardNotification(notification);
@@ -1260,7 +1282,7 @@ public class NotificationDAO {
 			notifiedTo = user.getId();
 		}		
 		if (hasAppointment) {			
-			addEmailNotification(INVITATION, invitation.getId(), INVITED_APPOINTMENT_FIRST_MAIL, now, 100, notifiedTo);
+			addEmailNotification(INVITATION, invitation.getId(), INVITED_APPOINTMENT_FIRST_MAIL, now, 0, notifiedTo);
 			cal.setTime(now);
 			cal.add(Calendar.DAY_OF_MONTH, 2);
 			addEmailNotification(INVITATION, invitation.getId(), INVITED_APPOINTMENT_SECOND_MAIL, cal.getTime(), 100, notifiedTo);
@@ -1269,7 +1291,7 @@ public class NotificationDAO {
 			addEmailNotification(INVITATION, invitation.getId(), INVITED_APPOINTMENT_THIRD_MAIL, cal.getTime(), 100, notifiedTo);
 		}
 		else {			
-			addEmailNotification(INVITATION, invitation.getId(), INVITED_FIRST_MAIL, now, 100, notifiedTo);
+			addEmailNotification(INVITATION, invitation.getId(), INVITED_FIRST_MAIL, now, 0, notifiedTo);
 			cal.setTime(now);
 			cal.add(Calendar.DAY_OF_MONTH, 2);
 			addEmailNotification(INVITATION, invitation.getId(), INVITED_SECOND_MAIL, cal.getTime(), 100, notifiedTo);
@@ -1507,13 +1529,15 @@ public class NotificationDAO {
 		setNotified(notification);			
 	}
 	
-	public static void invitedReminderMail(NotificationDTO notification, List<NotificationDTO> recentNotifications) {
+	public static void invitedReminderMail(NotificationDTO notification) {
 		TemplateVars data = getInviteTemplatesData(notification);
 		List<AppointmentDTO> appointments = new ArrayList<AppointmentDTO>();
 		boolean flag = false;
+		
 		if (notification.getNotifiedTo() != null) {
 			appointments = AppointmentDAO.patientAllAppointments(notification.getNotifiedTo());
-			flag = isMailSentRecently(recentNotifications, notification.getNotifiedTo());
+			//flag = isMailSentRecently(recentNotifications, notification.getNotifiedTo());
+			flag = isMailSentRecently(INVITATION, notification.getNotifiedTo(), notification.getScheduledTime());
 		}
 		
 		if (flag || data.getAppointmentTime() != null || appointments.size() > 0) {			
@@ -1552,11 +1576,13 @@ public class NotificationDAO {
 		setNotified(notification);			
 	}
 	
-	public static void invitedAppointmentReminderMail(NotificationDTO notification, List<NotificationDTO> recentNotifications) {
+	public static void invitedAppointmentReminderMail(NotificationDTO notification) {
 		TemplateVars data = getInviteTemplatesData(notification);		
 		boolean flag = false;
+		
 		if (notification.getNotifiedTo() != null) {
-			flag = isMailSentRecently(recentNotifications, notification.getNotifiedTo());
+			//flag = isMailSentRecently(recentNotifications, notification.getNotifiedTo());
+			flag = isMailSentRecently(INVITATION, notification.getNotifiedTo(), notification.getScheduledTime());
 		}
 		
 		if (flag || data.getAppointmentTime() == null) {	
@@ -1580,10 +1606,12 @@ public class NotificationDAO {
 	}
 	
 	// as soon as scheduled
-	public static void sendEmailAsSoonAs(NotificationDTO notification, List<NotificationDTO> recentNotifications) {			
+	public static void sendEmailAsSoonAs(NotificationDTO notification) {			
 		boolean flag = false;
+		
 		if (notification.getNotifiedTo() != null) {
-			flag = isMailSentRecently(recentNotifications, notification.getNotifiedTo());
+			//flag = isMailSentRecently(recentNotifications, notification.getNotifiedTo());
+			flag = isMailSentRecently(APPOINTMENT, notification.getNotifiedTo(), notification.getScheduledTime());
 		}
 		
 		if (flag) {	
@@ -1608,10 +1636,11 @@ public class NotificationDAO {
 	}
 	
 	// 1 day before Appointment
-	public static void sendEmailOneDayBefore(NotificationDTO notification, List<NotificationDTO> recentNotifications) {			
+	public static void sendEmailOneDayBefore(NotificationDTO notification) {			
 		boolean flag = false;
 		if (notification.getNotifiedTo() != null) {
-			flag = isMailSentRecently(recentNotifications, notification.getNotifiedTo());
+			//flag = isMailSentRecently(recentNotifications, notification.getNotifiedTo());
+			flag = isMailSentRecently(APPOINTMENT, notification.getNotifiedTo(), notification.getScheduledTime());
 		}			
 		if (flag) {	
 			discardNotification(notification);
@@ -1634,10 +1663,11 @@ public class NotificationDAO {
 	}
 	
 	// 3 day before appointment
-	public static void sendEmailThreeDayBefore(NotificationDTO notification, List<NotificationDTO> recentNotifications) {			
+	public static void sendEmailThreeDayBefore(NotificationDTO notification) {			
 		boolean flag = false;
 		if (notification.getNotifiedTo() != null) {
-			flag = isMailSentRecently(recentNotifications, notification.getNotifiedTo());
+			//flag = isMailSentRecently(recentNotifications, notification.getNotifiedTo());
+			flag = isMailSentRecently(APPOINTMENT, notification.getNotifiedTo(), notification.getScheduledTime());
 		}			
 		if (flag) {	
 			discardNotification(notification);
@@ -1661,10 +1691,11 @@ public class NotificationDAO {
 	}
 	
 	// 1 day before appointment with distress check
-	public static void sendEmailOneDayBeforeDistressCheck(NotificationDTO notification, List<NotificationDTO> recentNotifications) {		
+	public static void sendEmailOneDayBeforeDistressCheck(NotificationDTO notification) {		
 		boolean flag = false;		
 		if (notification.getNotifiedTo() != null) {
-			flag = isMailSentRecently(recentNotifications, notification.getNotifiedTo());
+			//flag = isMailSentRecently(recentNotifications, notification.getNotifiedTo());
+			flag = isMailSentRecently(APPOINTMENT, notification.getNotifiedTo(), notification.getScheduledTime());
 			if (!flag) {
 				AppointmentDTO appointment = AppointmentDAO.getAppointmentByField("id", notification.getRelatedId());
 				flag = isDistressCheckedBeforeAppointment(notification.getNotifiedTo(), appointment.getAppointmentdate(), 3);
@@ -1691,10 +1722,11 @@ public class NotificationDAO {
 	}
 	
 	// 3 day before appointment with distress check
-	public static void sendEmailThreeDayBeforeDistressCheck(NotificationDTO notification, List<NotificationDTO> recentNotifications) {			
+	public static void sendEmailThreeDayBeforeDistressCheck(NotificationDTO notification) {			
 		boolean flag = false;
 		if (notification.getNotifiedTo() != null) {
-			flag = isMailSentRecently(recentNotifications, notification.getNotifiedTo());
+			//flag = isMailSentRecently(recentNotifications, notification.getNotifiedTo());
+			flag = isMailSentRecently(APPOINTMENT, notification.getNotifiedTo(), notification.getScheduledTime());			
 			if (!flag) {				
 				flag = isDistressCheckedBeforeAppointment(notification.getNotifiedTo(), notification.getScheduledTime(), 3);
 			}
@@ -1721,10 +1753,11 @@ public class NotificationDAO {
 	}
 	
 	// 1 week before
-	public static void sendEmailOneWeekBefore(NotificationDTO notification, List<NotificationDTO> recentNotifications) {			
+	public static void sendEmailOneWeekBefore(NotificationDTO notification) {			
 		boolean flag = false;
 		if (notification.getNotifiedTo() != null) {
-			flag = isMailSentRecently(recentNotifications, notification.getNotifiedTo());
+			//flag = isMailSentRecently(recentNotifications, notification.getNotifiedTo());
+			flag = isMailSentRecently(APPOINTMENT, notification.getNotifiedTo(), notification.getScheduledTime());
 		}
 		
 		if (flag) {	
@@ -1748,10 +1781,11 @@ public class NotificationDAO {
 		}
 	}
 	// Surgery follow up
-	public static void sendEmailSurgeryFollowUp(NotificationDTO notification, List<NotificationDTO> recentNotifications) {			
+	public static void sendEmailSurgeryFollowUp(NotificationDTO notification) {			
 		boolean flag = false;
 		if (notification.getNotifiedTo() != null) {
-			flag = isMailSentRecently(recentNotifications, notification.getNotifiedTo());
+			//flag = isMailSentRecently(recentNotifications, notification.getNotifiedTo());
+			flag = isMailSentRecently(APPOINTMENT, notification.getNotifiedTo(), notification.getScheduledTime());
 		}
 		
 		if (flag) {	
@@ -1773,18 +1807,19 @@ public class NotificationDAO {
 	public static void sendEmails() {		
 		EntityManager em = JPAUtil.getEntityManager();
 		List<NotificationDTO> notifications = new ArrayList<NotificationDTO>();
-		List<NotificationDTO> recentNotifications = new ArrayList<NotificationDTO>();
+		//List<NotificationDTO> recentNotifications = new ArrayList<NotificationDTO>();
 		
-		TypedQuery<NotificationDTO> query1 = em.createQuery("SELECT n FROM NotificationDTO n WHERE n.notified = :notified AND n.discard = :discard AND age(LOCALTIMESTAMP, n.scheduledTime) > '30 second' AND age(LOCALTIMESTAMP, n.scheduledTime) <= '12 hour' ORDER BY n.priority ASC, n.scheduledTime ASC", NotificationDTO.class);
-		query1.setParameter("notified", false);
-		query1.setParameter("discard", false);
+		TypedQuery<NotificationDTO> query = em.createQuery("SELECT n FROM NotificationDTO n WHERE n.notified = :notified AND n.discard = :discard AND age(LOCALTIMESTAMP, n.scheduledTime) > '30 second' ORDER BY n.priority ASC, n.scheduledTime ASC", NotificationDTO.class);
+		query.setParameter("notified", false);
+		query.setParameter("discard", false);
 		try {			
-			notifications = query1.getResultList();			
+			notifications = query.getResultList();			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
+		/*
 		TypedQuery<NotificationDTO> query2 = em.createQuery("SELECT n FROM NotificationDTO n WHERE n.notified = :notified AND age(LOCALTIMESTAMP, n.scheduledTime) > '0 second' AND age(LOCALTIMESTAMP, n.scheduledTime) <= '2 day'", NotificationDTO.class);
 		query2.setParameter("notified", true);
 		try {			
@@ -1793,11 +1828,12 @@ public class NotificationDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		*/
 		
 		if (DEBUG) {
 			System.out.println("----------------------");
 		}
-		for (NotificationDTO notification : notifications) {
+		for (NotificationDTO notification : notifications) {	
 			em.refresh(notification);
 			if (DEBUG) {
 				System.out.println(notification.getScheduledTime());
@@ -1808,100 +1844,100 @@ public class NotificationDAO {
 				invitedFirstMail(notification);				
 			}
 			else if (description.equalsIgnoreCase(INVITED_SECOND_MAIL)) {
-				invitedReminderMail(notification, recentNotifications);
+				invitedReminderMail(notification);
 			}
 			else if (description.equalsIgnoreCase(INVITED_THIRD_MAIL)) {
-				invitedReminderMail(notification, recentNotifications);
+				invitedReminderMail(notification);
 			}
 			else if (description.equalsIgnoreCase(INVITED_APPOINTMENT_FIRST_MAIL)) {
 				invitedAppointmentFirstMail(notification);
 			}
 			else if (description.equalsIgnoreCase(INVITED_APPOINTMENT_SECOND_MAIL)) {
-				invitedAppointmentReminderMail(notification, recentNotifications);
+				invitedAppointmentReminderMail(notification);
 			}
 			else if (description.equalsIgnoreCase(INVITED_APPOINTMENT_THIRD_MAIL)) {
-				invitedAppointmentReminderMail(notification, recentNotifications);
+				invitedAppointmentReminderMail(notification);
 			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_FIRST_WITH_RADIATION_ONCOLOGIST_FIRST_MAIL)) {
-				sendEmailAsSoonAs(notification, recentNotifications);
+				sendEmailAsSoonAs(notification);
 			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_FIRST_WITH_RADIATION_ONCOLOGIST_REMINDER_MAIL)) {
-				sendEmailOneDayBefore(notification, recentNotifications);
+				sendEmailOneDayBefore(notification);
 			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_TREATMENT_DECISION_RADIATION_ONCOLOGY_THREE_DAYS_BEFORE_MAIL)) {
-				sendEmailThreeDayBefore(notification, recentNotifications);
+				sendEmailThreeDayBefore(notification);
 			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_TREATMENT_DECISION_RADIATION_ONCOLOGY_ONE_DAY_BEFORE_MAIL)) {
-				sendEmailOneDayBeforeDistressCheck(notification, recentNotifications);
+				sendEmailOneDayBeforeDistressCheck(notification);
 			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_SIMULATION_RADIATION_ONCOLOGY_THREE_DAYS_BEFORE_MAIL)) {
-				sendEmailThreeDayBefore(notification, recentNotifications);
+				sendEmailThreeDayBefore(notification);
 			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_SIMULATION_RADIATION_ONCOLOGY_ONE_DAY_BEFORE_MAIL)) {
-				sendEmailOneDayBeforeDistressCheck(notification, recentNotifications);
+				sendEmailOneDayBeforeDistressCheck(notification);
 			}			
 			else if (description.equalsIgnoreCase(APPOINTMENT_ON_TREATMENT_VISIT_RADIATION_ONCOLOGY_THREE_DAYS_BEFORE_MAIL)) {
-				sendEmailThreeDayBefore(notification, recentNotifications);
+				sendEmailThreeDayBefore(notification);
 			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_ON_TREATMENT_VISIT_RADIATION_ONCOLOGY_ONE_DAY_BEFORE_MAIL)) {
-				sendEmailOneDayBeforeDistressCheck(notification, recentNotifications);
+				sendEmailOneDayBeforeDistressCheck(notification);
 			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_END_TREATMENT_VISIT_RADIATION_ONCOLOGY_THREE_DAYS_BEFORE_MAIL)) {
-				sendEmailThreeDayBefore(notification, recentNotifications);
+				sendEmailThreeDayBefore(notification);
 			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_END_TREATMENT_VISIT_RADIATION_ONCOLOGY_ONE_DAY_BEFORE_MAIL)) {
-				sendEmailOneDayBeforeDistressCheck(notification, recentNotifications);
+				sendEmailOneDayBeforeDistressCheck(notification);
 			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_ONGOING_FOLLOW_UP_RADIATION_ONCOLOGY_SEVEN_DAYS_BEFORE_MAIL)) {
-				sendEmailOneWeekBefore(notification, recentNotifications);
+				sendEmailOneWeekBefore(notification);
 			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_ONGOING_FOLLOW_UP_RADIATION_ONCOLOGY_THREE_DAYS_BEFORE_MAIL)) {
-				sendEmailThreeDayBeforeDistressCheck(notification, recentNotifications);
+				sendEmailThreeDayBeforeDistressCheck(notification);
 			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_ONGOING_FOLLOW_UP_RADIATION_ONCOLOGY_ONE_DAY_BEFORE_MAIL)) {
-				sendEmailOneDayBeforeDistressCheck(notification, recentNotifications);
+				sendEmailOneDayBeforeDistressCheck(notification);
 			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_FIRST_WITH_SURGEON_ONE_HOUR_AFTER_SCHUDULED)) {				
-				sendEmailAsSoonAs(notification, recentNotifications);
+				sendEmailAsSoonAs(notification);
 			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_FIRST_WITH_SURGEON_ONE_DAY_BEFORE_MAIL)) {
-				sendEmailOneDayBeforeDistressCheck(notification, recentNotifications);
+				sendEmailOneDayBeforeDistressCheck(notification);
 			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_TREATMENT_DECISION_SURGERY_THREE_DAYS_BEFORE_MAIL)) {
-				sendEmailThreeDayBefore(notification, recentNotifications);
+				sendEmailThreeDayBefore(notification);
 			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_TREATMENT_DECISION_SURGERY_ONE_DAY_BEFORE_MAIL)) {
-				sendEmailOneDayBeforeDistressCheck(notification, recentNotifications);
+				sendEmailOneDayBeforeDistressCheck(notification);
 			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_SURGERY_THREE_DAYS_BEFORE_MAIL)) {
-				sendEmailThreeDayBefore(notification, recentNotifications);
+				sendEmailThreeDayBefore(notification);
 			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_SURGERY_ONE_DAY_BEFORE_MAIL)) {
-				sendEmailOneDayBeforeDistressCheck(notification, recentNotifications);
+				sendEmailOneDayBeforeDistressCheck(notification);
 			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_SURGERY_ONE_DAY_AFTER_MAIL)) {
-				sendEmailSurgeryFollowUp(notification, recentNotifications);
+				sendEmailSurgeryFollowUp(notification);
 			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_SURGERY_THREE_DAYS_AFTER_MAIL)) {
-				sendEmailSurgeryFollowUp(notification, recentNotifications);
+				sendEmailSurgeryFollowUp(notification);
 			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_SURGERY_SEVEN_DAYS_AFTER_MAIL)) {
-				sendEmailSurgeryFollowUp(notification, recentNotifications);
+				sendEmailSurgeryFollowUp(notification);
 			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_FOLLOW_UP_SURGERY_THREE_DAYS_BEFORE_MAIL)) {
-				sendEmailThreeDayBefore(notification, recentNotifications);
+				sendEmailThreeDayBefore(notification);
 			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_FOLLOW_UP_SURGERY_ONE_DAY_BEFORE_MAIL)) {
-				sendEmailOneDayBeforeDistressCheck(notification, recentNotifications);
+				sendEmailOneDayBeforeDistressCheck(notification);
 			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_ONGOING_SURGERY_SEVEN_DAYS_BEFORE_MAIL)) {
-				sendEmailOneWeekBefore(notification, recentNotifications);
+				sendEmailOneWeekBefore(notification);
 			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_ONGOING_SURGERY_THREE_DAYS_BEFORE_MAIL)) {
-				sendEmailThreeDayBeforeDistressCheck(notification, recentNotifications);
+				sendEmailThreeDayBeforeDistressCheck(notification);
 			}
 			else if (description.equalsIgnoreCase(APPOINTMENT_ONGOING_SURGERY_ONE_DAY_BEFORE_MAIL)) {
-				sendEmailOneDayBeforeDistressCheck(notification, recentNotifications);
+				sendEmailOneDayBeforeDistressCheck(notification);
 			}			
 		}
 		if (DEBUG) {
