@@ -182,79 +182,42 @@ public class Application extends Controller {
              System.out.println(validation.errors().get(0).message("username.empty"));
              create(); 
          } 
-    	 if(UserDAO.parseAndSaveMember(member)) {
-    		 UserBean user = UserDAO.getByUserEmail(member.getEmail());
-    		 UserDetailsDTO detailDto = UserDAO.getDetailsById(user.getId()+"");
-    		 //Mail.welcome(detailDto);
-    		 //Mail for welcome user may needed in future.
-    		 System.out.println("Application.java - User email: " + detailDto.getEmail());
+    	 InvitedDTO invitationdto = InvitationDAO.getDetailsByEmail("email",member.getEmail());
+    	 if(invitationdto != null) {
+    		 UserDTO userDto = Security.authenticate(member.getEmail(), member.getPassword());
+		   	 if(UserDAO.updateMember(userDto, member)) {
+		   		UserBean user = UserDAO.getByUserEmail(member.getEmail());
+		   		LoginHistoryDAO.saveLogin(member.getEmail(),"local",false,session.getId());
+				session.put("username", user.getEmail());
+				CommonUtil.refreshCachedUser(session);
+				session.put("usertype", "user");
+				session.put("showdistress", "true");
 
+				invitationdto.setActivateOnSignup(true);
+				BaseDAO.update(invitationdto);
+
+		   		Map<String, Object> vars = new HashMap<String, Object>();
+		   		vars.put("username", UserDAO.getUserName(new Integer(user.getId())));
+		   		EmailUtil.sendEmail(EmailUtil.MOFFITT_THANKYOU_FOR_SIGNUP,vars,user.getEmail());
+				Patient.index();
+		   	 }
+    	 } else if(UserDAO.parseAndSaveMember(member)) {
+    		 UserBean user = UserDAO.getByUserEmail(member.getEmail());
     		 LoginHistoryDAO.saveLogin(member.getEmail(),"local",false,session.getId());
     		 if(user.getUserType() == 'p') {
-//    			 String userId = user.getId()+"";
-//    			 String fromPage = "s";
     			 session.put("username", user.getEmail());
     			 CommonUtil.refreshCachedUser(session);
     			 session.put("usertype", "user");
     			 session.put("showdistress", "true");
-    			 
-    			
-//    			Integer intId = new Integer(member.getInvitationId());
-			    InvitedDTO invitationdto = InvitationDAO.getDetailsByEmail("email",member.getEmail());
-    			 if(invitationdto != null) {
-    					AppointmentDTO app = new AppointmentDTO();
-    					app.setAppointmentgroupid(null);
-    					app.setAddedby(invitationdto.getAddedby());
-    					app.setAddedon(invitationdto.getAddedon());
-    					app.setAddressid(invitationdto.getAddressid());
-    					app.setPhone(invitationdto.getAddressid().getPhone());
-    					app.setAppointmentcenter(invitationdto.getAppointmentcenter());
-    					app.setAppointmentdate(invitationdto.getAppointmentdate());
-    					app.setAppointmenttime(invitationdto.getAppointmenttime());
-
-   						app.setPurposeText(invitationdto.getPurposeText());
-   						app.setTreatementStep(invitationdto.getTreatementStep());
-    					app.setPatientid(detailDto.getUser());
-
-    					if(invitationdto.getPurpose() != null) {
-    						app.setPurpose(invitationdto.getPurpose());	
-    					}
-
-    					if(invitationdto.getAppointmentid() != null) {
-    						app.setAppointmentid(invitationdto.getAppointmentid());
-    					}
-
-    					if(invitationdto.getCaremember() != null) {
-    						app.setCaremember(invitationdto.getCaremember());
-    					}
-    					app.setCareMemberName(invitationdto.getCareMemberName());
-
-    					BaseDAO.save(app);
-
-    					UserDTO usr = detailDto.getUser();
-						usr.setIsverified(true);
-						usr.setActive(true);
-						BaseDAO.update(usr);
-
-						invitationdto.setActivateOnSignup(true);
-						BaseDAO.update(invitationdto);
-    			 } else {
-//    				 String url = "http://"+request.host;
-//    	    		 Mail.activation(detailDto,url);
-    			 }
+			  
     	   		 Map<String, Object> vars = new HashMap<String, Object>();
     	   		 vars.put("username", UserDAO.getUserName(new Integer(user.getId())));
     	   		 EmailUtil.sendEmail(EmailUtil.MOFFITT_THANKYOU_FOR_SIGNUP,vars,user.getEmail());
-
     			 Patient.index();
-//    			 render("Application/distress.html",userId,fromPage);
     		 } else {
     			 Map<String, Object> vars = new HashMap<String, Object>();
     			 vars.put("username", UserDAO.getUserName(new Integer(user.getId())));
     	   		 EmailUtil.sendEmail(EmailUtil.MOFFITT_THANKYOU_FOR_SIGNUP,vars,user.getEmail());
-
-//    			 String url = "http://"+request.host;
-//	    		 Mail.activation(detailDto,url);
     			 Static.success();
     		 }
     	 }
@@ -309,7 +272,7 @@ public class Application extends Controller {
     			System.out.println("Not null email");
     			System.out.println(member.getEmail());
     			UserBean user = UserDAO.getUserVerified(member.getEmail());
-    			if(user != null) {
+    			if(user != null && user.getPassword() != null) {
     				if(user.isActive()) {
     					validation.addError("member.email", "email.exists", "");
     				} else {
@@ -335,7 +298,9 @@ public class Application extends Controller {
     	Map<String, Object> jsonData = new HashMap<String, Object>();
     	if(email != null) {
    			UserBean user = UserDAO.getByUserEmail(email);
-   			if(user != null) {
+   			
+   			if(user != null && user.getPassword() != null) {
+   				System.out.println("user with password");
    				jsonData.put("emailused", true);
    			} else {
    				jsonData.put("emailused", false);
@@ -438,41 +403,7 @@ public class Application extends Controller {
 				CommonUtil.refreshCachedUser(session);
 				session.put("usertype", "user");
 				session.put("showdistress", "true");
-				/*
-				if(StringUtils.isNotBlank(invitationdto.getAppointmenttime())) {
-					AppointmentDTO app = new AppointmentDTO();
-					app.setAddedby(invitationdto.getAddedby());
-					app.setAddedon(invitationdto.getAddedon());
-					app.setAddressid(invitationdto.getAddressid());
-					app.setAppointmentcenter(invitationdto.getAppointmentcenter());
-					app.setAppointmentdate(invitationdto.getAppointmentdate());
-					app.setAppointmenttime(invitationdto.getAppointmenttime());
-					
-						app.setPurposeText(invitationdto.getPurposeText());
-						app.setTreatementStep(invitationdto.getTreatementStep());
-					app.setPatientid(detailDto.getUser());
-		
-					if(invitationdto.getPurpose() != null) {
-						app.setPurpose(invitationdto.getPurpose());	
-					}
-		
-					if(invitationdto.getAppointmentid() != null) {
-						app.setAppointmentid(invitationdto.getAppointmentid());
-					}
-		
-					if(invitationdto.getCaremember() != null) {
-						app.setCaremember(invitationdto.getCaremember());
-					}
-					app.setCareMemberName(invitationdto.getCareMemberName());
-		
-					BaseDAO.save(app);
-				}
-
-				UserDTO usr = detailDto.getUser();
-				usr.setIsverified(true);
-				usr.setActive(true);
-				BaseDAO.update(usr);
-				 */
+				
 
 				invitationdto.setActivateOnSignup(true);
 				BaseDAO.update(invitationdto);

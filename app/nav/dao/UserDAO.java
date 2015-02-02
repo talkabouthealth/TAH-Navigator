@@ -94,6 +94,7 @@ public class UserDAO {
 				account.setUserType(dto.getUserType());
 				account.setActive(dto.isActive());
 				account.setVerifiedFlag(dto.isIsverified());
+				account.setPassword(dto.getPassword());
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -684,11 +685,16 @@ public class UserDAO {
 		 userDto.setPassword(CommonUtil.hashPassword(member.getPassword()));
     	 BaseDAO.update(userDto);
     	 UserDetailsDTO detailsDTO = UserDAO.getDetailsByField("id",userDto.getId());
+    	 detailsDTO.setFirstName(member.getFirstName());
+    	 detailsDTO.setLastName(member.getLastName());
+    	 try {
+    		DateFormat df = new SimpleDateFormat("mm/dd/yyyy");
+    		detailsDTO.setDob(df.parse(member.getDob()));
+    	 } catch (ParseException e) {    	 }
     	 detailsDTO.setTocflag(true);
     	 detailsDTO.setTosflag(true);
     	 BaseDAO.update(detailsDTO);
 		return true;
-		
 	}
 	
 	public static String getUserName(Integer id) {
