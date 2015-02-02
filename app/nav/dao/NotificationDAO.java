@@ -106,7 +106,7 @@ public class NotificationDAO {
 	public static boolean isMailSentRecently(String category, Integer notifiedTo, Date compareWith) {
 		EntityManager em = JPAUtil.getEntityManager();
 		boolean flag = false;
-		TypedQuery<NotificationDTO> query = em.createQuery("SELECT n FROM NotificationDTO n WHERE n.notified = :notified AND n.category = :category AND n.notifiedTo = :notifiedTo AND age(:compareWith, n.scheduledTime) < '2 day'", NotificationDTO.class);
+		TypedQuery<NotificationDTO> query = em.createQuery("SELECT n FROM NotificationDTO n WHERE n.notified = :notified AND n.category = :category AND n.notifiedTo = :notifiedTo AND age(:compareWith, n.scheduledTime) >= '0 second' AND age(:compareWith, n.scheduledTime) < '2 day'", NotificationDTO.class);
 		query.setParameter("notified", true);
 		query.setParameter("category", category);
 		query.setParameter("notifiedTo", notifiedTo);
