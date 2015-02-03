@@ -1338,8 +1338,8 @@ public class NotificationDAO {
 		StringBuilder clinicAddress = new StringBuilder();
 		String doctorName = null;
 		String appointmentDate = null;
-		String appointmentTime = null;		
-		StringBuilder dateAndTime = new StringBuilder();
+		String appointmentDay = null;
+		String appointmentTime = null;				
 		
 		EntityManager em = JPAUtil.getEntityManager();
 		InvitedDTO invited = null;
@@ -1397,13 +1397,11 @@ public class NotificationDAO {
 				doctorName = invited.getCareMemberName();
 			}
 			if (invited.getAppointmentdate() != null) {
-				appointmentDate = new SimpleDateFormat("MM/dd/yyyy").format(invited.getAppointmentdate());
-				dateAndTime.append(new SimpleDateFormat("EEEE, M/d/yyyy").format(invited.getAppointmentdate()));
+				appointmentDate = new SimpleDateFormat("M/d/yyyy").format(invited.getAppointmentdate());				
+				appointmentDay = new SimpleDateFormat("EEEE").format(invited.getAppointmentdate());
 				
 			}
-			appointmentTime = invited.getAppointmenttime();
-			dateAndTime.append(", ");
-			dateAndTime.append(appointmentTime);
+			appointmentTime = invited.getAppointmenttime();			
 			
 			if (address != null) {				
 				clinicAddress.append(address.getLine1());
@@ -1423,8 +1421,8 @@ public class NotificationDAO {
 		data.setUserName(userName);
 		data.setSignupURL(signupURL);
 		data.setAppointmentDate(appointmentDate);
-		data.setAppointmentTime(appointmentTime);
-		data.setDateAndTime(dateAndTime.toString());
+		data.setAppointmentDay(appointmentDay);
+		data.setAppointmentTime(appointmentTime);		
 		data.setClinicPhone(clinicPhone);
 		data.setClinicAddress(clinicAddress.toString());
 		data.setDoctorName(doctorName);
@@ -1441,7 +1439,7 @@ public class NotificationDAO {
 		String doctorName = null;
 		String appointmentDate = null;
 		String appointmentTime = null;
-		StringBuilder dateAndTime = new StringBuilder(); 
+		String appointmentDay = null; 
 		String clinicPhone = null;
 		StringBuilder clinicAddress = new StringBuilder();
 		
@@ -1493,12 +1491,10 @@ public class NotificationDAO {
 		}
 		
 		if (appointment.getAppointmentdate() != null) {
-			appointmentDate = new SimpleDateFormat("MM/dd/yyyy").format(appointment.getAppointmentdate());
-			dateAndTime.append(new SimpleDateFormat("EEEE, M/d/yyyy").format(appointment.getAppointmentdate()));
+			appointmentDate = new SimpleDateFormat("MM/dd/yyyy").format(appointment.getAppointmentdate());			
+			appointmentDay = new SimpleDateFormat("EEEE").format(appointment.getAppointmentdate());
 		}
-		appointmentTime = appointment.getAppointmenttime();
-		dateAndTime.append(", ");
-		dateAndTime.append(appointmentTime);
+		appointmentTime = appointment.getAppointmenttime();		
 		
 		if (address != null) {				
 			clinicAddress.append(address.getLine1());
@@ -1519,8 +1515,8 @@ public class NotificationDAO {
 		data.setUserName(userName);
 		data.setDistressCheckInURL(distressCheckInURL);
 		data.setAppointmentDate(appointmentDate);
-		data.setAppointmentTime(appointmentTime);
-		data.setDateAndTime(dateAndTime.toString());
+		data.setAppointmentDay(appointmentDay);
+		data.setAppointmentTime(appointmentTime);		
 		data.setClinicPhone(clinicPhone);
 		data.setClinicAddress(clinicAddress.toString());
 		data.setDoctorName(doctorName);
@@ -1578,8 +1574,8 @@ public class NotificationDAO {
 		vars.put("signupurl", data.getSignupURL());
 		vars.put("clinic_phone", data.getClinicPhone());
 		vars.put("doctor_name", data.getDoctorName());
-		//vars.put("date", data.getAppointmentDate());
-		vars.put("date", data.getDateAndTime());
+		vars.put("date", data.getAppointmentDate());
+		vars.put("appointment_day", data.getAppointmentDay());		
 		vars.put("appointment_time", data.getAppointmentTime());			
 		vars.put("clinic_address", data.getClinicAddress());
 		vars.put("reference_no", getReferenceNo(notification));
@@ -1607,8 +1603,8 @@ public class NotificationDAO {
 			vars.put("signupurl", data.getSignupURL());
 			vars.put("clinic_phone", data.getClinicPhone());
 			vars.put("doctor_name", data.getDoctorName());
-			//vars.put("date", data.getAppointmentDate());
-			vars.put("date", data.getDateAndTime());
+			vars.put("date", data.getAppointmentDate());
+			vars.put("appointment_day", data.getAppointmentDay());
 			vars.put("appointment_time", data.getAppointmentTime());			
 			vars.put("clinic_address", data.getClinicAddress());
 			vars.put("reference_no", getReferenceNo(notification));
@@ -1637,8 +1633,8 @@ public class NotificationDAO {
 			vars.put("username", data.getUserName());			
 			vars.put("clinic_phone", data.getClinicPhone());
 			vars.put("doctor_name", data.getDoctorName());
-			//vars.put("date", data.getAppointmentDate());
-			vars.put("date", data.getDateAndTime());
+			vars.put("date", data.getAppointmentDate());
+			vars.put("appointment_day", data.getAppointmentDay());
 			vars.put("appointment_time", data.getAppointmentTime());			
 			vars.put("clinic_address", data.getClinicAddress());
 			vars.put("generate_url", data.getDistressCheckInURL());
@@ -1693,8 +1689,8 @@ public class NotificationDAO {
 			vars.put("username", data.getUserName());			
 			vars.put("clinic_phone", data.getClinicPhone());
 			vars.put("doctor_name", data.getDoctorName());		
-			//vars.put("date", data.getAppointmentDate());
-			vars.put("date", data.getDateAndTime());
+			vars.put("date", data.getAppointmentDate());
+			vars.put("appointment_day", data.getAppointmentDay());
 			vars.put("appointment_time", data.getAppointmentTime());			
 			vars.put("clinic_address", data.getClinicAddress());
 			vars.put("generate_url", data.getDistressCheckInURL());
@@ -1756,8 +1752,8 @@ public class NotificationDAO {
 			vars.put("username", data.getUserName());			
 			vars.put("clinic_phone", data.getClinicPhone());
 			vars.put("doctor_name", data.getDoctorName());		
-			//vars.put("date", data.getAppointmentDate());
-			vars.put("date", data.getDateAndTime());
+			vars.put("date", data.getAppointmentDate());
+			vars.put("appointment_day", data.getAppointmentDay());
 			vars.put("appointment_time", data.getAppointmentTime());			
 			vars.put("clinic_address", data.getClinicAddress());
 			vars.put("generate_url", data.getDistressCheckInURL());
@@ -1786,8 +1782,8 @@ public class NotificationDAO {
 			vars.put("username", data.getUserName());			
 			vars.put("clinic_phone", data.getClinicPhone());
 			vars.put("doctor_name", data.getDoctorName());
-			//vars.put("date", data.getAppointmentDate());
-			vars.put("date", data.getDateAndTime());
+			vars.put("date", data.getAppointmentDate());
+			vars.put("appointment_day", data.getAppointmentDay());
 			vars.put("appointment_time", data.getAppointmentTime());			
 			vars.put("clinic_address", data.getClinicAddress());
 			vars.put("generate_url", data.getDistressCheckInURL());

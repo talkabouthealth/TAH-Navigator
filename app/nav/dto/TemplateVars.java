@@ -10,7 +10,7 @@ public class TemplateVars {
 	private String doctorName;
 	private String appointmentDate;
 	private String appointmentTime;
-	private String dateAndTime;
+	private String appointmentDay;	
 	
 	public String getUserName() {
 		return userName;
@@ -65,11 +65,11 @@ public class TemplateVars {
 	}
 	public void setDistressCheckInURL(String distressCheckInURL) {
 		this.distressCheckInURL = distressCheckInURL;
+	}	
+	public String getAppointmentDay() {
+		return appointmentDay;
 	}
-	public String getDateAndTime() {
-		return dateAndTime;
-	}
-	public void setDateAndTime(String dateAndTime) {
-		this.dateAndTime = dateAndTime;
+	public void setAppointmentDay(String appointmentDay) {
+		this.appointmentDay = appointmentDay;
 	}		
 }
