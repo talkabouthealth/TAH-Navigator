@@ -365,16 +365,22 @@ public class Admin extends Controller {
 					UserDetailsDTO detailsDTO = UserDAO.getDetailsByField("id", userDto.getId());
 					System.out.println("User: " + userDto.getEmail());
 					List<PatientContactMethodDTO> curList = ProfileDAO.getPatientContactMethodsByField("userid",userDto.getId());
-					if(curList == null && detailsDTO != null && detailsDTO.getContactMethod() != null) {
+					boolean isList = false;
+					if(curList == null) 
+						 isList = true;
+					else if(curList.isEmpty())
+						 isList = true;
+					if(isList && detailsDTO != null && detailsDTO.getContactMethod() != null) {
 						System.out.println("User: " + userDto.getEmail() + " : " + detailsDTO.getContactMethod());
 						try{
-						PatientContactMethodDTO pmDto = new PatientContactMethodDTO();
-						pmDto.setContactmethod(new Integer(detailsDTO.getContactMethod().getId()));
-						pmDto.setUserid(userDto.getId());
-						BaseDAO.save(pmDto);
-						
-						userUpdated++;
+							PatientContactMethodDTO pmDto = new PatientContactMethodDTO();
+							pmDto.setContactmethod(new Integer(detailsDTO.getContactMethod().getId()));
+							pmDto.setUserid(userDto.getId());
+							BaseDAO.save(pmDto);
+							
+							userUpdated++;
 						}catch(Exception e){}
+						
 						
 					}
 				}
