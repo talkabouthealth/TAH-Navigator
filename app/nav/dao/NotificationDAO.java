@@ -1491,7 +1491,7 @@ public class NotificationDAO {
 		}
 		
 		if (appointment.getAppointmentdate() != null) {
-			appointmentDate = new SimpleDateFormat("MM/dd/yyyy").format(appointment.getAppointmentdate());			
+			appointmentDate = new SimpleDateFormat("M/d/yyyy").format(appointment.getAppointmentdate());			
 			appointmentDay = new SimpleDateFormat("EEEE").format(appointment.getAppointmentdate());
 		}
 		appointmentTime = appointment.getAppointmenttime();		
