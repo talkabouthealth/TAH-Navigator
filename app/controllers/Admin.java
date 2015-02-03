@@ -358,9 +358,12 @@ public class Admin extends Controller {
 		int userUpdated =  0;
 		if(StringUtils.isNotBlank(type)) {
 			if(type.equalsIgnoreCase("contact")) {
+				System.out.println("Contact: ");
 				List<UserDTO> list = UserDAO.getAllForAdmin("1",null);
+				System.out.println("Contact: "+list.size());
 				for (UserDTO userDto : list) {
 					UserDetailsDTO detailsDTO = UserDAO.getDetailsByField("id", userDto.getId());
+					System.out.println("User: " + userDto.getEmail());
 					List<PatientContactMethodDTO> curList = ProfileDAO.getPatientContactMethodsByField("userid",userDto.getId());
 					if(curList == null && detailsDTO != null && detailsDTO.getContactMethod() != null) {
 						System.out.println("User: " + userDto.getEmail() + " : " + detailsDTO.getContactMethod());
