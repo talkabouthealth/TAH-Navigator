@@ -10,12 +10,14 @@ import java.util.UUID;
 import org.apache.commons.lang.StringUtils;
 
 import models.AddressDTO;
+import models.PatientContactMethodDTO;
 import models.PatientDetailDTO;
 import models.UserDTO;
 import models.UserDetailsDTO;
 import models.UserOtherEmailDTO;
 import nav.dao.AddressDAO;
 import nav.dao.AdminDAO;
+import nav.dao.BaseDAO;
 import nav.dao.ContactTypeDAO;
 import nav.dao.PatientDetailDAO;
 import nav.dao.ProfileDAO;
@@ -96,20 +98,25 @@ public class Profile extends Controller {
         }
 	}
 	
-	public static void updateProfile(String contactMethod,String mobile,String homephone,String street1,String street2,String city,String state,String country,String zip) {
+	public static void updateProfile(String[] contactMethod,String mobile,String homephone,String street1,String street2,String city,String state,String country,String zip) {
 
 //		params.flash();
     	UserBean user = CommonUtil.loadCachedUser(session);
     	UserDTO userDto = UserDAO.getUserBasicByField("id", user.getId());
     	if(userDto != null) {
         	UserDetailsDTO detailsDTO = UserDAO.getDetailsByField("id", user.getId());
-        	detailsDTO.setContactMethod(ContactTypeDAO.getEntityById(contactMethod));
+        	
+        	
+        	
         	detailsDTO.setEditdate(new Date());
         	detailsDTO.setEditedBy(userDto);
         	detailsDTO.setHomePhone(homephone);
         	detailsDTO.setMobile(mobile);
         	UserDAO.updateUserDetails(detailsDTO);
 
+        	if(contactMethod != null) {
+            	ProfileDAO.updatePatientContactMethods(userDto,contactMethod);
+        	}
         	PatientDetailDTO patientOtherDetails = ProfileDAO.getPatientByField("id", user.getId());
         	if(patientOtherDetails != null) {
 	        	AddressDTO addressDto = patientOtherDetails.getAddress();

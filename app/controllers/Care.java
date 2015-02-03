@@ -29,7 +29,9 @@ import models.ExpertDetailDTO;
 import models.InvitedDTO;
 import models.NoteDTO;
 import models.PatienCareTeamDTO;
+import models.PatientContactMethodDTO;
 import models.PatientDetailDTO;
+import models.PatientMutationDTO;
 import models.UserCertificateDTO;
 import models.UserDTO;
 import models.UserDetailsDTO;
@@ -112,9 +114,9 @@ public class Care extends Controller {
 	}
 	
 	public static void sendInvitation(String email,String firstname,String lastname,String purposeText, String treatmentProcessStep, String time,String schDate,String center,int memberid, 
-			String telephone, String mobilePhone, String homePhone, String communicationType, String address1,String city,String state,String zip,String membername,String purpose,int withapp) {
+			String telephone, String mobilePhone, String homePhone, String[] communicationType, String address1,String city,String state,String zip,String membername,String purpose,int withapp) {
 		 validation.clear();
-		Map<String, Object> vars;
+
 		System.out.println("email: "+ email);
 		System.out.println("firstname: "+ firstname);
 		System.out.println("lastname: "+ lastname);
@@ -173,14 +175,6 @@ public class Care extends Controller {
 				BaseDAO.save(address);
 				
 				app.setAddressid(address);
-				/*
-				if (Integer.valueOf(purpose) > 0) {
-					app.setPurpose(purpose);
-					Integer appIdInt = new Integer(purpose);
-					app.setAppointmentid(AppointmentMasterDAO.getAppointmentByField("id", appIdInt));
-				} else {
-				}
-				*/
 				app.setTreatementStep(treatmentProcessStep);
 				app.setPurposeText(purposeText);
 				app.setAppointmenttime(time);
@@ -203,7 +197,7 @@ public class Care extends Controller {
 			app.setLastname(lastname);
 			app.setMobile(mobilePhone);
 			app.setPhone(homePhone);
-			app.setCommunicationType(communicationType);
+//			app.setCommunicationType(communicationType);
 			BaseDAO.save(app);
 
 			UserDTO newUser =  UserDAO.createPatientAccount(app);
@@ -227,15 +221,20 @@ public class Care extends Controller {
 				appointment.setCareMemberName(membername);
 				BaseDAO.save(appointment);
 			}
+			
+			if(communicationType != null) {
+				for (String string : communicationType) {
+					PatientContactMethodDTO pmDto = new PatientContactMethodDTO();
+					pmDto.setContactmethod(new Integer(string));
+					pmDto.setUserid(newUser.getId());
+					BaseDAO.save(pmDto);
+				}
+			}
 
 			if (withapp == 1) {
 				NotificationDAO.scheduleInviteEmails(app, newUser, true);
-   		 		//vars = InvitationDAO.mailVariables(EmailUtil.TVRH_INVITE_APPOINTMENT_SCHEDULED, app);
-   		 		//EmailUtil.sendEmail(EmailUtil.TVRH_INVITE_APPOINTMENT_SCHEDULED, vars, email);
    		 	} else {
    		 		NotificationDAO.scheduleInviteEmails(app, newUser, false);	
-   		 		//vars = InvitationDAO.mailVariables(EmailUtil.TVRH_INVITE_NO_APPOINTMENT_SCHEDULED, app);
-   		 		//EmailUtil.sendEmail(EmailUtil.TVRH_INVITE_NO_APPOINTMENT_SCHEDULED, vars, email);
    		 	}
 
 		} catch(Exception e) {

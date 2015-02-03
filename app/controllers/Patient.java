@@ -481,7 +481,12 @@ public class Patient extends Controller {
 		System.out.println(session.getId());
 		List<ContactTypeDTO> contactTypes =  ContactTypeDAO.getContactTypeList();
 		List<UserOtherEmailDTO> emaiList =  UserOtherEmailDAO.getAllByField("user.id", user.getId());
-		render(user,userDto,patientOtherDetails,contactTypes,emaiList, breastCancerId, breastCancerInfo);
+		List<PatientContactMethodDTO> contactList =  ProfileDAO.getPatientContactMethodsByField("userid", user.getId());
+		String contactListString = "";
+		for (PatientContactMethodDTO patientContactMethodDTO : contactList) {
+			contactListString += ","+patientContactMethodDTO.getContactmethod();
+		}
+		render(user,userDto,patientOtherDetails,contactTypes,emaiList, breastCancerId, breastCancerInfo,contactListString);
 	}
 	
 	public static void editContact() {

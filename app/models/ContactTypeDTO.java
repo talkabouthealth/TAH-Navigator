@@ -19,16 +19,16 @@ public class ContactTypeDTO implements Serializable {
 	@Column(name = "id")
 	@GeneratedValue(strategy= GenerationType.SEQUENCE, generator="contactmethodmaster_id_seq")
 	@SequenceGenerator(allocationSize=1, schema="nav",  name="contactmethodmaster_id_seq", sequenceName = "nav.contactmethodmaster_id_seq")
-	private Long id;
+	private int id;
 
 	@Column(name = "name")
 	private String name;
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

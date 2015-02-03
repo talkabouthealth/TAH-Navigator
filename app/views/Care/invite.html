@@ -41,21 +41,21 @@
 			</div>
 		</div>
 		<div class="form-group form-group-sm">
-			<label class="col-xs-offset-3 control-label">Preferred Method of Receiving Notifications</label>			
+			<label class="col-xs-offset-3 control-label" id="preferredMethodLable">Preferred Method of Receiving Notifications</label>			
 		</div>
 		<div class="form-group form-group-sm">			
 			<div class="col-xs-offset-3 col-xs-8 form-group input-group">
-				<input type="radio" value="1" checked="checked" name="communicationType" /> email
+				<input type="checkbox" value="1" checked="checked" name="communicationType"/> email
 			</div>
 		</div>
 		<div class="form-group form-group-sm">			
 			<div class="col-xs-offset-3 col-xs-8 form-group input-group">
-				<input type="radio" value="3" name="communicationType" /> phone
+				<input type="checkbox" value="3" name="communicationType"/> phone
 			</div>
 		</div>
 		<div class="form-group form-group-sm">			
 			<div class="col-xs-offset-3 col-xs-8 form-group input-group">
-				<input type="radio" value="2" name="communicationType" /> text message
+				<input type="checkbox" value="2" name="communicationType"/> text message
 			</div>
 		</div>
 		<br>
@@ -92,36 +92,11 @@
 				<label class="col-xs-3 control-label" for="rt_schedule">Purpose of Appointment</label>
 				<div class="col-xs-8 form-group input-group">
 					<input type="text" id="appointment_purpose"  name="purposeText" class="form-control nomargin appointment_purpose" team-name="${careTeam?.name}">
-					<!--<select id="appointment_purpose" name="purposeText" class="form-control nomargin" team-name="${careTeam?.name}">
-						<optgroup label="Radiation Oncology">
-							<option>First Appointment With Radiation Oncologist</option>
-							<option>Make Treatment Decision (Radiation Oncology)</option>
-							<option>Simulation (Radiation Oncology)</option>
-							<option>On Treatment Visit (Radiation Oncology)</option>
-							<option>End of Treatment Visit (Radiation Oncology)</option>
-							<option>Ongoing Follow-up Appointment (Radiation Oncology)</option>
-						</optgroup>
-						<optgroup label="Surgery">
-							<option>First Appointment With Surgeon</option>
-							<option>Make Treatment Decision (Surgery)</option>
-							<option>Surgery</option>
-							<option>Follow-up Appointment After Surgery</option>
-							<option>Ongoing Follow-up Appointment (Surgery)</option>								
-						</optgroup>
-					</select>-->
 				</div>
 			</div>
 			<div class="form-group form-group-sm" id="treatment_step_process">
 				<label class="col-xs-3 control-label" for="ts_process">Step in the Treatment Process</label>
 				<div class="col-xs-8 form-group input-group">
-					<!--<select class="form-control nomargin" id="ts_process">					
-						<option></option>
-                        <option selected="selected">First Appointment</option>
-                        <option>Make Treatment Decision</option>
-                        <option>Simulation</option>
-                        <option>Appointment During Treatments</option>
-                        <option>Post Treatment Appointment</option>     
-					</select>-->
 					<select class="form-control nomargin" id="ts_process">
 						<option></option>
 						<optgroup label="Radiation Oncology">
@@ -232,16 +207,7 @@ var defaultValues = function() {
 		$('#appointment_purpose').val('');
 		$('#ts_process').val('');
 	}
-	
-	/*		
-	$("#appointmentForm input[name='center']").val("Moffitt Cancer Center TVRH");
-	$("#appointmentForm input[name='address1']").val("1400 U.S. Highway 441");
-	$("#appointmentForm input[name='telephone']").val("");
-	$("#appointmentForm input[name='city']").val("The Villages");
-	$("#appointmentForm input[name='state']").val("FL");
-	$("#appointmentForm input[name='zip']").val("32159");
-	*/
-	
+
 	var center = $("#appointmentForm input[name='center']").attr('center');
 	var address1 = $("#appointmentForm input[name='address1']").attr('address1');
 	var city = $("#appointmentForm input[name='city']").attr('city');
@@ -269,12 +235,18 @@ $(document).ready(function() {
 		}
 	});
 	LoadSelect2Script(selectExpert);
-//     $('#treatment_step_process').hide();
 	$('#appointmentForm').submit(function(event) {
 		event.preventDefault();
 		var isValid = true;
 		if($("#appointmentBtn").prop('checked') == true) {
 			isValid = validateOtherData();
+		}
+		if ($("#appointmentForm input[name='communicationType']:checkbox:checked").length > 0) {
+			isValid = true;
+			$("#preferredMethodLable").parent().removeClass("has-error");
+		} else {
+			isValid = false;
+			$("#preferredMethodLable").parent().addClass("has-error");
 		}
 		if(isValid) {
 			$("#errorUL").empty();
@@ -297,24 +269,9 @@ $(document).ready(function() {
 		            $avm.removeAttr("careMemberId");
 		        }        
 		        postData.push({name: "memberid", value: $avm.attr("careMemberId") || 0});
-		        
-		        //var purposes = $ap.data("purposes");
+
 		        var purpose_text = $.trim($ap.val());
-		        //var definedPurpose = false;
-		        //var purpose = 0;
-				/*
-			     for (var i = 0; i < purposes.length; i++) {
-			            if (purposes[i].name == purpose_text) {
-			                definedPurpose = true;
-			                purpose = purposes[i].id;
-			                break;
-			            }
-			     }
-				 */
-// 		        //if (!definedPurpose) {
-					postData.push({name: "treatmentProcessStep", value: $("#ts_process option:selected").text()});    
-// 		        //}
-				//postData.push({name: "purpose", value: purpose});
+				postData.push({name: "treatmentProcessStep", value: $("#ts_process option:selected").text()});    
 				postData.push({name: "withapp", value: 1});
 			} else {
 				postData.push({name: "withapp", value: 0});

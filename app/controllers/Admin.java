@@ -12,6 +12,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.StringUtils;
 
 import models.AddressDTO;
 import models.ApplicationSettingsDTO;
@@ -21,6 +22,7 @@ import models.CareTeamMemberDTO;
 import models.InvitedDTO;
 import models.PatienCareTeamDTO;
 import models.PatientCareTeamMemberDTO;
+import models.PatientContactMethodDTO;
 import models.UserDTO;
 import models.UserDetailsDTO;
 import models.UserTypeDTO;
@@ -29,6 +31,7 @@ import nav.dao.ApplicationSettingDAO;
 import nav.dao.AppointmentMasterDAO;
 import nav.dao.BaseDAO;
 import nav.dao.CareTeamDAO;
+import nav.dao.ProfileDAO;
 import nav.dao.UserDAO;
 import nav.dao.UserTypeDAO;
 import nav.dto.CareMember;
@@ -349,5 +352,34 @@ public class Admin extends Controller {
 			   redirect(url);
 			}
 		}
+	}
+	
+	public static void migrateData(String type) {
+		int userUpdated =  0;
+		if(StringUtils.isNotBlank(type)) {
+			if(type.equalsIgnoreCase("contact")) {
+				List<UserDTO> list = UserDAO.getAllForAdmin("1",null);
+				for (UserDTO userDto : list) {
+					UserDetailsDTO detailsDTO = UserDAO.getDetailsByField("id", userDto.getId());
+					List<PatientContactMethodDTO> curList = ProfileDAO.getPatientContactMethodsByField("userid",userDto.getId());
+					if(curList == null && detailsDTO != null && detailsDTO.getContactMethod() != null) {
+						System.out.println("User: " + userDto.getEmail() + " : " + detailsDTO.getContactMethod());
+						try{
+						PatientContactMethodDTO pmDto = new PatientContactMethodDTO();
+						pmDto.setContactmethod(new Integer(detailsDTO.getContactMethod().getId()));
+						pmDto.setUserid(userDto.getId());
+						BaseDAO.save(pmDto);
+						
+						userUpdated++;
+						}catch(Exception e){}
+						
+					}
+				}
+			}
+		}
+		JsonObject object = new JsonObject();
+		object.add("code", new JsonPrimitive(200));
+		object.add("message", new JsonPrimitive("Done with "+userUpdated+" records"));
+		renderJSON(object.toString());
 	}
 }

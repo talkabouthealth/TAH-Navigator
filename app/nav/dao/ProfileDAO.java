@@ -7,8 +7,10 @@ import javax.persistence.TypedQuery;
 
 import models.CareTeamMasterDTO;
 import models.ExpertDetailDTO;
+import models.PatientContactMethodDTO;
 import models.PatientDetailDTO;
 import models.UserCertificateDTO;
+import models.UserDTO;
 import models.UserEducationDTO;
 import models.UserExpertiesDTO;
 import util.JPAUtil;
@@ -106,4 +108,35 @@ public class ProfileDAO {
 		return dto;
 	}
 	
+	public static List<PatientContactMethodDTO> getPatientContactMethodsByField(String fieldName, Object value){
+		List<PatientContactMethodDTO> dto = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			TypedQuery<PatientContactMethodDTO> query = em.createQuery("SELECT c FROM PatientContactMethodDTO c WHERE c."+fieldName+" = :field order by id", PatientContactMethodDTO.class); 
+			query.setParameter("field", value);
+			dto = query.getResultList();
+		} catch(Exception e) {
+			e.printStackTrace();
+		} finally {
+			em.close();
+		}
+		return dto;
+	}
+	
+	public static boolean updatePatientContactMethods(UserDTO userDto,String[] contactMethod) {
+		List<PatientContactMethodDTO> list = getPatientContactMethodsByField("userid",userDto.getId());
+		for (PatientContactMethodDTO patientContactMethodDTO : list) {
+			BaseDAO.remove(patientContactMethodDTO);
+		}
+		
+		if(contactMethod != null) {
+			for (String string : contactMethod) {
+				PatientContactMethodDTO pmDto = new PatientContactMethodDTO();
+				pmDto.setContactmethod(new Integer(string));
+				pmDto.setUserid(userDto.getId());
+				BaseDAO.save(pmDto);
+			}
+		}
+		return true;
+	}
 }

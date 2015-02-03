@@ -37,6 +37,7 @@ import models.InvitedDTO;
 import models.PatienCareTeamDTO;
 import models.PatientCareTeamMemberDTO;
 import models.PatientConcernDTO;
+import models.PatientContactMethodDTO;
 import models.PatientDetailDTO;
 import models.SecurityQuestionDTO;
 import models.SideEffectDTO;
@@ -506,11 +507,14 @@ public class UserDAO {
 			UserDetailsDTO detailsDTO = new UserDetailsDTO();
 			detailsDTO.setId(dto.getId());
 			detailsDTO.setUser(dto);
+			/*
 			if(StringUtils.isNotBlank(memberBean.getContactMethod())) {
 				detailsDTO.setContactMethod(ContactTypeDAO.getEntityById(memberBean.getContactMethod()));
 			} else {
 				detailsDTO.setContactMethod(ContactTypeDAO.getEntityById("1"));
 			}
+			*/
+
 			detailsDTO.setCreatedate(cl.getTime());
 			detailsDTO.setEditdate(cl.getTime());
 			detailsDTO.setEditedBy(dto);
@@ -562,6 +566,15 @@ public class UserDAO {
 			em.persist(patientDetailDTO);
 			em.getTransaction().commit();
 			
+			PatientContactMethodDTO pmDto = new PatientContactMethodDTO();
+			pmDto.setUserid(dto.getId());
+			if(memberBean.getContactMethod() != null) {
+				pmDto.setContactmethod(new Integer(memberBean.getContactMethod()));
+			} else {
+				pmDto.setContactmethod(1);
+			}
+			BaseDAO.save(pmDto);
+
 			//Create care team by default if patient.
 			System.out.println(dto.getUsertypeid().getAbbravation());
 			if(dto.getUsertypeid().getAbbravation() == 'p') {
@@ -623,11 +636,11 @@ public class UserDAO {
 			UserDetailsDTO detailsDTO = new UserDetailsDTO();
 			detailsDTO.setId(dto.getId());
 			detailsDTO.setUser(dto);
-			if(StringUtils.isNotBlank(memberBean.getCommunicationType() )) {
-				detailsDTO.setContactMethod(ContactTypeDAO.getEntityById(memberBean.getCommunicationType()));
-			} else {
-				detailsDTO.setContactMethod(ContactTypeDAO.getEntityById("1"));
-			}
+//			if(StringUtils.isNotBlank(memberBean.getCommunicationType() )) {
+//				detailsDTO.setContactMethod(ContactTypeDAO.getEntityById(memberBean.getCommunicationType()));
+//			} else {
+//				detailsDTO.setContactMethod(ContactTypeDAO.getEntityById("1"));
+//			}
 
 			detailsDTO.setCreatedate(cl.getTime());
 			detailsDTO.setEditdate(cl.getTime());

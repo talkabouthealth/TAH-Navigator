@@ -21,7 +21,10 @@
 		<br/><br/>	
 			<a href="javaScript:createInvitedAccounts();">Create Invited account</a>
 	</div>
-	
+	<div class="col-xs-12 col-sm-12">
+		<br/><br/>	
+			<a href="javaScript:migrateData('contact');">Migrate the Contact methods</a>
+	</div>
 </div>
 <script>
 migrate = function() {
@@ -40,4 +43,11 @@ createInvitedAccounts = function() {
 		}
 	},"json");
 }
+migrateData = function(type) {
+	$.ajax({ type: 'POST', data:{'type':type }, url: '/admin/migrateData',
+		success:function(data){
+			alert("[" + data.code + "] " + data.message);
+		}
+	},"json");
+} 
 </script>
