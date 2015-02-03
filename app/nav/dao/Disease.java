@@ -113,7 +113,7 @@ public class Disease {
 		List<CancerTypeDTO> types = null;
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
-			TypedQuery<CancerTypeDTO> query = em.createQuery("SELECT c FROM CancerTypeDTO c where c.roottype = :f2  order by c.name", CancerTypeDTO.class);
+			TypedQuery<CancerTypeDTO> query = em.createQuery("SELECT c FROM CancerTypeDTO c where c.roottype = :f2 and c.userDefined = false  order by c.name", CancerTypeDTO.class);
 			query.setParameter("f2", isRoot);
 			types = query.getResultList();
 		} catch(Exception e) {
