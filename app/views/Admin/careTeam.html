@@ -157,7 +157,7 @@ $(document).ready(function() {
 	});
 
 	$("#teatmDelete").click(function(e){
-		event.preventDefault();
+		e.preventDefault();
 		$("#teamForm input[name='operation']").val("delete");
 		$('#teamForm').submit();
 	});

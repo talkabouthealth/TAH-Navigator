@@ -9,3 +9,7 @@ CREATE TABLE nav.othercaremember
   isprimary boolean,
   CONSTRAINT othercaremember_pk PRIMARY KEY (id)
 );
+
+INSERT INTO nav.diseasemaster(name,diseaseactive) VALUES ('Gastric Cancer',true),('Merkel Cell Carcinoma',true),('Skin Cancer',true),('Salivary Gland Cancer',true),('Unknown Primary',true);
+
+INSERT INTO nav.diseasemaster(name,diseaseactive) VALUES ('Pancreatic Neuroendocrine Tumor (PNET)',true);

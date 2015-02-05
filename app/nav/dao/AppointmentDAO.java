@@ -40,7 +40,7 @@ public class AppointmentDAO {
 		try {
 			TypedQuery<AppointmentDTO> query = em.createQuery("SELECT c FROM AppointmentDTO c " +
 					" WHERE c."+fieldName+" = :field and deleteflag = false and c.appointmentdate "
-					+(status.equalsIgnoreCase("past")?"<":" >=")+" :date order by appointmentdate asc", 
+					+(status.equalsIgnoreCase("past")?"<":" >=")+" :date order by appointmentdate desc", 
 					AppointmentDTO.class);
 			query.setParameter("field", param);
 			query.setParameter("date", date);

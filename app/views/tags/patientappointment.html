@@ -5,7 +5,8 @@
             <div class="col-xs-12 col-sm-12 nopadding" style="display:block;">
               <div class="col-sm-6 checkDiv">
                 <p>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}<br/> <!-- THURSDAY MAY 10TH 2014 -->
-                ${seq.appointmenttime} <a href="javaScript:void(0);">${seq.purposeText}</a></p>
+                ${seq.appointmenttime} <a href="javaScript:void(0);">#{if seq.purposeText} ${seq.purposeText} #{/if}
+							#{else} ${seq.treatementStep} #{/else}</a></p>
               </div>
               <div class="col-sm-6" style="padding-top: 10px;">
                 <p>
@@ -30,7 +31,8 @@
                   <p class="large-f"><span>Appointment is Scheduled for:</span></p>
                   <h1 class="g-mmm">${seq.appointmentdate.format('EEEE MMMM dd yyyy')}</h1>
                   <p class="large-f"><span>${seq.appointmenttime} </span></p>
-            <h3 class="title-2 purpose-of-appointment">Purpose of appointment: <span>${seq.purposeText}</span></h3>
+            <h3 class="title-2 purpose-of-appointment">Purpose of appointment: <span>#{if seq.purposeText} ${seq.purposeText} #{/if}
+							#{else} ${seq.treatementStep} #{/else}</span></h3>
                 </div>
               </div>
               <div class="col-sm-6 line-right">

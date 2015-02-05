@@ -47,54 +47,10 @@
 					<br><span> IF THIS IS NOT CORRECT, COMPLETE THE FORM BELOW</span>
 				</span>
 				</p>
-    
-				<div class="form-group form-group-sm">
-                    <label class="col-xs-3 control-label" for="rt_schedule">Purpose of Appointment</label>
-                    <div class="col-xs-8 form-group input-group">                           
-						<input type="text" id="appointment_purpose" name="purposeText" class="form-control nomargin" placeholder="i.e. First Appointment With Radiation Oncologist" required="required">
-						<span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
-					</div>
-				</div>
-				<!--<div class="form-group form-group-sm">
-                    <label class="col-xs-3 control-label" for="rt_schedule">Purpose of Appointment</label>
-                    <div class="col-xs-8 form-group input-group">                           
-						<select id="appointment_purpose" name="purposeText" class="form-control nomargin" required="required">
-							<option></option>
-							<optgroup label="Radiation Oncology">
-								<option>First Appointment With Radiation Oncologist</option>
-								<option>Make Treatment Decision (Radiation Oncology)</option>
-								<option>Simulation (Radiation Oncology)</option>
-								<option>On Treatment Visit (Radiation Oncology)</option>
-								<option>End of Treatment Visit (Radiation Oncology)</option>
-								<option>Ongoing Follow-up Appointment (Radiation Oncology)</option>
-							</optgroup>
-							<optgroup label="Surgery">
-								<option>First Appointment With Surgeon</option>
-								<option>Make Treatment Decision (Surgery)</option>
-								<option>Surgery</option>
-								<option>Follow-up Appointment After Surgery</option>
-								<option>Ongoing Follow-up Appointment (Surgery)</option>								
-							</optgroup>
-						</select>						
-					</div>
-				</div>-->
-                <!--<div class="form-group form-group-sm" id="treatment_step_process">
+    			<div class="form-group form-group-sm" id="treatment_step_process">
                         <label class="col-xs-3 control-label" for="rt_schedule">Step in the Treatment Process</label>
                         <div class="col-xs-8 form-group input-group">                           
-                            <select class="form-control nomargin" id="ts_process">
-                                <option></option>
-                                <option>First Appointment</option>
-                                <option>Make Treatment Decision</option>
-                                <option>Simulation</option>
-                                <option>Appointment During Treatments</option>
-                                <option>Post Treatment Appointment</option>                                
-                            </select>
-                        </div>
-                </div>-->
-				<div class="form-group form-group-sm" id="treatment_step_process">
-                        <label class="col-xs-3 control-label" for="rt_schedule">Step in the Treatment Process</label>
-                        <div class="col-xs-8 form-group input-group">                           
-                            <select class="form-control nomargin" id="ts_process">
+                            <select class="form-control nomargin" id="ts_process" required="required">
 								<option></option>
 								<optgroup label="Radiation Oncology">
 									<option>First Appointment With Radiation Oncologist</option>
@@ -114,12 +70,21 @@
                             </select>
                         </div>
                 </div>
+				<div class="form-group form-group-sm">
+                    <label class="col-xs-3 control-label" for="rt_schedule">
+                    	Purpose of Appointment
+                    	<span style="color: #686d73;font-size: 12px;">(Custom Text - Not Required)</span>
+                    </label>
+                    <div class="col-xs-8 form-group input-group">                           
+						<input type="text" id="appointment_purpose" name="purposeText" class="form-control nomargin" placeholder="i.e. First Appointment With Radiation Oncologist">
+<!-- 						<span class="input-group-addon has-error"><i class="fa fa-star"></i></span> -->
+					</div>
+				</div>
 				
                 <div class="form-group form-group-sm">
                         <label class="col-xs-3 control-label" for="rt_schedule">Time</label>
                         <div class="col-xs-8 form-group input-group">
                            <input type="text" class="form-control timeField nomargin" name="time"> <!-- required="required" -->
-<!--                            <span class="input-group-addon has-error"><i class="fa fa-star"></i></span> -->
                         </div>
                 </div>
                  <div class="form-group form-group-sm">
@@ -435,7 +400,7 @@
                     <div class="form-group form-group-sm">
                         <label class="col-xs-3 control-label" for="rt_schedule">TITLE/LABEL</label>
                         <div class="col-xs-9 form-group input-group">
-                            <input type="text"  name="title" placeholder="i.e. Note for other care team members. Not for patients." class="form-control input-sm" required>
+                            <input type="text"  name="title" placeholder="i.e. Note for other care team members. Not for patients." class="form-control input-sm" required maxlength="500">
                             <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
                         </div>
                     </div>
@@ -850,8 +815,6 @@ $(document).ready(function() {
 	$('body').on('click', 'button.appointmentBtn', function() {
 		operationAppointment('add');
 	});
-
-	
 
 	$('body').on('click', 'img.medicineImg', function() {
     	$("#image_file_input").trigger( "click" );

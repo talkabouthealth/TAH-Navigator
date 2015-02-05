@@ -6,10 +6,12 @@
 				<td>
 					<label>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}</label>
 					#{if seq.appointmenttime}
-					<p>${seq.appointmenttime} - <a href="javaScript:operationAppointment('edit','${seq.id}')">${seq.purposeText}</a></p>
+					<p>${seq.appointmenttime} - <a href="javaScript:operationAppointment('edit','${seq.id}')">#{if seq.purposeText} ${seq.purposeText} #{/if}
+							#{else} ${seq.treatementStep} #{/else}</a></p>
 					#{/if}
 					#{else}
-					<p><a href="javaScript:operationAppointment('edit','${seq.id}')">${seq.purposeText}</a></p>
+					<p><a href="javaScript:operationAppointment('edit','${seq.id}')">#{if seq.purposeText} ${seq.purposeText} #{/if}
+							#{else} ${seq.treatementStep} #{/else}</a></p>
 					#{/else}
 				</td>
 				<td>

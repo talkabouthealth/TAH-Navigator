@@ -9,7 +9,8 @@
 	<div class="clearfix para">
 		<div class="col-xs-6">
 			<div>${appointment.appointmentdate.format('EEEE MMMM dd yyyy')}</div>
-			<div>${appointment.appointmenttime} ${appointment.purposeText}</div>
+			<div>${appointment.appointmenttime} #{if appointment.purposeText} ${appointment.purposeText} #{/if}
+							#{else} ${appointment.treatementStep} #{/else}</div>
 		</div>
 		<div class="col-xs-6">
 			<div>
@@ -36,7 +37,8 @@
 	<div class="clearfix para">
 		<div class="col-xs-6">
 			<div>${appointment.appointmentdate.format('EEEE MMMM dd yyyy')}</div>
-			<div>${appointment.appointmenttime} ${appointment.purposeText}</div>
+			<div>${appointment.appointmenttime} #{if appointment.purposeText} ${appointment.purposeText} #{/if}
+							#{else} ${appointment.treatementStep} #{/else}</div>
 		</div>
 		<div class="col-xs-6">
 			<div>

@@ -1,7 +1,6 @@
 #{include '/tags/patientSummary.html' /}
 <div class="appointments">
 	<button class="btn btn-default btn-sm appointmentBtn">+ New Appointment</button>
-
 	#{if list != null && list.size()>0}
 	<h3 class="upcoming">Upcoming Appointments</h3>
 	<table class="simple" id="upcomingTable">
@@ -11,10 +10,16 @@
 				<td>
 					<label>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}</label>
 					#{if seq.appointmenttime}
-					<p>${seq.appointmenttime} - <a href="javaScript:operationAppointment('edit','${seq.id}')">${seq.purposeText}</a></p>
-					#{/if}
+						<p>${seq.appointmenttime} - <a href="javaScript:operationAppointment('edit','${seq.id}')">
+							#{if seq.purposeText} ${seq.purposeText} #{/if}
+							#{else} ${seq.treatementStep} #{/else}
+							</a></p>
+						#{/if}
 					#{else}
-					<p><a href="javaScript:operationAppointment('edit','${seq.id}')">${seq.purposeText}</a></p>
+					<p><a href="javaScript:operationAppointment('edit','${seq.id}')">
+						#{if seq.purposeText} ${seq.purposeText} #{/if}
+							#{else} ${seq.treatementStep} #{/else}
+					</a></p>
 					#{/else}
 				</td>
 				<td>
@@ -25,7 +30,6 @@
 			#{/list}
 		</tbody>
 	</table>
-	
 	#{if totalUp != null && totalUp.size()>0}
 	#{set fclass = 'active' /}
 	<div class="row">		
@@ -56,10 +60,14 @@
 					<td>
 						<label>${seq.appointmentdate.format('EEEE MMMM dd yyyy')}</label>
 						#{if seq.appointmenttime}
-					<p>${seq.appointmenttime} - <a href="javaScript:operationAppointment('edit','${seq.id}')">${seq.purposeText}</a></p>
+					<p>${seq.appointmenttime} - <a href="javaScript:operationAppointment('edit','${seq.id}')">
+					#{if seq.purposeText} ${seq.purposeText} #{/if}
+							#{else} ${seq.treatementStep} #{/else}
+					</a></p>
 					#{/if}
 					#{else}
-					<p><a href="javaScript:operationAppointment('edit','${seq.id}')">${seq.purposeText}</a></p>
+					<p><a href="javaScript:operationAppointment('edit','${seq.id}')">#{if seq.purposeText} ${seq.purposeText} #{/if}
+							#{else} ${seq.treatementStep} #{/else}</a></p>
 					#{/else}
 					</td>
 					<td>
