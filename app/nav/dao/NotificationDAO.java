@@ -128,9 +128,11 @@ public class NotificationDAO {
 		DistressBean distress = DistressDAO.getLastDistress(patient);		
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(appointmentDate);
-		cal.add(Calendar.DAY_OF_MONTH, -day);		
-		if (distress.getDistressDate().after(cal.getTime())) {
-			return true;
+		cal.add(Calendar.DAY_OF_MONTH, -day);
+		if (distress != null) {
+			if (distress.getDistressDate().after(cal.getTime())) {
+				return true;
+			}
 		}
 		return false;		
 	}
