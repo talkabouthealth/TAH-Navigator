@@ -1849,8 +1849,7 @@ public class NotificationDAO {
 		if (DEBUG) {
 			System.out.println("----------------------");
 		}
-		for (NotificationDTO notification : notifications) {	
-			em.refresh(notification);
+		for (NotificationDTO notification : notifications) {				
 			if (DEBUG) {
 				System.out.println(notification.getScheduledTime());
 			}			
