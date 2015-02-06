@@ -5,6 +5,7 @@ import javax.persistence.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -747,11 +748,34 @@ public class Treatment {
 			for (PatientSurgeryInfoDTO psiDto : surgeryInfo) {
 				refreshSurgeryInfo(psiDto);
 			}
-		} 
+		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
-		
 		return surgeryInfo;
+	}
+
+	public static boolean populatePatientFolloupplan(Integer patientId, Integer templateId) {
+		List<DefaultTemplateDetailDTO> defaults = DefaultTemplateDAO.getInputDefaultByPageField(templateId); 
+		if(defaults != null && !defaults.isEmpty()) {
+			Integer careItemId = null;
+			for (DefaultTemplateDetailDTO inputDefaultDTO : defaults) {
+				Map<String, String> fupCareItem = new HashMap<String, String>();
+				fupCareItem.put("activity",inputDefaultDTO.getFieldtext());
+				fupCareItem.put("frequency",inputDefaultDTO.getFrequency());
+				fupCareItem.put("purpose",inputDefaultDTO.getOtherfield());
+				fupCareItem.put("endDate","");
+				if(inputDefaultDTO.getEnddate() != null && inputDefaultDTO.getEnddate().equalsIgnoreCase("ongoing")) {
+					fupCareItem.put("ongoing",inputDefaultDTO.getEnddate());
+					fupCareItem.put("endDate",null);
+				} else {
+					fupCareItem.put("ongoing",null);
+					fupCareItem.put("endDate",inputDefaultDTO.getEnddate());	
+				}
+				fupCareItem.put("doctor","");
+				FollowUp.saveCareItem(patientId, careItemId, fupCareItem);		
+			}
+		}
+		return true;
 	}
 }

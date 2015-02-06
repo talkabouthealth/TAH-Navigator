@@ -609,10 +609,25 @@ public class CarePatien  extends Controller {
 		List<PatientChromosomeDTO> chromosomes =  PatientDetailDAO.getChromosome(new Integer(patientId));
 		int breastCancerId = Disease.BREAST_CANCER_ID;
 		Map <String, Object> ps = PatientDetailDAO.patientSummary(patientId);
+
+		List<DefaultTemplateMasterDTO> defaultTemplates = DefaultTemplateDAO.getPatientTemplate(diseaseId);
+		Integer templateId = 0;
+		if(defaultTemplates != null) {
+			for (DefaultTemplateMasterDTO defaultTemplateMasterDTO : defaultTemplates) {
+				if(templateId.intValue() == 0) {
+					templateId = defaultTemplateMasterDTO.getId();
+				}
+				if(Disease.ENDOMETRIAL_CANCER_ID == diseaseId.intValue() && "Endometrial Cancer Medium Risk Template".equalsIgnoreCase(defaultTemplateMasterDTO.getTemplatename())) {
+					templateId = defaultTemplateMasterDTO.getId();
+				}
+			}
+		}
+		if(templateId.intValue()!= 0) {
+			Treatment.populatePatientFolloupplan(patientId, templateId);
+		}
 		renderTemplate("CarePatien/diagnosis.html", patientId, breastCancerId, userDetails, patientDetails, breastCancerInfo, ps,mutations,chromosomes);
 	}
 
-	
 	public static void noteOperation(String operation,int id,int patientId,String title,String description) {
 		
 		UserBean user = CommonUtil.loadCachedUser(session);
@@ -1460,7 +1475,9 @@ public class CarePatien  extends Controller {
 		*/
 
 //		List<InputDefaultDTO> defaults = InputDefaultDAO.getInputDefaultByPageField("followupplan",diseaseId,"activity");
-		 List<DefaultTemplateDetailDTO> defaults = DefaultTemplateDAO.getInputDefaultByPageField(diseaseId); 
+		Treatment.populatePatientFolloupplan(patientId, diseaseId);
+		/*
+		List<DefaultTemplateDetailDTO> defaults = DefaultTemplateDAO.getInputDefaultByPageField(diseaseId); 
 		if(defaults != null && !defaults.isEmpty()) {
 			Integer careItemId = null;
 			for (DefaultTemplateDetailDTO inputDefaultDTO : defaults) {
@@ -1480,7 +1497,7 @@ public class CarePatien  extends Controller {
 				FollowUp.saveCareItem(patientId, careItemId, fupCareItem);		
 			}
 		}
-//		followupPlan(patientId.intValue());
+		*/
 		renderText("OK");
 	}
 }

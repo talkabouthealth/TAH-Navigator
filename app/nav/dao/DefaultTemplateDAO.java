@@ -17,9 +17,8 @@ public class DefaultTemplateDAO {
 		List<DefaultTemplateMasterDTO> diseases = null;
 		EntityManager em = JPAUtil.getEntityManager();
 		try {
-			TypedQuery<DefaultTemplateMasterDTO> query = em.createQuery("Select c FROM DefaultTemplateMasterDTO c where c.diseaseid is NULL or c.diseaseid = :f1 ORDER BY c.templatename", DefaultTemplateMasterDTO.class);
+			TypedQuery<DefaultTemplateMasterDTO> query = em.createQuery("Select c FROM DefaultTemplateMasterDTO c where c.diseaseid is NULL or c.diseaseid = :f1 ORDER BY c.diseaseid asc,c.templatename", DefaultTemplateMasterDTO.class);
 			query.setParameter("f1", diseaseId);
-			
 			diseases = query.getResultList();
 		} catch(Exception e) {
 			e.printStackTrace();
