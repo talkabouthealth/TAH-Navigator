@@ -113,6 +113,31 @@ public class Care extends Controller {
         render(user,expertDetail);
 	}
 	
+	public static void inviteAgain(String by, String email) {
+		UserDTO userDto = null;
+		if(StringUtils.isNotBlank(by) && "id".equalsIgnoreCase(by)) {
+			Integer id = new Integer(email);
+			userDto = UserDAO.getUserBasicByField(by, id);
+		} else {
+			userDto = UserDAO.getUserBasicByField(by, email);
+		}
+		if(userDto != null) {
+		InvitedDTO invDto = InvitationDAO.getDetailsByEmail("email",userDto.getEmail());
+		if(invDto != null) {
+			if (invDto.getAddressid() != null) {
+				System.out.println("Sending with appointment");
+				NotificationDAO.scheduleInviteEmailOnce(invDto, userDto, true);
+   		 	} else {
+   		 	System.out.println("Sending withoute appointment");
+   		 		NotificationDAO.scheduleInviteEmailOnce(invDto, userDto, false);	
+   		 	}
+		}
+		}
+		JsonObject obj = new JsonObject();
+		obj.add("status", new JsonPrimitive("200"));
+		renderJSON(obj);
+	}
+
 	public static void sendInvitation(String email,String firstname,String lastname,String purposeText, String treatmentProcessStep, String time,String schDate,String center,int memberid, 
 			String telephone, String mobilePhone, String homePhone, String[] communicationType, String address1,String city,String state,String zip,String membername,String purpose,int withapp) {
 		 validation.clear();
@@ -145,8 +170,11 @@ public class Care extends Controller {
 	            	JsonObject obj = new JsonObject();
 					obj.add("status", new JsonPrimitive("301"));
 					renderJSON(obj);
-	            }
-	            else if(validation.errorsMap().get("member.email.inactive") != null) {
+	            } else if(validation.errorsMap().get("member.email.invited") != null) {
+	            	JsonObject obj = new JsonObject();
+					obj.add("status", new JsonPrimitive("302"));
+					renderJSON(obj);
+	            } else if(validation.errorsMap().get("member.email.inactive") != null) {
 	            	JsonObject obj = new JsonObject();
 					obj.add("status", new JsonPrimitive("400"));
 					renderJSON(obj);	
@@ -249,22 +277,19 @@ public class Care extends Controller {
 		renderJSON(obj);
 	}
     private static void validateMember(String member) {
-    	if(member != null) {    		
-    		System.out.println("Not null");
+    	if(member != null) {
     		if (!validation.hasError("member.email")) {
-    			System.out.println("Not null email");
-    			System.out.println(member);
     			UserBean user = UserDAO.getUserVerified(member);
-    			InvitedDTO invitationdto = InvitationDAO.getDetailsByField("email",member);
-    			if(invitationdto != null) {
-    				validation.addError("member.email", "email.exists", "");	
-    			} else if(user != null) {
-    				if(user.isActive()) {
-    					validation.addError("member.email", "email.exists", "");
-    				} else {
-    					validation.addError("member.email.inactive", "email.exists.inactive", "");
-    				}
-//    				validation.addError("member.email", "email.exists", "");
+    			if(user != null) {
+    				if(user.getPassword() != null) {
+	    				if(user.isActive()) {
+	    					validation.addError("member.email", "email.exists", "");
+	    				} else {
+	    					validation.addError("member.email.inactive", "email.exists.inactive", "");
+	    				}
+	    			} else {
+	    				validation.addError("member.email.invited", "email.exists.invited", "");
+	    			}
     			}
     		} else {
     			System.out.println("Not null email");

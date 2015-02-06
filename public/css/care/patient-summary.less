@@ -46,9 +46,7 @@
 
 	.disease {
 		text-transform: uppercase;
-
 		padding-top: 5px;
-
 	}
 
 	.primary-information, .next-appointment {
@@ -60,6 +58,15 @@
 			text-transform: none;
 		}
 	}
+	
+	.print_plan[given="no"]{
+	    background-color: #5BC0DE;
+	    }
+
+	.print_plan[given="yes"]{
+	    background-color: @blue;
+	    }
+	   
     
     .validate_btn[verified="no"] {
         background-color: @red;

@@ -40,7 +40,7 @@ public class AppointmentDAO {
 		try {
 			TypedQuery<AppointmentDTO> query = em.createQuery("SELECT c FROM AppointmentDTO c " +
 					" WHERE c."+fieldName+" = :field and deleteflag = false and c.appointmentdate "
-					+(status.equalsIgnoreCase("past")?"<":" >=")+" :date order by appointmentdate desc", 
+					+(status.equalsIgnoreCase("past")?"<":" >=")+" :date order by appointmentdate "+(status.equalsIgnoreCase("past")?"desc":"asc"), 
 					AppointmentDTO.class);
 			query.setParameter("field", param);
 			query.setParameter("date", date);
@@ -53,7 +53,7 @@ public class AppointmentDAO {
 		}
 		return dtoList;
 	}
-	
+
 	public static long getTotalappointmentForDashboard(String fieldName, Object param ,Date date, String status) {
 		EntityManager em = JPAUtil.getEntityManager();
 		long total = 0l;

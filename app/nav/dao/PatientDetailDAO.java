@@ -214,6 +214,7 @@ public class PatientDetailDAO {
 		ps.put("lastAppointment", lastAppointment);
 		ps.put("lastPurpose", lastPurpose);
 		ps.put("email", userDto.getEmail());
+		ps.put("count", CarePlanPrintDAO.getPrintCount(Integer.parseInt(userId)));
 		return ps;
 	}
 	

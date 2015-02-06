@@ -749,6 +749,7 @@ $(document).ready(function() {
             }
             //  Add tooltip feature to table [End]                
             if (href == '#summary') {
+            	LoadSparkLineScript(DrawSparklineDashboardNew);
                 $('a.date-range[days="30"]').click();
             }
             if (href == '#careteam') {
@@ -1585,6 +1586,104 @@ submitAppointmentForm = function() {
 var typeArray = ["Radiation Oncology","Oncology","Surgery","Radiology","Urology","Gastroenterology","OBGYN","Primary Care","Cardiology","Hematology"];
 var icons = {header: "ui-accordion-header-icon1 ui-icon-triangle-1-e",activeHeader: "ui-accordion-header-icon1 ui-icon-triangle-1-s"};
 $(document).ready(function() {
+
+	/*05_feb changes*/
+
+	var text_max = 500;
+	$("div.active #li-error").html(text_max + ' characters remaining');
+	$(document).on
+	(
+		"keyup",
+		"div.active #note-text",
+		function(e) 
+		{
+			var text_length = $(this).val().length;
+			/* if(e.which === 27)
+			{
+				$("div.open").removeClass("open");	
+			} */
+			var text_remaining = text_max - text_length;				
+			$('div.active #li-error').html(text_remaining + ' characters remaining');
+		}
+	);
+	
+	  var sendnote = function(pid,testnote)
+	  {		  
+		  $.ajax
+          ({     
+          	method:'POST',
+          	url:'@{CarePatien.saveCarePlanPrint()}',
+          	data:{patientId:pid,note:testnote},
+          	success:function(data)
+          	{
+          		$("div.active #printbadge").html(data);	
+          		$("div.active #btn-dropdown").attr("given","yes");
+          		jQuery("div.active #note-text").val("") ;
+          		$("div.active #li-error").html(text_max + ' characters remaining');
+          	}
+          });
+	  }
+	  $(document).on
+	  (
+			  "click",
+			  "div.active #btn-dropdown",
+			  function(e)
+			  {
+				 $("div.active ul.dropdown-menu.note-dropdown").css("width",$("div.active #btn-group").css("width"));
+				 jQuery("div.active #note-text").attr("maxlength",text_max) ;
+			  }
+	 );
+	 $(document).on
+	  (
+			  "click",
+			  "div.active #printplan",
+			  function(e) 
+			  {
+		            var given = $(this).attr('given');
+		            if(given == 'no') 
+		            {
+		            	$(this).html("<span class='badge' id='printbadge' style='margin-right:3px;min-width:25px'></span>Given Printed Care Plan");
+		               	$(this).attr("given","yes");
+		               /* 	$("div.active #btn-dropdown").attr("given","yes"); */
+		            }		            
+		            sendnote($(this).attr('patient_id'),$("div.active #note-text").val());
+			 }
+	   );
+	 
+		
+	    
+	 $(document).on
+	  (
+			  "click",
+			  "div.active ul",
+			  function(e) 
+			  {
+				 if(e.target.id!='addnote')
+				 {
+				 	e.stopPropagation();
+				 }
+			  }
+	   );
+	 
+	  $(document).on
+	  (
+			  "click",
+			  "div.active #addnote",
+			  function(e) 
+			  {							
+				  	var given = $("div.active #printplan").attr('given');
+		            if(given == 'no') 
+		            {
+		            	$("div.active #printplan").html("<span class='badge' id='printbadge' style='margin-right:3px;min-width:25px'></span>Given Printed Care Plan");
+		               	$("div.active #printplan").attr("given","yes");
+		            }
+		            sendnote($("div.active #printplan").attr('patient_id'),$("div.active #note-text").val());
+	         }
+	   );
+
+
+	  /*05_feb changes ends*/
+	
 	$('body').on('click', 'button.careTeamBtn', function(e) {
 	// 1. addTeam
 	// 2. addTeamMember

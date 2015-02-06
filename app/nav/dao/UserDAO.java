@@ -72,6 +72,7 @@ public class UserDAO {
 				account.setUserType(dto.getUserType());
 				account.setActive(dto.isActive());
 				account.setVerifiedFlag(dto.isIsverified());
+				account.setPassword(dto.getPassword());
 			}
 		} catch(Exception e) {
 			e.printStackTrace();

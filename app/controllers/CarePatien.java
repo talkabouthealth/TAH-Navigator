@@ -18,6 +18,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
 import org.apache.commons.lang.StringUtils;
+import org.joda.time.DateTime;
 
 import models.AddressDTO;
 import models.AppointmentDTO;
@@ -59,6 +60,7 @@ import models.UserDetailsDTO;
 import nav.dao.AppointmentDAO;
 import nav.dao.AppointmentMasterDAO;
 import nav.dao.BaseDAO;
+import nav.dao.CarePlanPrintDAO;
 import nav.dao.CareTeamDAO;
 import nav.dao.DefaultTemplateDAO;
 import nav.dao.Disease;
@@ -73,6 +75,7 @@ import nav.dao.ProfileDAO;
 import nav.dao.Treatment;
 import nav.dao.UserDAO;
 import nav.dto.CareMember;
+import models.CarePlanPrintDTO;
 import nav.dto.DistressBean;
 import nav.dto.ExpertBean;
 import nav.dto.UserBean;
@@ -109,6 +112,18 @@ public class CarePatien  extends Controller {
 		render("tags/appointment.html",patientId,list);
 	}
 	
+	public static void saveCarePlanPrint(String patientId,String note)
+	{
+		CarePlanPrintDTO carePlanPrintDTO = new CarePlanPrintDTO();
+		carePlanPrintDTO.setExpertId(CommonUtil.loadCachedUser(session).getId());
+		int id = Integer.parseInt(patientId);
+		carePlanPrintDTO.setIssueDate(new Date());
+		carePlanPrintDTO.setPatientId(id);
+		carePlanPrintDTO.setNote(note);
+		BaseDAO.save(carePlanPrintDTO);
+		renderText(CarePlanPrintDAO.getPrintCount(id));
+	}
+	
 	public static void summary(Integer patientId) {
 		UserBean user = CommonUtil.loadCachedUser(session);
 		ExpertDetailDTO expertDetail = ProfileDAO.getExpertByField("id", user.getId());
@@ -136,6 +151,11 @@ public class CarePatien  extends Controller {
 		List<String> lastYearProblems = DistressDAO.problemList(Integer.valueOf(patientId), 365);
 		List<String> allProblems = DistressDAO.problemList(Integer.valueOf(patientId), 0);		
         render(user,expertDetail,patientId,patientDto,patientOtherDetails,distress,noteList, diseases, stages, breastCancerId, ps,appList,drList, lastWeekProblems, lastMonthProblems, lastThreeMonthProblems, lastSixMonthProblems, lastYearProblems, allProblems);
+	}
+	
+	public static void getNumberOfPrints(int patientId)
+	{
+		renderText(CarePlanPrintDAO.getPrintCount(patientId));
 	}
 
 	public static void distressValues(int patientId, int days) {

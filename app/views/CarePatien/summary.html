@@ -1,4 +1,5 @@
-#{include '/tags/patientSummary.html' /}                    
+#{include '/tags/patientSummary.html' /}      
+<div class="appointments">              
                     <div class="col-xs-12 col-sm-12 nopadding">             
                         <div class="col-xs-4 col-sm-4" style="border-right: 1px solid #CCC">
                             <div class="distress">
@@ -62,10 +63,10 @@
                         </div>                        
                     </div>                    
                     <div style="color: #333;">
-                        <div>
+                        <div class="col-xs-12">
                             <h4 style="font-weight: bold;padding: 20px 0px 15px 15px;">PAST PROBLEM LISTS</h4>
                         </div>                        
-                        <div>
+                        <div class="col-xs-12">
                             <div class="col-xs-2" style="border-right: 1px solid #CCC;">
                                 <strong>LAST MONTH</strong>
                                 #{list items: lastMonthProblems, as: 'problem'}
@@ -104,4 +105,5 @@
                         </div>
                         #{include '/tags/note.html' /}
                     
+                    </div>
                     </div>

@@ -25,6 +25,7 @@ var careTeamController = (function() {
         'fup_save_careitem_template' : '/CarePatien/careitemTemplateData',
         'patient_info': '/CarePatien/patientInfoJSON',
         'patient_info_save': '/CarePatien/savePatientInfo',
+        'inviteagain': '/Care/inviteAgain',
 		'default': '#'    // nothing 
 	};
     var BREAST_CANCER_ID = 1;
@@ -2250,6 +2251,23 @@ var careTeamController = (function() {
         }, "json");
     };
     
+    var inviteAgain = function(domElement) {
+    	var senttoday = $(domElement).attr('senttoday');
+    	if (senttoday == 'no') {
+    		var postData= [];
+    		var $visibleBtn = $(domElement);
+            var patientId = $visibleBtn.attr('patient_id');
+            postData.push({name: "email", value: patientId});
+    		postData.push({name: "by", value: "id"});
+    		var $btn = $('#re-invite');
+    		$.post(actions['inviteagain'], postData, function(data) {
+                $btn.attr("senttoday", "yes");
+                $btn.attr('disabled',true);
+            }, "json");
+    	} else {
+    		alert('Already sent today');
+    	}
+    }
     var toggleValidate = function(domElement) {
         var verified = $(domElement).attr('verified');
         if (verified == 'yes') {
@@ -2257,8 +2275,8 @@ var careTeamController = (function() {
             if (initFlag == '0') {
                 $('#invalidate_dialog').attr('init_flag', '1');
                 $('#invalidate_yes').click(function() {
-                    var $btn = $('.validate_btn');
-                    var $visibleBtn = $('.validate_btn:visible');
+                    var $btn = $('.validate_btn1');
+                    var $visibleBtn = $('.validate_btn1:visible');
                     var patientId = $visibleBtn.attr('patient_id');
                     $.post(actions['verify'], {
                         patientId: patientId,
@@ -2266,6 +2284,8 @@ var careTeamController = (function() {
                     }, function(data) {
                         $btn.attr("verified", "no");
                         $btn.text("Validate Now");
+                        $btn.removeClass("btn-success");
+                        $btn.addClass("btn-danger");
                     }, "json");
                     $('#invalidate_dialog').modal('hide');
                 });
@@ -2282,8 +2302,8 @@ var careTeamController = (function() {
         else {
             var initFlag = $('#validate_dialog').attr('init_flag');
             $('#validate_yes').click(function() {
-                var $btn = $('.validate_btn');
-                var $visibleBtn = $('.validate_btn:visible');
+                var $btn = $('.validate_btn1');
+                var $visibleBtn = $('.validate_btn1:visible');
                 var patientId = $visibleBtn.attr('patient_id');
                 $.post(actions['verify'], {
                     patientId: patientId,
@@ -2291,6 +2311,8 @@ var careTeamController = (function() {
                 }, function(data) {
                     $btn.attr("verified", "yes");
                     $btn.text("Validated");
+                    $btn.removeClass("btn-danger");
+                    $btn.addClass("btn-success");
                 }, "json");
                 $('#validate_dialog').modal('hide');
             });
@@ -2426,7 +2448,8 @@ var careTeamController = (function() {
         'fup_concern_form': concernForm.open,
         'fup_goal_form': goalForm.open,
         'fup_careitem_form': careItemForm.open,
-        'fup_careitem_template_form': careItemTemplateForm.open
+        'fup_careitem_template_form': careItemTemplateForm.open,
+        'inviteAgain': inviteAgain
     };
     function evtMsgHandler(msg, domElement, params) {
         var func = msgMap[msg];

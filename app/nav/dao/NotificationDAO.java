@@ -1302,7 +1302,21 @@ public class NotificationDAO {
 			addEmailNotification(INVITATION, invitation.getId(), INVITED_THIRD_MAIL, cal.getTime(), 100, notifiedTo);
 		}				
 	}
-	
+
+	public static void scheduleInviteEmailOnce(InvitedDTO invitation, UserDTO user, boolean hasAppointment) {			
+		Integer notifiedTo = null;
+		Calendar cal = Calendar.getInstance();
+		Date now = cal.getTime();
+		if (user != null) {
+			notifiedTo = user.getId();
+		}
+		if (hasAppointment) {
+			addEmailNotification(INVITATION, invitation.getId(), INVITED_APPOINTMENT_FIRST_MAIL, now, 0, notifiedTo);
+		} else {
+			addEmailNotification(INVITATION, invitation.getId(), INVITED_FIRST_MAIL, now, 0, notifiedTo);
+		}
+	}
+
 	public static String byteArrayToHex(byte[] a) {
 	   StringBuilder sb = new StringBuilder(a.length * 2);
 	   for(byte b: a)
