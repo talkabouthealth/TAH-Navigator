@@ -1677,7 +1677,9 @@ public class NotificationDAO {
 			Map<String, Object> vars = new HashMap<String, Object>();						
 			vars.put("username", data.getUserName());			
 			vars.put("clinic_phone", data.getClinicPhone());
-			vars.put("doctor_name", data.getDoctorName());						
+			vars.put("doctor_name", data.getDoctorName());	
+			vars.put("date", data.getAppointmentDate());
+			vars.put("appointment_day", data.getAppointmentDay());
 			vars.put("appointment_time", data.getAppointmentTime());			
 			vars.put("clinic_address", data.getClinicAddress());
 			vars.put("generate_url", data.getDistressCheckInURL());
@@ -1737,7 +1739,9 @@ public class NotificationDAO {
 			Map<String, Object> vars = new HashMap<String, Object>();						
 			vars.put("username", data.getUserName());			
 			vars.put("clinic_phone", data.getClinicPhone());
-			vars.put("doctor_name", data.getDoctorName());						
+			vars.put("doctor_name", data.getDoctorName());		
+			vars.put("date", data.getAppointmentDate());
+			vars.put("appointment_day", data.getAppointmentDay());
 			vars.put("appointment_time", data.getAppointmentTime());			
 			vars.put("clinic_address", data.getClinicAddress());
 			vars.put("generate_url", data.getDistressCheckInURL());
