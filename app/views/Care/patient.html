@@ -385,39 +385,48 @@
 		</div>
 	</div>
 </div>
-
-<div class="modal" id="addEditNote" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-   <div class="modal-dialog modal-m">
-   <div class="modal-content col-xs-12 col-sm-12">
-   #{form @CarePatien.noteOperation() , id:'noteForm' }
-      	<input type="hidden" name="operation" />
-      	<input type="hidden" name="id" />
-   		<input type="hidden" name="patientId" value="${patientId}"/>
-      		<div class="modal-header">        		
-        		<h4 class="modal-title" id="myModalLabel_note">NEW NOTE</h4>
-      		</div>
-        	<div class="modal-body" style="display:block;">
-                    <div class="form-group form-group-sm">
-                        <label class="col-xs-3 control-label" for="rt_schedule">TITLE/LABEL</label>
-                        <div class="col-xs-9 form-group input-group">
-                            <input type="text"  name="title" placeholder="i.e. Note for other care team members. Not for patients." class="form-control input-sm" required maxlength="500">
-                            <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
-                        </div>
-                    </div>
-					<div class="form-group form-group-sm">
-                        <label class="col-xs-3 control-label" for="rt_schedule">Note</label>
-                        <div class="col-xs-9 form-group input-group">
-                            <textarea class="form-control" style="height: 120px;width:100%;max-width: 370px;" name="description" required="required"></textarea>
-                            <span class="input-group-addon has-error"><i class="fa fa-star"></i></span>
-                        </div>
-                    </div>
-    		</div>
-     		<div class="modal-footer col-xs-12 col-sm-12">
+<!-- currrent work -->
+<div class="modal" id="addEditNote" tabindex="-1" role="dialog"
+	aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-m">
+		<div class="modal-content col-xs-12 col-sm-12">
+			#{form @CarePatien.noteOperation() , id:'noteForm' } 
+			<input type="hidden" name="operation" /> 
+			<input type="hidden" name="id" />
+			<input type="hidden" name="noteSection" value="" /> 
+			<input type="hidden" name="patientId" value="${patientId}" />
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel_note">NEW NOTE</h4>
+			</div>
+			<div class="modal-body" style="display: block;">
+				<div class="form-group form-group-sm">
+					<label class="col-xs-3 control-label" for="rt_schedule">TITLE/LABEL</label>
+					<div class="col-xs-9 form-group input-group">
+						<input type="text" name="title"
+							placeholder="i.e. Note for other care team members. Not for patients."
+							class="form-control input-sm" required> <span
+							class="input-group-addon has-error"><i class="fa fa-star"></i></span>
+					</div>
+				</div>
+				<div class="form-group form-group-sm">
+					<label class="col-xs-3 control-label" for="rt_schedule">Note</label>
+					<div class="col-xs-9 form-group input-group">
+						<textarea class="form-control"
+							style="height: 120px; width: 100%; max-width: 370px;"
+							name="description" required="required"></textarea>
+						<span class="input-group-addon has-error"><i
+							class="fa fa-star"></i></span>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer col-xs-12 col-sm-12">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-				<button type="submit" class="btn btn-default" data-next="3"> SAVE </button>
-     			<input type="button" name="deleteNote" class="btn btn-default" data-next="3" value="DELETE"></input>       			
-    		</div>
-      #{/form}
+				<button type="submit" class="btn btn-default" data-next="3">
+					SAVE</button>
+				<input type="button" name="deleteNote" class="btn btn-default"
+					data-next="3" value="DELETE"></input>
+			</div>
+			#{/form}
 		</div>
 	</div>
 </div>
@@ -741,8 +750,7 @@ $(document).ready(function() {
             //  Add tooltip feature to table [Start]
             var divs = $('table.table td div');
             if (divs.length) {
-                divs.addTooltipsToTable();
-
+                divs.addTooltipsToTable();                
                 $(window).resize(function(){
                     divs.addTooltipsToTable();
                 });
@@ -810,7 +818,7 @@ $(document).ready(function() {
 		operationMedication('add');
 	});
 	$('body').on('click', 'button.noteBtn', function() {
-		operationNote('add');
+		operationNote('add',$(this).attr('name'));
 	});
 
 	$('body').on('click', 'button.appointmentBtn', function() {
@@ -881,10 +889,23 @@ $(document).ready(function() {
 		});
  		event.preventDefault();
 	});
-
-
-	$('#appointmentForm').submit(function(event) {
-        
+	
+	//note form submit
+	$('#noteForm').submit
+	(
+		function(event)
+		{
+			var postData=$("#noteForm").serializeArray();
+			var formURL = $("#noteForm").attr("action");
+			$.post(formURL, postData, function( data ) {
+    			$('#addEditNote').modal('hide');
+    			$('#tabs li.active a').click();
+    		});
+			event.preventDefault();
+		}
+	);
+	
+	$('#appointmentForm').submit(function(event) {        
         if($("#appointmentForm input[name='operation']").val() == 'add'){
     		var postData = $("#appointmentForm").serializeArray();
             var $avm = $('#appointment_verified_members');
@@ -1115,7 +1136,7 @@ operationMedication = function(operation,id) {
 		$('#addEditmedication').appendTo("body").modal();
 	}
 }
-operationNote = function(operation,id,title,desc, noteBy) {
+operationNote = function(operation,section,id,title,desc,noteBy) {
     var userId = '${user.id}';
     $('#addEditNote').find('input[type="button"][name="deleteNote"]').hide();
 	if(operation == 'edit') {
@@ -1123,10 +1144,11 @@ operationNote = function(operation,id,title,desc, noteBy) {
 		$("#noteForm input[name='operation']").val("edit");
 		$("#noteForm input[name='id']").val(id);
 		$("#noteForm input[name='title']").val(title);
-		$("#noteForm input[name='deleteNote']").show();
+		//$("#noteForm input[name='deleteNote']").show();
+		$('#addEditNote').find('input[type="button"][name="deleteNote"]').show();
 		$("#noteForm input[name='deleteNote']").unbind();
 		$("#noteForm input[name='deleteNote']").click(function(){
-			operationNote('delete',id,'','');
+			operationNote('delete',section,id,'','');
 		});
 		$("#noteForm textarea[name='description']").val(desc);
 		$('#addEditNote').appendTo("body").modal();
@@ -1134,16 +1156,15 @@ operationNote = function(operation,id,title,desc, noteBy) {
 		  $('#addEditNote').find('input[type="button"][name="deleteNote"]').hide();
 		}
 	} else if(operation == 'delete') {
-		if(confirm('Do you want to delete the note')) {
 			$("#noteForm input[name='operation']").val("delete");
 			$("#noteForm input[name='id']").val(id);
-			$("#noteForm").submit();
-		}
+			$("#noteForm").submit();		
 	} else {
 		$("#myModalLabel_note").html("ADD NOTE");
 		$("#noteForm input[name='operation']").val("add");
 		$("#noteForm input[name='id']").val("0");
 		$("#noteForm input[name='title']").val("");
+		$("#noteForm input[name='noteSection']").val(section);
 		$("#noteForm textarea[name='description']").val("");
 		$("#noteForm input[name='deleteNote']").hide();
 		$('#addEditNote').appendTo("body").modal();
