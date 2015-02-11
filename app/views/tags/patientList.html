@@ -92,8 +92,10 @@
 *{*************  notes ************}*
 %{
     notes = "None";
+    notedesc = "";
     if (patient.note) {
         notes = patient.note.noteTitle;
+       	notedesc = patient.note.noteDesc;       	
 	}		
 }%
 
@@ -116,10 +118,14 @@
 	#{if lastDistressCheckIn != "-"}
         <span class="timeAgo" title="${lastDistressCheckIn}">${lastDistressCheckIn}</span>
         #{/if}
-        #{else}${lastDistressCheckIn}#{/else}
+        #{else}${lastDistressCheckIn}#{/ else}
         </div></td>
     <td><div>${problemList}</div></td>
-    <td><div>${notes}</div></td>
+    <td><div>
+    		#{if notes=="None"}${notes}#{/ if}
+    		 #{else}<span class="lastNoteTitle">${notes}</span><span class="lastNoteDesc" style="visibility:hidden" >${notedesc}</span>#{/ else}    		
+    	</div>
+    </td>
 </tr>
 #{/list}
 #{/if}

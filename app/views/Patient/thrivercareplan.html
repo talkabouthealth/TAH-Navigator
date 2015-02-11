@@ -54,7 +54,13 @@
         </table>
        #{/if}
        #{else}<p>None</p>#{/else}
-
+       <div class="col-xs-12 col-sm-12" style="margin:10px 0 20px 0;padding:0;">
+       	<div class="title">
+			<h1>FOLLOW-UP NOTES</h1>
+			#{set noteSection:"followupcare"/}
+            #{include '/tags/note.html' /}
+            </div>
+ 		</div>
         <!-------------   Concern -------------------->
         <div class="title">
 	        <h1>Needs / Concerns</h1>

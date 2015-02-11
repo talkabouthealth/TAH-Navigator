@@ -41,6 +41,17 @@ public class NoteDTO {
 	@Column(name = "editDate")
 	private Date noteEditDate;
 
+	@Column(name = "notesection")
+	private String noteSection;
+	
+	public String getNoteSection() {
+		return noteSection;
+	}
+
+	public void setNoteSection(String noteSection) {
+		this.noteSection = noteSection;
+	}
+
 	public int getId() {
 		return id;
 	}

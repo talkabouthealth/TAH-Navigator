@@ -200,9 +200,9 @@ a {
 .product_title02{color:#777; font-size:15px; margin:3px 0px;}
 .product_title02 b{color:#686d73; font-weight:600;}
 .product_title02 span{color:#00509B; font-size:15px; margin:3px 0px;}
-.note{ color:#777;  
-    font-size: 15px;
-    font-style: italic;}
+.note{ color:#777!important;  
+    font-size: 15px!important;
+    font-style: italic!important;}
 .bottom_hr{ background: none repeat scroll 0 0 #999;
     display: block;
     height: 2px;

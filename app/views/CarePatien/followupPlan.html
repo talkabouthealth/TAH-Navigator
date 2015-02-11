@@ -35,6 +35,15 @@
 			<tr><td colspan="5" style="text-align:center;">No record found</td></tr>
 		#{/else}
     </table>
+    <div class="col-xs-12 col-sm-12" style="margin:20px 0;padding:0;">
+		<div>
+			<span class="title" style="vertical-align: middle;">FOLLOW-UP NOTES</span>&nbsp;&nbsp;
+			<button class="btn btn-default btn-sm noteBtn" style="font-weight: bold;" name="followupcare">+ NEW NOTE</button>
+			#{set noteSection:"followupcare"/}
+            #{include '/tags/note.html' /}
+		</div>
+	</div>
+   
     <div class="title">
         <h3>Needs / Concerns</h3>
         <button type="button" class="btn btn-default" patient_id="${patientId}" form_type="new" onclick="careTeamController.evtMsgHandler('fup_concern_form', this);">+ Add Need</button>

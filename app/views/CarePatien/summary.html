@@ -101,9 +101,9 @@
                     </div>                    
                     <div class="col-xs-12 col-sm-12" style="border-top: 1px solid #CCC;margin-top: 20px;padding-top: 20px;">
                         <div>
-                            <span class="title" style="vertical-align: middle;">NOTES</span>&nbsp;&nbsp;<button class="btn btn-default btn-sm noteBtn" style="font-weight:bold;">+ NEW NOTE</button>
+                            <span class="title" style="vertical-align: middle;">NOTES</span>&nbsp;&nbsp;<button class="btn btn-default btn-sm noteBtn" style="font-weight:bold;" name="summary">+ NEW NOTE</button>
                         </div>
+                        #{set noteSection:"summary"/}
                         #{include '/tags/note.html' /}
-                    
                     </div>
                     </div>

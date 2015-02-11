@@ -686,13 +686,12 @@ public class Treatment {
 			query.setParameter("id", treatmentId);
 			prtDto = query.getSingleResult();
 			refreshRadiationTreatment(prtDto);
-		} 
-		catch(Exception e) {
+		} catch(Exception e) {
 			//e.printStackTrace();
 		}
 		return prtDto;
 	}
-	
+
 	public static PatientSurgeryInfoDTO getSurgeryInfo(Integer treatmentId) {
 		EntityManager em = JPAUtil.getEntityManager();
 		PatientSurgeryInfoDTO psiDto = null;

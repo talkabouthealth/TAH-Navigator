@@ -207,11 +207,12 @@ public class CarePatien  extends Controller {
 	}
 
 	public static void treatmentPlan(Integer patientId) {
+		List<NoteDTO> noteList = NotesDAO.getPatientNotesList(patientId+"");
 		List<PatientRadiationTreatmentDTO> radiationTreatments = Treatment.getPatientRadiationTreatments(patientId);
 		List<PatientChemoTreatmentDTO> chemoTreatments = Treatment.getPatientChemoTreatments(patientId);
 		List<PatientSurgeryInfoDTO> surgeryInfo = Treatment.getPatientSurgeryInfo(patientId);
 		Map <String, Object> ps = PatientDetailDAO.patientSummary(patientId);
-		render(patientId, radiationTreatments, chemoTreatments, surgeryInfo, ps);
+		render(patientId, radiationTreatments, chemoTreatments, surgeryInfo, ps,noteList);
 	}
 
 	public static void followupPlan(int patientId) {
@@ -628,7 +629,8 @@ public class CarePatien  extends Controller {
 		renderTemplate("CarePatien/diagnosis.html", patientId, breastCancerId, userDetails, patientDetails, breastCancerInfo, ps,mutations,chromosomes);
 	}
 
-	public static void noteOperation(String operation,int id,int patientId,String title,String description) {
+	
+	public static void noteOperation(String operation,int id,int patientId,String title,String description,String noteSection) {
 		
 		UserBean user = CommonUtil.loadCachedUser(session);
 		UserDTO noteBy = UserDAO.getUserBasicByField("id",user.getId());
@@ -643,6 +645,7 @@ public class CarePatien  extends Controller {
 				UserDTO noteFor = UserDAO.getUserBasicByField("id",patientId);
 				noteDto.setNoteFor(noteFor);
 				noteDto.setNoteTitle(title);
+				noteDto.setNoteSection(noteSection);
 				BaseDAO.save(noteDto);
 			} else if("edit".equalsIgnoreCase(operation)) {
 				Integer idField = new Integer(id);

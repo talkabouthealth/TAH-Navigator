@@ -1,6 +1,7 @@
 #{if noteList != null}
 <div class="notes">
-	#{list noteList, as:'seq'}
+	#{list noteList, as:'seq'}	
+	#{if (seq.noteSection==noteSection) }
 	<div class="note">
 		<p class="last">#{userName userName: seq.noteBy.name, userId:seq.noteBy.id /}, ${seq.noteDate.format('M/dd/yyyy h:m a')}</p>
 		<h3>
@@ -8,13 +9,14 @@
 		    ${seq.noteTitle}
 		    #{/if}
 		    #{else}  
-			<a href="javaScript:operationNote('edit','${seq.id}','${seq.noteTitle}','${seq.noteDesc}', '${seq.noteBy.id}')">
+			<a href="javaScript:operationNote('edit','${seq.noteSection}','${seq.id}','${seq.noteTitle}','${seq.noteDesc}', '${seq.noteBy.id}')">
 				${seq.noteTitle}
 			</a>
 			#{/else}
 		</h3>
 		<p>${seq.noteDesc}</p>
 	</div><!-- note -->
+	#{/if}	
 	#{/list}
 </div><!-- notes -->
 #{/if}
