@@ -89,6 +89,29 @@
             <h4>If this is an emergency, please call 911.</h4>
         </div>
     </div>
+	<div id="tpl_thank_you_page_distress_4_or_higher">
+        <div class="thank-you-page-1"> 
+			<h4>
+            You have scored high on the distress scale.  
+			</h4>
+			
+			<h4>
+			If this is an emergency, please call 911. 
+			</h4>
+			
+			<h4>
+			If this is an urgent issue, please go to an emergency room right away.
+			</h4>
+			
+			<h4>
+			At your next visit we can discuss resources which may be available to help you. 
+			</h4>
+			
+			<h4>
+			Thank you for updating us with how you are doing. 
+			</h4>
+        </div>
+    </div>
     
     <div id="tpl_step1_buttons">
         <div class="step1-buttons" style="clear:both;">
@@ -414,7 +437,12 @@ $(function() {
         };
         
         var renderModalPage3 = function() {
-            $container.find(".modal-body").html($('#dm_templates #tpl_thank_you_page_1').html());
+			if (distressValue >= 4) {
+				$container.find(".modal-body").html($('#dm_templates #tpl_thank_you_page_distress_4_or_higher').html());
+			}
+			else {
+				$container.find(".modal-body").html($('#dm_templates #tpl_thank_you_page_1').html());
+			}
             $container.find(".modal-footer").html($('#dm_templates #tpl_step3_buttons').html());
 			//$container.find('.modal-dialog').removeClass('step1-modal-dialog');
 			$container.find('.modal-dialog').removeClass('step2-modal-dialog');
@@ -435,7 +463,12 @@ $(function() {
         };
         
         var renderNonModalPage3 = function() {
-            $container.find(".page-body").html($('#dm_templates #tpl_thank_you_page_1').html());
+			if (distressValue >= 4) {
+				$container.find(".page-body").html($('#dm_templates #tpl_thank_you_page_distress_4_or_higher').html());
+			}
+			else {
+				$container.find(".page-body").html($('#dm_templates #tpl_thank_you_page_1').html());
+			}
             $container.find(".page-footer").html($('#dm_templates #tpl_step3_buttons').html());                               
         };
         // Most probably Kevins's Code
