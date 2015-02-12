@@ -80,8 +80,8 @@ var careTeamController = (function() {
                     for(i=0;i<data.disease.length;i++) {
                     	$(self.diseaseId).append("<option value='"+data.disease[i].id+"'>"+data.disease[i].templatename+"</option>");
                     }
-
-                    $(self.saveBtnId).click(function() {
+                    $(self.saveBtnId).unbind("click");
+                    $(self.saveBtnId).click(function(event) {
                         if (self.save()) {
                             $(self.formId).modal('hide');
                         }

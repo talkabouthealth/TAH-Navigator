@@ -123,7 +123,7 @@
     <td><div>${problemList}</div></td>
     <td><div>
     		#{if notes=="None"}${notes}#{/ if}
-    		 #{else}<span class="lastNoteTitle">${notes}</span><span class="lastNoteDesc" style="visibility:hidden" >${notedesc}</span>#{/ else}    		
+    		 #{else}<span class="lastNoteTitle">${notes}</span><span class="lastNoteDesc" style="visibility:hidden" >${notedesc.raw()}</span>#{/ else}    		
     	</div>
     </td>
 </tr>

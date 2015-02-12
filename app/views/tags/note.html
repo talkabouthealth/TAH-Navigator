@@ -1,20 +1,39 @@
+<style>
+li{
+	font-style: normal;
+	color:#44484c;	
+}
+ul
+{
+	list-style-position: outside;
+	list-style: square;
+}
+
+</style>
 #{if noteList != null}
 <div class="notes">
 	#{list noteList, as:'seq'}	
 	#{if (seq.noteSection==noteSection) }
 	<div class="note">
+		#{if (seq.noteBy && seq.noteDate)}
 		<p class="last">#{userName userName: seq.noteBy.name, userId:seq.noteBy.id /}, ${seq.noteDate.format('M/dd/yyyy h:m a')}</p>
+		#{/if}
 		<h3>
 		    #{if noteLinkInactive}
 		    ${seq.noteTitle}
 		    #{/if}
 		    #{else}  
+			#{if (seq.noteBy && seq.noteDate)}    
 			<a href="javaScript:operationNote('edit','${seq.noteSection}','${seq.id}','${seq.noteTitle}','${seq.noteDesc}', '${seq.noteBy.id}')">
 				${seq.noteTitle}
 			</a>
+			#{/if}
+			#{else}
+			${seq.noteTitle}
+			#{/else}
 			#{/else}
 		</h3>
-		<p>${seq.noteDesc}</p>
+		<p>${seq.noteDesc.raw()}</p>
 	</div><!-- note -->
 	#{/if}	
 	#{/list}

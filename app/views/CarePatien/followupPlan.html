@@ -19,7 +19,7 @@
 			#{list items:careItems, as:'ci'}
 	        <tr>
 	            <td>
-	            	<a form_type="edit" patient_id="${ci.userId}" care_item_id="${ci.id}" onclick="careTeamController.evtMsgHandler('fup_careitem_form', this);">${ci.activity}</a>
+	            	<a form_type="edit" patient_id="${patientId}" care_item_id="${ci.id}" onclick="careTeamController.evtMsgHandler('fup_careitem_form', this);">${ci.activity}</a>
 					#{if ci.infoText != null && ci.infoText != ''} 
 						<i data-type="${ci.tipType}" data-title="${ci.infoText}" class="fa fa-info-circle infomarker"></i>
 					#{/if}

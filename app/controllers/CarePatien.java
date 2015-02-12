@@ -78,6 +78,7 @@ import nav.dto.CareMember;
 import models.CarePlanPrintDTO;
 import nav.dto.DistressBean;
 import nav.dto.ExpertBean;
+import nav.dto.TAHConstants;
 import nav.dto.UserBean;
 import play.mvc.Controller;
 import play.mvc.With;
@@ -1476,7 +1477,22 @@ public class CarePatien  extends Controller {
 		Activity: Pelvic exam	
 		Frequency: Every year
 		*/
-
+//		 List<DefaultTemplateDetailDTO> defaults = DefaultTemplateDAO.getInputDefaultByPageField(diseaseId);
+		 UserDTO userDTO = UserDAO.getUserBasicByField("id", patientId);
+		 int start = 0,end=3;
+		 
+		 if(diseaseId!=1) {
+			 start=3;
+			 end=6;
+		 }
+		for(int i=start;i<end;i++) {
+			NoteDTO temp = new NoteDTO();
+			temp.setNoteFor(userDTO);
+			temp.setNoteTitle(TAHConstants.TITLES[i]);
+			temp.setNoteDesc(TAHConstants.DESCRIPTIONS[i]);
+			temp.setNoteSection("followupcare");
+			BaseDAO.save(temp);
+		}
 //		List<InputDefaultDTO> defaults = InputDefaultDAO.getInputDefaultByPageField("followupplan",diseaseId,"activity");
 		Treatment.populatePatientFolloupplan(patientId, diseaseId);
 		/*
