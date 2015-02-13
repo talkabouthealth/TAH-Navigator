@@ -7,13 +7,27 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import util.JPAUtil;
-
 import models.NoteDTO;
 import models.SecurityQuestionDTO;
 import models.UserDTO;
 
 public class NotesDAO {
 
+	
+	public static void saveNote(NoteDTO note)
+	{
+		EntityManager em = JPAUtil.getEntityManager();
+		try {
+			em.getTransaction().begin();
+			em.persist(note);
+			em.getTransaction().commit();
+		}catch(Exception e) {
+			e.printStackTrace();
+		} finally{
+			em.close();
+		}
+	}
+	
 	public static List<NoteDTO> getPatientNotesList(String patientId) {
 		EntityManager em = JPAUtil.getEntityManager();
 		List<NoteDTO> arrayList = null;
@@ -59,5 +73,23 @@ public class NotesDAO {
 			em.close();
 		}
 		return dto;
+	}
+	
+	public static boolean isDefaultNoteExist(Integer patientId,String title) {
+		EntityManager em = JPAUtil.getEntityManager();
+		List<NoteDTO> arrayList = null;
+		try{
+			TypedQuery<NoteDTO> query = em.createQuery("SELECT c FROM NoteDTO c WHERE c.noteFor.id = :field1 and noteby is NULL and notetitle = :field2", NoteDTO.class); 
+			query.setParameter("field1", patientId);
+			query.setParameter("field2", title);
+			arrayList = query.getResultList();
+		}catch(Exception e){
+			System.out.println(e.getMessage());
+		}finally{
+			em.close();
+		}
+		System.out.println(arrayList!=null);
+	//	List<NoteDTO> arrayList = em.createQuery( "from NoteDTO where noteFor.id =:field order by noteDate desc", NoteDTO.class ).getResultList();
+		return arrayList!=null?arrayList.size()>0:false;
 	}
 }

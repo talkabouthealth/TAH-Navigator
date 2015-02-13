@@ -115,14 +115,38 @@ public class CarePatien  extends Controller {
 	
 	public static void saveCarePlanPrint(String patientId,String note)
 	{
+		UserBean user = CommonUtil.loadCachedUser(session);
 		CarePlanPrintDTO carePlanPrintDTO = new CarePlanPrintDTO();
-		carePlanPrintDTO.setExpertId(CommonUtil.loadCachedUser(session).getId());
-		int id = Integer.parseInt(patientId);
+		carePlanPrintDTO.setExpertId(user.getId());
+		int pid = Integer.parseInt(patientId);
 		carePlanPrintDTO.setIssueDate(new Date());
-		carePlanPrintDTO.setPatientId(id);
+		carePlanPrintDTO.setPatientId(pid);
 		carePlanPrintDTO.setNote(note);
 		BaseDAO.save(carePlanPrintDTO);
-		renderText(CarePlanPrintDAO.getPrintCount(id));
+		System.out.println(user.getId()+" print plan saved");
+		Date curDate = new Date();
+		SimpleDateFormat ft = new SimpleDateFormat ("MM/dd/yyyy hh:mm a");
+
+		UserDTO noteBy = UserDAO.getUserBasicByField("id",user.getId());
+		String title= "Patient given printed care plan on "+ft.format(curDate); 
+		if(note.equals(""))
+		{
+			note = "given on "+ft.format(curDate);
+		}
+		
+		NoteDTO  noteDto = new NoteDTO();
+		noteDto.setNoteBy(noteBy);
+		noteDto.setNoteDate(curDate);
+		noteDto.setNoteDesc(note);
+		noteDto.setNoteEditDate(curDate);
+		UserDTO noteFor = UserDAO.getUserBasicByField("id",new Integer(patientId));
+		noteDto.setNoteFor(noteFor);
+		noteDto.setNoteTitle(title);
+		noteDto.setNoteSection("summary");
+		BaseDAO.save(noteDto);
+		System.out.println(noteFor.getId()+" note saved");
+		
+		renderText(CarePlanPrintDAO.getPrintCount(pid));
 	}
 	
 	public static void summary(Integer patientId) {
@@ -1461,8 +1485,8 @@ public class CarePatien  extends Controller {
 	}
 	
 	public static void careitemTemplateData(Integer patientId, Integer diseaseId) {
-		System.out.println("patientId: "+ patientId);
-		System.out.println("diseaseId: "+ diseaseId);
+		/*System.out.println("patientId: "+ patientId);
+		System.out.println("diseaseId: "+ diseaseId);*/
 
 		/*
 		Activity: Medical history and physical exam	
@@ -1477,27 +1501,13 @@ public class CarePatien  extends Controller {
 		Activity: Pelvic exam	
 		Frequency: Every year
 		*/
-//		 List<DefaultTemplateDetailDTO> defaults = DefaultTemplateDAO.getInputDefaultByPageField(diseaseId);
-		 UserDTO userDTO = UserDAO.getUserBasicByField("id", patientId);
-		 int start = 0,end=3;
-		 
-		 if(diseaseId!=1) {
-			 start=3;
-			 end=6;
-		 }
-		for(int i=start;i<end;i++) {
-			NoteDTO temp = new NoteDTO();
-			temp.setNoteFor(userDTO);
-			temp.setNoteTitle(TAHConstants.TITLES[i]);
-			temp.setNoteDesc(TAHConstants.DESCRIPTIONS[i]);
-			temp.setNoteSection("followupcare");
-			BaseDAO.save(temp);
-		}
 //		List<InputDefaultDTO> defaults = InputDefaultDAO.getInputDefaultByPageField("followupplan",diseaseId,"activity");
+		
+
+		List<DefaultTemplateDetailDTO> defaults = DefaultTemplateDAO.getInputDefaultByPageField(diseaseId);		 
 		Treatment.populatePatientFolloupplan(patientId, diseaseId);
-		/*
-		List<DefaultTemplateDetailDTO> defaults = DefaultTemplateDAO.getInputDefaultByPageField(diseaseId); 
-		if(defaults != null && !defaults.isEmpty()) {
+/*		Treatment.addDefaultNotes(patientId, diseaseId);
+*/		/*if(defaults != null && !defaults.isEmpty()) {
 			Integer careItemId = null;
 			for (DefaultTemplateDetailDTO inputDefaultDTO : defaults) {
 				Map<String, String> fupCareItem = new HashMap<String, String>();
@@ -1515,8 +1525,8 @@ public class CarePatien  extends Controller {
 				fupCareItem.put("doctor","");
 				FollowUp.saveCareItem(patientId, careItemId, fupCareItem);		
 			}
-		}
-		*/
+		}*/
+//		followupPlan(patientId.intValue());
 		renderText("OK");
 	}
 }

@@ -8,7 +8,6 @@ ul
 	list-style-position: outside;
 	list-style: square;
 }
-
 </style>
 #{if noteList != null}
 <div class="notes">
@@ -16,15 +15,15 @@ ul
 	#{if (seq.noteSection==noteSection) }
 	<div class="note">
 		#{if (seq.noteBy && seq.noteDate)}
-		<p class="last">#{userName userName: seq.noteBy.name, userId:seq.noteBy.id /}, ${seq.noteDate.format('M/dd/yyyy h:m a')}</p>
+		<p class="last" style="margin:0 0 5px 0;">#{userName userName: seq.noteBy.name, userId:seq.noteBy.id /}, ${seq.noteDate.format('M/dd/yyyy h:m a')}</p>
 		#{/if}
-		<h3>
+		<h3 style="font-size: 15px;">
 		    #{if noteLinkInactive}
 		    ${seq.noteTitle}
 		    #{/if}
 		    #{else}  
 			#{if (seq.noteBy && seq.noteDate)}    
-			<a href="javaScript:operationNote('edit','${seq.noteSection}','${seq.id}','${seq.noteTitle}','${seq.noteDesc}', '${seq.noteBy.id}')">
+			<a href="javaScript:operationNote('edit','${seq.noteSection}','${seq.id}','${seq.noteTitle}','${seq.noteDesc}', '${seq.noteBy.id}')" style="font-size: 15px;">
 				${seq.noteTitle}
 			</a>
 			#{/if}
@@ -33,7 +32,7 @@ ul
 			#{/else}
 			#{/else}
 		</h3>
-		<p>${seq.noteDesc.raw()}</p>
+		<p style="margin:15px 0;text-align:justify;">${seq.noteDesc.raw()}</p>
 	</div><!-- note -->
 	#{/if}	
 	#{/list}

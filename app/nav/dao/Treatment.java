@@ -2,6 +2,8 @@ package nav.dao;
 
 import javax.persistence.*;
 
+import nav.dto.TAHConstants;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -754,6 +756,30 @@ public class Treatment {
 		return surgeryInfo;
 	}
 
+	public static void addDefaultNotes(Integer patientId,Integer diseaseId)
+	{
+		UserDTO userDTO = UserDAO.getUserBasicByField("id", patientId);
+		 int start = 0,end=3;
+		 if(diseaseId!=1)
+		 {
+			 start=3;
+			 end=6;
+		 }
+		for(int i=start;i<end;i++)
+		{
+			NoteDTO temp = new NoteDTO();
+			temp.setNoteFor(userDTO);
+			temp.setNoteTitle(TAHConstants.TITLES[i]);
+			temp.setNoteDesc(TAHConstants.DESCRIPTIONS[i]);
+			temp.setNoteSection("followupcare");
+			if(!NotesDAO.isDefaultNoteExist(patientId, TAHConstants.TITLES[i]))		
+			{
+				System.out.println("NOW : Note does not exist enter note");
+				NotesDAO.saveNote(temp);				
+			}
+		}
+	}
+	
 	public static boolean populatePatientFolloupplan(Integer patientId, Integer templateId) {
 		List<DefaultTemplateDetailDTO> defaults = DefaultTemplateDAO.getInputDefaultByPageField(templateId); 
 		if(defaults != null && !defaults.isEmpty()) {
@@ -773,7 +799,8 @@ public class Treatment {
 				}
 				fupCareItem.put("doctor","");
 				FollowUp.saveCareItem(patientId, careItemId, fupCareItem);		
-			}
+				addDefaultNotes(patientId, templateId);
+			}			
 		}
 		return true;
 	}

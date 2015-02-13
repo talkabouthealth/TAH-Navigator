@@ -402,7 +402,7 @@
 				<div class="form-group form-group-sm">
 					<label class="col-xs-3 control-label" for="rt_schedule">TITLE/LABEL</label>
 					<div class="col-xs-9 form-group input-group">
-						<input type="text" name="title"
+						<input type="text" name="title" maxlength="500" id="noteTitle"
 							placeholder="i.e. Note for other care team members. Not for patients."
 							class="form-control input-sm" required> <span
 							class="input-group-addon has-error"><i class="fa fa-star"></i></span>
@@ -1641,6 +1641,10 @@ $(document).ready(function() {
           		$("div.active #btn-dropdown").attr("given","yes");
           		jQuery("div.active #note-text").val("") ;
           		$("div.active #li-error").html(text_max + ' characters remaining');
+          		if(!$($("#tabs li.active a").attr("href")).index())
+          			{
+          				$("#tabs li.active a").click();
+          			}
           	}
           });
 	  }
@@ -1665,10 +1669,9 @@ $(document).ready(function() {
 		            {
 		            	$(this).html("<span class='badge' id='printbadge' style='margin-right:3px;min-width:25px'></span>Given Printed Care Plan");
 		               	$(this).attr("given","yes");
-		               /* 	$("div.active #btn-dropdown").attr("given","yes"); */
-		            }		            
+		            }	
 		            sendnote($(this).attr('patient_id'),$("div.active #note-text").val());
-			 }
+		      }
 	   );
 	 
 		
