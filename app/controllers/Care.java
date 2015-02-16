@@ -128,7 +128,7 @@ public class Care extends Controller {
 				System.out.println("Sending with appointment");
 				NotificationDAO.scheduleInviteEmailOnce(invDto, userDto, true);
    		 	} else {
-   		 	System.out.println("Sending withoute appointment");
+   		 		System.out.println("Sending withoute appointment");
    		 		NotificationDAO.scheduleInviteEmailOnce(invDto, userDto, false);	
    		 	}
 		}

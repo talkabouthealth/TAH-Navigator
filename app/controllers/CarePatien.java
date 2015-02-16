@@ -1280,7 +1280,7 @@ public class CarePatien  extends Controller {
 						cal.setTime(appointmentDate);
 						cal.add(Calendar.YEAR , 1);
 						appEndsOnDate = cal.getTime();
-						while(appointmentDate.compareTo(appEndsOnDate) <= 0) {
+						while(appStartsOn.compareTo(appEndsOnDate) <= 0) {
 							app = new AppointmentDTO();
 							app.setAddedby(addedby);
 							app.setAddedon(new Date());
@@ -1300,13 +1300,15 @@ public class CarePatien  extends Controller {
 							app.setTreatementStep(treatmentProcessStep);
 							app.setPurposeText(purposeText);
 							app.setPatientid(patient);
-							app.setAppointmentgroupid(appGroup.getId());
+							app.setAppointmentgroupid(appGroup.getId());							
+							
 							BaseDAO.save(app);
 							NotificationDAO.scheduleAppointmentEmails(app, "add");
-							cal  = Calendar.getInstance();
-							cal.setTime(appStartsOn);
-							cal.add(Calendar.DATE, 7);
-							appStartsOn = cal.getTime();
+							
+							Calendar cal2  = Calendar.getInstance();
+							cal2.setTime(appStartsOn);
+							cal2.add(Calendar.DATE, 7);
+							appStartsOn = cal2.getTime();
 						}
 					}
 				}
