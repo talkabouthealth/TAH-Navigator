@@ -6,41 +6,74 @@
 	<h1>Care Team Members</h1>
 #{if careTeams != null && careTeams.size() > 0}	
 #{list careTeams, as:'team'}	
-#{if team && team.careTeamDto && team.careTeamDto.careteam && team.leadExpert && team.leadExpert.userDetails}
-	<h3><i class="fa fa-table"></i> ${team.careTeamDto.careteam.name} CARE TEAM</h3>		
+	#{set careTeam: team.careTeam /}
+	#{set primaryExpert: team.primaryExpert /}
+	#{set otherPrimaryCareMember: team.otherPrimaryCareMember /}
+	#{set experts: team.experts /}
+	#{set otherCareMembers: team.otherCareMembers /}
 	<div class="clearfix">
-		<div class="col-xs-3">
-			<img src="@{Image.show(team?.leadExpert?.expertDetail?.id)}">
-		</div>
-		<div class="col-xs-9">
-			<h4>#{userName userName: team?.leadExpert?.userDetails?.user?.name, userId: team?.leadExpert?.userDetails?.user?.id /}</h4>
-			<div>${team?.leadExpert?.userDetails?.mobile}</div>
-		</div>
+	
+		<h2><i class="fa fa-table"></i>${careTeam.name} CARE TEAM</h2>
+		
+		#{if otherPrimaryCareMember != null}
+			<div class="col-xs-6 care-team-box">
+				<div class="col-xs-3">
+				<img src="@{Image.show(0)}">
+				</div>
+				<div class="col-xs-9">
+					<div>${otherPrimaryCareMember.title}</div>
+					<div>${otherPrimaryCareMember.name}</div>
+					<div>${otherPrimaryCareMember.telephone}</div>
+				</div>
+			</div>
+		#{/if}		
+		
+		#{if primaryExpert != null}
+			<div class="col-xs-6 care-team-box">
+				<div class="col-xs-3">
+				<img src="@{Image.show(primaryExpert.expertDetail.id)}">
+				</div>
+				<div class="col-xs-9">
+					<div>${primaryExpert.expertDetail?.designation?.designation}</div>
+					<div>#{userName userName: primaryExpert.userDetails?.user?.name, userId: primaryExpert.userDetails?.user?.id /}</div>
+					<div>${primaryExpert.userDetails?.mobile}</div>
+				</div>
+			</div>
+		#{/if}
+			
+		#{list experts, as: 'expert'}
+			#{if expert != null}
+				<div class="col-xs-6 care-team-box">
+					<div class="col-xs-3">
+					<img src="@{Image.show(expert.expertDetail.id)}">
+					</div>
+					<div class="col-xs-9">
+						<div>${expert.expertDetail?.designation?.designation}</div>
+						<div>#{userName userName: expert.userDetails?.user?.name, userId: expert.userDetails?.user?.id /}</div>
+						<div>${expert.userDetails?.mobile}</div>
+					</div>
+				</div>
+			#{/if}
+		#{/list}
+		
+		#{list otherCareMembers, as: 'otherMember'}
+			#{if otherMember != null}
+				<div class="col-xs-6 care-team-box">
+					<div class="col-xs-3">
+					<img src="@{Image.show(0)}">
+					</div>
+					<div class="col-xs-9">
+						<div>${otherMember.title}</div>
+						<div>${otherMember.name}</div>
+						<div>${otherMember.telephone}</div>
+					</div>
+				</div>
+			#{/if}
+		#{/list}
+	
 	</div>
-	
-#{if team.experts.size() > 0}	
-	<div class="line"></div>	
-#{list team.experts, as:'expert'}
-#{if expert && expert.expertDetail && expert.userDetails && expert.expertDetail.designation}	
-	<div class="clearfix">
-		<div class="col-xs-3">
-			<img src="@{Image.show(expert.expertDetail.id)}">
-		</div>
-		<div class="col-xs-9">
-			<div>${expert?.expertDetail?.designation?.designation}</div>
-			<div>#{userName userName: expert?.userDetails?.user?.name, userId: expert?.userDetails?.user?.id /}</div>
-			<div>${expert?.userDetails?.mobile}</div>
-		</div>		
-	</div>
-#{/if}
-#{/list}    
-	
-	
-#{/if}	
-	
-	<div class="double-line"></div>
-	
-#{/if}	
+
+
 #{/list}
 #{/if}
 #{else}

@@ -4,38 +4,43 @@
 
 
 <div class="print-medications">
-#{if currentMedications.size() > 0}	
-	<h1>Current Medications</h1>        
-    #{list currentMedications, as:'medication'}    	
-	<h2>${medication.medicine.genericname}</h2>
-	<p>BRAND NAME: ${medication.medicine.brandname}</p>
-		#{if medication.frequency}
-	<p>FREQUENCY: ${medication.frequency}</p>
-		#{/if}		
-	<p>DATES: ${medication.startdate} - ${medication.enddate}</p>		
-	<p>SPECIAL INSTRUCTIONS: ${medication.specialinstruction}</p>
-		#{if medication.caremembername}
-	<p>PRESCRIBING PYSICIAN: ${medication.caremembername}</p>
-		#{/if}		  
-	
-	<div class="line"></div>
-    #{/list}
+#{if currentMedications.size() > 0}
+	<div class="border-box">	
+		<h1>Current Medications</h1>        
+		#{list currentMedications, as:'medication'}    	
+		<div class="avoid-page-break">
+			<h2>${medication.medicine.genericname}</h2>
+			<p>BRAND NAME: ${medication.medicine.brandname}</p>
+				#{if medication.frequency}
+			<p>FREQUENCY: ${medication.frequency}</p>
+				#{/if}		
+			<p>DATES: ${medication.startdate} - ${medication.enddate}</p>		
+			<p>SPECIAL INSTRUCTIONS: ${medication.specialinstruction}</p>
+				#{if medication.caremembername}
+			<p>PRESCRIBING PYSICIAN: ${medication.caremembername}</p>
+				#{/if}		  
+			<div class="line"></div>
+		</div>		
+		#{/list}
+	</div>
 #{/if}
 
 #{if pastMedications.size() > 0}	
 	<h1>Past Medications</h1>        
     #{list pastMedications, as:'medication'}    	
-	<h2>${medication.medicine.genericname}</h2>
-	<p>BRAND NAME: ${medication.medicine.brandname}</p>
-		#{if medication.frequency}
-	<p>FREQUENCY: ${medication.frequency}</p>
-		#{/if}		
-	<p>DATES: ${medication.startdate} - ${medication.enddate}</p>		
-	<p>SPECIAL INSTRUCTIONS: ${medication.specialinstruction}</p>
-		#{if medication.caremembername}
-	<p>PRESCRIBING PYSICIAN: ${medication.caremembername}</p>
-		#{/if}		  
-	<div class="line"></div>
+	<div class="avoid-page-break">
+		<h2>${medication.medicine.genericname}</h2>
+		<p>BRAND NAME: ${medication.medicine.brandname}</p>
+			#{if medication.frequency}
+		<p>FREQUENCY: ${medication.frequency}</p>
+			#{/if}		
+		<p>DATES: ${medication.startdate} - ${medication.enddate}</p>		
+		<p>SPECIAL INSTRUCTIONS: ${medication.specialinstruction}</p>
+			#{if medication.caremembername}
+		<p>PRESCRIBING PYSICIAN: ${medication.caremembername}</p>
+			#{/if}		  
+		<div class="line"></div>
+	</div>
     #{/list}
 #{/if}
 

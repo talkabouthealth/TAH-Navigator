@@ -3,11 +3,13 @@ package controllers;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import nav.dao.AppointmentDAO;
+import nav.dao.BaseDAO;
 import nav.dao.CancerDAO;
 import nav.dao.CareTeamDAO;
 import nav.dao.DistressDAO;
@@ -19,6 +21,7 @@ import nav.dao.UserDAO;
 import nav.dto.CareTeam;
 import nav.dto.DistressBean;
 import nav.dto.ExpertBean;
+import nav.dto.TeamDetails;
 import models.AppointmentDTO;
 import models.BreastCancerInfoDTO;
 import models.PatienCareTeamDTO;
@@ -50,8 +53,8 @@ public class PrintPages extends Controller {
 		List<PatientConcernDTO> concerns = FollowUp.getPatientConcerns(user.getId());			
 		List<PatientGoalDTO> goals = FollowUp.getPatientGoals(user.getId());			
 		List<PatientFollowUpCareItemDTO> careItems = FollowUp.getPatientCareItems(user.getId());							
-		// care team		
-		List<CareTeam> careTeams = CareTeamDAO.patientTeams(patientId);		
+		// care team				
+		List<TeamDetails> careTeams = CareTeamDAO.getTeamDetails(user.getId());				
 		// appointments
 		List<AppointmentDTO> futureAppointments = AppointmentDAO.futureAppointments(patientId);
 		List<AppointmentDTO> pastAppointments = AppointmentDAO.pastAppointments(patientId);
@@ -61,36 +64,58 @@ public class PrintPages extends Controller {
 		
 		List<PatientMedicationDTO> medicationList = MedicationDAO.getMedicine("patientid", patientId);
 		List<PatientMedicationDTO> currentMedications = new ArrayList<PatientMedicationDTO>();
-		List<PatientMedicationDTO> pastMedications = new ArrayList<PatientMedicationDTO>();
-		Date today = new Date();
+		List<PatientMedicationDTO> pastMedications = new ArrayList<PatientMedicationDTO>();		
+		Date now = new Date();		
 		
-		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");
+		
+		DateFormat df = new SimpleDateFormat("yyyy-mm-dd");		
 		DateFormat dfDisplay = new SimpleDateFormat("mm/dd/yyyy");
-		Date startDt = null;
-		Date endDt = null;
+		
+		
 		for (PatientMedicationDTO mDto : medicationList) {
+			Date startDt = null;
+			Date endDt = null;	
+			Date startDt1 = null;
+			Date endDt1 = null;
 			if(mDto.getCaremembername() == null) {
 				mDto.setCaremembername(UserDAO.getUserName(mDto.getCaremember().getId()));
 			}
 			try {
-				startDt = df.parse(mDto.getStartdate());
-				mDto.setStartdate(dfDisplay.format(startDt));
+				Calendar cal = Calendar.getInstance();
+				String date = mDto.getStartdate().trim();
+				String[] tokens = date.split("-");
+				cal.set(Calendar.YEAR, Integer.parseInt(tokens[0]));
+				cal.set(Calendar.MONTH, Integer.parseInt(tokens[1]) - 1);
+				cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(tokens[2]));
+				startDt = cal.getTime();
+				
+				date = mDto.getEnddate().trim();
+				tokens = date.split("-");
+				cal.set(Calendar.YEAR, Integer.parseInt(tokens[0]));
+				cal.set(Calendar.MONTH, Integer.parseInt(tokens[1]) - 1);
+				cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(tokens[2]));
+				endDt = cal.getTime();
+				
+				startDt1 = df.parse(mDto.getStartdate().trim());							
+				endDt1 = df.parse(mDto.getEnddate().trim());
+				mDto.setStartdate(dfDisplay.format(startDt1));
+				mDto.setEnddate(dfDisplay.format(endDt1));
 			} catch(Exception e) { }
-			try {
-				endDt = df.parse(mDto.getEnddate());
-				mDto.setEnddate(dfDisplay.format(endDt));
-			} catch(Exception e) { }
-			if(startDt != null && endDt != null) {
-				if ((today.compareTo(startDt) < 0) && (today.compareTo(endDt) < 0)) {
+			
+			if(startDt != null && endDt != null) {				
+				if (startDt.before(now) && endDt.after(now)) {
+					currentMedications.add(mDto);					
+				} 
+				else if(endDt.after(now)) {
 					currentMedications.add(mDto);
-				} else if(today.compareTo(endDt) < 0) {
-					currentMedications.add(mDto);
-				} else {
-					pastMedications.add(mDto);
+				} 
+				else {
+					pastMedications.add(mDto);					
 				}
-			} else {
+			} 
+			else {
 				currentMedications.add(mDto);
-			}
+			}			
 		}
 		
 		// distress data
@@ -120,7 +145,7 @@ public class PrintPages extends Controller {
 		renderArgs.put("goals", goals);		
 		renderArgs.put("careItems", careItems);
 		// care team
-		renderArgs.put("careTeams", careTeams);
+		renderArgs.put("careTeams", careTeams);		
 		// appointments
 		renderArgs.put("futureAppointments", futureAppointments);
 		renderArgs.put("pastAppointments", pastAppointments);

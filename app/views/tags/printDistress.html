@@ -23,46 +23,17 @@
     #{/if}
 	</p>
 	
-	#{if lastWeekProblems?.size() > 0}
-	<h2>Current Problems</h2>
-		#{list items: lastWeekProblems, as: 'problem'}
-	<p>- ${problem}</p>
-        #{/list}
-	#{/if}
 	
-	#{if lastMonthProblems?.size() > 0}
-	<h2>Last Month Problems</h2>
-		#{list items: lastMonthProblems, as: 'problem'}
-	<p>- ${problem}</p>
-        #{/list}
-	#{/if}
-	
-	#{if lastThreeMonthProblems?.size() > 0}
-	<h2>Last 3 Months Problems</h2>
-		#{list items: lastThreeMonthProblems, as: 'problem'}
-	<p>- ${problem}</p>
-        #{/list}
-	#{/if}
-	
-	#{if lastSixMonthProblems?.size() > 0}
-	<h2>Last 6 Months Problems</h2>
-		#{list items: lastSixMonthProblems, as: 'problem'}
-	<p>- ${problem}</p>
-        #{/list}
-	#{/if}
-	
-	#{if lastYearProblems?.size() > 0}
-	<h2>Last Year Problems</h2>
-		#{list items: lastYearProblems, as: 'problem'}
-	<p>- ${problem}</p>
-        #{/list}
-	#{/if}
 	
 	#{if allProblems?.size() > 0}
 	<h2>All Problems</h2>
+	<div class="clearfix">
 		#{list items: allProblems, as: 'problem'}
-	<p>- ${problem}</p>
+		<div class="col-xs-4">	
+		<p>- ${problem}</p>
+		</div>
         #{/list}
+	</div>
 	#{/if}
 #{/if}	
 </div>

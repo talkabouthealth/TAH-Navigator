@@ -1,7 +1,3 @@
-#{if cover_page || all}
-#{printCoverPage user: user, userDetails: userDetails, patientDetails: patientDetails, cancerInfo: cancerInfo /}
-#{/if}
-
 #{if diagnosis || all}
 #{printSummary user: user, userDetails: userDetails, patientDetails: patientDetails, cancerInfo: cancerInfo /}
 #{printDiagnosis user: user, userDetails: userDetails, patientDetails: patientDetails, cancerInfo: cancerInfo /}

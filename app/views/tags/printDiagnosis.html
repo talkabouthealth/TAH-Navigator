@@ -9,52 +9,54 @@
 
 	<h1>Diagnosis and Background Information</h1>
 	
-	<h3><i class="fa fa-file-text-o"></i> Diagnosis</h3>	
-	<div style="margin-left: 20px;">
-		<h2>
-			${cancerInfo?.diseaseName} |
-			<small>First Diagnosed: ${patientDetails?.dateofdiagnosis?.format('MM/dd/yyyy')}</small>
-		</h2>
+	<div style="float:right;width: 46%;">	
+		<h2>Background Info</h2>
+		
+		<div>Symptoms / Signs: </div>
+		<div>Family History / predisposing conditions: </div>
+		<div>Major co-morbid conditions: </div>
+		<div>Height: </div>
+		<div>Pre-treatment weight: </div>
+		<div>Post-treatment weight: </div>
+		<div>Pre-treatment BSA: </div>
+		<div>ECOG performance status at begining of treatment: </div>
+		<div>ECOG performance status at end of treatment: </div>
 	</div>
+	
+	<div style="width:50%;">
+		<h2><i class="fa fa-file-text-o"></i>Diagnosis</h2>	
+		<div style="margin-left: 24px;">
+			<h3>
+				${cancerInfo?.diseaseName} | <small style="margin-left: 8px;">First Diagnosed: ${patientDetails?.dateofdiagnosis?.format('MM/dd/yyyy')}</small>
+			</h3>
+		</div>
 
 
-	
-	<h3><i class="fa fa-file-text-o"></i> Cancer Type Information</h3>	
-	<div style="margin-left: 20px;">
-		<h2>
-#{if cancerInfo.diseaseId == '1'}
-#{set info: [] /}		
-#{if cancerInfo.er} %{ info.add("ER" + cancerInfo.er); }% #{/if}
-#{if cancerInfo.pr} %{ info.add("PR" + cancerInfo.pr); }% #{/if}
-#{if cancerInfo.her2} %{ info.add("HER2" + cancerInfo.her2); }% #{/if}
-${info.join(', ')}
-#{/if}
-		</h2>
-	</div>
-	
-	
-	
-	<h3><i class="fa fa-file-text-o"></i> Stage Information</h3>	
-	<div style="margin-left: 20px;">
-		<h2>#{if cancerInfo.stageName} ${cancerInfo.stageName} #{/if}</h2>
-	</div>
-	
-	
-	<h3><i class="fa fa-file-text-o"></i> Family History & Genetics</h3>	
-	<div style="margin-left: 20px;">
-		<h2>#{if cancerInfo.brca} ${"BRCA" + cancerInfo.brca} #{/if}</h2>
-	</div>
-	
-	<h2>Background Info</h2>
-	
-	<div>Symptoms / Signs: </div>
-	<div>Family History / predisposing conditions: </div>
-	<div>Major co-morbid conditions: </div>
-	<div>Height: </div>
-	<div>Pre-treatment weight: </div>
-	<div>Post-treatment weight: </div>
-	<div>Pre-treatment BSA: </div>
-	<div>ECOG performance status at begining of treatment: </div>
-	<div>ECOG performance status at end of treatment: </div>
-
+		
+		<h2><i class="fa fa-file-text-o"></i> Cancer Type Information</h2>	
+		<div style="margin-left: 24px;">
+			<h3>
+	#{if cancerInfo.diseaseId == '1'}
+	#{set info: [] /}		
+	#{if cancerInfo.er} %{ info.add("ER" + cancerInfo.er); }% #{/if}
+	#{if cancerInfo.pr} %{ info.add("PR" + cancerInfo.pr); }% #{/if}
+	#{if cancerInfo.her2} %{ info.add("HER2" + cancerInfo.her2); }% #{/if}
+	${info.join(', ')}
+	#{/if}
+			</h3>
+		</div>
+		
+		
+		
+		<h2><i class="fa fa-file-text-o"></i> Stage Information</h2>	
+		<div style="margin-left: 24px;">
+			<h3>#{if cancerInfo.stageName} ${cancerInfo.stageName} #{/if}</h3>
+		</div>
+		
+		
+		<h2><i class="fa fa-file-text-o"></i> Family History & Genetics</h2>	
+		<div style="margin-left: 24px;">
+			<h3>#{if cancerInfo.brca} ${"BRCA" + cancerInfo.brca} #{/if}</h3>
+		</div>		
+	</div>	
 </div>

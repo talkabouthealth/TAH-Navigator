@@ -18,6 +18,7 @@ import nav.dto.CareTeam;
 import nav.dto.DistressBean;
 import nav.dto.ExpertBean;
 import nav.dto.PatientBean;
+import nav.dto.TeamDetails;
 import models.AddressDTO;
 import models.AppointmentDTO;
 import models.BreastCancerInfoDTO;
@@ -1057,5 +1058,62 @@ public class CareTeamDAO {
 			});
 		}
 		return patients;
+	}
+	
+	public static List<TeamDetails> getTeamDetails(Integer patientId) {		
+		List<TeamDetails> teamDetailsList = new ArrayList<TeamDetails>();		
+		List<PatienCareTeamDTO> careTeams = getPatienCareTeamByField("patienid", patientId);
+		for (PatienCareTeamDTO team : careTeams) {
+			CareTeamMasterDTO careTeam = null;
+			List<ExpertBean> experts = new ArrayList<ExpertBean>();
+			ExpertBean primaryExpert = null;
+			OtherCareMemberDTO otherPrimaryCareMember = null;
+			List<OtherCareMemberDTO> otherCareMembers = new ArrayList<OtherCareMemberDTO>();
+			
+			boolean primary = false;
+			int members = 0;
+			careTeam = team.getCareteam();
+			List<PatientCareTeamMemberDTO> careMembers = getCareTeamMembersByPatient(patientId, careTeam.getId());
+			List<OtherCareMemberDTO> careMembers1 = getOtherCareTeamMembersByPatient(patientId, careTeam.getId());
+			
+			if (careMembers != null) {
+				for (PatientCareTeamMemberDTO cm : careMembers) {					
+					ExpertBean expert = new ExpertBean();
+					UserDetailsDTO userDetails = UserDAO.getDetailsById(cm.getMemberid());
+					ExpertDetailDTO expertDetail = ProfileDAO.getExpertByField("id", cm.getMemberid());
+					expert.setUserDetails(userDetails);
+					expert.setExpertDetail(expertDetail);
+					if (cm.isPrimary()) {
+						primary = true;
+					}
+					if (members == 0) {
+						primaryExpert = expert;
+						members++;
+					} else {
+						experts.add(expert);
+					}
+				}
+			}
+			if (careMembers1 != null) {
+				for (OtherCareMemberDTO cm : careMembers1) {				
+					if (!primary && cm.isPrimary()) {
+						otherPrimaryCareMember = cm;
+						experts.add(primaryExpert);
+						primaryExpert = null;
+					} else {
+						otherCareMembers.add(cm);
+					}
+				}
+			}
+			TeamDetails teamDetails = new TeamDetails();
+			teamDetails.setCareTeam(careTeam);
+			teamDetails.setPrimaryExpert(primaryExpert);
+			teamDetails.setExperts(experts);
+			teamDetails.setOtherPrimaryCareMember(otherPrimaryCareMember);
+			teamDetails.setOtherCareMembers(otherCareMembers);
+			
+			teamDetailsList.add(teamDetails);
+		}		
+		return teamDetailsList;
 	}
 }
