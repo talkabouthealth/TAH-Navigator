@@ -46,6 +46,8 @@ public class NotificationDAO {
 	public static String INVITED_SECOND_MAIL = "INVITED_SECOND_MAIL";
 	public static String INVITED_THIRD_MAIL = "INVITED_THIRD_MAIL";
 	
+	public static String INVITE_NO_APPOINTMENT_SCHEDULED = "INVITE_NO_APPOINTMENT_SCHEDULED";
+	
 	// Radiation Oncology Appointment
 	public static String APPOINTMENT_FIRST_WITH_RADIATION_ONCOLOGIST_FIRST_MAIL = "FIRST_APPOINTMENT_WITH_RADIATION_ONCOLOGIST_FIRST_MAIL";
 	public static String APPOINTMENT_FIRST_WITH_RADIATION_ONCOLOGIST_REMINDER_MAIL = "FIRST_APPOINTMENT_WITH_RADIATION_ONCOLOGIST_REMINDER_MAIL";	
@@ -518,11 +520,7 @@ public class NotificationDAO {
 		if (user != null) {
 			notifiedTo = user.getId();
 		}
-		if (hasAppointment) {
-			addEmailNotification(INVITATION, invitation.getId(), INVITED_APPOINTMENT_FIRST_MAIL, now, 0, notifiedTo);
-		} else {
-			addEmailNotification(INVITATION, invitation.getId(), INVITED_FIRST_MAIL, now, 0, notifiedTo);
-		}
+		addEmailNotification(INVITATION, invitation.getId(), INVITE_NO_APPOINTMENT_SCHEDULED, now, 0, notifiedTo);
 	}
 
 	public static String byteArrayToHex(byte[] a) {
@@ -757,6 +755,19 @@ public class NotificationDAO {
 		vars.put("reference_no", getReferenceNo(notification));
 		if (!DEBUG) {		
 			EmailUtil.sendEmail(EmailUtil.TVRH_INVITE_NO_APPOINTMENT_SCHEDULED, vars, data.getEmail());
+		}
+		setNotified(notification);			
+	}
+	
+	public static void invitedMailReminder(NotificationDTO notification) {
+		TemplateVars data = getInviteTemplatesData(notification);
+		Map<String, Object> vars = new HashMap<String, Object>();
+		vars.put("username", data.getUserName());
+		vars.put("signupurl", data.getSignupURL());
+		vars.put("clinic_phone", data.getClinicPhone());
+		vars.put("reference_no", getReferenceNo(notification));
+		if (!DEBUG) {		
+			EmailUtil.sendEmail(EmailUtil.TVRH_INVITE_NO_APPOINTMENT_SCHEDULED_WITHOUT_REFERENCE, vars, data.getEmail());
 		}
 		setNotified(notification);			
 	}
@@ -1180,6 +1191,9 @@ public class NotificationDAO {
 			else if (description.equalsIgnoreCase(APPOINTMENT_ONGOING_SURGERY_ONE_DAY_BEFORE_MAIL)) {
 				sendEmailOneDayBeforeDistressCheck(notification);
 			}			
+			else if (description.equalsIgnoreCase(INVITE_NO_APPOINTMENT_SCHEDULED)) {
+				invitedMailReminder(notification);			
+			}
 		}
 		if (DEBUG) {
 			System.out.println("----------------------");
