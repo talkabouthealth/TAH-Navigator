@@ -829,4 +829,23 @@ public class PatientDetailDAO {
 		em.persist(userDetails);
 		em.getTransaction().commit();
 	}
+	
+	public static List<PatientDetailDTO> getDiagnosedPatients() {
+		List<PatientDetailDTO> patientDetailDTO = null;
+		EntityManager em = JPAUtil.getEntityManager();
+		try 
+		{
+			TypedQuery<PatientDetailDTO> query = em.createQuery("SELECT p FROM PatientDetailDTO p where p.disease is not NULL", PatientDetailDTO.class);
+			patientDetailDTO = query.getResultList();
+		} 
+		catch(Exception e) 
+		{
+			e.printStackTrace();
+		} 
+		finally
+		{
+			em.close();
+		}
+		return patientDetailDTO;
+	}
 }
