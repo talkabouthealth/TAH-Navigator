@@ -313,42 +313,45 @@ $(document).ready(function() {
 });
 
 inviteAgain = function() {
-	var email = $("#appointmentForm input[name='email']").val();
-	var postData= [];
-	postData.push({name: "email", value: email});
-	postData.push({name: "by", value: "email"});
-	if($("#appointmentBtn").prop('checked') == true) {
-		postData.push({name: "withapp", value: 1});
-	} else {
-		postData.push({name: "withapp", value: 0});
-	}
-	alert('Inviting sdfddfdf');
-	var formURL = '/Care/inviteAgain';
-	$.post(formURL, postData, function( data ) {
-		var errorText = '';
-		if (data.status == '200') {
-			$("#alertEmail").html($("#appointmentForm input[name='email']").val());
-			$('#welcome').appendTo("body").modal();
-			$('#errorUL').empty();
-		} 
-		else if(data.status == '100') {
-			errorText = '<li class="list-group-item list-group-item-danger">Internal server error. Please try again.</li>';
-		} 
-		else if(data.status == '300') {
-			errorText = '<li class="list-group-item list-group-item-danger">Email already registred, Please try again.</li>';
-		} 
-		else if (data.status == '301') {
-			errorText = '<li class="list-group-item list-group-item-danger">Invalid Email Address, Please try again.</li>';
-		} else if (data.status == '302') {
-// 			errorText = '<li class="list-group-item list-group-item-danger">Patient already invited, <a href="javaScript:inviteAgain()">click here</a> to resend.</li>';
-			errorText = '<li class="list-group-item list-group-item-danger">Email already registred, Please try again.</li>';
-		} else {
-			errorText = '<li class="list-group-item list-group-item-danger">This account has been disabled. Please contact admin for further information or reactivate this account.</li>';
-		}
-		$("#errorUL").empty();
-		$("#errorUL").html(errorText);
-	}, "json");
-	
+	var name = $("#appointmentForm input[name='firstname']").val();
+	bootbox.confirm("Are you sure you want to send another invite email to "+name+"?", function(result) {
+		 if(result){
+			 var email = $("#appointmentForm input[name='email']").val();
+				var postData= [];
+				postData.push({name: "email", value: email});
+				postData.push({name: "by", value: "email"});
+				if($("#appointmentBtn").prop('checked') == true) {
+					postData.push({name: "withapp", value: 1});
+				} else {
+					postData.push({name: "withapp", value: 0});
+				}
+
+				var formURL = '/Care/inviteAgain';
+				$.post(formURL, postData, function( data ) {
+					var errorText = '';
+					if (data.status == '200') {
+						$("#alertEmail").html($("#appointmentForm input[name='email']").val());
+						$('#welcome').appendTo("body").modal();
+						$('#errorUL').empty();
+					} 
+					else if(data.status == '100') {
+						errorText = '<li class="list-group-item list-group-item-danger">Internal server error. Please try again.</li>';
+					} 
+					else if(data.status == '300') {
+						errorText = '<li class="list-group-item list-group-item-danger">Email already registred, Please try again.</li>';
+					} 
+					else if (data.status == '301') {
+						errorText = '<li class="list-group-item list-group-item-danger">Invalid Email Address, Please try again.</li>';
+					} else if (data.status == '302') {
+						errorText = '<li class="list-group-item list-group-item-danger">Email already registred, Please try again.</li>';
+					} else {
+						errorText = '<li class="list-group-item list-group-item-danger">This account has been disabled. Please contact admin for further information or reactivate this account.</li>';
+					}
+					$("#errorUL").empty();
+					$("#errorUL").html(errorText);
+				}, "json");
+		 }
+		}); 
 }
 validateOtherData = function() {
 	var valid = true;
