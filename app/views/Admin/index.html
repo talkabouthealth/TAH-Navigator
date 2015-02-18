@@ -25,6 +25,10 @@
 		<br/><br/>	
 			<a href="javaScript:migrateData('contact');">Migrate the Contact methods</a>
 	</div>
+	<div class="col-xs-12 col-sm-12">
+		<br/><br/>	
+			<a href="javaScript:addDefaultTemplates();">Add default templates for earlier diagnosis</a>
+	</div>
 </div>
 <script>
 migrate = function() {
@@ -50,4 +54,12 @@ migrateData = function(type) {
 		}
 	},"json");
 } 
+addDefaultTemplates = function(){
+	$.ajax({ type: 'POST', url: '/admin/addDefaultTemplatesFromUtility',
+		data  : {},
+		success:function(data){
+			alert(data);
+		}
+	});
+}
 </script>

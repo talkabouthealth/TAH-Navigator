@@ -19,10 +19,14 @@ import models.ApplicationSettingsDTO;
 import models.AppointmentMasterDTO;
 import models.CareTeamMasterDTO;
 import models.CareTeamMemberDTO;
+import models.DefaultTemplateDetailDTO;
+import models.DefaultTemplateMasterDTO;
 import models.InvitedDTO;
 import models.PatienCareTeamDTO;
 import models.PatientCareTeamMemberDTO;
 import models.PatientContactMethodDTO;
+import models.PatientDetailDTO;
+import models.PatientFollowUpCareItemDTO;
 import models.UserDTO;
 import models.UserDetailsDTO;
 import models.UserTypeDTO;
@@ -31,7 +35,12 @@ import nav.dao.ApplicationSettingDAO;
 import nav.dao.AppointmentMasterDAO;
 import nav.dao.BaseDAO;
 import nav.dao.CareTeamDAO;
+import nav.dao.DefaultTemplateDAO;
+import nav.dao.Disease;
+import nav.dao.FollowUp;
+import nav.dao.PatientDetailDAO;
 import nav.dao.ProfileDAO;
+import nav.dao.Treatment;
 import nav.dao.UserDAO;
 import nav.dao.UserTypeDAO;
 import nav.dto.CareMember;
@@ -149,6 +158,49 @@ public class Admin extends Controller {
 
 		UserDAO.updateUserActivationFlag(userId,Boolean.parseBoolean(flag),op);
 		renderJSON("{\"status\":\"Done\",\"messages\": \"Updated user.\"}");
+	}
+	
+	public static void addDefaultTemplatesFromUtility()
+	{		
+		int i=0;
+		List<PatientDetailDTO> patientDetailsDTOList = PatientDetailDAO.getDiagnosedPatients();
+		for (PatientDetailDTO patientDetailsDTO : patientDetailsDTOList) {
+			//List<PatientFollowUpCareItemDTO> careItemsOld = FollowUp.getPatientCareItems(patientDetailsDTO.getId());
+			List<DefaultTemplateMasterDTO> defaultTemplates = DefaultTemplateDAO.getPatientTemplate(patientDetailsDTO.getDiseaseId());
+			
+			Integer templateId = 0;
+			if(defaultTemplates != null) {
+				for (DefaultTemplateMasterDTO defaultTemplateMasterDTO : defaultTemplates) {
+					if(templateId== 0) {
+						templateId = defaultTemplateMasterDTO.getId();
+					}
+					if(Disease.ENDOMETRIAL_CANCER_ID == patientDetailsDTO.getDiseaseId() 
+							&& "Endometrial Cancer Medium Risk Template".equalsIgnoreCase(defaultTemplateMasterDTO.getTemplatename())) {
+						templateId = defaultTemplateMasterDTO.getId();
+					}
+				}
+			}
+			boolean isnotused =true;
+			if(templateId!= 0) {
+				List<DefaultTemplateDetailDTO> defaults = DefaultTemplateDAO.getInputDefaultByPageField(templateId);
+				List<PatientFollowUpCareItemDTO> careItemsOld = FollowUp.getPatientCareItems(patientDetailsDTO.getId());
+				for(PatientFollowUpCareItemDTO patientFollowUpCareItemDTO : careItemsOld) {
+				 // Check for patient and defaults.
+					for (DefaultTemplateDetailDTO defaultTemplateDetailDTO : defaults) {
+						if(patientFollowUpCareItemDTO.getActivity().equalsIgnoreCase(defaultTemplateDetailDTO.getFieldtext())) {
+							isnotused  =false;
+							break;
+						}
+					}
+				}
+			}
+
+			if(isnotused) {
+				Treatment.populatePatientFolloupplan(patientDetailsDTO.getId(), templateId);
+				i++;
+			}
+		}
+		renderText(i+" Record Processed");	
 	}
 	
 	public static void adminSettingsAjaxOperation(String op,String settingname, String flag,String type) {

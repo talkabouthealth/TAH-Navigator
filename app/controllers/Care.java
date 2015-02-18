@@ -79,7 +79,7 @@ import com.google.gson.JsonPrimitive;
 @With( { Secure.class } )
 public class Care extends Controller {
 
-	public static void index() {		
+	public static void index() {
 		UserBean user = CommonUtil.loadCachedUser(session);
 		ExpertDetailDTO expertDetail = ProfileDAO.getExpertByField("id", user.getId());		
 		List<PatientBean> patientBeans = CareTeamDAO.patientsOfCareTeam(user.getId(), new HashMap<String, String>());
@@ -99,9 +99,7 @@ public class Care extends Controller {
 		List<PatientBean> patients = CareTeamDAO.sortPatients(patientBeans, filterMap);
 		render(patients);	   
 	}
-	
-	
-	
+
 	public static void invite() {
 		UserBean user = CommonUtil.loadCachedUser(session);		
 		ExpertDetailDTO expertDetail = ProfileDAO.getExpertByField("id", user.getId());
@@ -109,7 +107,7 @@ public class Care extends Controller {
 		if (ids != null && ids.size() > 0) {
 			CareTeamMasterDTO careTeam = CareTeamDAO.getCareTeamByField("id", ids.get(0));			
 			renderArgs.put("careTeam", careTeam);
-		}		
+		}
         render(user,expertDetail);
 	}
 	
@@ -124,13 +122,9 @@ public class Care extends Controller {
 		if(userDto != null) {
 		InvitedDTO invDto = InvitationDAO.getDetailsByEmail("email",userDto.getEmail());
 		if(invDto != null) {
-			if (invDto.getAddressid() != null) {
-				System.out.println("Sending with appointment");
-				NotificationDAO.scheduleInviteEmailOnce(invDto, userDto, true);
-   		 	} else {
-   		 		System.out.println("Sending withoute appointment");
+  		 		System.out.println("Sending withoute appointment");
    		 		NotificationDAO.scheduleInviteEmailOnce(invDto, userDto, false);	
-   		 	}
+   		 	
 		}
 		}
 		JsonObject obj = new JsonObject();
