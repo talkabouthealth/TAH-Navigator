@@ -15,6 +15,7 @@ import nav.dao.CareTeamDAO;
 import nav.dao.DistressDAO;
 import nav.dao.FollowUp;
 import nav.dao.MedicationDAO;
+import nav.dao.NotesDAO;
 import nav.dao.PatientDetailDAO;
 import nav.dao.Treatment;
 import nav.dao.UserDAO;
@@ -24,6 +25,7 @@ import nav.dto.ExpertBean;
 import nav.dto.TeamDetails;
 import models.AppointmentDTO;
 import models.BreastCancerInfoDTO;
+import models.NoteDTO;
 import models.PatienCareTeamDTO;
 import models.PatientChemoTreatmentDTO;
 import models.PatientConcernDTO;
@@ -52,16 +54,14 @@ public class PrintPages extends Controller {
 		// care plan
 		List<PatientConcernDTO> concerns = FollowUp.getPatientConcerns(user.getId());			
 		List<PatientGoalDTO> goals = FollowUp.getPatientGoals(user.getId());			
-		List<PatientFollowUpCareItemDTO> careItems = FollowUp.getPatientCareItems(user.getId());							
+		List<PatientFollowUpCareItemDTO> careItems = FollowUp.getPatientCareItems(user.getId());
+		List<NoteDTO> noteList = NotesDAO.getPatientNotesList(String.valueOf(user.getId()));
 		// care team				
 		List<TeamDetails> careTeams = CareTeamDAO.getTeamDetails(user.getId());				
 		// appointments
 		List<AppointmentDTO> futureAppointments = AppointmentDAO.futureAppointments(patientId);
 		List<AppointmentDTO> pastAppointments = AppointmentDAO.pastAppointments(patientId);
-		// medication
-//		List<PatientMedicationDTO> currentMedications = MedicationDAO.currentMedications(patientId);
-//		List<PatientMedicationDTO> pastMedications = MedicationDAO.pastMedications(patientId);
-		
+		// Medication
 		List<PatientMedicationDTO> medicationList = MedicationDAO.getMedicine("patientid", patientId);
 		List<PatientMedicationDTO> currentMedications = new ArrayList<PatientMedicationDTO>();
 		List<PatientMedicationDTO> pastMedications = new ArrayList<PatientMedicationDTO>();		
@@ -144,6 +144,7 @@ public class PrintPages extends Controller {
 		renderArgs.put("concerns", concerns);
 		renderArgs.put("goals", goals);		
 		renderArgs.put("careItems", careItems);
+		renderArgs.put("noteList", noteList);
 		// care team
 		renderArgs.put("careTeams", careTeams);		
 		// appointments

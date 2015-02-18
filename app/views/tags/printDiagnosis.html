@@ -9,6 +9,7 @@
 
 	<h1>Diagnosis and Background Information</h1>
 	
+	*{
 	<div style="float:right;width: 46%;">	
 		<h2>Background Info</h2>
 		
@@ -22,6 +23,7 @@
 		<div>ECOG performance status at begining of treatment: </div>
 		<div>ECOG performance status at end of treatment: </div>
 	</div>
+	}*
 	
 	<div style="width:50%;">
 		<h2><i class="fa fa-file-text-o"></i>Diagnosis</h2>	
@@ -31,32 +33,35 @@
 			</h3>
 		</div>
 
-
+		#{set info: [] /}
+		#{if cancerInfo.diseaseId == '1'}				
+		#{if cancerInfo.er} %{ info.add("ER" + cancerInfo.er); }% #{/if}
+		#{if cancerInfo.pr} %{ info.add("PR" + cancerInfo.pr); }% #{/if}
+		#{if cancerInfo.her2} %{ info.add("HER2" + cancerInfo.her2); }% #{/if}		
+		#{/if}
 		
+		#{if info.size() > 0}
 		<h2><i class="fa fa-file-text-o"></i> Cancer Type Information</h2>	
 		<div style="margin-left: 24px;">
-			<h3>
-	#{if cancerInfo.diseaseId == '1'}
-	#{set info: [] /}		
-	#{if cancerInfo.er} %{ info.add("ER" + cancerInfo.er); }% #{/if}
-	#{if cancerInfo.pr} %{ info.add("PR" + cancerInfo.pr); }% #{/if}
-	#{if cancerInfo.her2} %{ info.add("HER2" + cancerInfo.her2); }% #{/if}
-	${info.join(', ')}
-	#{/if}
+			<h3>			
+			${info.join(', ')}			
 			</h3>
 		</div>
+		#{/if}
 		
-		
-		
+		#{if cancerInfo.stageName}
 		<h2><i class="fa fa-file-text-o"></i> Stage Information</h2>	
 		<div style="margin-left: 24px;">
-			<h3>#{if cancerInfo.stageName} ${cancerInfo.stageName} #{/if}</h3>
+			<h3> ${cancerInfo.stageName} </h3>
 		</div>
+		#{/if}
 		
-		
+		#{if cancerInfo.brca}
 		<h2><i class="fa fa-file-text-o"></i> Family History & Genetics</h2>	
 		<div style="margin-left: 24px;">
-			<h3>#{if cancerInfo.brca} ${"BRCA" + cancerInfo.brca} #{/if}</h3>
-		</div>		
+			<h3>${"BRCA" + cancerInfo.brca}</h3>
+		</div>
+		#{/if}
+		
 	</div>	
 </div>

@@ -57,9 +57,11 @@ public class CancerDAO {
 		TypedQuery<BreastCancerInfoDTO> query = em.createQuery("SELECT b FROM BreastCancerInfoDTO b WHERE b.id = :id", BreastCancerInfoDTO.class);
 		query.setParameter("id", patientDetails.getId());
 		try {
-			BreastCancerInfoDTO breastCancerInfo = query.getSingleResult();			
-			info.put("stageId", String.valueOf(breastCancerInfo.getBcStage().getId()));
-			info.put("stageName", breastCancerInfo.getBcStage().getName());			
+			BreastCancerInfoDTO breastCancerInfo = query.getSingleResult();
+			if (breastCancerInfo.getBcStage() != null) {
+				info.put("stageId", String.valueOf(breastCancerInfo.getBcStage().getId()));
+				info.put("stageName", breastCancerInfo.getBcStage().getName());
+			}
 			Character er = breastCancerInfo.getEr();
 			Character pr = breastCancerInfo.getPr();
 			Character her2 = breastCancerInfo.getHer2();

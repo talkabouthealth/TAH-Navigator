@@ -1,7 +1,8 @@
-*{ parameters are : concerns, goals, careItems }*
+*{ parameters are : concerns, goals, careItems, noteList }*
 #{set concerns: _concerns /}
 #{set goals: _goals /}
 #{set careItems: _careItems /}
+#{set noteList: _noteList /}
 
 
 
@@ -37,6 +38,23 @@
 #{else}
 	<p>None</p>
 #{/else}
+
+	<h2>Follow-Up Notes</h2>
+	#{list noteList, as:'seq'}	
+	#{if seq.noteSection == 'followupcare' }		
+	<div class="para">
+		<div style="margin-bottom: 10px;">
+		<h3 style="margin-bottom: 5px;">${seq.noteTitle}</h3>
+		#{if (seq.noteBy && seq.noteDate)}
+		<small>#{userName userName: seq.noteBy.name, userId:seq.noteBy.id /}, ${seq.noteDate.format('M/dd/yyyy h:m a')}</small>
+		#{/if}
+		</div>
+		<div>${seq.noteDesc.raw()}</div>	
+	</div>
+	<div class="line"></div>
+	#{/if}	
+	#{/list}
+	
 
 	<h2>Needs / Concerns</h2>	
 #{if concerns}       
