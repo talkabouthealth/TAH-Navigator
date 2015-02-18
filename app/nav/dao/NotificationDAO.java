@@ -47,7 +47,7 @@ public class NotificationDAO {
 	public static String INVITED_THIRD_MAIL = "INVITED_THIRD_MAIL";
 	
 	public static String INVITE_NO_APPOINTMENT_SCHEDULED = "INVITE_NO_APPOINTMENT_SCHEDULED";
-	
+	public static String INVITE_APPOINTMENT_SCHEDULED_WITHOUT_REFERENCE = "INVITE_APPOINTMENT_SCHEDULED_WITHOUT_REFERENCE";
 	// Radiation Oncology Appointment
 	public static String APPOINTMENT_FIRST_WITH_RADIATION_ONCOLOGIST_FIRST_MAIL = "FIRST_APPOINTMENT_WITH_RADIATION_ONCOLOGIST_FIRST_MAIL";
 	public static String APPOINTMENT_FIRST_WITH_RADIATION_ONCOLOGIST_REMINDER_MAIL = "FIRST_APPOINTMENT_WITH_RADIATION_ONCOLOGIST_REMINDER_MAIL";	
@@ -520,7 +520,12 @@ public class NotificationDAO {
 		if (user != null) {
 			notifiedTo = user.getId();
 		}
-		addEmailNotification(INVITATION, invitation.getId(), INVITE_NO_APPOINTMENT_SCHEDULED, now, 0, notifiedTo);
+		if(hasAppointment) {
+			// TVRH-Invite-Appointment-Scheduled
+			addEmailNotification(INVITATION, invitation.getId(), INVITE_APPOINTMENT_SCHEDULED_WITHOUT_REFERENCE, now, 0, notifiedTo);
+		} else {
+			addEmailNotification(INVITATION, invitation.getId(), INVITE_NO_APPOINTMENT_SCHEDULED, now, 0, notifiedTo);
+		}
 	}
 
 	public static String byteArrayToHex(byte[] a) {
@@ -759,15 +764,18 @@ public class NotificationDAO {
 		setNotified(notification);			
 	}
 	
-	public static void invitedMailReminder(NotificationDTO notification) {
+	public static void invitedMailReminder(NotificationDTO notification,boolean isAppointment) {
 		TemplateVars data = getInviteTemplatesData(notification);
 		Map<String, Object> vars = new HashMap<String, Object>();
 		vars.put("username", data.getUserName());
 		vars.put("signupurl", data.getSignupURL());
 		vars.put("clinic_phone", data.getClinicPhone());
 		vars.put("reference_no", getReferenceNo(notification));
-		if (!DEBUG) {		
-			EmailUtil.sendEmail(EmailUtil.TVRH_INVITE_NO_APPOINTMENT_SCHEDULED_WITHOUT_REFERENCE, vars, data.getEmail());
+		if (!DEBUG) {
+			if(isAppointment)
+				EmailUtil.sendEmail(EmailUtil.TVRH_INVITE_APPOINTMENT_SCHEDULED_WITHOUT_REFERENCE, vars, data.getEmail());
+			else
+				EmailUtil.sendEmail(EmailUtil.TVRH_INVITE_NO_APPOINTMENT_SCHEDULED_WITHOUT_REFERENCE, vars, data.getEmail());
 		}
 		setNotified(notification);			
 	}
@@ -1192,8 +1200,11 @@ public class NotificationDAO {
 				sendEmailOneDayBeforeDistressCheck(notification);
 			}			
 			else if (description.equalsIgnoreCase(INVITE_NO_APPOINTMENT_SCHEDULED)) {
-				invitedMailReminder(notification);			
+				invitedMailReminder(notification,false);			
+			}else if (description.equalsIgnoreCase(INVITE_APPOINTMENT_SCHEDULED_WITHOUT_REFERENCE)) {
+				invitedMailReminder(notification,true);			
 			}
+			
 		}
 		if (DEBUG) {
 			System.out.println("----------------------");

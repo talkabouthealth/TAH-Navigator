@@ -2252,21 +2252,26 @@ var careTeamController = (function() {
     };
     
     var inviteAgain = function(domElement) {
-    	var senttoday = $(domElement).attr('senttoday');
-    	if (senttoday == 'no') {
-    		var postData= [];
-    		var $visibleBtn = $(domElement);
-            var patientId = $visibleBtn.attr('patient_id');
-            postData.push({name: "email", value: patientId});
-    		postData.push({name: "by", value: "id"});
-    		var $btn = $('#re-invite');
-    		$.post(actions['inviteagain'], postData, function(data) {
-                $btn.attr("senttoday", "yes");
-                $btn.attr('disabled',true);
-            }, "json");
-    	} else {
-    		alert('Already sent today');
-    	}
+    	bootbox.confirm("Are you sure you want to send another invite email?", function(result) {
+	    	if(result) {
+		    	var senttoday = $(domElement).attr('senttoday');
+		    	if (senttoday == 'no') {
+		    		var postData= [];
+		    		var $visibleBtn = $(domElement);
+		            var patientId = $visibleBtn.attr('patient_id');
+		            postData.push({name: "email", value: patientId});
+		    		postData.push({name: "by", value: "id"});
+		    		var $btn = $('#re-invite');
+		    		$.post(actions['inviteagain'], postData, function(data) {
+		                $btn.attr("senttoday", "yes");
+		                $btn.attr('disabled',true);
+		            }, "json");
+		    	} else {
+		    		alert('Already sent today');
+		    	}
+	    	}
+    	});
+    
     }
     var toggleValidate = function(domElement) {
         var verified = $(domElement).attr('verified');

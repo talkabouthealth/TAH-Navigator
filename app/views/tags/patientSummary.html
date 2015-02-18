@@ -12,12 +12,12 @@
 	       		<img class="profilePic" src="@{Image.show(ps.userId)}">
 	     	</div>
      				</div>
-     				<div class="col-sm-9">
+     				<div class="col-sm-9 nopadding" style=" padding-left: 10px !important;">
      				<h3> ${ps.firstName} ${ps.lastName}</h3>
 			<div class="validate">
 					 #{if ps.invited}
         	<button type="button" class="btn btn-sm btn-success" disabled>Invited</button>
-        	<button class="btn btn-sm" id="print-pages" patientId="${ps.userId}">Print Pages</button>
+        	<button class="btn btn-sm" id="print-pages" patientId="${ps.userId}">Print Care Plan</button>
         	<button class="btn btn-sm btn-danger" id="re-invite" senttoday="no" patient_id="${ps.userId}" onclick="careTeamController.evtMsgHandler('inviteAgain', this);">Resend Invite Email</button>
         #{/if}
         #{else}

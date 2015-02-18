@@ -120,12 +120,16 @@ public class Care extends Controller {
 			userDto = UserDAO.getUserBasicByField(by, email);
 		}
 		if(userDto != null) {
-		InvitedDTO invDto = InvitationDAO.getDetailsByEmail("email",userDto.getEmail());
-		if(invDto != null) {
-  		 		System.out.println("Sending withoute appointment");
-   		 		NotificationDAO.scheduleInviteEmailOnce(invDto, userDto, false);	
-   		 	
-		}
+			InvitedDTO invDto = InvitationDAO.getDetailsByEmail("email",userDto.getEmail());
+			if(invDto != null) {
+				if(invDto.getAppointmentdate() != null && invDto.getAppointmentdate().after(new Date())) {
+//					System.out.println("Sending with appointment");
+		   		 	NotificationDAO.scheduleInviteEmailOnce(invDto, userDto, true);
+				} else {
+//					System.out.println("Sending withoute appointment");
+		   		 	NotificationDAO.scheduleInviteEmailOnce(invDto, userDto, false);	
+				}
+			}
 		}
 		JsonObject obj = new JsonObject();
 		obj.add("status", new JsonPrimitive("200"));

@@ -32,6 +32,8 @@ public class EmailUtil {
 	public static final String MOFFITT_WELCOMEREMINDER = "Moffitt-Welcome-Reminder";
 	
 	public static final String TVRH_INVITE_NO_APPOINTMENT_SCHEDULED_WITHOUT_REFERENCE = "TVRH-Invite-No-Appointment-Scheduled";
+	public static final String TVRH_INVITE_APPOINTMENT_SCHEDULED_WITHOUT_REFERENCE = "TVRH-Invite-Appointment-Scheduled";
+	
 	public static final String TVRH_INVITE_APPOINTMENT_SCHEDULED = "TVRH-Invite-Appointment-Scheduled-With-Reference";
 	public static final String TVRH_INVITE_NO_APPOINTMENT_SCHEDULED = "TVRH-Invite-No-Appointment-Scheduled-With-Reference";
 	public static final String TVRH_INVITE_REMINDER_APPOINTMENT_SCHEDULED = "TVRH-Invite-Reminder-Appointment-Scheduled-With-Reference";
