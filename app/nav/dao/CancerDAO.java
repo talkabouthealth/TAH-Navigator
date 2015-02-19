@@ -34,11 +34,17 @@ public class CancerDAO {
 			PatientDetailDTO patientDetails = patientDetailsQuery.getSingleResult();
 			Integer diseaseId = patientDetails.getDiseaseId();
 			if (diseaseId != null && diseaseId.intValue() == BREAST_CANCER_ID) {
+								
 				switch (diseaseId.intValue()) {
 					case BREAST_CANCER_ID:
 						info = breastCancerInfo(patientDetails);
 						break;
-				}			
+				}
+				DiseaseMasterDTO diseaseMaster = patientDetails.getDisease();
+				if (diseaseMaster != null) {
+					info.put("diseaseId", String.valueOf(BREAST_CANCER_ID));
+					info.put("diseaseName", diseaseMaster.getName());
+				}
 			}
 		} catch (NoResultException e) {
 			// TODO Auto-generated catch block
@@ -46,14 +52,15 @@ public class CancerDAO {
 		}		
 		return info;
 	}
+	
 		
 	
 	public static Map<String, String> breastCancerInfo(PatientDetailDTO patientDetails) {
 		EntityManager em = JPAUtil.getEntityManager();
 		Map<String, String> info = new HashMap<String, String>();										
-		DiseaseMasterDTO diseaseMaster = patientDetails.getDisease();		
-		info.put("diseaseId", String.valueOf(BREAST_CANCER_ID));
-		info.put("diseaseName", diseaseMaster.getName());
+		//DiseaseMasterDTO diseaseMaster = patientDetails.getDisease();		
+		//info.put("diseaseId", String.valueOf(BREAST_CANCER_ID));
+		//info.put("diseaseName", diseaseMaster.getName());
 		TypedQuery<BreastCancerInfoDTO> query = em.createQuery("SELECT b FROM BreastCancerInfoDTO b WHERE b.id = :id", BreastCancerInfoDTO.class);
 		query.setParameter("id", patientDetails.getId());
 		try {
