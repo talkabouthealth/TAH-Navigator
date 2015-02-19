@@ -33,8 +33,7 @@ public class CancerDAO {
 		try {
 			PatientDetailDTO patientDetails = patientDetailsQuery.getSingleResult();
 			Integer diseaseId = patientDetails.getDiseaseId();
-			if (diseaseId != null && diseaseId.intValue() == BREAST_CANCER_ID) {
-								
+			if (diseaseId != null) {								
 				switch (diseaseId.intValue()) {
 					case BREAST_CANCER_ID:
 						info = breastCancerInfo(patientDetails);
@@ -42,7 +41,7 @@ public class CancerDAO {
 				}
 				DiseaseMasterDTO diseaseMaster = patientDetails.getDisease();
 				if (diseaseMaster != null) {
-					info.put("diseaseId", String.valueOf(BREAST_CANCER_ID));
+					info.put("diseaseId", String.valueOf(diseaseId));
 					info.put("diseaseName", diseaseMaster.getName());
 				}
 			}
