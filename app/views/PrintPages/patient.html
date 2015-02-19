@@ -1,6 +1,6 @@
 #{if diagnosis || all}
 #{printSummary user: user, userDetails: userDetails, patientDetails: patientDetails, cancerInfo: cancerInfo /}
-#{printDiagnosis user: user, userDetails: userDetails, patientDetails: patientDetails, cancerInfo: cancerInfo /}
+#{printDiagnosis user: user, userDetails: userDetails, patientDetails: patientDetails, cancerInfo: cancerInfo, ps: ps /}
 #{/if}
 
 #{if treatment_plan || all}

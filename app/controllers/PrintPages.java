@@ -47,6 +47,7 @@ public class PrintPages extends Controller {
 		UserDetailsDTO userDetails = UserDAO.getDetailsByField("id", patientId);
 		PatientDetailDTO patientDetails = PatientDetailDAO.getDetailsByField("id", patientId);
 		Map<String, String> cancerInfo = CancerDAO.cancerInfo(patientId);
+		Map <String, Object> ps = PatientDetailDAO.patientSummary(patientId);
 		// treatment plan
 		List<PatientRadiationTreatmentDTO> radiationTreatments = Treatment.getPatientRadiationTreatments(patientId);
 		List<PatientChemoTreatmentDTO> chemoTreatments = Treatment.getPatientChemoTreatments(patientId);
@@ -136,6 +137,7 @@ public class PrintPages extends Controller {
 		renderArgs.put("userDetails", userDetails);
 		renderArgs.put("patientDetails", patientDetails);
 		renderArgs.put("cancerInfo", cancerInfo);
+		renderArgs.put("ps", ps);
 		// treatment
 		renderArgs.put("radiationTreatments", radiationTreatments);
 		renderArgs.put("chemoTreatments", chemoTreatments);		

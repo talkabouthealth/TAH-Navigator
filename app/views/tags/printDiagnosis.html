@@ -1,18 +1,41 @@
-*{ parameters are : user, userDetails, patientDetails, cancerInfo }*
+*{ parameters are : user, userDetails, patientDetails, cancerInfo, ps }*
 #{set user: _user /}
 #{set userDetails: _userDetails /}
 #{set patientDetails: _patientDetails /}
 #{set cancerInfo: _cancerInfo /}
+#{set ps: _ps /}
 
 
 <div class="print-diagnosis">
 
 	<h1>Diagnosis and Background Information</h1>
-	
-	*{
+		
 	<div style="float:right;width: 46%;">	
 		<h2>Background Info</h2>
+		<div>Name: ${ps.firstName + ' ' + ps.lastName}</div>	
+		#{if ps.email}
+		<div>Email: ${ps.email}</div>
+		#{/if}
+		#{if ps.dob}
+		<div>DOB: ${ps.dob.format('M/dd/yyyy')}</div>
+		#{/if}
+		#{if ps.mobilePhone}
+		<div>Mobile Phone: ${ps.mobilePhone}</div>
+		#{/if}
+		#{if ps.phone}
+		<div>Phone: ${ps.phone}</div>
+		#{/if}
+		#{if ps.ec1Name}
+		<div>Support Contact: ${ps.ec1Name}</div>
+		#{/if}
+		#{if ps.ec1Number}
+		<div>Support Contact Phone: ${ps.ec1Number}</div>
+		#{/if}
 		
+		
+		
+		
+		*{	
 		<div>Symptoms / Signs: </div>
 		<div>Family History / predisposing conditions: </div>
 		<div>Major co-morbid conditions: </div>
@@ -22,8 +45,9 @@
 		<div>Pre-treatment BSA: </div>
 		<div>ECOG performance status at begining of treatment: </div>
 		<div>ECOG performance status at end of treatment: </div>
+		}*
 	</div>
-	}*
+	
 	
 	<div style="width:50%;">
 		<h2><i class="fa fa-file-text-o"></i>Diagnosis</h2>	
