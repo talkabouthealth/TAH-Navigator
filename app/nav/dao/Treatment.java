@@ -756,10 +756,11 @@ public class Treatment {
 		return surgeryInfo;
 	}
 
-	public static void addDefaultNotes(Integer patientId,Integer diseaseId)
+	public static int addDefaultNotes(Integer patientId,Integer diseaseId)
 	{
 		UserDTO userDTO = UserDAO.getUserBasicByField("id", patientId);
 		 int start = 0,end=3;
+		 int added=0;
 		 if(diseaseId!=1)
 		 {
 			 start=3;
@@ -774,9 +775,34 @@ public class Treatment {
 			temp.setNoteSection("followupcare");
 			if(!NotesDAO.isDefaultNoteExist(patientId, TAHConstants.TITLES[i]))		
 			{
-				System.out.println("NOW : Note does not exist enter note");
-				NotesDAO.saveNote(temp);				
+				NotesDAO.saveNote(temp);
+				added = 1;
 			}
+		}
+		return added;
+	}
+	
+	public static void addTemplates(Integer templateId,Integer patientId)
+	{
+		List<DefaultTemplateDetailDTO> defaults = DefaultTemplateDAO.getInputDefaultByPageField(templateId); 
+		if(defaults != null && !defaults.isEmpty()) {
+			Integer careItemId = null;
+			for (DefaultTemplateDetailDTO inputDefaultDTO : defaults) {
+				Map<String, String> fupCareItem = new HashMap<String, String>();
+				fupCareItem.put("activity",inputDefaultDTO.getFieldtext());
+				fupCareItem.put("frequency",inputDefaultDTO.getFrequency());
+				fupCareItem.put("purpose",inputDefaultDTO.getOtherfield());
+				fupCareItem.put("endDate","");
+				if(inputDefaultDTO.getEnddate() != null && inputDefaultDTO.getEnddate().equalsIgnoreCase("ongoing")) {
+					fupCareItem.put("ongoing",inputDefaultDTO.getEnddate());
+					fupCareItem.put("endDate",null);
+				} else {
+					fupCareItem.put("ongoing",null);
+					fupCareItem.put("endDate",inputDefaultDTO.getEnddate());	
+				}
+				fupCareItem.put("doctor","");
+				FollowUp.saveCareItem(patientId, careItemId, fupCareItem);		
+			}			
 		}
 	}
 	

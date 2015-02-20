@@ -162,7 +162,7 @@ public class Admin extends Controller {
 	
 	public static void addDefaultTemplatesFromUtility()
 	{		
-		int i=0;
+		int noteCount=0,templateCount=0;
 		List<PatientDetailDTO> patientDetailsDTOList = PatientDetailDAO.getDiagnosedPatients();
 		for (PatientDetailDTO patientDetailsDTO : patientDetailsDTOList) {
 			//List<PatientFollowUpCareItemDTO> careItemsOld = FollowUp.getPatientCareItems(patientDetailsDTO.getId());
@@ -184,23 +184,27 @@ public class Admin extends Controller {
 			if(templateId!= 0) {
 				List<DefaultTemplateDetailDTO> defaults = DefaultTemplateDAO.getInputDefaultByPageField(templateId);
 				List<PatientFollowUpCareItemDTO> careItemsOld = FollowUp.getPatientCareItems(patientDetailsDTO.getId());
-				for(PatientFollowUpCareItemDTO patientFollowUpCareItemDTO : careItemsOld) {
+				for(PatientFollowUpCareItemDTO patientFollowUpCareItemDTO : careItemsOld)
+				{
 				 // Check for patient and defaults.
 					for (DefaultTemplateDetailDTO defaultTemplateDetailDTO : defaults) {
-						if(patientFollowUpCareItemDTO.getActivity().equalsIgnoreCase(defaultTemplateDetailDTO.getFieldtext())) {
+						if(patientFollowUpCareItemDTO.getActivity().equalsIgnoreCase(defaultTemplateDetailDTO.getFieldtext()))
+						{
 							isnotused  =false;
 							break;
 						}
 					}
 				}
 			}
-
+			
 			if(isnotused) {
-				Treatment.populatePatientFolloupplan(patientDetailsDTO.getId(), templateId);
-				i++;
+				Treatment.addTemplates(templateId, patientDetailsDTO.getId());
+//				Treatment.populatePatientFolloupplan(patientDetailsDTO.getId(), templateId);
+				templateCount++;
 			}
+			noteCount += Treatment.addDefaultNotes(patientDetailsDTO.getId(), patientDetailsDTO.getDiseaseId());			
 		}
-		renderText(i+" Record Processed");	
+		renderText("Templates added for "+templateCount+" patient(s) and "+noteCount+" Notes added ");	
 	}
 	
 	public static void adminSettingsAjaxOperation(String op,String settingname, String flag,String type) {
