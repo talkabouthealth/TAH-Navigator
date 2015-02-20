@@ -122,6 +122,21 @@ public class Care extends Controller {
 		if(userDto != null) {
 			InvitedDTO invDto = InvitationDAO.getDetailsByEmail("email",userDto.getEmail());
 			if(invDto != null) {
+
+				Date curreDate = new Date();
+				AppointmentDTO  appointmentDTO = AppointmentDAO.getLatestAppointment("patientid",userDto, curreDate, "upcomming");
+				invDto.setAppointmentcenter(appointmentDTO.getAppointmentcenter());
+				invDto.setAppointmentdate(appointmentDTO.getAppointmentdate());
+				invDto.setAddedby(appointmentDTO.getAddedby());
+				invDto.setCaremember(appointmentDTO.getCaremember());
+				invDto.setCareMemberName(appointmentDTO.getCareMemberName());
+				invDto.setAppointmenttime(appointmentDTO.getAppointmenttime());
+				invDto.setAddressid(appointmentDTO.getAddressid());
+				invDto.setPurpose(appointmentDTO.getPurpose());
+				invDto.setPurposeText(appointmentDTO.getPurposeText());
+				invDto.setTreatementStep(appointmentDTO.getTreatementStep());
+				BaseDAO.update(invDto);
+
 				if(invDto.getAppointmentdate() != null && invDto.getAppointmentdate().after(new Date())) {
 //					System.out.println("Sending with appointment");
 		   		 	NotificationDAO.scheduleInviteEmailOnce(invDto, userDto, true);
