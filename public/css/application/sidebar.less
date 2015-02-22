@@ -96,11 +96,7 @@ the below wrapper is a nasty hack until we can update that.
     width: 20px;
     display: inline-block;
   }
-
-  .hamburger {
-      display: none;
-
-  }
+  
 @media (min-width: 992px) {
   .main-menu .dropdown-menu {
     position: relative;
@@ -128,10 +124,7 @@ li.mobile {
 
 }
 
-@media (max-width: @tablet-max) {
-    .mobile-account {
-        display: block;
-    }
+@media (max-width: @tablet-max) {    
     .wrapper {
         padding-top: @mobile-header-height;
     }
@@ -250,17 +243,17 @@ li.mobile {
         }
 
     }
-
-    .hamburger {
-        display: block;
+	
+	
+    .hamburger {        
         padding: @padding;
         float: left;
-
         i {
             cursor: pointer;
         }
 
     }
+	
 
     .account-data {
         p.username {
