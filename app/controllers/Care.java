@@ -134,13 +134,12 @@ public class Care extends Controller {
 					invDto.setPurposeText(appointmentDTO.getPurposeText());
 					invDto.setTreatementStep(appointmentDTO.getTreatementStep());
 					BaseDAO.update(invDto);
-				}
-				if(invDto.getAppointmentdate() != null && invDto.getAppointmentdate().after(new Date())) {
-//					System.out.println("Sending with appointment");
-		   		 	NotificationDAO.scheduleInviteEmailOnce(invDto, userDto, true);
+					NotificationDAO.scheduleInviteEmailOnce(invDto, userDto, true);	
 				} else {
+//					System.out.println("Sending with appointment");
+		   		 	NotificationDAO.scheduleInviteEmailOnce(invDto, userDto, false);
+//				} else {
 //					System.out.println("Sending withoute appointment");
-		   		 	NotificationDAO.scheduleInviteEmailOnce(invDto, userDto, false);	
 				}
 			}
 		}
