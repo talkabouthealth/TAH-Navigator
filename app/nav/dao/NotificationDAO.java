@@ -772,10 +772,17 @@ public class NotificationDAO {
 		vars.put("clinic_phone", data.getClinicPhone());
 		vars.put("reference_no", getReferenceNo(notification));
 		if (!DEBUG) {
-			if(isAppointment)
+			if(isAppointment) {
+				vars.put("doctor_name", data.getDoctorName());		
+				vars.put("date", data.getAppointmentDate());
+				vars.put("appointment_day", data.getAppointmentDay());
+				vars.put("appointment_time", data.getAppointmentTime());			
+				vars.put("clinic_address", data.getClinicAddress());
+				vars.put("generate_url", data.getDistressCheckInURL());
 				EmailUtil.sendEmail(EmailUtil.TVRH_INVITE_APPOINTMENT_SCHEDULED_WITHOUT_REFERENCE, vars, data.getEmail());
-			else
+			} else {
 				EmailUtil.sendEmail(EmailUtil.TVRH_INVITE_NO_APPOINTMENT_SCHEDULED_WITHOUT_REFERENCE, vars, data.getEmail());
+			}
 		}
 		setNotified(notification);			
 	}
