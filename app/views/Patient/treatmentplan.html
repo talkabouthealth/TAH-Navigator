@@ -32,6 +32,7 @@
         <th class="col-sm-3">Type</th>
         <th class="col-sm-1">Dates</th>
         <th class="col-sm-1">Dose</th>
+        <th class="col-sm-1">Total Dose</th>
         <th class="col-sm-1">Schedule</th>
         <th class="col-sm-1">Region Treated</th>
         <th class="col-sm-2">Doctor</th>        
@@ -47,6 +48,7 @@
           #{if rt.endDate} - ${rt.endDate.format('MM/dd/yyyy')} #{/if}
         </td>
         <td>#{if rt.dose} ${rt.dose} #{/if}</td>
+        <td #{if !rt.totalDose}style="text-align:center;vertical-align:middle"#{/if}>#{if rt.totalDose} ${rt.totalDose} #{/if}#{else}-#{/else}</td>
         <td>#{if rt.rsDto} ${rt.rsDto.timePeriod} #{/if}</td>
 
         <td>#{if rt.trDto} ${rt.trDto.region} #{/if}</td>        

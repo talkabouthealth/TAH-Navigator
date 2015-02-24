@@ -23,6 +23,9 @@ public class PatientRadiationTreatmentDTO {
 	@Column(name="dose")
 	private String dose;
 	
+	@Column(name="total_dose")
+	private String totalDose;
+	
 	@Column(name="rs_id")
 	private Integer rsId;
 	
@@ -89,6 +92,14 @@ public class PatientRadiationTreatmentDTO {
 		this.dose = dose;
 	}
 
+	public String getTotalDose() {
+		return totalDose;
+	}
+
+	public void setTotalDose(String totalDose) {
+		this.totalDose = totalDose;
+	}
+	
 	public Integer getRsId() {
 		return rsId;
 	}
@@ -169,11 +180,4 @@ public class PatientRadiationTreatmentDTO {
 		this.doctor = doctor;
 	}
 
-	
-
-	
-
-	
-	
-	
 }

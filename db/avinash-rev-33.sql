@@ -1,0 +1,1 @@
+ALTER TABLE nav.patientrt ADD COLUMN total_dose character varying(25) DEFAULT NULL;

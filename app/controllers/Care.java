@@ -111,14 +111,42 @@ public class Care extends Controller {
         render(user,expertDetail);
 	}
 	
-	public static void inviteAgain(String by, String email) {
+	public static void inviteAgain(String by, String email,Map<String,String>formdata) {
 		UserDTO userDto = null;
+		UserBean user = CommonUtil.loadCachedUser(session);
 		if(StringUtils.isNotBlank(by) && "id".equalsIgnoreCase(by)) {
 			Integer id = new Integer(email);
 			userDto = UserDAO.getUserBasicByField(by, id);
 		} else {
 			userDto = UserDAO.getUserBasicByField(by, email);
 		}
+		
+		if(formdata != null && formdata.get("withapp")!=null && formdata.get("withapp").equals("1")) {
+			try {
+				AddressDTO address = new AddressDTO(); 
+				address.setCity(formdata.get("city"));
+				address.setState(formdata.get("state"));
+				address.setLine1(formdata.get("address1"));
+				address.setZip(formdata.get("zip"));
+				BaseDAO.save(address);
+
+				AppointmentDTO appointmentDTO = new AppointmentDTO();
+				appointmentDTO.setAddressid(address);
+				appointmentDTO.setPatientid(userDto);
+				appointmentDTO.setAddedby(UserDAO.getUserBasicByField("id",user.getId()));
+				appointmentDTO.setTreatementStep(formdata.get("ts_process"));
+				appointmentDTO.setPurposeText(formdata.get("purposeText"));
+				appointmentDTO.setCareMemberName(formdata.get("membername"));
+				appointmentDTO.setAppointmentcenter(formdata.get("center"));
+
+				Date appointmentDate = new SimpleDateFormat("MM/dd/yyyy").parse(formdata.get("schDate"));
+				appointmentDTO.setAppointmentdate(appointmentDate);				
+				appointmentDTO.setAppointmenttime(formdata.get("time"));
+				BaseDAO.save(appointmentDTO);
+			} catch (Exception e) {
+			}
+		}
+
 		if(userDto != null) {
 			InvitedDTO invDto = InvitationDAO.getDetailsByEmail("email",userDto.getEmail());
 			if(invDto != null) {
@@ -134,12 +162,11 @@ public class Care extends Controller {
 					invDto.setPurposeText(appointmentDTO.getPurposeText());
 					invDto.setTreatementStep(appointmentDTO.getTreatementStep());
 					BaseDAO.update(invDto);
-					NotificationDAO.scheduleInviteEmailOnce(invDto, userDto, true);	
+					NotificationDAO.scheduleInviteEmailOnce(invDto, userDto, true);
+					System.out.println("Sending with appointment");
 				} else {
-//					System.out.println("Sending with appointment");
+					System.out.println("Sending without appointment");
 		   		 	NotificationDAO.scheduleInviteEmailOnce(invDto, userDto, false);
-//				} else {
-//					System.out.println("Sending withoute appointment");
 				}
 			}
 		}

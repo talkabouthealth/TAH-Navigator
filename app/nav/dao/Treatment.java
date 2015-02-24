@@ -452,6 +452,7 @@ public class Treatment {
 		EntityManager em = JPAUtil.getEntityManager();
 		String radiationType = rtInfo.get("radiationType");
 		String dose = rtInfo.get("dose");
+		String totalDose = rtInfo.get("totalDose");
 		String schedule = rtInfo.get("schedule");
 		String startDate = rtInfo.get("startDate");
 		String endDate = rtInfo.get("endDate");
@@ -536,6 +537,7 @@ public class Treatment {
 		prtDto.setRsId(rsId);
 		prtDto.setTrId(trId);
 		prtDto.setDose(dose);
+		prtDto.setTotalDose(totalDose);
 		prtDto.setNotes(notes);
 		prtDto.setDoctor(doctor);
 		if (!startDate.isEmpty()) {

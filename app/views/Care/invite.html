@@ -321,9 +321,21 @@ inviteAgain = function() {
 				postData.push({name: "email", value: email});
 				postData.push({name: "by", value: "email"});
 				if($("#appointmentBtn").prop('checked') == true) {
-					postData.push({name: "withapp", value: 1});
+					
+					postData.push({name: "formdata.withapp", value: 1});					
+					postData.push({name: "formdata.time", value: $("#appointmentForm input[name='time']").val()});
+					postData.push({name: "formdata.schDate", value: $("#appointmentForm input[name='schDate']").val()});
+					postData.push({name: "formdata.membername", value: $("#appointmentForm input[name='membername']").val()});
+					postData.push({name: "formdata.purposeText", value: $("#appointmentForm input[name='purposeText']").val()});
+					postData.push({name: "formdata.ts_process", value: $("#appointmentForm input[name='ts_process']").val()});
+					postData.push({name: "formdata.center", value: $("#appointmentForm input[name='center']").val()});
+					postData.push({name: "formdata.address1", value: $("#appointmentForm input[name='address1']").val()});
+					postData.push({name: "formdata.city", value: $("#appointmentForm input[name='city']").val()});
+					postData.push({name: "formdata.state", value: $("#appointmentForm input[name='state']").val()});
+					postData.push({name: "formdata.zip", value: $("#appointmentForm input[name='zip']").val()});					
+					
 				} else {
-					postData.push({name: "withapp", value: 0});
+					postData.push({name: "formdata.withapp", value: 0});
 				}
 
 				var formURL = '/Care/inviteAgain';

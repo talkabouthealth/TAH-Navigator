@@ -1314,10 +1314,13 @@ operationAppointment = function(operation, id) {
 				
 				$("#appointmentForm input[name='center']").val(data.appointmentcenter);
                 $avm.val(data.careMemberName);
-				$("#appointmentForm input[name='address1']").val(data.addressid.line1);
-				$("#appointmentForm input[name='city']").val(data.addressid.city);
-				$("#appointmentForm input[name='state']").val(data.addressid.state);
-				$("#appointmentForm input[name='zip']").val(data.addressid.zip);
+                if(data.addressid!=null)
+                {
+					//$("#appointmentForm input[name='address1']").val(data.addressid.line1);
+					$("#appointmentForm input[name='city']").val(data.addressid.city);
+					$("#appointmentForm input[name='state']").val(data.addressid.state);
+					$("#appointmentForm input[name='zip']").val(data.addressid.zip);
+                }
 				$("#appointmentForm input[name='deleteAP']").show();
 				$("#appointmentForm input[name='deleteAP']").unbind();
 				$("#appointmentForm input[name='deleteAP']").click(function(){

@@ -1401,6 +1401,7 @@ var careTeamController = (function() {
     		return false;
     	}
     	var dose = $('#rt_dose').val();
+    	var totalDose = $('#total_dose').val();
     	var schedule = $('#rt_schedule').val();
     	var startDate = $('#rt_start_date').val();
     	var endDate = $('#rt_end_date').val();
@@ -1412,6 +1413,7 @@ var careTeamController = (function() {
             'patientId': patientId,
             'rtInfo.radiationType': radiationType,
             'rtInfo.dose': dose,
+            'rtInfo.totalDose':totalDose,
             'rtInfo.schedule': schedule,
             'rtInfo.startDate': startDate,
             'rtInfo.endDate': endDate,
@@ -1867,13 +1869,23 @@ var careTeamController = (function() {
             }
         });
         tmp = [];
-        for (var i = 0; i < 300; i++) {
-            tmp[i] = '' + (i+1) + ' Gy';
+        for (var i = 0; i < 10; i++) {
+            tmp[i] = '' + (i*50+50) + ' cGy';
         }
         $('#rt_dose').typeahead({
         	minLength: 0 ,
             source: tmp
         });
+        
+        tmp2 = [];
+        for (var i = 0; i < 10; i++) {
+            tmp2[i] = '' + (i*1000+1000) + ' cGy';
+        }
+        $('#total_dose').typeahead({
+        	minLength: 0 ,
+            source: tmp2
+        });
+                
         var radiationSchedules = data.radiationSchedules;
         length = radiationSchedules.length;
         tmp = [];
@@ -1949,6 +1961,7 @@ var careTeamController = (function() {
     var emptyRadiationTreatmentForm = function() {
         $('#rt_type').val('');
         $('#rt_dose').val('');
+        $('#total_dose').val('');
         $('#rt_schedule').val('');
         $('#rt_start_date').val('');
         $('#rt_end_date').val('');
@@ -1995,6 +2008,7 @@ var careTeamController = (function() {
     var addRadiationTreatmentToForm = function(prtDto) {
         $('#rt_type').val(prtDto.rtDto.name);
         $('#rt_dose').val(prtDto.dose);
+        $('#total_dose').val(prtDto.totalDose)
         if ('rsDto' in prtDto) {
             $('#rt_schedule').val(prtDto.rsDto.timePeriod);
         }
