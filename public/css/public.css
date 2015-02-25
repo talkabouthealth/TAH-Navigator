@@ -104,7 +104,7 @@ body {
 
 /**************************************************************/
 
-
+/*
 
 @media (max-width: 767px) {
 	.my_nav .navbar{margin:0}
@@ -129,6 +129,7 @@ right: 20px;}
 .my_nav .navbar-header{
 top: -55px; right:5px;}
 }
+*/
 
 .nopadding {
    padding: 0 !important;

@@ -123,7 +123,7 @@
     top: 0;
     text-align: right;
     background: white;
-    padding: @padding;
+    padding: @padding;	
 
     > ul {
       padding-right: @padding;
@@ -137,6 +137,164 @@
 
         .button {
           font-size: @body-font;
+          1margin-top: -15px;
+
+        }
+
+        > a {
+          position: relative;
+          top: 50%;
+          left: 0;
+          i {
+            width: @font-awesome-size;
+            font-size: @font-awesome-size;
+          }
+
+          color: @gray;
+          .transition-duration(0.2s);
+
+          &:hover {
+            color: @blue;
+          }
+
+          > i {
+            position: relative;
+            margin-top: -50%;
+          }
+        }
+      }
+    }
+  }
+}
+
+.account1 {
+  position: relative;
+  height: 100%;
+  padding-left: @nav-width;
+
+  /*
+  .account-container {
+    height: 100%;
+    text-align: center;
+    position: relative;
+
+    > div {
+      height: 100%;
+    }
+  }
+  */	
+  .account-container {	
+	margin: 5px -15px -15px auto;
+  }
+
+  .account-info {
+    1position: absolute;
+    1left: 0;
+    1text-align: left;
+    1z-index: 1;
+    background: white;
+	white-space: nowrap;
+	margin-left: -15px;
+	/*
+    .account-image {
+      width: @account-image-size;
+      height: @header-height - @padding*2;
+      float: left;
+      padding-right: @padding;
+      border-right: 1px solid #e4e4e4;
+      1margin: @padding;
+      1padding-top: ((@header-height - @padding*2) - @account-image-size) / 2;
+
+	  
+      img {
+        width: 100%;
+      }
+	  
+	  
+    }
+    */
+	
+	.account-image {						
+		width: @account-image-size;		
+		padding-right: 5px;		
+	}
+    .account-data {      
+      height: @header-height - @padding*2;
+	  border-left: 1px solid #e4e4e4;
+	  padding-left: 10px;
+	  margin-left: 15px;
+    }
+
+    h3 {
+      font-size: @large-font;
+
+    }
+    h4 {
+      text-transform: uppercase;
+      font-size: @subtitle-font;
+      margin: 0;
+    }
+
+    .today-date {
+      opacity: 0.5;
+      margin: 0;
+      font-style: italic;
+      font-size: @tiny-font;
+    }
+
+    .last-login {
+      text-transform: uppercase;
+      white-space: nowrap;
+      font-size: @tiny-font;
+    }
+  }
+
+  .account-share {    
+    display: inline-block;
+    position: relative;
+    z-index: 2;
+	margin-top: 10px;
+    text-transform: uppercase;
+	text-align: center;
+	1white-space: nowrap;
+    label {
+      display: block;
+      font-size: 13px;
+      1padding-top: 5px;
+      margin: 0;
+    }
+  }
+
+  .emergency {
+    border: 1px solid #888e94;
+    border-radius: 25px;
+    display: inline-block;
+    padding: 6px 10px;
+
+  }
+
+  .account-actions {	
+    z-index: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    text-align: right;
+    background: white;
+	1padding: @padding;
+	
+
+    > ul {
+      padding-right: @padding;
+      height: 100%;
+      > li {
+        position: relative;
+        list-style: none;
+        float: left;
+        display: block;
+        height: 100%;
+
+        .button {
+          font-size: @body-font;		  
           margin-top: -15px;
 
         }
@@ -167,6 +325,8 @@
   }
 }
 
+/*
 .mobile-account {
     display: none;
 }
+*/

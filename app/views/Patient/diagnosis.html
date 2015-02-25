@@ -5,20 +5,20 @@
 
 <div id="content" class="diagnosis page">
     #{if patientOtherDetails && patientOtherDetails.diseaseId && patientOtherDetails.disease}
-    <div class="row">    
-        <div class="col-sm-12">
-            <label><i class="fa fa-file-text-o"></i> Diagnosis</label>
-            <h1>${patientOtherDetails.disease.name} |</h1>
-            #{if patientOtherDetails.dateofdiagnosis}
-            <p class="first-diagnosed">First Diagnosed: ${patientOtherDetails.dateofdiagnosis.format('MM/dd/yyyy')}</p>
-            #{/if}            
-        </div>
-    </div>    
+    
+	<div class="col-xs-12">
+		<label><i class="fa fa-file-text-o"></i> Diagnosis</label>
+		<h1>${patientOtherDetails.disease.name} |</h1>
+		#{if patientOtherDetails.dateofdiagnosis}
+		<p class="first-diagnosed">First Diagnosed: ${patientOtherDetails.dateofdiagnosis.format('MM/dd/yyyy')}</p>
+		#{/if}            
+	</div>
+    
 
     #{if patientOtherDetails != null && breastCancerInfo != null && patientOtherDetails.diseaseId == breastCancerId}
     #{if breastCancerInfo.er || breastCancerInfo.pr || breastCancerInfo.her2}
-    <div class="row">
-        <div class="col-sm-12">
+    
+        <div class="col-xs-12">
             <label><i class="fa fa-file-text-o"></i> Cancer Type Information</label>
             <h1>
             #{if breastCancerInfo.er}
@@ -38,110 +38,110 @@
             #{/elseif}
             </h1>
         </div>
-    </div>
+    
     #{/if}
  #{/if}
  #{if breastCancerInfo != null && breastCancerInfo.type}
-     	<div class="row">
-  <div class="col-sm-12">
+     	
+  <div class="col-xs-12">
    <label><i class="fa fa-file-text-o"></i> CANCER TYPE INFORMATION</label>
    <h1>${breastCancerInfo.type.name}</h1>
  </div>
-</div><!-- row -->
-     #{/if}
+
+   #{/if}
 #{if breastCancerInfo != null && breastCancerInfo.bcStage}
-    <div class="row">
-        <div class="col-sm-12">
+
+        <div class="col-xs-12">
             <label><i class="fa fa-file-text-o"></i> Stage Information</label>
             <h1>${breastCancerInfo.bcStage.name}</h1>
  </div>
-</div><!-- row -->
+
 #{/if}
  #{if breastCancerInfo != null && breastCancerInfo.invasion}
-<div class="row">
-  <div class="col-sm-12">
+
+  <div class="col-xs-12">
    <label><i class="fa fa-file-text-o"></i> INVASION</label>
    <h1>${breastCancerInfo.invasion.invname}</h1>
  </div>
-</div><!-- row -->
+
 #{/if}
 #{if breastCancerInfo != null && breastCancerInfo.grade}
-<div class="row">
-  <div class="col-sm-12">
+
+  <div class="col-xs-12">
    <label><i class="fa fa-file-text-o"></i> GRADE</label>
    <h1>${breastCancerInfo.grade.gradename}</h1>
  </div>
-</div><!-- row -->
+
 #{/if}
      #{if breastCancerInfo != null && breastCancerInfo.subtype}
-     	<div class="row">
-  <div class="col-sm-12">
+
+  <div class="col-xs-12">
    <label><i class="fa fa-file-text-o"></i> SUBTYPE</label>
    <h1>${breastCancerInfo.subtype.name}	</h1>
  </div>
-</div><!-- row -->
+
      #{/if}
  #{if breastCancerInfo != null && breastCancerInfo.risklevel}
-<div class="row">
-  <div class="col-sm-12">
+
+  <div class="col-xs-12">
    <label><i class="fa fa-file-text-o"></i> RISK LEVEL</label>
    <h1>${breastCancerInfo.risklevel}</h1>
  </div>
-</div><!-- row -->
+
 #{/if}     
 #{if breastCancerInfo != null && breastCancerInfo.psascore}
-<div class="row">
-  <div class="col-sm-12">
+
+  <div class="col-xs-12">
    <label><i class="fa fa-file-text-o"></i> PSA SCORE</label>
    <h1>${breastCancerInfo.psascore}</h1>
  </div>
-</div><!-- row -->
+
 #{/if}     
 #{if breastCancerInfo != null && breastCancerInfo.gleasonscore}
-<div class="row">
-  <div class="col-sm-12">
+
+  <div class="col-xs-12">
    <label><i class="fa fa-file-text-o"></i> GLEASON SCORE</label>
    <h1>${breastCancerInfo.gleasonscore}</h1>
         </div>
-    </div>
+    
     #{/if}
 
 #{if breastCancerInfo != null && breastCancerInfo.brca}
-    <div class="row">
-        <div class="col-sm-12">
+    
+        <div class="col-xs-12">
             <label><i class="fa fa-file-text-o"></i> Family History & Genetics</label>
             <h1>BRCA${breastCancerInfo.brca}</h1>
         </div>
-    </div>
+    
     #{/if}
 #{if breastCancerInfo != null && breastCancerInfo.phase}
-<div class="row">
-  <div class="col-sm-12">
+
+  <div class="col-xs-12">
    <label><i class="fa fa-file-text-o"></i> Phase</label>
    <h1>${breastCancerInfo.phase.name}</h1>
  </div>
-</div><!-- row -->
+
 #{/if}
 #{if breastCancerInfo != null && breastCancerInfo.fabclass}
-<div class="row">
-  <div class="col-sm-12">
+
+  <div class="col-xs-12">
    <label><i class="fa fa-file-text-o"></i> FAB Classification</label>
    <h1>${breastCancerInfo.fabclass.fabname}</h1>
  </div>
-</div><!-- row -->
+
 #{/if}
 
 #{if breastCancerInfo != null && breastCancerInfo.whoclass}
-<div class="row">
-  <div class="col-sm-12">
+
+  <div class="col-xs-12">
    <label><i class="fa fa-file-text-o"></i> WHO Classification</label>
    <h1>${breastCancerInfo.whoclass.whoname}</h1>
  </div>
-</div><!-- row -->
+
 #{/if}
 #{if chromosomes != null && chromosomes.size()>0 }
-	<div class="row">
-	  <div class="col-sm-12">
+
+	  <div class="col-xs-12">
 	   <label><i class="fa fa-file-text-o"></i> Chromosome Abnormalities</label>
 	   #{set topicSize = chromosomes.size() /}
 	#{list chromosomes, as:'seq'}
@@ -152,11 +152,11 @@
 	#{/if}
 	#{/list}
 	</div>
-	</div><!-- row -->
+
 #{/if}
 #{if mutations != null && mutations.size()>0 }
-<div class="row">
-  <div class="col-sm-12">
+
+  <div class="col-xs-12">
    <label><i class="fa fa-file-text-o"></i> Genetics</label>
    #{set topicSize = mutations.size() /}
 #{list mutations, as:'seq'}
@@ -166,15 +166,15 @@
     #{/if}
 #{/list}
 </div>
-</div><!-- row -->
+
     #{/if}
 #{if patientOtherDetails.familyRisk}
-    <div class="row">
-        <div class="col-sm-12">
+
+        <div class="col-xs-12">
             <label><i class="fa fa-file-text-o"></i> Family Risk Assessment</label>
             <h1>${patientOtherDetails.familyRisk}</h1>
         </div>
-    </div>
+
 #{/if}    
 #{/if}
 #{else}

@@ -37,20 +37,20 @@
 <body>
 	<div class="wrapper">
 		<div class="header">
-			<div class="hamburger visible-xs visible-sm">
+			<div class="hamburger hidden-md hidden-lg">
 				<a type="button" class="sidebar-toggle"><i class="fa fa-bars"></i></a>
 			</div>
 			<div class="logo"><img src="/public/images/moffitt-logo.png"/></div><!-- logo -->
-			<div class="mobile-account visible-xs visible-sm">
+			<div class="mobile-account hidden-md hidden-lg pull-right" style="margin-right: 15px;">
 				<a class="button rounded" href="/logout">Log Out</a>
 			</div>
-			<div class="account">
-				<div class="account-container">
-					<div class="account-info">
-						<div class="account-image">
+			<div class="account1">
+				<div class="account-container col-md-12">
+					<div class="account-info col-md-6 col-lg-4">
+						<div class="account-image col-md-3 col-lg-4">
 							<img src="@{Image.show(user.id)}" />
 						</div>
-						<div class="account-data">
+						<div class="account-data col-md-9 col-lg-8">
 							<p class="today-date">Thusday 4/24/2014</p>
 							<h3>#{userName userName: user.name, userId:user.id /}</h3>
 #{if patientOtherDetails != null && patientOtherDetails.disease != null}
@@ -63,56 +63,34 @@
 #{/if}
 						</div>
 					</div><!-- account-info -->
-					<div class="account-share">
+					<div class="account-share col-md-3 col-lg-4">
           <!--
           <p class="emergency"> IF YOU HAVE AN EMERGENCY <span> DIAL 911 </span></p> -->
 						<label>Share how you are doing</label>
 						<div class="buttons">
-							<a class="distress-meter button rounded" patientId="${user.id}">Update Distress</a>
+							<a class="distress-meter button rounded" patientId="${user.id}">Update Distress</a>							
 		    <!--<a class="button rounded">Share Symptoms</a>
 		    <a class="button rounded">Share Satisfaction</a>-->
 						</div>
 					</div><!-- share -->
-					<div class="account-actions">
-						<div class="btn-group patient-header-btn-group">
-							<a class="btn" data-toggle="dropdown">Settings <span class="caret"></span></a>
-							<ul class="dropdown-menu">
-								<li><a href="@{Patient.setting()}"><i class="fa fa-spinner"></i><span class="hidden-sm text">Update Profile Image</span></a></li>
-								<li><a href="@{Patient.profile()}"><i class="fa fa-inbox"></i><span class="hidden-sm text">Edit Communication Preferences</span></a></li>
-								<li><a href="@{Patient.editContact()}"><i class="fa fa-user"></i><span class="hidden-sm text">Edit Personal Information</span></a></li>
-								<li><a href="@{Patient.password()}"><i class="fa fa-lock"></i><span class="hidden-sm text">Edit Password</span></a></li>
-							</ul>
-							<a class="btn" id="print-pages">Print Pages</a>
-							<a class="btn" href="/logout">Log Out</a>
+					<div class="account-actions col-md-3 col-lg-4">						
+						<div class="btn-group btn-group-sm pbn" role="group" aria-label="...">
+							<div class="btn-group btn-group-sm" role="group">
+								<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+									Settings
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu" role="menu">
+									<li><a href="@{Patient.setting()}"><i class="fa fa-spinner"></i><span class="hidden-sm text">Update Profile Image</span></a></li>
+									<li><a href="@{Patient.profile()}"><i class="fa fa-inbox"></i><span class="hidden-sm text">Edit Communication Preferences</span></a></li>
+									<li><a href="@{Patient.editContact()}"><i class="fa fa-user"></i><span class="hidden-sm text">Edit Personal Information</span></a></li>
+									<li><a href="@{Patient.password()}"><i class="fa fa-lock"></i><span class="hidden-sm text">Edit Password</span></a></li>
+								</ul>
+							</div>							
+							<a class="btn btn-default" id="print-pages">Print Pages</a>
+							<a class="btn btn-default" href="/logout">Log Out</a>
 						</div>
 						
-						
-						<nav class="navbar2 navbar-default" role="navigation">
-							<div style=" text-align: center;width: 30px;margin-top: 25px;">
-								<a type="button" style="cursor: pointer;position: relative;" data-toggle="collapse" data-target="#example-navbar-collapse">
-									<i class="fa fa-bars"></i>
-								</a>
-							</div>
-							<div style=" height: 1px;overflow-x: hidden;" id="example-navbar-collapse">
-								<div class="menu">
-									<ul class="nav navbar-nav">
-										<li><a href="javaScript:distressMeter()"><i class="fa fa-sort-numeric-desc"></i></a></li>
-                <!--                  <li><a href="#" class="active"><i class="fa fa-bell"></i><span class="coun-n">2</span></a></li> -->
-                <!--                  <li> <a href="#"><i class="fa fa-pencil"></i></a></li> -->
-										<li>
-											<a href="#" data-toggle="dropdown"><i class="fa fa-cog"></i></a>
-											<ul class="dropdown-menu">
-												<li><a href="@{Patient.setting()}"><i class="fa fa-spinner"></i><span class="hidden-sm text"></span></a></li>
-												<li><a href="@{Patient.profile()}"><i class="fa fa-inbox"></i><span class="hidden-sm text"></span></a></li>
-												<li><a href="@{Patient.editContact()}"><i class="fa fa-user"></i><span class="hidden-sm text"></span></a></li>
-												<li><a href="@{Patient.password()}"><i class="fa fa-lock"></i><span class="hidden-sm text"></span></a></li>
-											</ul>
-										</li>
-										<li><a href="/logout"><i class="fa fa-power-off"></i></a></li>
-									</ul>
-								</div>
-							</div>
-						</nav>
 					</div>
 				</div><!-- account-container -->
 			</div><!-- account -->

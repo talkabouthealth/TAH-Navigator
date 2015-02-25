@@ -2070,9 +2070,31 @@ border-bottom-left-radius: 10px;
 	overflow: hidden;
 }
 
+.pbn {
+	margin-top: 10px;	
+}
+
+.pbn .btn-default {
+	background: white !important;
+	color: #00509b !important;
+	border: 1px solid #6092c1 !important;
+}
+
+.pbn .btn-default:hover {
+	background: #cdcdcd !important;
+}
+
+.pbn .dropdown-menu {	
+	margin-top: 0px;		
+}
+
+.pbn .dropdown-menu a:hover{
+	background: #cdcdcd;
+	color: black;
+}
 
 .patient-header-btn-group  {
-	margin-top: 10px;
+	margin-top: 10px;	
 }
 
 .patient-header-btn-group .btn {
@@ -2143,10 +2165,19 @@ div.print-section {
 	margin: auto;
 }
 
+/*
 .log_header {
 	height: 90px;
 }
+*/
 
+.log_header1 {
+	height: 90px;
+	background:#006ea1; border-bottom:2px solid #002739; box-shadow:0 0 10px rgba(0,0,0,.5);
+}
+img.logo1 {
+	padding-top: 5px;
+}
 .log_heading {   
   text-align: right !important;
   margin-right: 30px;  
@@ -2154,4 +2185,16 @@ div.print-section {
 
 .new_log_heading {
 	font-size: 40px;
+}
+
+.mobile h3 {
+	padding: 0;
+	margin-top: 15px;
+	margin-bottom: 5px;
+}
+
+.diagnosis label {
+	margin: 0 !important;
+	padding-top: 20px !important;	
+	padding-bottom: 5px !important;
 }
