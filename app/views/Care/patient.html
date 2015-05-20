@@ -54,7 +54,7 @@ div.active {
     			<div class="form-group form-group-sm" id="treatment_step_process">
                         <label class="col-xs-3 control-label" for="rt_schedule">Step in the Treatment Process</label>
                         <div class="col-xs-8 form-group input-group">                           
-                            <select class="form-control nomargin" id="ts_process" required="required">
+                            <select class="form-control nomargin" id="ts_process" ><!-- required="required" -->
 								<option></option>
 								<optgroup label="Radiation Oncology">
 									<option>First Appointment With Radiation Oncologist</option>
@@ -1926,15 +1926,16 @@ operationCareTeam = function(operation, id) {
 			$avm.data("teams", teams);
 			var arr = [];                        
 			for (var id in teams) {
-                 arr.push(teams[id].address.line1);
-			}                              
+				if(teams[id].address != null && teams[id].address.line1 != null)
+					arr.push(teams[id].address.line1);
+			}
             $avm.typeahead({
                 source: arr,
                 minLength: 0,
 				updater: function(item) {
 					var teams = $avm.data('teams');
 					for (var id in teams) {
-						if (teams[id].address.line1 == item) {
+						if (teams[id].address != null && teams[id].address.line1 == item) {
 							$("#addEditCareTeam  input[name='type']").val(teams[id].name);
 							$("#addEditCareTeam  input[name='phone']").val(teams[id].address.phone);
 							$("#addEditCareTeam  input[name='address']").val(teams[id].address.line2);
@@ -1949,7 +1950,7 @@ operationCareTeam = function(operation, id) {
 	        	var isThere = false;
 	        	var teams = $avm.data('teams');
 	        	for (var id in teams) {
-	        		if (teams[id].address.line1 == $avm.val()) {
+	        		if (teams[id].address != null && teams[id].address.line1 == $avm.val()) {
 	        			isThere = true;
 	        		}
 	        	}
