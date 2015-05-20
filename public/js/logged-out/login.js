@@ -9,8 +9,11 @@ $(document).ready(function() {
 
     setInterval(function() {
         //if ( ($('input[name="email"]').val() && $('input[name="password"]').val() ) || $("input:-webkit-autofill").length > 0 ) {
-        if ( $("input:-webkit-autofill").length > 0 ) {
-            $('#signin').removeAttr('disabled');
-        }
+    	try {
+	    	var messageLength = $("input:-webkit-autofill").length;
+	        if ( messageLength > 0 ) {
+	            $('#signin').removeAttr('disabled');
+	        }
+    	} catch(e){}
     }, 200);
 });

@@ -11,13 +11,47 @@
   <link href="/public/css/styles.less" rel="stylesheet/less" />
   <link href="/public/css/care/styles.less" rel="stylesheet/less" />
   <link href="/public/css/print.css" rel="stylesheet" type="text/css" media="print" />
+
+
+<link href="/public/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" type="text/css" />
+<link href="/public/plugins/bootstrap/bootstrap.css" rel="stylesheet" type="text/css" />
+<link href="/public/css/fonts/font-awesome.css" rel="stylesheet" type="text/css" />
+<link href="/public/css/fonts/righteous.css" rel="stylesheet" type="text/css" />
+<link href="/public/plugins/fancybox/jquery.fancybox.css" rel="stylesheet" type="text/css" />
+<link href="/public/plugins/fullcalendar/fullcalendar.css" rel="stylesheet" type="text/css" />
+<link href="/public/plugins/xcharts/xcharts.min.css" rel="stylesheet" type="text/css" />
+<link href="/public/plugins/select2/select2.css" rel="stylesheet" type="text/css" />
+<link href="/public/plugins/tooltipster-master/css/tooltipster.css" rel="stylesheet" type="text/css" />
+<link href="/public/plugins/tooltipster-master/css/themes/tooltipster-light.css" rel="stylesheet" type="text/css" />
+<link href="/public/css/style.css" rel="stylesheet" type="text/css" />
+<link href="/public/css/screen.css" rel="stylesheet" type="text/css" />
+<link href="/public/css/static.css" rel="stylesheet" type="text/css" />
+<link href="/public/css/public.css" rel="stylesheet" type="text/css" />
+<link href="/public/plugins/datepicker1/datepicker.css" rel="stylesheet" type="text/css" />
+
+ 
+  <!--   <script src="/public/plugins/jquery/jquery-2.1.0.min.js"></script> -->
+  <!--[if (!IE)|(gt IE 8)]><!-->
   <script src="/public/js/lib/less-1.7.4.min.js"></script>
+<!--<![endif]-->
+<!--[if lte IE 8]>
+<script src="/public/js/lib/respond.min.js"></script>
+   <script src="/public/js/lib/less-1.3.0.min.js"></script>
+<![endif]-->
+  
   <link href="/public/css/bootstrap.min.css" rel="stylesheet" type="text/css" />  
 <link href="/public/css/print.css" rel="stylesheet" type="text/css" media="print" />  
 
   <!--End Container-->
   #{ mixpanel /}
-  <script src="/public/plugins/jquery/jquery-2.1.0.min.js"></script>
+<!--   <script src="/public/plugins/jquery/jquery-2.1.0.min.js"></script> -->
+  <!--[if (!IE)|(gt IE 8)]><!-->
+  	<script src="/public/plugins/jquery/jquery-2.1.0.min.js"></script>
+<!--<![endif]-->
+<!--[if lte IE 8]>
+  <script src="/public/plugins/jquery/jquery-1.9.1.min.js"></script>
+<![endif]-->
+
   <script src="/public/plugins/jquery-ui/jquery-ui.min.js"></script>
   <script src="/public/plugins/bootstrap/bootstrap.min.js"></script>
   <script src="/public/plugins/datepicker1/bootstrap-datepicker.js"></script>
@@ -32,6 +66,7 @@
   <script src="/public/plugins//moment/moment.min.js"></script>
   <script src="/public/js/tableTooltips.js"></script>
   <script src="/public/js/care/dashboard.js"></script>
+  <script type="text/javascript" src="@{'/public/plugins/flot/excanvas.min.js'}"></script>
   <script type="text/javascript" src="@{'/public/plugins/flot/jquery.flot.js'}"></script>
   <script type="text/javascript" src="@{'/public/plugins/flot/jquery.flot.time.js'}"></script>
   <script src="/public/js/lib/bootstrap-multiselect.js"></script>
@@ -222,14 +257,14 @@ a.date-range.active {
             #{elseif pageType == 'patient1'}<a href="@{Care.index()}" class="active">#{/elseif}
             #{else}<a href="@{Care.index()}">#{/else}
             <i class="fa fa-inverse fa-user"></i>
-            <span class="hidden-xs">Patient Dashboard</span>
+            <span>Patient Dashboard</span>
           </a>
         </li>
 		<li>
             #{if pageType == 'invite'}<a href="#" class="active">#{/if}
             #{else}<a href="@{Care.invite()}">#{/else}
             <i class="fa fa fa-inbox"></i>
-            <span class="hidden-xs">Invite New patient</span>
+            <span>Invite New patient</span>
           </a>
         </li>
         <!--

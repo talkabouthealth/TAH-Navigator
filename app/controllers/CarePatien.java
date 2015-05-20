@@ -1453,15 +1453,6 @@ public class CarePatien  extends Controller {
 					Integer appId =  new Integer(id);
 					AppointmentDTO dto = AppointmentDAO.getAppointmentByField("id",appId);					
 					int appointmentGroupId = dto.getAppointmentgroupid();					
-
-					// Notification Start 
-					List<AppointmentDTO> groupAppointments = AppointmentDAO.getAppointmentListByField("appointmentgroupid", appointmentGroupId);
-					if (groupAppointments != null) {
-						for (AppointmentDTO appointment: groupAppointments) {
-							NotificationDAO.scheduleAppointmentEmails(appointment, "remove");
-						}
-					}
-					// Notification End
 					
 					EntityManager em = JPAUtil.getEntityManager();
 					String hql ="update AppointmentDTO set deleteflag = :fp1 where appointmentgroupid = :f0";
@@ -1474,7 +1465,15 @@ public class CarePatien  extends Controller {
 					
 					query.executeUpdate();
 					em.getTransaction().commit();
-						
+					
+					// Notification Start 
+					List<AppointmentDTO> groupAppointments = AppointmentDAO.getAppointmentListByField("appointmentgroupid", appointmentGroupId);
+					if (groupAppointments != null) {
+						for (AppointmentDTO appointment: groupAppointments) {
+							NotificationDAO.scheduleAppointmentEmails(appointment, "remove");
+						}
+					}
+					// Notification End
 				}
 			}
 		} catch(Exception e) {
